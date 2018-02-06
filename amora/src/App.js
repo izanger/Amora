@@ -1,16 +1,32 @@
 import React, { Component } from 'react';
-import base from "./rebase.js"
+import rebase, { auth, google } from "./rebase.js"
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
 
   componentWillMount() {
-    base.fetch('test', {
-      context: this,
-      asArray: false,
-      then(data){
-        console.log(data);
+    // Rebase fetch example: 
+    // * * * * * * * * * * * *
+    // rebase.fetch('test', {
+    //   context: this,
+    //   asArray: false,
+    //   then(data){
+    //     console.log(data);
+    //   }
+    // })
+
+    // Signing in with a popup: 
+    // * * * * * * * * * * * *
+    // auth.signInWithPopup(google)
+
+    // Setting up a listener for auth state change: 
+    // * * * * * * * * * * * *
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in
+      } else {
+        // User is not signed in
       }
     })
   }

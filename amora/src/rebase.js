@@ -15,8 +15,9 @@ const app = firebase.initializeApp({
 });
 
 // const db = database(app);
-const base = Rebase.createClass(app.database());
+const rebase = Rebase.createClass(app.database());
 
-// export app or base defaultly
+// export app, google, or base defaultly
 export const auth = app.auth(); 
-export default base;
+export const google = new firebase.auth.GoogleAuthProvider();
+export default rebase;
