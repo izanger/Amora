@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
+import base from "./rebase.js"
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+
+  componentWillMount() {
+    base.fetch('test', {
+      context: this,
+      asArray: false,
+      then(data){
+        console.log(data);
+      }
+    })
+  }
+
   render() {
     return (
       <div className="App">
