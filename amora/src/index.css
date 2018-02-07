@@ -1,5 +1,14 @@
-body {
+html, body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-color: white;
+  min-height: 100% !important;
+}
+
+body {
+  min-width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
 }
