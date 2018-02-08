@@ -6,18 +6,21 @@
 
 .amora {
     text-shadow: 2px 4px #ff00;
-    margin: 16px;
-    width: 27%;
-    height: 27%;
+    margin: 0px;
+    width: 240px;
+    height: auto;
 }
 
 .subtitle {
     font-size: 16px;
-    font-family: sans-serif;
-    color: rgba(236, 169, 45, 0.89);
+    color: #4A4A4A;
     text-shadow: 1px 4px #ff00;
     margin: 8px;
-    font-weight: 100;
+    font-weight: bolder;
+}
+
+img {
+  padding: 0px;
 }
 
 .signin-button {
@@ -27,6 +30,9 @@
     font-size: 14px;
     font-weight: 100;
     padding: 8px;
-    font-family: sans-serif;
     margin: 8px;
+}
+
+.login-row {
+  margin-top: 20%;
 }
