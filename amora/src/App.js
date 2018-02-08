@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import rebase, { auth, google } from "./rebase.js"
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import Login from "./Login.js"
 
@@ -9,27 +10,21 @@ import './App.css';
 class App extends Component {
 
   componentWillMount() {
-    // Rebase fetch example: 
-    // * * * * * * * * * * * *
-    // rebase.fetch('test', {
-    //   context: this,
-    //   asArray: false,
-    //   then(data){
-    //     console.log(data);
-    //   }
-    // })
 
-    // Signing in with a popup: 
-    // * * * * * * * * * * * *
-    // auth.signInWithPopup(google)
+    // https://github.com/tylermcginnis/re-base
 
     // Setting up a listener for auth state change: 
-    // * * * * * * * * * * * *
     auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in
+        const newState = { ...this.state }
+        newState.user = user
+        this.setState(newState)
       } else {
         // User is not signed in
+        const newState = { ...this.state }
+        newState.user = { }
+        this.setState(newState)
       }
     })
   }
@@ -37,14 +32,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {/* <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p> */}
-        <Login />
+        <Switch>
+          <Route exact path="/" render={() => <Login />} />
+            <Route render={() => <Redirect to="/" />} />
+        </Switch>
       </div>
     );
   }
