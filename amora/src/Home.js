@@ -23,6 +23,10 @@ class Home extends Component {
                 <div id="taskDashboard">
                     I am a goddamn task
                 </div>
+
+                <div id="myDay">
+                    This is my day, okay
+                </div>
             </div>
         )
     }
