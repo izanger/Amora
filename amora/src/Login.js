@@ -39,10 +39,6 @@ class Login extends Component {
 
                 </Col>
               </Row>
-
-              <Row>
-
-              </Row>
             </Grid>
         )
     }
