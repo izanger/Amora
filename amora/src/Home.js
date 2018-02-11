@@ -6,6 +6,7 @@ import amoraLogo from "./images/amora_logo.png"
 import line from "./images/Line/Line.png"
 import "./Home.css"
 import ProjectIcon from "./ProjectIcon.js"
+import ProjectTitleBar from "./ProjectTitleBar.js"
 
 
 class Home extends Component {
@@ -51,7 +52,7 @@ class Home extends Component {
                 </div>
 
                 <div id="taskDashboard">
-                    I am a goddamn task
+                    <ProjectTitleBar />
                 </div>
 
                 <div id="myDay">
