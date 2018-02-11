@@ -30,12 +30,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-
         <Switch>
           <Route exact path="/" render={() => <Login />} />
             <Route render={() => <Redirect to="/" />} />
         </Switch>
-
       </div>
     );
   }
