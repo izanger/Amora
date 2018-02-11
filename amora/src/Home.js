@@ -8,6 +8,7 @@ import "./Home.css"
 import ProjectIcon from "./ProjectIcon.js"
 import ProjectTitleBar from "./ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
+import PoppedOutProfile from './PoppedOutProfile';
 
 
 class Home extends Component {
@@ -43,7 +44,8 @@ class Home extends Component {
         return (
             <div id="mainContainer">
                 <div id="projectsSelector">
-                    <ProjectIcon />
+                    <PoppedOutProfile />
+
                     <h5 id="projectProfileName">Name</h5>
                     <img src={line} id="projectSeparatorLine"/>
                     <ProjectIcon />
