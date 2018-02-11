@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "./rebase.js"
+import rebase, { auth, google} from "../rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
 
-import amoraLogo from "./images/amora_logo.png"
-import tempPic from "./images/temp.jpg"
-import line from "./images/Line/Line@3x.png"
-import UserIcon from "./UserIcon.js"
-import "./ProjectCollaboratorsBar.css"
+import tempPic from "../images/temp.jpg"
+import "./ProjectIcon.css"
 
 
-class ProjectCollaboratorsBar extends Component {
+class ProjectIcon extends Component {
 
     constructor() {
         super()
@@ -28,17 +25,14 @@ class ProjectCollaboratorsBar extends Component {
     render = () => {
         let color = "#3CB4CB";
         return (
-            <div>
-                <div id="ProjectCollaboratorsBarContainter">
-                    <UserIcon/>
-                    <UserIcon/>
-                </div>
-
-
+            <div id="iconContainer" style={{backgroundColor: color}}>
+                <img src={tempPic} className="projectPicture"/>
+                {/*This should only appear if it is selected as the project*/}
+                <div id="projectIndicator" style={{backgroundColor: color}}></div>
             </div>
         )
     }
 
 }
 
-export default ProjectCollaboratorsBar;
+export default ProjectIcon;

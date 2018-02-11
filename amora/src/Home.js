@@ -5,10 +5,13 @@ import { Row, Grid, Col } from 'react-bootstrap'
 import amoraLogo from "./images/amora_logo.png"
 import line from "./images/Line/Line.png"
 import "./Home.css"
-import ProjectIcon from "./ProjectIcon.js"
-import ProjectTitleBar from "./ProjectTitleBar.js"
-import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
+
+import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
+import ProjectTitleBar from "./ProjectDashboardComps/ProjectTitleBar.js"
+import ProjectCollaboratorsBar from "./ProjectDashboardComps/ProjectCollaboratorsBar.js"
+
 import PoppedOutProfile from './PoppedOutProfile';
+
 
 
 class Home extends Component {
@@ -57,7 +60,7 @@ class Home extends Component {
                 <div id="taskDashboard">
                     <ProjectTitleBar />
                     <div id="taskDashContainer">
-                        
+
 
                     </div>
                     <ProjectCollaboratorsBar />
