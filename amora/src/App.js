@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import rebase, { auth, google } from "./rebase.js"
 import { Route, Switch, Redirect } from "react-router-dom";
+import { isObjectEmpty } from "./apphelpers.js"
 
 import Login from "./Login.js"
 import Home from "./Home.js"
@@ -10,8 +11,14 @@ import './App.css';
 
 class App extends Component {
 
-  componentWillMount() {
+  constructor() {
+    super();
+    this.state = {
+      user: { }
+    }
+  }
 
+  componentWillMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in
@@ -27,12 +34,26 @@ class App extends Component {
     })
   }
 
+  getAppState = () => {
+    return this.state;
+  }
+
+  setAppState = (newState) => {
+    this.setState(newState);
+  }
+
   render() {
     return (
       <div className="App">
         <Switch>
-          <Route exact path="/" render={() => <Login />} />
-            <Route render={() => <Redirect to="/" />} />
+          <Route exact path="/" render={() => {
+            if (!isObjectEmpty(this.state.user)) {
+              return <Home getAppState={this.getAppState} setAppState={this.setAppState} />
+            } else {
+              return <Login />
+            }
+          }} />
+          <Route render={() => <Redirect to="/" />} />
         </Switch>
       </div>
     );
