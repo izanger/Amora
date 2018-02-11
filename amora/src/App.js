@@ -3,6 +3,7 @@ import rebase, { auth, google } from "./rebase.js"
 import { Route, Switch, Redirect } from "react-router-dom";
 
 import Login from "./Login.js"
+import Home from "./Home.js"
 
 import logo from './logo.svg';
 import './App.css';
@@ -11,9 +12,6 @@ class App extends Component {
 
   componentWillMount() {
 
-    // https://github.com/tylermcginnis/re-base
-
-    // Setting up a listener for auth state change: 
     auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in

@@ -29,28 +29,32 @@ class Login extends Component {
 
     render = () => {
         return (
-            <Grid fluid className="login-grid">
-              <Row className="login-row">
-                <Col xs={1} sm={3} md={3}>
 
-                </Col>
-                <Col xs={10} sm={6} md={6}>
-                    <center><img className="amora" src={amoraLogo} /></center>
-                      <div className="subtitle">Teamwork Makes the Dream Work</div>
-                      {/*<button className="signin-button" onClick={this.signin}>
-                          Sign in with Google
-                      </button>*/}
-                      <img onClick={this.signin} className="googleLogin" src={googleLoginNormal}></img>
-                </Col>
-                <Col xs={1} sm={3} md={3}>
+          <div className="container">
+              {/*<Grid fluid className="login-grid">
+                <Row className="login-row">
+                  <Col xs={1} sm={3} md={3}>
 
-                </Col>
-              </Row>
+                  </Col>
+                  <Col xs={10} sm={6} md={6}>
+                      <center><img className="amora" src={amoraLogo} /></center>
+                        <div className="subtitle">Teamwork Makes the Dream Work</div>
 
-              <Row>
+                        <img onClick={this.signin} className="googleLogin" src={googleLoginNormal}></img>
+                  </Col>
+                  <Col xs={1} sm={3} md={3}>
 
-              </Row>
-            </Grid>
+                  </Col>
+                </Row>
+            </Grid>*/}
+            <div>
+                <center><img className="amora" src={amoraLogo} /></center>
+                <div className="subtitle">Teamwork Makes the Dream Work</div>
+
+                <img onClick={this.signin} className="googleLogin" src={googleLoginNormal}></img>
+            </div>
+
+          </div>
         )
     }
 
