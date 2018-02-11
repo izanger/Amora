@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import rebase, { auth, google} from "./rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
 import ReactDOM from 'react-dom';
-//import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
 
@@ -27,9 +26,9 @@ class PoppedOutProfile extends React.Component {
     const { open } = this.state;
     return (
       <div>
-        <button onClick={this.onOpenModal}>Open modal</button>
+        <button onClick={this.onOpenModal}>Profile Image Goes Here</button>
         <Modal open={open} onClose={this.onCloseModal} little>
-          <h2>Simple centered modal</h2>
+          <h2>Simple centered modal.<br/><br/>Here is some more text.<br/><br/>The rest of it.</h2>
         </Modal>
       </div>
     );
