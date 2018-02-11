@@ -50,6 +50,9 @@ class Home extends Component {
                     <ProjectIcon />
                     <button onClick={this.signOut}>Sign out</button>
                     <button onClick={this.createProject}>Create project</button>
+                    
+                   
+                 
                 </div>
 
                 <div id="taskDashboard">
@@ -64,6 +67,12 @@ class Home extends Component {
 
                 <div id="myDay">
                     This is my day, okay
+                    <input id="checkBox" type="checkbox" />
+                    <input id="checkBox" type="checkbox" />
+                    <input id="checkBox" type="checkbox" />
+                    <input id="checkBox" type="checkbox" />
+                  
+                    <button> Submit </button>
                 </div>
             </div>
         )
