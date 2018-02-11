@@ -55,3 +55,7 @@
     height: 2px;
     margin-left: 15px;
 }
+
+#taskDashContainer {
+    min-width: 0px;
+}

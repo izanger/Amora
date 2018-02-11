@@ -7,6 +7,7 @@ import line from "./images/Line/Line.png"
 import "./Home.css"
 import ProjectIcon from "./ProjectIcon.js"
 import ProjectTitleBar from "./ProjectTitleBar.js"
+import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 
 
 class Home extends Component {
@@ -53,6 +54,12 @@ class Home extends Component {
 
                 <div id="taskDashboard">
                     <ProjectTitleBar />
+                    <div id="taskDashContainer">
+                        
+
+                    </div>
+                    <ProjectCollaboratorsBar />
+
                 </div>
 
                 <div id="myDay">
