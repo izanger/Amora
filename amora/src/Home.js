@@ -3,7 +3,12 @@ import rebase, { auth, google} from "./rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
 
 import amoraLogo from "./images/amora_logo.png"
+import line from "./images/Line/Line.png"
 import "./Home.css"
+import ProjectIcon from "./ProjectIcon.js"
+import ProjectTitleBar from "./ProjectTitleBar.js"
+import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
+
 
 class Home extends Component {
     constructor() {
@@ -22,7 +27,7 @@ class Home extends Component {
 
     createProject = () => {
         const project = {
-            projectId: 0, 
+            projectId: 0,
             title: "Something",
             image: "url",
             users: [ ],
@@ -38,13 +43,23 @@ class Home extends Component {
         return (
             <div id="mainContainer">
                 <div id="projectsSelector">
-                    Hello
+                    <ProjectIcon />
+                    <h5 id="projectProfileName">Name</h5>
+                    <img src={line} id="projectSeparatorLine"/>
+                    <ProjectIcon />
+                    <ProjectIcon />
                     <button onClick={this.signOut}>Sign out</button>
                     <button onClick={this.createProject}>Create project</button>
                 </div>
 
                 <div id="taskDashboard">
-                    I am a goddamn task
+                    <ProjectTitleBar />
+                    <div id="taskDashContainer">
+                        
+
+                    </div>
+                    <ProjectCollaboratorsBar />
+
                 </div>
 
                 <div id="myDay">
