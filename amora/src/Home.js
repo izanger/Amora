@@ -9,13 +9,16 @@ import ProjectIcon from "./ProjectIcon.js"
 import ProjectTitleBar from "./ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 import PoppedOutProfile from './PoppedOutProfile';
+import 'react-responsive-modal/lib/react-responsive-modal.css';
+import Modal from 'react-responsive-modal/lib/css';
 
 
 class Home extends Component {
     constructor() {
         super()
         this.state = {
-
+            tasks: { },
+            counter: 0
         }
     }
 
@@ -40,7 +43,26 @@ class Home extends Component {
         console.log("got here")
     }
 
+    addTask = () => {
+        var taskName = prompt("Enter the task name");
+         const newState = { ...this.state }
+         //newState.tasks.push(taskName);
+        // newState.counter += 1
+        //var arr = this.state.tasks.slice();
+        //arr.push(taskName);
+         //this.setState({tasks:arr})
+
+         this.setState(prevState => ({
+            tasks: [...prevState.tasks, taskName]
+        }))
+
+
+    }
+
     render = () => {
+
+        const keys = Object.keys(this.state.tasks)
+
         return (
             <div id="mainContainer">
                 <div id="projectsSelector">
@@ -50,14 +72,19 @@ class Home extends Component {
                     <img src={line} id="projectSeparatorLine"/>
                     <ProjectIcon />
                     <ProjectIcon />
+                    
                     <button onClick={this.signOut}>Sign out</button>
                     <button onClick={this.createProject}>Create project</button>
+                    
                 </div>
 
                 <div id="taskDashboard">
                     <ProjectTitleBar />
                     <div id="taskDashContainer">
-                        
+                    <button onClick={this.addTask}>Add task</button>
+                    {keys.map((key) => {
+                        return <div>{this.state.tasks[key]}</div>
+                    })}
 
                     </div>
                     <ProjectCollaboratorsBar />
