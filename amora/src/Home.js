@@ -10,7 +10,6 @@ import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import ProjectTitleBar from "./ProjectDashboardComps/ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectDashboardComps/ProjectCollaboratorsBar.js"
 
-import PoppedOutProfile from './PoppedOutProfile';
 
 
 
@@ -47,7 +46,7 @@ class Home extends Component {
         return (
             <div id="mainContainer">
                 <div id="projectsSelector">
-                    <PoppedOutProfile />
+                    <ProjectIcon />
 
                     <h5 id="projectProfileName">Name</h5>
                     <img src={line} id="projectSeparatorLine"/>
