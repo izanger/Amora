@@ -10,12 +10,17 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-
   constructor() {
     super();
     this.state = {
       user: { }
     }
+  }
+  
+  addUser(user) {
+    rebase.post(`users/${user.uid}`, {
+      data: {displayName: user.displayName, email: user.email}
+    });
   }
 
   componentWillMount() {
@@ -25,6 +30,8 @@ class App extends Component {
         const newState = { ...this.state }
         newState.user = user
         this.setState(newState)
+        this.addUser(user)
+
       } else {
         // User is not signed in
         const newState = { ...this.state }
