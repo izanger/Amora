@@ -71,7 +71,9 @@ class Home extends Component {
                     <input id="checkBox" type="checkbox" />
                     <input id="checkBox" type="checkbox" />
                     <input id="checkBox" type="checkbox" />
-                  
+                    <input id="checkBox" type="checkbox" />
+                    <input id="checkBox" type="checkbox" />
+                    <input id="checkBox" type="checkbox" />
                     <button> Submit </button>
                 </div>
             </div>
