@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
-import {auth, google} from "./rebase.js"
-import {Row, Grid, Col} from 'react-bootstrap'
+import React, { Component } from 'react'
+import { auth, google } from "./rebase.js"
+import { Row, Grid, Col } from 'react-bootstrap'
 
 import amoraLogo from "./images/amora_logo.png"
 import googleLoginNormal from "./images/btn_google_signin_light_normal_web@2x.png"
@@ -17,7 +17,14 @@ class Login extends Component {
     }
 
     signin = () => {
-        auth.signInWithPopup(google)
+        auth.signInWithPopup(google).then((data) => {
+            const token = data.credential.accessToken
+            const user = data.user
+            console.log(user)
+            console.log(token)
+        }).catch((error) => {
+
+        })
     }
 
     render = () => {
