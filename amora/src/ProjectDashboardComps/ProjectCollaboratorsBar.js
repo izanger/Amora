@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "./rebase.js"
+import rebase, { auth, google} from "../rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
 
-import amoraLogo from "./images/amora_logo.png"
-import tempPic from "./images/temp.jpg"
-import "./ProjectTitleBar.css"
+import tempPic from "../images/temp.jpg"
+import line from "../images/Line/Line@3x.png"
+import UserIcon from "./UserIcon.js"
+import "./ProjectCollaboratorsBar.css"
 
 
-class ProjectTitleBar extends Component {
+class ProjectCollaboratorsBar extends Component {
 
     constructor() {
         super()
@@ -26,12 +27,17 @@ class ProjectTitleBar extends Component {
     render = () => {
         let color = "#3CB4CB";
         return (
-            <div id="projectTitleContainer" style={{backgroundColor: color}}>
-                <h1 id="projectTitle">Project Name</h1>
+            <div>
+                <div id="ProjectCollaboratorsBarContainter">
+                    <UserIcon/>
+                    <UserIcon/>
+                </div>
+
+
             </div>
         )
     }
 
 }
 
-export default ProjectTitleBar;
+export default ProjectCollaboratorsBar;

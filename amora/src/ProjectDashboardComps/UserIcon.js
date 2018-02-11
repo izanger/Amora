@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "./rebase.js"
+import rebase, { auth, google} from "../rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
 
-import amoraLogo from "./images/amora_logo.png"
-import tempPic from "./images/temp.jpg"
+import tempPic from "../images/temp.jpg"
 import "./UserIcon.css"
 
 
