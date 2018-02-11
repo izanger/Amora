@@ -14,7 +14,7 @@
     min-width: 1px;
     max-width: 90px;
     height: 100%;
-    background: blue;
+    background: lightgrey;
     z-index: 201;
     box-sizing: content-box;
     visibility: visible;
@@ -28,7 +28,7 @@
     min-width: 1px;
     height: 100%;
     top: 0px;
-    background-color: orange;
+    background-color: whitesmoke;
 }
 
 #myDay {
@@ -40,5 +40,5 @@
     max-width: 350px;
     height: 100%;
     top: 0px;
-    background-color: red;
+    background-color: white;
 }
