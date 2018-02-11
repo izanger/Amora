@@ -11,7 +11,7 @@ class App extends Component {
 
   addUser(user) {
     rebase.post(`users/${user.uid}`, {
-      data: {name: user.displayName, email: user.email}
+      data: {displayName: user.displayName, email: user.email}
     });
   }
 
@@ -27,7 +27,7 @@ class App extends Component {
         newState.user = user
         this.setState(newState)
         this.addUser(user)
-        
+
       } else {
         // User is not signed in
         const newState = { ...this.state }
