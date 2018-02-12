@@ -49,13 +49,17 @@ class App extends Component {
     this.setState(newState);
   }
 
+  goToUrl = (url) => {
+    this.props.history.push(url);
+  }
+
   render() {
     return (
       <div className="App">
         <Switch>
-          <Route exact path="/" render={() => {
+          <Route path="/" render={() => {
             if (!isObjectEmpty(this.state.user)) {
-              return <Home getAppState={this.getAppState} setAppState={this.setAppState} />
+              return <Home getAppState={this.getAppState} setAppState={this.setAppState} goToUrl={this.goToUrl}/>
             } else {
               return <Login />
             }

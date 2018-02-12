@@ -1,0 +1,9 @@
+.createProjectInput {
+    margin: 8px;
+    height: 30px;
+    font-family: sans-serif;
+}
+
+.createProjectButton {
+    cursor: pointer;
+}

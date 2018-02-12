@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import rebase, { auth, google} from "./rebase.js"
+import { Route, Switch, Redirect } from "react-router-dom";
 import { Row, Grid, Col } from 'react-bootstrap'
 
 import amoraLogo from "./images/amora_logo.png"
@@ -9,6 +10,7 @@ import "./Home.css"
 import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import ProjectTitleBar from "./ProjectDashboardComps/ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectDashboardComps/ProjectCollaboratorsBar.js"
+import CreateProjectForm from './CreateProjectForm.js';
 
 
 
@@ -53,18 +55,26 @@ class Home extends Component {
                     <ProjectIcon />
                     <ProjectIcon />
                     <button onClick={this.signOut}>Sign out</button>
-                    <button onClick={this.createProject}>Create project</button>
+                    <button onClick={() => {
+                        this.props.goToUrl("createproject");
+                    }}>Create new project</button>
                 </div>
-
-                <div id="taskDashboard">
-                    <ProjectTitleBar />
-                    <div id="taskDashContainer">
-
-
-                    </div>
-                    <ProjectCollaboratorsBar />
-
-                </div>
+                <Switch>
+                    <Route path="/dashboard" render={() => {
+                        return (
+                            <div id="taskDashboard">
+                                <ProjectTitleBar />
+                                <div id="taskDashContainer">
+                                </div>
+                                <ProjectCollaboratorsBar />
+                            </div>
+                        )
+                    }} />
+                    <Route path="/createproject" render={() => {
+                        return <CreateProjectForm goToUrl={this.props.goToUrl}/>
+                    }} />
+                    <Route render={() => <Redirect to="/dashboard" />} />
+                </Switch>
 
                 <div id="myDay">
                     This is my day, okay
