@@ -9,6 +9,7 @@ import ProjectIcon from "./ProjectIcon.js"
 import ProjectTitleBar from "./ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 import PoppedOutProfile from './PoppedOutProfile';
+import AddTaskView from './AddTaskView';
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
 
@@ -81,6 +82,7 @@ class Home extends Component {
                 <div id="taskDashboard">
                     <ProjectTitleBar />
                     <div id="taskDashContainer">
+                    <AddTaskView />
                     <button onClick={this.addTask}>Add task</button>
                     {keys.map((key) => {
                         return <div>{this.state.tasks[key]}</div>
