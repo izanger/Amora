@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import rebase, { auth, google } from "./rebase.js"
 import { Route, Switch, Redirect } from "react-router-dom";
-import { isObjectEmpty } from "./apphelpers.js"
+import { isObjectEmpty, buildUserFromGoogle } from "./apphelpers.js"
 
 import Login from "./Login.js"
 import Home from "./Home.js"
@@ -17,9 +17,20 @@ class App extends Component {
     }
   }
   
-  addUser(user) {
+  checkIfUserIsInDatabase(user) {
+    let inDataBase = false
+    rebase.fetch(`users/${user.uid}`, {
+      context: this
+    }).then((data) => {
+      if (isObjectEmpty(data)) {
+        this.postUser(user)
+      }
+    })
+  }
+
+  postUser(user) {
     rebase.post(`users/${user.uid}`, {
-      data: {displayName: user.displayName, email: user.email}
+      data: user
     });
   }
 
@@ -28,9 +39,10 @@ class App extends Component {
       if (user) {
         // User is signed in
         const newState = { ...this.state }
-        newState.user = user
+        const newUser = buildUserFromGoogle(user)
+        newState.user = newUser
         this.setState(newState)
-        this.addUser(user)
+        this.checkIfUserIsInDatabase(newUser)
 
       } else {
         // User is not signed in
@@ -46,11 +58,11 @@ class App extends Component {
   }
 
   setAppState = (newState) => {
-    this.setState(newState);
+    this.setState(newState)
   }
 
   goToUrl = (url) => {
-    this.props.history.push(url);
+    this.props.history.push(url)
   }
 
   render() {

@@ -6,4 +6,10 @@
 
 .createProjectButton {
     cursor: pointer;
+    margin-top: 8px;
+}
+
+.errorBox {
+    margin: 12px;
+    color: rgb(218, 64, 64);
 }
