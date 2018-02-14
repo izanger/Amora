@@ -1,4 +1,4 @@
-
+import rebase, { auth, google } from "./rebase.js"
 export function isObjectEmpty(obj) {
     if (Object.keys(obj).length === 0) {
         return true;
@@ -22,4 +22,17 @@ export function createUniqueID() {
         s += Math.floor(Math.random() * 10).toString()
     }
     return s
+}
+
+export function emailRegistered(email) {
+    rebase.initializedApp.database().ref().child("users").orderByChild("email").equalTo(email).once("value", snapshot => {
+        const userData = snapshot.val();
+        if(userData){
+            console.log("true");
+            return true;
+        } else {
+            console.log("false");
+            return false;
+        }
+    })
 }

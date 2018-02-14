@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import rebase from "./rebase";
 import InviteList from "./InviteList"
-import { createUniqueID } from "./apphelpers.js"
+import { createUniqueID, emailRegistered } from "./apphelpers.js"
 
 import "./CreateProjectForm.css"
 
@@ -34,11 +34,15 @@ class CreateProjectForm extends Component {
     }
 
     inviteUser = () => {
-        if (this.state.inviteValue !== "") {
-            const newState = { ...this.state }
-            newState.inviteValue = "";
-            newState.userList.push(this.state.inviteValue)
-            this.setState(newState)
+        if (this.state.inviteValue !== "") { //email was found in database
+            if(emailRegistered(this.state.inviteValue)){
+                const newState = { ...this.state }
+                newState.inviteValue = "";
+                newState.userList.push(this.state.inviteValue)
+                this.setState(newState)
+            } else { //email was not found in database
+                //TODO: Make some visual indication that that user does not exist
+            }
         }
     }
 
