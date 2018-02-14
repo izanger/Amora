@@ -14,7 +14,8 @@ class CreateProjectForm extends Component {
             titleValue: "",
             inviteValue: "",
             errorValue: "",
-            userList: [ ]
+            userList: [ ],
+            userEmails: [ ]
         }
     }
 
@@ -34,7 +35,7 @@ class CreateProjectForm extends Component {
 
     // Check to see if user has pressed enter key
     enterInviteValue = (event) => {
-        if (event.keyCode == 13) {
+        if (event.keyCode === 13) {
             this.inviteUser()
         }
     }
@@ -59,19 +60,21 @@ class CreateProjectForm extends Component {
                 this.setState(newState)
                 return false
             }
-            if (this.state.userList.includes(this.state.inviteValue)) {
+            if (this.state.userEmails.includes(this.state.inviteValue)) {
                 newState.errorValue = "You've already added that user to this project..."
                 this.setState(newState)
                 return false
             }
+            const newKey = Object.keys(data.val())
             newState.errorValue = ""
             newState.inviteValue = "";
-            newState.userList.push(this.state.inviteValue)
+            newState.userList.push = data.val()[newKey]
+            newState.userEmails.push(this.state.inviteValue)
             this.setState(newState)
             return true
         })
         // TODO: 
-        // MAKE USER LIST HOLD USER OBJECTS
+        // DONE: ////// MAKE USER LIST HOLD USER OBJECTS //////
         // MAKE IT SO USERS GET AN INVITE IN DATABASE
         // WORK ON SYCINGSTATE WITH USERS SO THEIR INVITES WILL BE UPDATED ON THEIR CLIENTS AUTOMATICALLY
         // MAKE INVITE PAGE / ACCEPTING INVTITE LOGIC
@@ -107,9 +110,9 @@ class CreateProjectForm extends Component {
             })
         })
 
-        for (let i = 0; i < this.state.userList.length; i++) {
-            
-        }
+        this.state.userList.map((user) => {
+
+        })
 
     }
 

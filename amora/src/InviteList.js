@@ -13,15 +13,18 @@ class InviteList extends Component {
 
     renderUser = (user) => {
         return (
-            <div key={user + "-" + Math.random(999)} className="inviteEmailAddress">{user}</div>
+            <div key={user + "-" + Math.random(999)} className="inviteEmailAddress">{user.email}</div>
         )
     }
 
     render = () => {
+
+        const keys = Object.keys(this.props.users)
+
         return (
             <div>
-                {this.props.users.map((user) => {
-                    return (this.renderUser(user))
+                {keys.map((key) => {
+                    return (this.renderUser(this.props.users[key]))
                 })}
             </div>
         )
