@@ -30,19 +30,20 @@ class Home extends Component {
         auth.signOut()
     }
 
-    createProject = () => {
-        const project = {
-            projectId: 0,
-            title: "Something",
-            image: "url",
-            users: [ ],
-            tasks: [ ]
-        }
-        rebase.post(`projects/${project.projectId}`, {
-            data: project
-        })
-        console.log("got here")
-    }
+    //Ian: I believe this is deprecated (see CreateProjectForm component)
+    // createProject = () => {
+    //     const project = {
+    //         projectId: 0,
+    //         title: "Something",
+    //         image: "url",
+    //         users: [ ],
+    //         tasks: [ ]
+    //     }
+    //     rebase.post(`projects/${project.projectId}`, {
+    //         data: project
+    //     })
+    //     console.log("got here")
+    // }
 
     render = () => {
         return (
@@ -71,7 +72,7 @@ class Home extends Component {
                         )
                     }} />
                     <Route path="/createproject" render={() => {
-                        return <CreateProjectForm goToUrl={this.props.goToUrl}/>
+                        return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                     }} />
                     <Route render={() => <Redirect to="/dashboard" />} />
                 </Switch>

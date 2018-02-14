@@ -46,13 +46,17 @@ class CreateProjectForm extends Component {
         }
     }
 
-    validateUser = () => {
+    //Old method of creating our own ProjectID
+    // createProject = () => {
+    //     rebase.post(`projects/${createUniqueID(this.state.titleValue)}`, {
+    //         data: { Ben: "WAS HERE" }
+    //     })
+    // }
 
-    }
-
+    //Let Firebase create a ProjectID and add all the relevant from the form
     createProject = () => {
-        rebase.post(`projects/${createUniqueID(this.state.titleValue)}`, {
-            data: { Ben: "WAS HERE" }
+        rebase.push("projects", {
+            data: {projectName: this.state.titleValue, projectColor: "placeholder color", projectCreator: this.props.getAppState().user.uid}
         })
     }
 

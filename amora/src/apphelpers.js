@@ -16,6 +16,7 @@ export function buildUserFromGoogle(user) {
     return newUser
 }
 
+//Ian: deprecated
 export function createUniqueID() {
     let s = ""
     for (let i = 0; i < 12; i++) {
@@ -28,10 +29,8 @@ export function emailRegistered(email) {
     rebase.initializedApp.database().ref().child("users").orderByChild("email").equalTo(email).once("value", snapshot => {
         const userData = snapshot.val();
         if(userData){
-            console.log("true");
             return true;
         } else {
-            console.log("false");
             return false;
         }
     })
