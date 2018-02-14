@@ -8,9 +8,9 @@ import line from "./images/Line/Line.png"
 import "./Home.css"
 
 import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
-import ProjectTitleBar from "./ProjectDashboardComps/ProjectTitleBar.js"
-import ProjectCollaboratorsBar from "./ProjectDashboardComps/ProjectCollaboratorsBar.js"
 import CreateProjectForm from './CreateProjectForm.js';
+import ProjectDashboard from "./ProjectDashboardComps/ProjectDashboard.js"
+import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 
 
 
@@ -54,20 +54,17 @@ class Home extends Component {
                     <img src={line} id="projectSeparatorLine"/>
                     <ProjectIcon />
                     <ProjectIcon />
-                    <button onClick={this.signOut}>Sign out</button>
-                    <button onClick={() => {
+
+                    <div onClick={() => {
+                        console.log("HHHHH")
                         this.props.goToUrl("createproject");
-                    }}>Create new project</button>
+                    }}><NewProjectButton /></div>
+                <button onClick={this.signOut} style={{position: 'fixed', bottom: '0'}}>Sign out</button>
                 </div>
                 <Switch>
                     <Route path="/dashboard" render={() => {
                         return (
-                            <div id="taskDashboard">
-                                <ProjectTitleBar />
-                                <div id="taskDashContainer">
-                                </div>
-                                <ProjectCollaboratorsBar />
-                            </div>
+                            <ProjectDashboard />
                         )
                     }} />
                     <Route path="/createproject" render={() => {

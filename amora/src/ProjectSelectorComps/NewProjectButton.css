@@ -1,16 +1,10 @@
-#userIconContainer {
-    width: 40px;
-    height: 40px;
-    margin-left: 12px;
+#iconContainer {
+    width: 60px;
+    height: 60px;
+    margin: 15px;
     margin-bottom: 0px;
-    margin-top: 12px;
     border-radius: 30px;
     overflow: hidden;
-}
-
-#userIconContainer:hover {
-    cursor: pointer;
-    margin-top: 11px;
 }
 
 @keyframes iconAnimationOutward {
@@ -26,6 +20,7 @@
     animation-name: iconAnimationOutward;
     animation-duration: 0.3s;
     border-radius: 20px;
+    cursor: pointer;
 }
 
 @@keyframes projectIndicatorEnter {
@@ -44,8 +39,9 @@
     animation-duration: 4s;
 }
 
-.projectPicture {
-    width: 100%;
-    margin-right: 15px;
+.newProjectPicture {
+    width: 40px;
+    margin-top: 10px;
+    margin-left: 0px;
     height: auto;
 }
