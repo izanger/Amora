@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import { randomKey } from "./apphelpers"
 
+import "./InviteList.css"
+
 class InviteList extends Component {
     constructor() {
         super()
@@ -11,7 +13,7 @@ class InviteList extends Component {
 
     renderUser = (user) => {
         return (
-            <div key={user + "-" + Math.random(999)} className="inviteListUser">{user}</div>
+            <div key={user + "-" + Math.random(999)} className="inviteEmailAddress">{user}</div>
         )
     }
 

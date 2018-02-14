@@ -59,6 +59,9 @@ class Home extends Component {
                     <button onClick={() => {
                         this.props.goToUrl("createproject");
                     }}>Create new project</button>
+                    <button onClick={() => {
+                        this.props.goToUrl("notifications");
+                    }}>Notifications</button>
                 </div>
                 <Switch>
                     <Route path="/dashboard" render={() => {
