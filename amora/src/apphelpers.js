@@ -16,7 +16,7 @@ export function buildUserFromGoogle(user) {
     return newUser
 }
 
-export function createPID(name) {
+export function createUniqueID() {
     let s = ""
     for (let i = 0; i < 12; i++) {
         s += Math.floor(Math.random() * 10).toString()
