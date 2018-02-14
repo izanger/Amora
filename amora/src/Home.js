@@ -62,7 +62,7 @@ class Home extends Component {
                     }}><NewProjectButton /></div>
                 <button onClick={this.signOut} style={{position: 'fixed', bottom: '0'}}>Sign out</button>
 
-                    }}>Create new project</button>
+                    
                     <button onClick={() => {
                         this.props.goToUrl("notifications");
                     }}>Notifications</button>

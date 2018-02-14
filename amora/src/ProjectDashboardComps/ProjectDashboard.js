@@ -3,6 +3,7 @@ import rebase, { auth, google} from "../rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
 
 import tempPic from "../images/temp.jpg"
+import Task from "./Task.js"
 import ProjectTitleBar from "./ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 import "./ProjectDashboard.css"
@@ -32,6 +33,8 @@ class ProjectDashboard extends Component {
                     <div id="taskDashContainer">
                     </div>
                     <ProjectCollaboratorsBar />
+                    <Task />
+                    <Task />
                 </div>
         )
     }
