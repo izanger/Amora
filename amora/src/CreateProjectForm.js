@@ -68,7 +68,7 @@ class CreateProjectForm extends Component {
             const newKey = Object.keys(data.val())
             newState.errorValue = ""
             newState.inviteValue = "";
-            newState.userList.push = data.val()[newKey]
+            newState.userList.push(data.val()[newKey])
             newState.userEmails.push(this.state.inviteValue)
             this.setState(newState)
             return true
@@ -103,15 +103,37 @@ class CreateProjectForm extends Component {
                 projectCreator: this.props.getAppState().user.uid
             }
         }).then((newLocation) => {
+            let newState = { ...this.state }
+            newState.key = newLocation.key
+            this.setState(newState)
             rebase.update(`projects/${newLocation.key}`, {
                 data: {
                     key: newLocation.key
                 }
+            }).then((data) => {
+                newState = { ...this.state }
+                rebase.fetch(`projects/${this.state.key}`, {
+                    then: (data) => {
+                        newState.project = data;
+                        this.setState(newState)
+                        const key = this.state.key
+                        rebase.update(`users/${this.props.getAppState().user.uid}/projects`, {
+                            data: {
+                                [key]: this.state.project
+                            }
+                        })
+                        console.log(this.state.userList)
+                        this.state.userList.map((user) => {
+                            console.log(user)
+                            rebase.update(`users/${user.uid}/invites`, {
+                                data: {
+                                    [this.state.key]: this.state.project
+                                }
+                            })
+                        })
+                    }
+                })
             })
-        })
-
-        this.state.userList.map((user) => {
-
         })
 
     }
