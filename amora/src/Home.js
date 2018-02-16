@@ -83,10 +83,10 @@ class Home extends Component {
                     <ProjectTitleBar />
                     <div id="taskDashContainer">
                     <AddTaskView />
-                    <button onClick={this.addTask}>Add task</button>
+                    {/* <button onClick={this.addTask}>Add task</button>
                     {keys.map((key) => {
                         return <div>{this.state.tasks[key]}</div>
-                    })}
+                    })} */}
 
                     </div>
                     <ProjectCollaboratorsBar />
