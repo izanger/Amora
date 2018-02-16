@@ -74,8 +74,8 @@ class CreateProjectForm extends Component {
             return true
         })
         // TODO: 
-        // DONE: ////// MAKE USER LIST HOLD USER OBJECTS //////
-        // MAKE IT SO USERS GET AN INVITE IN DATABASE
+        // DONE: ////// MAKE USER LIST HOLD USER OBJECTS /////////
+        // Done: ////// MAKE IT SO USERS GET AN INVITE IN DATABASE
         // WORK ON SYCINGSTATE WITH USERS SO THEIR INVITES WILL BE UPDATED ON THEIR CLIENTS AUTOMATICALLY
         // MAKE INVITE PAGE / ACCEPTING INVTITE LOGIC
     }
