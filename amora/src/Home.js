@@ -31,6 +31,10 @@ class Home extends Component {
         auth.signOut()
     }
 
+    getName = () => {
+        rebase.fetch('users.displayName');
+    }
+
     //Ian: I believe this is deprecated (see CreateProjectForm component)
     // createProject = () => {
     //     const project = {
