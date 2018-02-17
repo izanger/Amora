@@ -10,10 +10,14 @@ import Modal from 'react-responsive-modal/lib/css';
 
 class UserIcon extends Component {
 
+
     constructor() {
       super();
 
-      this.state = { open: false }
+      this.state = { open: false,
+          isManager: true
+      };
+      this.color = "#3CB4CB";
     }
 
     onOpenModal = () => {
@@ -24,28 +28,41 @@ class UserIcon extends Component {
       this.setState({ open: false });
     };
 
-    /*
-    This currently only is the box. It needs the following:
-    1) Get the color for the project from Firebase
-    2) Some way of knowing if it's currently selected
-    3) If it's selected, stay expanded to the square
-    4) If it's selected, have the box show on the side
-    */
+    style = () => {
 
+        if(this.state.isManager){
+            return ({
+                backgroundColor: this.color,
+                borderColor: this.color,
+                borderColor: this.color,
+                borderWidth: '2px',
+                borderStyle: 'solid'
+            })
+        } else {
+            return ({
+                backgroundColor: this.color,
+                borderColor: this.color,
+            })
+
+        }
+
+
+        // }
+    }
 
 
     render = () => {
         const { open } = this.state;
-        let color = "#3CB4CB";
+
         var divStyle = {
-            backgroundColor: color,
-            borderColor: color
+            backgroundColor: this.color,
+            borderColor: this.color
         }
         return (
-            <div onClick={this.onOpenModal} id="userIconContainer" style={{divStyle}}>
+            <div onClick={this.onOpenModal} id="userIconContainer" style={this.style()}>
                 <img src={tempPic} className="projectPicture"/>
                 {/*This should only appear if it is selected as the project*/}
-                <div id="projectIndicator" style={{backgroundColor: color}}></div>
+                <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                     <Modal open={open} onClose={this.onCloseModal} little>
                       <h2>Simple centered modal.<br/><br/>Here is some more text.<br/><br/>The rest of it.</h2>
                     </Modal>

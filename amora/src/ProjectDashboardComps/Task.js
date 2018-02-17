@@ -32,7 +32,10 @@ class Task extends Component {
             /* CSS for larger task stuff */
             return ({
                 height: '100px',
-                backgroundColor: 'white'
+                backgroundColor: 'white',
+                boxShadow: '0px 0px 3px lightgrey',
+                marginTop: '5px',
+                marginBottom: '5px'
             })
         } else {
             return ({height: '40px'})

@@ -3,6 +3,8 @@ import rebase, { auth, google} from "../rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
 
 import tempPic from "../images/temp.jpg"
+import settingsIcon from "../images/Icons/Settings@2x.png"
+import searchIcon from "../images/Icons/Search@2x.png"
 import "./ProjectTitleBar.css"
 
 
@@ -27,6 +29,10 @@ class ProjectTitleBar extends Component {
         return (
             <div id="projectTitleContainer" style={{backgroundColor: color}}>
                 <h1 id="projectTitle">Project Name</h1>
+                <div id="projectTitleLeftContents">
+                        <img src={settingsIcon} id="projectSettingsIcon"/>
+                        <img src={searchIcon} style={{right: '55px'}} id="projectSettingsIcon"/>
+                </div>
             </div>
         )
     }
