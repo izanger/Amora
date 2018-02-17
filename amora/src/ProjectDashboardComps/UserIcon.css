@@ -28,7 +28,7 @@
     border-radius: 20px;
 }
 
-@@keyframes projectIndicatorEnter {
+@keyframes projectIndicatorEnter {
     from    {height: 0px}
     to      {height: 50px}
 }

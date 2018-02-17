@@ -14,7 +14,8 @@ class UserIcon extends Component {
     constructor() {
       super();
 
-      this.state = { open: false,
+      this.state = { 
+          open: false,
           isManager: true
       };
       this.color = "#3CB4CB";
