@@ -59,3 +59,10 @@
 #taskDashContainer {
     min-width: 0px;
 }
+
+.notificationButton {
+    margin: 12px;
+    font-size: 36px;
+    color: gray;
+    cursor: pointer;
+}

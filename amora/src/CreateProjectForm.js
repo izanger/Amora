@@ -125,7 +125,7 @@ class CreateProjectForm extends Component {
                         console.log(this.state.userList)
                         this.state.userList.map((user) => {
                             console.log(user)
-                            rebase.update(`users/${user.uid}/invites`, {
+                            rebase.update(`users/${user.uid}/notifications`, {
                                 data: {
                                     [this.state.key]: this.state.project
                                 }

@@ -11,6 +11,7 @@ import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import CreateProjectForm from './CreateProjectForm.js';
 import ProjectDashboard from "./ProjectDashboardComps/ProjectDashboard.js"
 import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
+import Notifications from "./Notifications.js"
 
 
 
@@ -61,11 +62,9 @@ class Home extends Component {
                         this.props.goToUrl("createproject");
                     }}><NewProjectButton /></div>
                 <button onClick={this.signOut} style={{position: 'fixed', bottom: '0'}}>Sign out</button>
-
-                    
-                    <button onClick={() => {
-                        this.props.goToUrl("notifications");
-                    }}>Notifications</button>
+                <i class="material-icons notificationButton" onClick={() => {
+                    this.props.goToUrl("notifications");
+                }}>notifications_none</i>
                 </div>
                 <Switch>
                     <Route path="/dashboard" render={() => {
@@ -75,6 +74,9 @@ class Home extends Component {
                     }} />
                     <Route path="/createproject" render={() => {
                         return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                    }} />
+                    <Route path="/notifications" render={() => {
+                        return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                     }} />
                     <Route render={() => <Redirect to="/dashboard" />} />
                 </Switch>
