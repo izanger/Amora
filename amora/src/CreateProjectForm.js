@@ -118,6 +118,11 @@ class CreateProjectForm extends Component {
                     managerUID: this.props.getAppState().user.uid
                 }
             })
+            rebase.push(`projects/${newLocation.key}/userList`, { //create list users on project, and add user to it
+                data: {
+                    userID: this.props.getAppState().user.uid
+                }
+            })
             rebase.update(`projects/${newLocation.key}`, {
                 data: {
                     key: newLocation.key
