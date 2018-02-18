@@ -25,8 +25,11 @@ class NewProjectButton extends Component {
     render = () => {
         let color = "#3CB4CB";
         return (
-            <div id="iconContainer" style={{backgroundColor: color}}>
-                <img src={plusPic} className="newProjectPicture"/>
+            <div id="newProjectIconContainer">
+                <svg height="60" width="60">
+                    <line x1="29" y1="19" x2="29" y2="39" className="newProjectPlus" />
+                    <line x1="19" y1="29" x2="39" y2="29" className="newProjectPlus" />
+                </svg>
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: color}}></div>
             </div>
