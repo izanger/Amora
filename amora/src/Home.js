@@ -6,6 +6,7 @@ import { Row, Grid, Col } from 'react-bootstrap'
 import amoraLogo from "./images/amora_logo.png"
 import line from "./images/Line/Line.png"
 import "./Home.css"
+import { isObjectEmpty } from "./apphelpers.js"
 
 import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import CreateProjectForm from './CreateProjectForm.js';
@@ -31,8 +32,21 @@ class Home extends Component {
         auth.signOut()
     }
 
-    getName = () => {
-        rebase.fetch('users.displayName');
+    getName() {
+        const d = 5
+        const name = this.props.getAppState().user.uid
+        rebase.fetch(`users/uid/${this.state.displayName}`, {
+            context: this,
+        }).then(data => {
+            console.log.data
+            if (isObjectEmpty(data)) {
+                let d = 1;  
+            }
+            else { 
+                let d = 3;
+            }
+        })
+        return d
     }
 
     //Ian: I believe this is deprecated (see CreateProjectForm component)
@@ -56,7 +70,7 @@ class Home extends Component {
                 <div id="projectsSelector">
                     <ProjectIcon />
 
-                    <h5 id="projectProfileName">Name</h5>
+                    <h5 id="projectProfileName">{this.getName()}</h5>
                     <img src={line} id="projectSeparatorLine"/>
                     <ProjectIcon />
                     <ProjectIcon />
