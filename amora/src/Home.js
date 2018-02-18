@@ -32,21 +32,6 @@ class Home extends Component {
         auth.signOut()
     }
 
-    //Ian: I believe this is deprecated (see CreateProjectForm component)
-    // createProject = () => {
-    //     const project = {
-    //         projectId: 0,
-    //         title: "Something",
-    //         image: "url",
-    //         users: [ ],
-    //         tasks: [ ]
-    //     }
-    //     rebase.post(`projects/${project.projectId}`, {
-    //         data: project
-    //     })
-    //     console.log("got here")
-    // }
-
     render = () => {
 
         const projectsList = this.props.getAppState().user.projects
@@ -58,6 +43,7 @@ class Home extends Component {
         console.log(projectsList)
         if (projectsList) {
             projectIcons = (
+                // console.log()
                 projectsKeys.map((projectKey) => {
                     return <ProjectIcon projectPhotoURL={projectsList[projectKey].projectPhotoURL} key={projectKey}/>
                 })

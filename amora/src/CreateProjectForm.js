@@ -14,6 +14,7 @@ class CreateProjectForm extends Component {
             titleValue: "",
             inviteValue: "",
             errorValue: "",
+            colorValue: "black",
             userList: [ ],
             userEmails: [ ]
         }
@@ -99,7 +100,7 @@ class CreateProjectForm extends Component {
         const ref = rebase.push("projects", {
             data: {
                 projectName: this.state.titleValue, 
-                projectColor: "black", 
+                projectColor: this.state.colorValue, 
                 projectCreator: this.props.getAppState().user.uid
             }
         }).then((newLocation) => {

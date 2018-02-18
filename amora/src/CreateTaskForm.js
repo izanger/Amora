@@ -103,7 +103,7 @@ class CreateTaskForm extends Component {
                 value={this.state.estimatedTimeValue} onChange={this.changeEstimatedTimeValue} />
                 <p className="errorBox">{this.state.errorValue}</p>
                 <button className="createTaskInput" onClick={this.createTask}>Add Task</button>
-               <input id="checkBox" type="checkbox"> </input>
+               {/* <input id="checkBox" type="checkbox"> </input> */}
             </div>
         )
     }
