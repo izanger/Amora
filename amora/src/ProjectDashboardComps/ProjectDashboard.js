@@ -36,6 +36,10 @@ class ProjectDashboard extends Component {
                     <div id="taskDashContainer">
                     </div>
                     <ProjectCollaboratorsBar />
+                    <svg height="3" width="100%">
+                        <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
+                    </svg>
+
                     <Task />
                     <Task />
                     <div onClick={() => {
@@ -55,9 +59,9 @@ class ProjectDashboard extends Component {
                         console.log("hi")
                         return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                     }} />
-                    
-                </Switch> 
-                                        
+
+                </Switch>
+
                 </div>
         )
     }
