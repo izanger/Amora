@@ -61,7 +61,6 @@ class Task extends Component {
             <div onClick={this.switch} >
                 <div id="task" style={this.css()}>
                     <div id="taskStats">
-<<<<<<< HEAD
                         <div id="taskCheckAndTitle">
                             <svg height="40" width="40">
 
@@ -81,13 +80,6 @@ class Task extends Component {
                         <svg>
                         <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
                         </svg>
-=======
-                        <h4 id="taskTitle">Task Title</h4>
-                        <h5 style={{right: '12px:'}}><b>!!!</b> | 7h | 3d</h5>
-                    </div>
-                    <div style={{visibility: this.state.visible}} id="taskInfo">
-                        <p>Hey u fook</p>
->>>>>>> origin/master
                     </div>
                 </div>
 
