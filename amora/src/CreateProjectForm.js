@@ -69,7 +69,7 @@ class CreateProjectForm extends Component {
             const newKey = Object.keys(data.val())
             newState.errorValue = ""
             newState.inviteValue = "";
-            newState.userList.push = data.val()[newKey]
+            newState.userList.push(data.val()[newKey])
             newState.userEmails.push(this.state.inviteValue)
             this.setState(newState)
             return true
@@ -101,7 +101,8 @@ class CreateProjectForm extends Component {
             data: {
                 projectName: this.state.titleValue, 
                 projectColor: this.state.colorValue, 
-                projectCreator: this.props.getAppState().user.uid
+                projectCreator: this.props.getAppState().user.uid,
+                projectPhotoURL: this.props.getAppState().user.photoURL
             }
         }).then((newLocation) => {
             let newState = { ...this.state }

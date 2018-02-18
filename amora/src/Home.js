@@ -40,10 +40,8 @@ class Home extends Component {
             projectsKeys = Object.keys(projectsList)
         }
         let projectIcons
-        console.log(projectsList)
         if (projectsList) {
             projectIcons = (
-                // console.log()
                 projectsKeys.map((projectKey) => {
                     return <ProjectIcon projectPhotoURL={projectsList[projectKey].projectPhotoURL} key={projectKey}/>
                 })
