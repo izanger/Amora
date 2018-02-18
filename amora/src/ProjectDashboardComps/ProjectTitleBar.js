@@ -30,9 +30,9 @@ class ProjectTitleBar extends Component {
             <div id="projectTitleContainer" style={{backgroundColor: color}}>
                 <h1 id="projectTitle">Project Name</h1>
                 <div id="projectTitleLeftContents">
- -                  <img src={settingsIcon} id="projectSettingsIcon"/>
- -                  <img src={searchIcon} style={{right: '55px'}} id="projectSettingsIcon"/>
- -              </div>
+                   <img src={settingsIcon} id="projectSettingsIcon"/>
+                   <img src={searchIcon} style={{right: '55px'}} id="projectSettingsIcon"/>
+               </div>
             </div>
         )
     }
