@@ -14,6 +14,7 @@ class Notifications extends Component {
     render = () => {
 
         const notifications = this.props.getAppState().user.notifications
+        console.log(notifications)
         let notificationKeys = null
         if (notifications) {
             notificationKeys = Object.keys(notifications)

@@ -46,11 +46,25 @@ class App extends Component {
         this.setState(newState)
         this.checkIfUserIsInDatabase(newUser)
 
+        this.bindingref = rebase.syncState(`users/${this.state.user.uid}`, {
+          context: this,
+          state: 'user',
+          then: () => {
+            const newState = { ...this.state }
+            newState.userSynced = true
+            this.setState(newState)
+          }
+        })
+
       } else {
         // User is not signed in
         const newState = { ...this.state }
         newState.user = { }
         this.setState(newState)
+        
+        if (this.bindingref) {
+          rebase.remmoveBinding(this.bindingref)
+        }
       }
     })
   }

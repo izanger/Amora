@@ -12,6 +12,7 @@ import CreateProjectForm from './CreateProjectForm.js';
 import ProjectDashboard from "./ProjectDashboardComps/ProjectDashboard.js"
 import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from './CreateTaskForm.js';
+import Notifications from "./Notifications.js"
 
 
 
@@ -58,7 +59,7 @@ class Home extends Component {
         if (projectsList) {
             projectIcons = (
                 projectsKeys.map((projectKey) => {
-                    return <ProjectIcon projectPhotoURL={projectsList[projectKey].projectPhotoURL}/>
+                    return <ProjectIcon projectPhotoURL={projectsList[projectKey].projectPhotoURL} key={projectKey}/>
                 })
             )
         }
@@ -81,9 +82,9 @@ class Home extends Component {
                 <button onClick={this.signOut} style={{position: 'fixed', bottom: '0'}}>Sign out</button>
 
                     
-                    <button onClick={() => {
+                    <i className="material-icons notificationButton" onClick={() => {
                         this.props.goToUrl("notifications");
-                    }}>Notifications</button>
+                    }}>notifications_none</i>
                 </div>
                 
                 <Switch>

@@ -99,20 +99,51 @@ class CreateProjectForm extends Component {
         const ref = rebase.push("projects", {
             data: {
                 projectName: this.state.titleValue, 
-                projectColor: this.state.colorValue, 
-                projectCreator: this.props.getAppState().user.uid,
-                projectPhotoURL: this.props.getAppState().user.photoURL
+                projectColor: "black", 
+                projectCreator: this.props.getAppState().user.uid
             }
         }).then((newLocation) => {
+            let newState = { ...this.state }
+            newState.key = newLocation.key
+            this.setState(newState)
+            rebase.post(`projects/${newLocation.key}/managerList`, { //create list of managers within project, and add the user to it
+                data: {
+                    [this.props.getAppState().user.uid]: true
+                }
+            })
+            rebase.post(`projects/${newLocation.key}/userList`, { //create list users on project, and add user to it
+                data: {
+                    [this.props.getAppState().user.uid]: true
+                }
+            })
             rebase.update(`projects/${newLocation.key}`, {
                 data: {
                     key: newLocation.key
                 }
+            }).then((data) => {
+                newState = { ...this.state }
+                rebase.fetch(`projects/${this.state.key}`, {
+                    then: (data) => {
+                        newState.project = data;
+                        this.setState(newState)
+                        const key = this.state.key
+                        rebase.update(`users/${this.props.getAppState().user.uid}/projects`, {
+                            data: {
+                                [key]: this.state.project
+                            }
+                        })
+                        console.log(this.state.userList)
+                        this.state.userList.map((user) => {
+                            console.log(user)
+                            rebase.update(`users/${user.uid}/notifications`, {
+                                data: {
+                                    [this.state.key]: this.state.project
+                                }
+                            })
+                        })
+                    }
+                })
             })
-        })
-
-        this.state.userList.map((user) => {
-
         })
 
     }
