@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import rebase from "./rebase";
 import InviteList from "./InviteList"
-import { emailRegistered, validateEmail, buildUserFromGoogle } from "./apphelpers.js"
+import { emailRegistered, validateEmail, buildUserFromGoogle, checkIfManager, checkIfUserOnProject } from "./apphelpers.js"
 
 import "./CreateProjectForm.css"
 
@@ -113,14 +113,14 @@ class CreateProjectForm extends Component {
             let newState = { ...this.state }
             newState.key = newLocation.key
             this.setState(newState)
-            rebase.push(`projects/${newLocation.key}/managerList`, { //create list of managers within project, and add the user to it
+            rebase.post(`projects/${newLocation.key}/managerList`, { //create list of managers within project, and add the user to it
                 data: {
-                    managerUID: this.props.getAppState().user.uid
+                    [this.props.getAppState().user.uid]: true
                 }
             })
-            rebase.push(`projects/${newLocation.key}/userList`, { //create list users on project, and add user to it
+            rebase.post(`projects/${newLocation.key}/userList`, { //create list users on project, and add user to it
                 data: {
-                    userID: this.props.getAppState().user.uid
+                    [this.props.getAppState().user.uid]: true
                 }
             })
             rebase.update(`projects/${newLocation.key}`, {
