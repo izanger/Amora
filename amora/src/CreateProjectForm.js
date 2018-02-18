@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import rebase from "./rebase";
 import InviteList from "./InviteList"
-import { emailRegistered, validateEmail, buildUserFromGoogle, checkIfManager, checkIfUserOnProject } from "./apphelpers.js"
+import { emailRegistered, validateEmail, buildUserFromGoogle } from "./apphelpers.js"
 
 import "./CreateProjectForm.css"
 
@@ -14,7 +14,6 @@ class CreateProjectForm extends Component {
             titleValue: "",
             inviteValue: "",
             errorValue: "",
-            colorValue: "",
             userList: [ ],
             userEmails: [ ]
         }
@@ -31,12 +30,6 @@ class CreateProjectForm extends Component {
     changeInviteValue = (event) => {
         const newState = { ...this.state }
         newState.inviteValue = event.target.value;
-        this.setState(newState)
-    }
-
-    changeColorValue = (event) => {
-        const newState = { ...this.state }
-        newState.colorValue = event.target.value;
         this.setState(newState)
     }
 
@@ -75,14 +68,14 @@ class CreateProjectForm extends Component {
             const newKey = Object.keys(data.val())
             newState.errorValue = ""
             newState.inviteValue = "";
-            newState.userList.push(data.val()[newKey])
+            newState.userList.push = data.val()[newKey]
             newState.userEmails.push(this.state.inviteValue)
             this.setState(newState)
             return true
         })
         // TODO: 
-        // DONE: ////// MAKE USER LIST HOLD USER OBJECTS /////////
-        // Done: ////// MAKE IT SO USERS GET AN INVITE IN DATABASE
+        // DONE: ////// MAKE USER LIST HOLD USER OBJECTS //////
+        // MAKE IT SO USERS GET AN INVITE IN DATABASE
         // WORK ON SYCINGSTATE WITH USERS SO THEIR INVITES WILL BE UPDATED ON THEIR CLIENTS AUTOMATICALLY
         // MAKE INVITE PAGE / ACCEPTING INVTITE LOGIC
     }
@@ -106,52 +99,25 @@ class CreateProjectForm extends Component {
         const ref = rebase.push("projects", {
             data: {
                 projectName: this.state.titleValue, 
+<<<<<<< HEAD
                 projectColor: this.state.colorValue, 
                 projectCreator: this.props.getAppState().user.uid,
                 projectPhotoURL: this.props.getAppState().user.photoURL
+=======
+                projectColor: "black", 
+                projectCreator: this.props.getAppState().user.uid
+>>>>>>> d9451cd5bfae809d2d19bc847c3419eb039759c7
             }
         }).then((newLocation) => {
-            let newState = { ...this.state }
-            newState.key = newLocation.key
-            this.setState(newState)
-            rebase.post(`projects/${newLocation.key}/managerList`, { //create list of managers within project, and add the user to it
-                data: {
-                    [this.props.getAppState().user.uid]: true
-                }
-            })
-            rebase.post(`projects/${newLocation.key}/userList`, { //create list users on project, and add user to it
-                data: {
-                    [this.props.getAppState().user.uid]: true
-                }
-            })
             rebase.update(`projects/${newLocation.key}`, {
                 data: {
                     key: newLocation.key
                 }
-            }).then((data) => {
-                newState = { ...this.state }
-                rebase.fetch(`projects/${this.state.key}`, {
-                    then: (data) => {
-                        newState.project = data;
-                        this.setState(newState)
-                        const key = this.state.key
-                        rebase.update(`users/${this.props.getAppState().user.uid}/projects`, {
-                            data: {
-                                [key]: this.state.project
-                            }
-                        })
-                        console.log(this.state.userList)
-                        this.state.userList.map((user) => {
-                            console.log(user)
-                            rebase.update(`users/${user.uid}/notifications`, {
-                                data: {
-                                    [this.state.key]: this.state.project
-                                }
-                            })
-                        })
-                    }
-                })
             })
+        })
+
+        this.state.userList.map((user) => {
+
         })
 
     }
@@ -167,7 +133,6 @@ class CreateProjectForm extends Component {
                 value={this.state.titleValue} />
                 <input type="text" placeholder="Email of person you'd like to invite" className="createProjectInput"
                 value={this.state.inviteValue} onChange={this.changeInviteValue} onKeyDown={this.enterInviteValue} />
-                <input type="text" placeholder="Color of Project" value={this.state.colorValue} onChange={this.changeColorValue} />
                 <p className="errorBox">{this.state.errorValue}</p>
                 <button className="createProjectInput" onClick={this.emailValidationProcess}>Invite user</button>
                 <InviteList users={this.state.userList} />

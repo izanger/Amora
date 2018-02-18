@@ -1,34 +1,31 @@
-#newProjectIconContainer {
+#iconContainer {
     width: 60px;
     height: 60px;
     margin: 15px;
     margin-bottom: 0px;
     border-radius: 30px;
-    border-color: #C6C6C6;
-    border-style: solid;
-    border-width: 2px;
-    stroke: #C6C6C6;
-    stroke-width: 3px;
+    overflow: hidden;
 }
 
-@keyframes newProjectAnimationDarken {
-    from      {border-color: #C6C6C6;
-            stroke: #C6C6C6}
-    to      {border-color: grey;
-            stroke: grey}
+@keyframes iconAnimationOutward {
+    0%      {border-radius: 30px;}
+    20%     {border-radius: 25px}
+    40%     {border-radius: 20px}
+    60%     {border-radius: 15px}
+    80%     {border-radius: 25px}
+    100%    {border-radius: 20px}
 }
 
-#newProjectIconContainer:hover {
-    animation-name: newProjectAnimationDarken;
+#iconContainer:hover {
+    animation-name: iconAnimationOutward;
     animation-duration: 0.3s;
-    border-color: grey;
+    border-radius: 20px;
     cursor: pointer;
-    stroke: grey;
 }
 
-@keyframes projectIndicatorEnter {
-    from    {margin-left: -70px}
-    to      {margin-left: -60px}
+@@keyframes projectIndicatorEnter {
+    from    {height: 0px}
+    to      {height: 50px}
 }
 
 #projectIndicator {
@@ -39,31 +36,12 @@
     border-radius: 10px;
     background-color: grey;
     animation-name: projectIndicatorEnter;
-    animation-duration: 0.3s;
+    animation-duration: 4s;
 }
 
 .newProjectPicture {
     width: 40px;
-    margin-top: 7px;
+    margin-top: 10px;
     margin-left: 0px;
     height: auto;
 }
-
-@keyframes newProjectAnimationDarkenPlus {
-    from      {stroke: #C6C6C6}
-    to      {stroke: grey}
-}
-
-/* .newProjectPlus:hover {
-    stroke: grey;
-    animation-name: newProjectAnimationDarkenPlus;
-    animation-duration: 0.3s;
-}
-
-
-
-.newProjectPlus {
-
-    stroke: #C6C6C6;
-    stroke-width: 3px;
-} */

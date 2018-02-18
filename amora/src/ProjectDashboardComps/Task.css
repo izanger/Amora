@@ -9,22 +9,19 @@
 
 #task:hover {
     cursor: pointer;
-    /* animation-name: grow;
-    animation-duration: 0.4s; */
+    animation-name: grow;
+    animation-duration: 4s;
     background-color: white;
-    box-shadow: 0px 0px 3px lightgrey;
 }
 
-@keyframes grow {
-    from {background-color: currentColor;
-            }
-    to {background-color: white;
-    box-shadow: 0px 0px 3px lightgrey}
+@@keyframes grow {
+    from {height: 40px}
+    to {height: 100px}
 }
 
 #task:click {
     animation-name: grow;
-    animation-duration: 0.25s;
+    animation-duration: 4s;
 }
 
 #taskTitle {

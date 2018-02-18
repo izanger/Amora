@@ -13,9 +13,13 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+<<<<<<< HEAD
       user: { },
       userSynced: false,
       currentProject: { }
+=======
+      user: { }
+>>>>>>> d9451cd5bfae809d2d19bc847c3419eb039759c7
     }
   }
   
@@ -46,26 +50,11 @@ class App extends Component {
         this.setState(newState)
         this.checkIfUserIsInDatabase(newUser)
 
-        this.bindingRef = rebase.syncState(`users/${this.state.user.uid}`, {
-          context: this,  // what object the state is on
-          state: 'user', // which property to sync
-          then: () => {
-            const newState = { ...this.state }
-            newState.userSynced = true
-            this.setState(newState)
-          }
-        })
-
       } else {
         // User is not signed in
         const newState = { ...this.state }
         newState.user = { }
-        newState.userSynced = false
         this.setState(newState)
-
-        if (this.bindingRef) {
-          rebase.removeBinding(this.bindingRef)
-        }
       }
     })
   }

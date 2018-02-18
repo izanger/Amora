@@ -7,17 +7,13 @@ import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
 
-class UserIcon extends Component {
 
+class UserIcon extends Component {
 
     constructor() {
       super();
 
-      this.state = { 
-          open: false,
-          isManager: true //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
-      };
-      this.color = "#3CB4CB";
+      this.state = { open: false }
     }
 
     onOpenModal = () => {
@@ -28,41 +24,28 @@ class UserIcon extends Component {
       this.setState({ open: false });
     };
 
-    style = () => {
+    /*
+    This currently only is the box. It needs the following:
+    1) Get the color for the project from Firebase
+    2) Some way of knowing if it's currently selected
+    3) If it's selected, stay expanded to the square
+    4) If it's selected, have the box show on the side
+    */
 
-        if(this.state.isManager){
-            return ({
-                backgroundColor: this.color,
-                borderColor: this.color,
-                borderColor: this.color,
-                borderWidth: '2px',
-                borderStyle: 'solid'
-            })
-        } else {
-            return ({
-                backgroundColor: this.color,
-                borderColor: this.color,
-            })
-
-        }
-
-
-        // }
-    }
 
 
     render = () => {
         const { open } = this.state;
-
+        let color = "#3CB4CB";
         var divStyle = {
-            backgroundColor: this.color,
-            borderColor: this.color
+            backgroundColor: color,
+            borderColor: color
         }
         return (
-            <div onClick={this.onOpenModal} id="userIconContainer" style={this.style()}>
+            <div onClick={this.onOpenModal} id="userIconContainer" style={{divStyle}}>
                 <img src={tempPic} className="projectPicture"/>
                 {/*This should only appear if it is selected as the project*/}
-                <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
+                <div id="projectIndicator" style={{backgroundColor: color}}></div>
                     <Modal open={open} onClose={this.onCloseModal} little>
                       <h2>Simple centered modal.<br/><br/>Here is some more text.<br/><br/>The rest of it.</h2>
                     </Modal>

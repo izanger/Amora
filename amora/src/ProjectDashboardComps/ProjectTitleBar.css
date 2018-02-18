@@ -3,24 +3,13 @@
     height: 60px;
     margin: 0px;
     margin-bottom: 0px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+
 }
 
 #projectTitle {
     color: white;
+    left: 12px;
     margin: auto;
     top: 10px;
-}
-
-#projectSettingsIcon {
-    right: 10px;
-    top: 13px;
-    position:absolute;
-    width: 30px;
-}
-
-#projectSettingsIcon:hover {
-    cursor: pointer;
+    position: absolute;
 }

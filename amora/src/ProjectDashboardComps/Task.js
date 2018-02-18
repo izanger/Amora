@@ -13,11 +13,7 @@ class Task extends Component {
     constructor() {
       super();
 
-
-      this.state = { open: false,
-          visible: 'hidden',
-          description: 'I am a very descriptive description!'
-        }
+      this.state = { open: false, visible: 'hidden' }
     }
 
     switch = () => {
@@ -36,10 +32,7 @@ class Task extends Component {
             /* CSS for larger task stuff */
             return ({
                 height: '100px',
-                backgroundColor: 'white',
-                boxShadow: '0px 0px 3px lightgrey',
-                marginTop: '5px',
-                marginBottom: '5px'
+                backgroundColor: 'white'
             })
         } else {
             return ({height: '40px'})
@@ -66,14 +59,11 @@ class Task extends Component {
             <div onClick={this.switch} >
                 <div id="task" style={this.css()}>
                     <div id="taskStats">
-                        <div id="taskCheckAndTitle">
-                            
-                            <h4 id="taskTitle">Task Title</h4>
-                        </div>
-                        <h5 style={{right: '12px;'}}><b>!!!</b> | 7h | 3d</h5>
+                        <h4 id="taskTitle">Task Title</h4>
+                        <h5 style={{right: '12px:'}}><b>!!!</b> | 7h | 3d</h5>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
-                        <p>{this.state.description}</p>
+                        <p>Hey u fook</p>
                     </div>
                 </div>
 

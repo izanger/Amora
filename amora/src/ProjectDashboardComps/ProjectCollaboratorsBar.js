@@ -32,6 +32,7 @@ class ProjectCollaboratorsBar extends Component {
                     <UserIcon/>
                     <UserIcon/>
                 </div>
+                
 
 
             </div>

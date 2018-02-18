@@ -20,6 +20,8 @@ class Login extends Component {
         auth.signInWithPopup(google).then((data) => {
             const token = data.credential.accessToken
             const user = data.user
+            console.log(user)
+            console.log(token)
         }).catch((error) => {
 
         })
