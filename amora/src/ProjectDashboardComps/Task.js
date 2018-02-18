@@ -6,6 +6,8 @@ import tempPic from "../images/temp.jpg"
 import "./Task.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
+import UserIcon from "./UserIcon.js"
+import AddUserButton from "./AddUserButton.js"
 
 
 class Task extends Component {
@@ -67,13 +69,24 @@ class Task extends Component {
                 <div id="task" style={this.css()}>
                     <div id="taskStats">
                         <div id="taskCheckAndTitle">
-                            
+                            <svg height="40" width="40">
+
+                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox"/>
+                            </svg>
                             <h4 id="taskTitle">Task Title</h4>
                         </div>
-                        <h5 style={{right: '12px;'}}><b>!!!</b> | 7h | 3d</h5>
+                        <h5 style={{right: '12px'}}><b>!!!</b> | 7h | 3d</h5>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
-                        <p>{this.state.description}</p>
+                        <p id="taskDescription">{this.state.description}</p>
+                        <div id="taskUsers">
+                            <UserIcon />
+                            <UserIcon />
+                            <AddUserButton />
+                        </div>
+                        <svg>
+                        <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
+                        </svg>
                     </div>
                 </div>
 

@@ -13,37 +13,6 @@
     margin-top: 11px;
 }
 
-@keyframes iconAnimationOutward {
-    0%      {border-radius: 30px;}
-    20%     {border-radius: 25px}
-    40%     {border-radius: 20px}
-    60%     {border-radius: 15px}
-    80%     {border-radius: 25px}
-    100%    {border-radius: 20px}
-}
-
-#iconContainer:hover {
-    animation-name: iconAnimationOutward;
-    animation-duration: 0.3s;
-    border-radius: 20px;
-}
-
-@keyframes projectIndicatorEnter {
-    from    {height: 0px}
-    to      {height: 50px}
-}
-
-#projectIndicator {
-    width: 50px;
-    height: 50px;
-    margin-left: -60px;
-    margin-top: 5px;
-    border-radius: 10px;
-    background-color: grey;
-    animation-name: projectIndicatorEnter;
-    animation-duration: 4s;
-}
-
 .projectPicture {
     width: 100%;
     margin-right: 15px;

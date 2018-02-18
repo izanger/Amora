@@ -27,10 +27,6 @@
     animation-duration: 0.25s;
 }
 
-#taskTitle {
-
-}
-
 #taskInfo {
     margin-left: 12px;
     margin-right: 12px;
@@ -42,4 +38,39 @@
     justify-content: space-between;
     margin-left: 12px;
     margin-right: 12px;
+}
+
+#taskCheckAndTitle {
+    display: flex;
+    flex-direction: row;
+}
+
+.checkBox {
+    stroke: #4A4A4A;
+    stroke-width: 2px;
+    fill: transparent;
+    margin-right: 0px;
+    padding-right: 0px;
+}
+
+.checkBox:hover {
+    fill: lightgrey;
+}
+
+#taskTitle {
+    padding-left: 0px;
+    margin-left: -10px;
+}
+
+#taskDescription {
+    font-size: 13pt;
+    margin-top: 35px;
+    font-weight: 300;
+}
+
+#taskUsers {
+    display: flex;
+    flex-direction: row;
+    margin-left: -10px;
+    margin-top: -15px;
 }
