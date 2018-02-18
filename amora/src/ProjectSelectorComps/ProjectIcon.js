@@ -26,7 +26,7 @@ class ProjectIcon extends Component {
         let color = "#3CB4CB";
         return (
             <div id="iconContainer" style={{backgroundColor: color}}>
-                <img src={tempPic} className="projectPicture"/>
+                <img src={this.props.projectPhotoURL} className="projectPicture"/>
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: color}}></div>
             </div>

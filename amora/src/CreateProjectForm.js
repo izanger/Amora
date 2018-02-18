@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import rebase from "./rebase";
 import InviteList from "./InviteList"
-import { emailRegistered, validateEmail, buildUserFromGoogle, checkIfManager, checkIfUserOnProject } from "./apphelpers.js"
+import { emailRegistered, validateEmail, buildUserFromGoogle } from "./apphelpers.js"
 
 import "./CreateProjectForm.css"
 
@@ -14,7 +14,6 @@ class CreateProjectForm extends Component {
             titleValue: "",
             inviteValue: "",
             errorValue: "",
-            colorValue: "",
             userList: [ ],
             userEmails: [ ]
         }
@@ -31,12 +30,6 @@ class CreateProjectForm extends Component {
     changeInviteValue = (event) => {
         const newState = { ...this.state }
         newState.inviteValue = event.target.value;
-        this.setState(newState)
-    }
-
-    changeColorValue = (event) => {
-        const newState = { ...this.state }
-        newState.colorValue = event.target.value;
         this.setState(newState)
     }
 
@@ -75,14 +68,14 @@ class CreateProjectForm extends Component {
             const newKey = Object.keys(data.val())
             newState.errorValue = ""
             newState.inviteValue = "";
-            newState.userList.push(data.val()[newKey])
+            newState.userList.push = data.val()[newKey]
             newState.userEmails.push(this.state.inviteValue)
             this.setState(newState)
             return true
         })
         // TODO: 
-        // DONE: ////// MAKE USER LIST HOLD USER OBJECTS /////////
-        // Done: ////// MAKE IT SO USERS GET AN INVITE IN DATABASE
+        // DONE: ////// MAKE USER LIST HOLD USER OBJECTS //////
+        // MAKE IT SO USERS GET AN INVITE IN DATABASE
         // WORK ON SYCINGSTATE WITH USERS SO THEIR INVITES WILL BE UPDATED ON THEIR CLIENTS AUTOMATICALLY
         // MAKE INVITE PAGE / ACCEPTING INVTITE LOGIC
     }
@@ -106,7 +99,7 @@ class CreateProjectForm extends Component {
         const ref = rebase.push("projects", {
             data: {
                 projectName: this.state.titleValue, 
-                projectColor: this.state.colorValue, 
+                projectColor: "black", 
                 projectCreator: this.props.getAppState().user.uid
             }
         }).then((newLocation) => {
@@ -166,7 +159,6 @@ class CreateProjectForm extends Component {
                 value={this.state.titleValue} />
                 <input type="text" placeholder="Email of person you'd like to invite" className="createProjectInput"
                 value={this.state.inviteValue} onChange={this.changeInviteValue} onKeyDown={this.enterInviteValue} />
-                <input type="text" placeholder="Color of Project" value={this.state.colorValue} onChange={this.changeColorValue} />
                 <p className="errorBox">{this.state.errorValue}</p>
                 <button className="createProjectInput" onClick={this.emailValidationProcess}>Invite user</button>
                 <InviteList users={this.state.userList} />

@@ -14,7 +14,8 @@ class App extends Component {
     super();
     this.state = {
       user: { },
-      userSynced: false
+      userSynced: false,
+      currentProject: { }
     }
   }
   
@@ -45,9 +46,9 @@ class App extends Component {
         this.setState(newState)
         this.checkIfUserIsInDatabase(newUser)
 
-        this.bindingRef = rebase.syncState(`users/${this.state.user.uid}`, {
-          context: this,  // what object the state is on
-          state: 'user', // which property to sync
+        this.bindingref = rebase.syncState(`users/${this.state.user.uid}`, {
+          context: this,
+          state: 'user',
           then: () => {
             const newState = { ...this.state }
             newState.userSynced = true
@@ -59,11 +60,10 @@ class App extends Component {
         // User is not signed in
         const newState = { ...this.state }
         newState.user = { }
-        newState.userSynced = false
         this.setState(newState)
-
-        if (this.bindingRef) {
-          rebase.removeBinding(this.bindingRef)
+        
+        if (this.bindingref) {
+          rebase.remmoveBinding(this.bindingref)
         }
       }
     })
