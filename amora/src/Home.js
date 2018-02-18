@@ -47,15 +47,32 @@ class Home extends Component {
     // }
 
     render = () => {
+
+        const projectsList = this.props.getAppState().user.projects
+        let projectsKeys
+        if (projectsList) {
+            projectsKeys = Object.keys(projectsList)
+        }
+        let projectIcons
+        console.log(projectsList)
+        if (projectsList) {
+            projectIcons = (
+                projectsKeys.map((projectKey) => {
+                    return <ProjectIcon projectPhotoURL={projectsList[projectKey].projectPhotoURL}/>
+                })
+            )
+        }
+
         return (
             <div id="mainContainer">
                 <div id="projectsSelector">
-                    <ProjectIcon />
+                    <ProjectIcon projectPhotoURL={this.props.getAppState().user.photoURL}/>
 
                     <h5 id="projectProfileName">Name</h5>
                     <img src={line} id="projectSeparatorLine"/>
-                    <ProjectIcon />
-                    <ProjectIcon />
+                    {/* <ProjectIcon />
+                    <ProjectIcon /> */}
+                    {projectIcons}
 
                     <div onClick={() => {
                         console.log("HHHHH")
@@ -76,7 +93,7 @@ class Home extends Component {
                         return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                     }} />
                     <Route path="/notifications" render={() => {
-                        return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                        return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState}/>
                     }} />
                     <Route render={() => <Redirect to="/dashboard" />} />
                 </Switch>

@@ -14,7 +14,8 @@ class App extends Component {
     super();
     this.state = {
       user: { },
-      userSynced: false
+      userSynced: false,
+      currentProject: { }
     }
   }
   
