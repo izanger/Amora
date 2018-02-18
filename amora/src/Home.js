@@ -11,6 +11,7 @@ import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import CreateProjectForm from './CreateProjectForm.js';
 import ProjectDashboard from "./ProjectDashboardComps/ProjectDashboard.js"
 import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
+import CreateTaskForm from './CreateTaskForm.js';
 
 
 
@@ -54,7 +55,7 @@ class Home extends Component {
                     <h5 id="projectProfileName">Name</h5>
                     <img src={line} id="projectSeparatorLine"/>
                     <ProjectIcon />
-                    <ProjectIcon />
+                    { <ProjectIcon /> }
 
                     <div onClick={() => {
                         console.log("HHHHH")
@@ -67,14 +68,19 @@ class Home extends Component {
                         this.props.goToUrl("notifications");
                     }}>Notifications</button>
                 </div>
+                
                 <Switch>
                     <Route path="/dashboard" render={() => {
                         return (
-                            <ProjectDashboard />
+                            <ProjectDashboard goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} />
                         )
                     }} />
                     <Route path="/createproject" render={() => {
                         return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                    }} />
+                    <Route path="/createtask" render={() => {
+                        console.log("hi")
+                        return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                     }} />
                     <Route render={() => <Redirect to="/dashboard" />} />
                 </Switch>

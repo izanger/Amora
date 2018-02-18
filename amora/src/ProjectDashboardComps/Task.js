@@ -60,7 +60,7 @@ class Task extends Component {
                 <div id="task" style={this.css()}>
                     <div id="taskStats">
                         <h4 id="taskTitle">Task Title</h4>
-                        <h5 style={{right: '12px;'}}><b>!!!</b> | 7h | 3d</h5>
+                        <h5 style={{right: '12px:'}}><b>!!!</b> | 7h | 3d</h5>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
                         <p>Hey u fook</p>

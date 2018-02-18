@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import rebase, { auth, google} from "../rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
-
+import { Route, Switch, Redirect } from "react-router-dom";
 import tempPic from "../images/temp.jpg"
 import Task from "./Task.js"
 import ProjectTitleBar from "./ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 import "./ProjectDashboard.css"
+import NewProjectButton from "../ProjectSelectorComps/NewProjectButton.js"
+import CreateTaskForm from '../CreateTaskForm.js';
+import App from '../App';
 
 
 class ProjectDashboard extends Component {
@@ -35,6 +38,26 @@ class ProjectDashboard extends Component {
                     <ProjectCollaboratorsBar />
                     <Task />
                     <Task />
+                    <div onClick={() => {
+                        console.log("Clicked")
+                        this.props.goToUrl("createtask");
+                        console.log("uh oh")
+                    }}><NewProjectButton /></div>
+
+
+                 <Switch>
+                    {/* <Route path="/dashboard" render={() => {
+                        return (
+                            <ProjectDashboard />
+                        )
+                    }} /> */}
+                    <Route path="/createtask" render={() => {
+                        console.log("hi")
+                        return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                    }} />
+                    
+                </Switch> 
+                                        
                 </div>
         )
     }
