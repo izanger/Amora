@@ -21,8 +21,12 @@ class Home extends Component {
     constructor() {
         super()
         this.state = {
-
+            displayName: ""
         }
+    }
+
+    componentWillMount() {
+       this.getName();
     }
 
     signOut = () => {
@@ -33,20 +37,14 @@ class Home extends Component {
     }
 
     getName() {
-        const d = 5
-        const name = this.props.getAppState().user.uid
-        rebase.fetch(`users/uid/${this.state.displayName}`, {
+        const id = this.props.getAppState().user.uid   
+        rebase.fetch(`users/${id}/displayName`, {
             context: this,
         }).then(data => {
-            console.log.data
-            if (isObjectEmpty(data)) {
-                let d = 1;  
-            }
-            else { 
-                let d = 3;
-            }
-        })
-        return d
+            let newState = { ...this.state}
+            newState.displayName = data
+            this.setState(newState);        
+          })
     }
 
     //Ian: I believe this is deprecated (see CreateProjectForm component)
@@ -70,7 +68,7 @@ class Home extends Component {
                 <div id="projectsSelector">
                     <ProjectIcon />
 
-                    <h5 id="projectProfileName">{this.getName()}</h5>
+                    <h5 id="projectProfileName">{this.state.displayName}</h5>
                     <img src={line} id="projectSeparatorLine"/>
                     <ProjectIcon />
                     <ProjectIcon />
