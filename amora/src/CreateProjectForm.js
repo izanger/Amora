@@ -99,14 +99,9 @@ class CreateProjectForm extends Component {
         const ref = rebase.push("projects", {
             data: {
                 projectName: this.state.titleValue, 
-<<<<<<< HEAD
                 projectColor: this.state.colorValue, 
                 projectCreator: this.props.getAppState().user.uid,
                 projectPhotoURL: this.props.getAppState().user.photoURL
-=======
-                projectColor: "black", 
-                projectCreator: this.props.getAppState().user.uid
->>>>>>> d9451cd5bfae809d2d19bc847c3419eb039759c7
             }
         }).then((newLocation) => {
             rebase.update(`projects/${newLocation.key}`, {

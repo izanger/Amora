@@ -70,14 +70,9 @@ class Home extends Component {
 
                     <h5 id="projectProfileName">Name</h5>
                     <img src={line} id="projectSeparatorLine"/>
-<<<<<<< HEAD
                     {/* <ProjectIcon />
                     <ProjectIcon /> */}
                     {projectIcons}
-=======
-                    <ProjectIcon />
-                    { <ProjectIcon /> }
->>>>>>> d9451cd5bfae809d2d19bc847c3419eb039759c7
 
                     <div onClick={() => {
                         console.log("HHHHH")
@@ -100,14 +95,12 @@ class Home extends Component {
                     <Route path="/createproject" render={() => {
                         return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                     }} />
-<<<<<<< HEAD
                     <Route path="/notifications" render={() => {
                         return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState}/>
-=======
+                    }} />
                     <Route path="/createtask" render={() => {
                         console.log("hi")
                         return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
->>>>>>> d9451cd5bfae809d2d19bc847c3419eb039759c7
                     }} />
                     <Route render={() => <Redirect to="/dashboard" />} />
                 </Switch>

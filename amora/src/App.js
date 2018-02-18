@@ -13,13 +13,9 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-<<<<<<< HEAD
       user: { },
       userSynced: false,
       currentProject: { }
-=======
-      user: { }
->>>>>>> d9451cd5bfae809d2d19bc847c3419eb039759c7
     }
   }
   
