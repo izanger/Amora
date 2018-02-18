@@ -1,20 +1,28 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "./rebase.js"
+import rebase, { auth, google} from "../rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
 
-import amoraLogo from "./images/amora_logo.png"
-import tempPic from "./images/temp.jpg"
+import tempPic from "../images/temp.jpg"
 import "./UserIcon.css"
+import 'react-responsive-modal/lib/react-responsive-modal.css';
+import Modal from 'react-responsive-modal/lib/css';
 
 
 class UserIcon extends Component {
 
     constructor() {
-        super()
-        this.state = {
+      super();
 
-        }
+      this.state = { open: false }
     }
+
+    onOpenModal = () => {
+      this.setState({ open: true });
+    };
+
+    onCloseModal = () => {
+      this.setState({ open: false });
+    };
 
     /*
     This currently only is the box. It needs the following:
@@ -27,16 +35,20 @@ class UserIcon extends Component {
 
 
     render = () => {
+        const { open } = this.state;
         let color = "#3CB4CB";
         var divStyle = {
             backgroundColor: color,
             borderColor: color
         }
         return (
-            <div id="userIconContainer" style={{divStyle}}>
+            <div onClick={this.onOpenModal} id="userIconContainer" style={{divStyle}}>
                 <img src={tempPic} className="projectPicture"/>
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: color}}></div>
+                    <Modal open={open} onClose={this.onCloseModal} little>
+                      <h2>Simple centered modal.<br/><br/>Here is some more text.<br/><br/>The rest of it.</h2>
+                    </Modal>
             </div>
         )
     }

@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "./rebase.js"
+import rebase, { auth, google} from "../rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
 
-import amoraLogo from "./images/amora_logo.png"
-import tempPic from "./images/temp.jpg"
-import "./ProjectIcon.css"
+import tempPic from "../images/temp.jpg"
+import "./ProjectTitleBar.css"
 
 
-class ProjectIcon extends Component {
+class ProjectTitleBar extends Component {
 
     constructor() {
         super()
@@ -26,14 +25,12 @@ class ProjectIcon extends Component {
     render = () => {
         let color = "#3CB4CB";
         return (
-            <div id="iconContainer" style={{backgroundColor: color}}>
-                <img src={tempPic} className="projectPicture"/>
-                {/*This should only appear if it is selected as the project*/}
-                <div id="projectIndicator" style={{backgroundColor: color}}></div>
+            <div id="projectTitleContainer" style={{backgroundColor: color}}>
+                <h1 id="projectTitle">Project Name</h1>
             </div>
         )
     }
 
 }
 
-export default ProjectIcon;
+export default ProjectTitleBar;
