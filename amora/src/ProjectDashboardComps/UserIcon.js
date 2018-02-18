@@ -7,7 +7,6 @@ import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
 
-
 class UserIcon extends Component {
 
 
@@ -16,7 +15,7 @@ class UserIcon extends Component {
 
       this.state = { 
           open: false,
-          isManager: true
+          isManager: true //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
       };
       this.color = "#3CB4CB";
     }
