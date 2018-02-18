@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
+import rebase, { auth, google} from "./rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
 
-import plusPic from "../images/Plus/Plus@2x.png"
-import "./NewProjectButton.css"
+import amoraLogo from "./images/amora_logo.png"
+import tempPic from "./images/temp.jpg"
+import "./UserIcon.css"
 
 
-class NewProjectButton extends Component {
+class UserIcon extends Component {
 
     constructor() {
         super()
@@ -22,14 +23,18 @@ class NewProjectButton extends Component {
     3) If it's selected, stay expanded to the square
     4) If it's selected, have the box show on the side
     */
+
+
+
     render = () => {
         let color = "#3CB4CB";
+        var divStyle = {
+            backgroundColor: color,
+            borderColor: color
+        }
         return (
-            <div id="newProjectIconContainer">
-                <svg height="60" width="60">
-                    <line x1="29" y1="19" x2="29" y2="39" className="newProjectPlus" />
-                    <line x1="19" y1="29" x2="39" y2="29" className="newProjectPlus" />
-                </svg>
+            <div id="userIconContainer" style={{divStyle}}>
+                <img src={tempPic} className="projectPicture"/>
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: color}}></div>
             </div>
@@ -38,4 +43,4 @@ class NewProjectButton extends Component {
 
 }
 
-export default NewProjectButton;
+export default UserIcon;
