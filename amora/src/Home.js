@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import rebase, { auth, google} from "./rebase.js"
-import { Route, Switch, Redirect } from "react-router-dom";
 import { Row, Grid, Col } from 'react-bootstrap'
 
 import amoraLogo from "./images/amora_logo.png"
 import line from "./images/Line/Line.png"
 import "./Home.css"
+<<<<<<< HEAD
 
 import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import CreateProjectForm from './CreateProjectForm.js';
@@ -14,6 +14,11 @@ import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from './CreateTaskForm.js';
 
 
+=======
+import ProjectIcon from "./ProjectIcon.js"
+import ProjectTitleBar from "./ProjectTitleBar.js"
+import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
+>>>>>>> c68f16a38ed541119d725f51d7255ace3456397f
 
 
 class Home extends Component {
@@ -31,43 +36,50 @@ class Home extends Component {
         auth.signOut()
     }
 
-    //Ian: I believe this is deprecated (see CreateProjectForm component)
-    // createProject = () => {
-    //     const project = {
-    //         projectId: 0,
-    //         title: "Something",
-    //         image: "url",
-    //         users: [ ],
-    //         tasks: [ ]
-    //     }
-    //     rebase.post(`projects/${project.projectId}`, {
-    //         data: project
-    //     })
-    //     console.log("got here")
-    // }
+    createProject = () => {
+        const project = {
+            projectId: 0,
+            title: "Something",
+            image: "url",
+            users: [ ],
+            tasks: [ ]
+        }
+        rebase.post(`projects/${project.projectId}`, {
+            data: project
+        })
+        console.log("got here")
+    }
 
     render = () => {
         return (
             <div id="mainContainer">
                 <div id="projectsSelector">
                     <ProjectIcon />
-
                     <h5 id="projectProfileName">Name</h5>
                     <img src={line} id="projectSeparatorLine"/>
                     <ProjectIcon />
+<<<<<<< HEAD
                     { <ProjectIcon /> }
-
-                    <div onClick={() => {
-                        console.log("HHHHH")
-                        this.props.goToUrl("createproject");
-                    }}><NewProjectButton /></div>
-                <button onClick={this.signOut} style={{position: 'fixed', bottom: '0'}}>Sign out</button>
-
+=======
+                    <ProjectIcon />
+                    <button onClick={this.signOut}>Sign out</button>
+                    <button onClick={this.createProject}>Create project</button>
                     
-                    <button onClick={() => {
-                        this.props.goToUrl("notifications");
-                    }}>Notifications</button>
+                   
+                 
                 </div>
+>>>>>>> c68f16a38ed541119d725f51d7255ace3456397f
+
+                <div id="taskDashboard">
+                    <ProjectTitleBar />
+                    <div id="taskDashContainer">
+                        
+
+                    </div>
+                    <ProjectCollaboratorsBar />
+
+                </div>
+<<<<<<< HEAD
                 
                 <Switch>
                     <Route path="/dashboard" render={() => {
@@ -84,9 +96,20 @@ class Home extends Component {
                     }} />
                     <Route render={() => <Redirect to="/dashboard" />} />
                 </Switch>
+=======
+>>>>>>> c68f16a38ed541119d725f51d7255ace3456397f
 
                 <div id="myDay">
                     This is my day, okay
+                    <input id="checkBox" type="checkbox" />
+                    <input id="checkBox" type="checkbox" />
+                    <input id="checkBox" type="checkbox" />
+                   
+                   
+                   
+                   
+                   
+                    <button> Submit </button>
                 </div>
             </div>
         )
