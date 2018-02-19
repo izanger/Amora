@@ -43,7 +43,11 @@ class Home extends Component {
         if (projectsList) {
             projectIcons = (
                 projectsKeys.map((projectKey) => {
-                    return <ProjectIcon projectPhotoURL={projectsList[projectKey].projectPhotoURL} key={projectKey}/>
+                    return <div key={projectKey} onClick={() => {
+                        const newState = { ...this.props.getAppState() }
+                        newState.currentProject = newState.user.projects[projectKey]
+                        this.props.setAppState(newState)
+                    }}><ProjectIcon projectPhotoURL={projectsList[projectKey].projectPhotoURL}/></div>
                 })
             )
         }
