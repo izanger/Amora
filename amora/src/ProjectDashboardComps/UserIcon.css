@@ -2,7 +2,6 @@
     width: 40px;
     height: 40px;
     margin-left: 12px;
-    margin-bottom: 10px;
     margin-top: 12px;
     border-radius: 30px;
     overflow: hidden;
@@ -11,6 +10,7 @@
 #userIconContainer:hover {
     cursor: pointer;
     margin-top: 11px;
+    margin-bottom: 1px;
 }
 
 .projectPicture {

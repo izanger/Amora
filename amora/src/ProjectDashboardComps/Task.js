@@ -8,6 +8,7 @@ import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
 import UserIcon from "./UserIcon.js"
 import AddUserButton from "./AddUserButton.js"
+import Comment from "./TaskComment.js"
 
 
 class Task extends Component {
@@ -34,7 +35,7 @@ class Task extends Component {
         if (this.state.open) {
             /* CSS for larger task stuff */
             return ({
-                height: '100px',
+                height: 'auto',
                 backgroundColor: 'white',
                  boxShadow: '0px 0px 3px lightgrey',
                  marginTop: '5px',
@@ -81,9 +82,10 @@ class Task extends Component {
                             <UserIcon />
                             <AddUserButton />
                         </div>
-                        <svg>
-                        <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
-                        </svg>
+                        <div id="taskComments">
+                            <Comment />
+                            <Comment />
+                        </div>
                     </div>
                 </div>
 

@@ -1,5 +1,5 @@
 #task {
-    height: 40px;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: left;
@@ -64,8 +64,8 @@
 
 #taskDescription {
     font-size: 13pt;
-    margin-top: 35px;
-    font-weight: 300;
+    /* margin-top: 35px; */
+    font-weight: lighter;
 }
 
 #taskUsers {
