@@ -33,8 +33,17 @@ class CreateTaskForm extends Component {
             // you
 
             errorValue: ""
+            estimatedTimeValue: "",
+            errorValue: "",
+            priorityLevel: ""
 
         }
+    }
+
+    changePriorityLevel = (event) => {
+
+
+
     }
 
     // Method for changing title value in state
@@ -54,7 +63,7 @@ class CreateTaskForm extends Component {
     // Method for changing estimated time value
     changeEstimatedTimeValue = (event) => {
         const newState = { ...this.state }
-        newState.estimatedTimeOfCompletionValue = event.target.value;
+        newState.estimatedTimeValue = event.target.value;
         this.setState(newState)
     }
 
@@ -62,22 +71,24 @@ class CreateTaskForm extends Component {
     isTaskValid = () => {
         const newState = { ...this.state }
         if (this.state.titleValue === "") {
-            newState.errorValue = "Please enter a task title..."
             this.setState(newState)
             return false
         } 
         if (this.state.descriptionValue === ""){
-            newState.errorValue = "Please enter a task description..."
             this.setState(newState)
             return false
         }
         if (this.state.estimatedTimeValue === ""){
-            newState.errorValue = "Please enter an estimated time..."
             this.setState(newState)
             return false
 
         }
         return true
+    }
+
+    myFunction = () => {
+        console.log("TESTING")
+        document.getElementById("myDropdown").classList.toggle("show");
     }
 
     // Let Firebase create a taskID and add all the relevant from the form
@@ -92,12 +103,47 @@ class CreateTaskForm extends Component {
             }
         }).then((data) => {
             this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)
+        var dropSelect = document.getElementById("dropdown");
+        var selectedText = dropSelect.options[dropSelect.selectedIndex].text;
+
+        const newState = { ...this.state }
+        newState.priorityLevel = selectedText
+        this.setState(newState)
+
+
+        // const ref = rebase.push("projects/" + projectID + "/tasklist", {
+        //     data: {
+        //         deadline: "",
+        //         priorityLevel: this.state.priorityLevel,
+        //         taskCreator: this.props.getAppState().user.uid,
+        //         taskName: this.state.titleValue
+
+        //     }
+        // })
+
+        this.state.userList.map((user) => {
+
         })
 
     }
 
+    // window.onClick = () => function(event) {
+    //     if (!event.target.matches('.dropbtn')) {
+      
+    //       var dropdowns = document.getElementsByClassName("dropdown-content");
+    //       var i;
+    //       for (i = 0; i < dropdowns.length; i++) {
+    //         var openDropdown = dropdowns[i];
+    //         if (openDropdown.classList.contains('show')) {
+    //           openDropdown.classList.remove('show');
+    //         }
+    //       }
+    //     }
+    //   }
+
     // Mandatory render method
     render = () => {
+        console.log("Hello");
         
         return (
             <div id="taskDashboard">
@@ -110,6 +156,15 @@ class CreateTaskForm extends Component {
                 value={this.state.descriptionValue} onChange={this.changeDescriptionValue} />
                 <input type="text" placeholder="Estimated time" className="createTaskInput"
                 value={this.state.estimatedTimeOfCompletionValue} onChange={this.changeEstimatedTimeValue} />
+                value={this.state.estimatedTimeValue} onChange={this.changeEstimatedTimeValue} />
+                
+                    <select name="dropbtn" id="dropdown">
+                        <option value="1">Low</option>
+                        <option value="2">Medium</option>
+                        <option value="3">High</option>
+                    </select>
+                    
+            
                 <p className="errorBox">{this.state.errorValue}</p>
                 <button className="createTaskInput" onClick={this.createTask}>Add Task</button>
             </div>
