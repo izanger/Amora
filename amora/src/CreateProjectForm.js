@@ -146,10 +146,8 @@ class CreateProjectForm extends Component {
                         })
                         this.state.userList.map((user) => {
                             if (user.email !== this.props.getAppState().user.email) {
-                                rebase.update(`users/${user.uid}/notifications`, {
-                                    data: {
-                                        [this.state.key]: this.state.project
-                                    }
+                                rebase.update(`users/${user.uid}/notifications/${this.state.key}`, {
+                                    data: dat
                                 })
                             }
                         })
