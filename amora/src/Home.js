@@ -6,6 +6,7 @@ import { Row, Grid, Col } from 'react-bootstrap'
 import amoraLogo from "./images/amora_logo.png"
 import line from "./images/Line/Line.png"
 import "./Home.css"
+import { isObjectEmpty } from "./apphelpers.js"
 
 import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import CreateProjectForm from './CreateProjectForm.js';
@@ -21,8 +22,12 @@ class Home extends Component {
     constructor() {
         super()
         this.state = {
-
+            displayName: ""
         }
+    }
+
+    componentWillMount() {
+       this.getName();
     }
 
     signOut = () => {
@@ -31,6 +36,32 @@ class Home extends Component {
         this.props.setAppState(newState)
         auth.signOut()
     }
+
+    getName() {
+        const id = this.props.getAppState().user.uid   
+        rebase.fetch(`users/${id}/displayName`, {
+            context: this,
+        }).then(data => {
+            let newState = { ...this.state}
+            newState.displayName = data
+            this.setState(newState);        
+          })
+    }
+
+    //Ian: I believe this is deprecated (see CreateProjectForm component)
+    // createProject = () => {
+    //     const project = {
+    //         projectId: 0,
+    //         title: "Something",
+    //         image: "url",
+    //         users: [ ],
+    //         tasks: [ ]
+    //     }
+    //     rebase.post(`projects/${project.projectId}`, {
+    //         data: project
+    //     })
+    //     console.log("got here")
+    // }
 
     render = () => {
 
@@ -57,7 +88,7 @@ class Home extends Component {
                 <div id="projectsSelector">
                     <ProjectIcon projectPhotoURL={this.props.getAppState().user.photoURL}/>
 
-                    <h5 id="projectProfileName">Name</h5>
+                    <h5 id="projectProfileName">{this.state.displayName}</h5>
                     <img src={line} id="projectSeparatorLine"/>
                     {/* <ProjectIcon />
                     <ProjectIcon /> */}
