@@ -6,6 +6,7 @@ import { Row, Grid, Col } from 'react-bootstrap'
 import amoraLogo from "./images/amora_logo.png"
 import line from "./images/Line/Line.png"
 import "./Home.css"
+import { isObjectEmpty } from "./apphelpers.js"
 
 import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import CreateProjectForm from './CreateProjectForm.js';
@@ -21,8 +22,12 @@ class Home extends Component {
     constructor() {
         super()
         this.state = {
-
+            displayName: ""
         }
+    }
+
+    componentWillMount() {
+       this.getName();
     }
 
     signOut = () => {
@@ -31,6 +36,18 @@ class Home extends Component {
         this.props.setAppState(newState)
         auth.signOut()
     }
+
+    getName() {
+        const id = this.props.getAppState().user.uid   
+        rebase.fetch(`users/${id}/displayName`, {
+            context: this,
+        }).then(data => {
+            let newState = { ...this.state}
+            newState.displayName = data
+            this.setState(newState);        
+          })
+    }
+    
 
     render = () => {
 
@@ -60,9 +77,12 @@ class Home extends Component {
                     <div onClick={() => {
                         this.props.goToUrl("/dashboard")
                     }}><ProjectIcon projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
-                    <h5 id="projectProfileName">Name</h5>
-                    <img src={line} id="projectSeparatorLine"/>    
+
+                    <h5 id="projectProfileName">{this.state.displayName}</h5>
+                    <img src={line} id="projectSeparatorLine"/>
+
                     {projectIcons}
+
                     <div onClick={() => {
                         this.props.goToUrl("/createproject");
                     }}><NewProjectButton /></div>
