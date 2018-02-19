@@ -82,9 +82,9 @@ class ProjectDashboard extends Component {
 
                     {tasks}
 
-                    <div onClick={() => {
+                    <div><NewProjectButton onClick={() => {
                         this.props.goToUrl("/createtask");
-                    }}><NewProjectButton /></div>
+                    }}/></div>
 
                 </div>
             )

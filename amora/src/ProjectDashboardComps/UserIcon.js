@@ -60,7 +60,7 @@ class UserIcon extends Component {
         const { open } = this.state;
         return (
             <div onClick={this.onOpenModal} id="userIconContainer" style={this.style()}>
-                <img src={tempPic} className="projectPicture"/>
+                <img src={this.props.user} className="projectPicture"/>
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                     <Modal open={open} onClose={this.onCloseModal} little>

@@ -12,7 +12,26 @@ class CreateTaskForm extends Component {
         this.state = {
             titleValue: "",
             descriptionValue: "",
-            estimatedTimeValue: "",
+            priorityValue: "!",
+            estimatedTimeOfCompletionValue: "",
+            // Implement all other additions of tasks such as
+            // Priotity level
+            // Users assigned to tasks?
+            // Others
+            // You get the idea
+            // I'm
+            // making
+            // this 
+            // longer
+            // so 
+            // people
+            // see
+            // it
+            // incase
+            // i forget
+            // to tell
+            // you
+
             errorValue: ""
 
         }
@@ -35,7 +54,7 @@ class CreateTaskForm extends Component {
     // Method for changing estimated time value
     changeEstimatedTimeValue = (event) => {
         const newState = { ...this.state }
-        newState.estimatedTimeValue = event.target.value;
+        newState.estimatedTimeOfCompletionValue = event.target.value;
         this.setState(newState)
     }
 
@@ -90,7 +109,7 @@ class CreateTaskForm extends Component {
                 <input type="text" placeholder="Description of task" className="createTaskInput"
                 value={this.state.descriptionValue} onChange={this.changeDescriptionValue} />
                 <input type="text" placeholder="Estimated time" className="createTaskInput"
-                value={this.state.estimatedTimeValue} onChange={this.changeEstimatedTimeValue} />
+                value={this.state.estimatedTimeOfCompletionValue} onChange={this.changeEstimatedTimeValue} />
                 <p className="errorBox">{this.state.errorValue}</p>
                 <button className="createTaskInput" onClick={this.createTask}>Add Task</button>
             </div>
