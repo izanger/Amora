@@ -12,8 +12,6 @@ class CreateTaskForm extends Component {
         this.state = {
             titleValue: "",
             descriptionValue: "",
-            priorityValue: "!",
-            estimatedTimeOfCompletionValue: "",
             // Implement all other additions of tasks such as
             // Priotity level
             // Users assigned to tasks?
@@ -32,18 +30,13 @@ class CreateTaskForm extends Component {
             // to tell
             // you
 
-            errorValue: ""
+            errorValue: "",
             estimatedTimeValue: "",
             errorValue: "",
-            priorityLevel: ""
+            priorityLevel: "",
+            deadline: ""
 
         }
-    }
-
-    changePriorityLevel = (event) => {
-
-
-
     }
 
     // Method for changing title value in state
@@ -64,6 +57,13 @@ class CreateTaskForm extends Component {
     changeEstimatedTimeValue = (event) => {
         const newState = { ...this.state }
         newState.estimatedTimeValue = event.target.value;
+        this.setState(newState)
+    }
+
+    // Method for changing deadline value
+    changeDeadline = (event) => {
+        const newState = { ...this.state }
+        newState.deadline = event.target.value;
         this.setState(newState)
     }
 
@@ -96,13 +96,7 @@ class CreateTaskForm extends Component {
         if (!this.isTaskValid()) {
             return
         }
-        const ref = rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
-            data: {
-                taskName: this.state.titleValue, 
-                taskDescription: this.state.descriptionValue
-            }
-        }).then((data) => {
-            this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)
+
         var dropSelect = document.getElementById("dropdown");
         var selectedText = dropSelect.options[dropSelect.selectedIndex].text;
 
@@ -110,36 +104,22 @@ class CreateTaskForm extends Component {
         newState.priorityLevel = selectedText
         this.setState(newState)
 
+        const ref = rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
+            data: {
+                taskName: this.state.titleValue, 
+                taskDescription: this.state.descriptionValue,
+                priorityLevel: this.state.priorityLevel,
+                EstimatedTimeValue: this.state.estimatedTimeValue,
+                dealine: this.state.deadline
+                
+            }
+        }).then((data) => {
+            this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)
+        
 
-        // const ref = rebase.push("projects/" + projectID + "/tasklist", {
-        //     data: {
-        //         deadline: "",
-        //         priorityLevel: this.state.priorityLevel,
-        //         taskCreator: this.props.getAppState().user.uid,
-        //         taskName: this.state.titleValue
-
-        //     }
-        // })
-
-        this.state.userList.map((user) => {
-
-        })
-
+            })
     }
 
-    // window.onClick = () => function(event) {
-    //     if (!event.target.matches('.dropbtn')) {
-      
-    //       var dropdowns = document.getElementsByClassName("dropdown-content");
-    //       var i;
-    //       for (i = 0; i < dropdowns.length; i++) {
-    //         var openDropdown = dropdowns[i];
-    //         if (openDropdown.classList.contains('show')) {
-    //           openDropdown.classList.remove('show');
-    //         }
-    //       }
-    //     }
-    //   }
 
     // Mandatory render method
     render = () => {
@@ -152,11 +132,15 @@ class CreateTaskForm extends Component {
                 }}>backspace</i>
                 <input type="text" placeholder="Task title" className="createTaskInput" onChange={this.changeTitleValue}
                 value={this.state.titleValue} />
+
                 <input type="text" placeholder="Description of task" className="createTaskInput"
                 value={this.state.descriptionValue} onChange={this.changeDescriptionValue} />
+
                 <input type="text" placeholder="Estimated time" className="createTaskInput"
-                value={this.state.estimatedTimeOfCompletionValue} onChange={this.changeEstimatedTimeValue} />
                 value={this.state.estimatedTimeValue} onChange={this.changeEstimatedTimeValue} />
+
+                <input type="text" placeholder="Deadline" className="createTaskInput"
+                value={this.state.deadline} onChange={this.changeDeadline} />
                 
                     <select name="dropbtn" id="dropdown">
                         <option value="1">Low</option>
@@ -171,5 +155,7 @@ class CreateTaskForm extends Component {
         )
     }
 }
+
+
 
 export default CreateTaskForm;
