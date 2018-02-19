@@ -47,8 +47,36 @@ class ProjectDashboard extends Component {
                   newState.projectSynced = true
                   this.setState(newState)
                 }
-              })
+            })
         })
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+        const nextId = nextProps.match.params.id
+        this.setState({projectSynced: false})
+        if (nextId !== this.props.match.params.id) {
+            this.setState({projectSynced: false})
+            if (this.bindingref) {
+                rebase.removeBinding(this.bindingref)
+            }
+            const newState = { ...this.state }
+            rebase.fetch(`projects/${nextId}`, {
+                context: this,
+                then: (data) => {
+                    newState.project = data
+                }
+            }).then(() => {
+                this.bindingref = rebase.syncState(`projects/${nextId}`, {
+                    context: this,
+                    state: 'project',
+                    then: () => {
+                        newState.projectSynced = true
+                        this.setState(newState)
+                    }
+                })
+            })
+        }
+        this.setState({projectSynced: true})
     }
 
     render = () => {
