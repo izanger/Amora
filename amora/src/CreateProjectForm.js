@@ -54,6 +54,12 @@ class CreateProjectForm extends Component {
             return false
         }
 
+        if (this.state.inviteValue == this.props.getAppState().user.email) {
+            newState.errorValue = "You will be inherently added to the project..."
+            this.setState(newState)
+            return false
+        }
+
         const promise = emailRegistered(this.state.inviteValue)
         promise.then((data) => {
             if (!data.val()) {
@@ -72,6 +78,7 @@ class CreateProjectForm extends Component {
             newState.userList.push(data.val()[newKey])
             newState.userEmails.push(this.state.inviteValue)
             this.setState(newState)
+            console.log(data.val()[newKey])
             return true
         })
         // TODO: 
@@ -97,6 +104,10 @@ class CreateProjectForm extends Component {
         if (!this.isProjectValid()) {
             return
         }
+        const tempState = { ...this.state }
+        tempState.userEmails.push(this.props.getAppState().user.email)
+        tempState.userList.push(this.props.getAppState().user)
+        this.setState(tempState)
         const ref = rebase.push("projects", {
             data: {
                 projectName: this.state.titleValue, 
@@ -134,14 +145,14 @@ class CreateProjectForm extends Component {
                                 [key]: this.state.project
                             }
                         })
-                        console.log(this.state.userList)
                         this.state.userList.map((user) => {
-                            console.log(user)
-                            rebase.update(`users/${user.uid}/notifications`, {
-                                data: {
-                                    [this.state.key]: this.state.project
-                                }
-                            })
+                            if (user.email !== this.props.getAppState().user.email) {
+                                rebase.update(`users/${user.uid}/notifications`, {
+                                    data: {
+                                        [this.state.key]: this.state.project
+                                    }
+                                })
+                            }
                         })
                     }
                 })
