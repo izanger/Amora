@@ -28,7 +28,7 @@ class ProjectTitleBar extends Component {
         let color = "#3CB4CB";
         return (
             <div id="projectTitleContainer" style={{backgroundColor: color}}>
-                <h1 id="projectTitle">Project Name</h1>
+                <h1 id="projectTitle">{this.props.title}</h1>
                 <div id="projectTitleLeftContents">
                    <img src={settingsIcon} id="projectSettingsIcon"/>
                    <img src={searchIcon} style={{right: '55px'}} id="projectSettingsIcon"/>

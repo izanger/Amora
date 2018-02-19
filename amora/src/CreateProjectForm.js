@@ -136,14 +136,13 @@ class CreateProjectForm extends Component {
             }).then((data) => {
                 newState = { ...this.state }
                 rebase.fetch(`projects/${this.state.key}`, {
-                    then: (data) => {
-                        newState.project = data;
+                    then: (dat) => {
+                        newState.project = dat;
                         this.setState(newState)
+                        console.log(dat)
                         const key = this.state.key
-                        rebase.update(`users/${this.props.getAppState().user.uid}/projects`, {
-                            data: {
-                                [key]: this.state.project
-                            }
+                        rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
+                            data: dat
                         })
                         this.state.userList.map((user) => {
                             if (user.email !== this.props.getAppState().user.email) {
@@ -156,6 +155,8 @@ class CreateProjectForm extends Component {
                         })
                     }
                 })
+            }).then((data) => {
+                this.props.goToUrl("/dashboard")
             })
         })
 

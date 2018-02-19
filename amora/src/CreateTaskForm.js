@@ -43,17 +43,17 @@ class CreateTaskForm extends Component {
     isTaskValid = () => {
         const newState = { ...this.state }
         if (this.state.titleValue === "") {
-            newState.errorValue = "Please enter a task title"
+            newState.errorValue = "Please enter a task title..."
             this.setState(newState)
             return false
         } 
         if (this.state.descriptionValue === ""){
-            newState.errorValue = "Please enter a task description"
+            newState.errorValue = "Please enter a task description..."
             this.setState(newState)
             return false
         }
         if (this.state.estimatedTimeValue === ""){
-            newState.errorValue = "Please enter an estimated time"
+            newState.errorValue = "Please enter an estimated time..."
             this.setState(newState)
             return false
 
@@ -66,29 +66,19 @@ class CreateTaskForm extends Component {
         if (!this.isTaskValid()) {
             return
         }
-        const ref = rebase.push("projects", {
+        const ref = rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
             data: {
-                projectName: this.state.titleValue, 
-                projectColor: "black", 
-                projectCreator: this.props.getAppState().user.uid
+                taskName: this.state.titleValue, 
+                taskDescription: this.state.descriptionValue
             }
-        }).then((newLocation) => {
-            rebase.update(`projects/${newLocation.key}`, {
-                data: {
-                    key: newLocation.key
-                }
-            })
+        }).then((data) => {
+            this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)
         })
-
-        // this.state.userList.map((user) => {
-
-        // })
 
     }
 
     // Mandatory render method
     render = () => {
-        console.log("Hello");
         
         return (
             <div id="taskDashboard">
@@ -103,7 +93,6 @@ class CreateTaskForm extends Component {
                 value={this.state.estimatedTimeValue} onChange={this.changeEstimatedTimeValue} />
                 <p className="errorBox">{this.state.errorValue}</p>
                 <button className="createTaskInput" onClick={this.createTask}>Add Task</button>
-               {/* <input id="checkBox" type="checkbox"> </input> */}
             </div>
         )
     }

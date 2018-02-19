@@ -17,7 +17,10 @@ class ProjectDashboard extends Component {
     constructor() {
         super()
         this.state = {
+            projectSynced: false,
+            project: {
 
+            }
         }
     }
 
@@ -29,41 +32,70 @@ class ProjectDashboard extends Component {
     4) If it's selected, have the box show on the side
     */
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         const newState = { ...this.state }
-        newState.project = this.props.getAppState().user.projects[this.props.match.params.id]
-        this.setState(newState)
+        rebase.fetch(`projects/${this.props.match.params.id}`, {
+            context: this,
+            then: (data) => {
+                newState.project = data
+            }
+        }).then(() => {
+            this.bindingref = rebase.syncState(`projects/${this.props.match.params.id}`, {
+                context: this,
+                state: 'project',
+                then: () => {
+                  newState.projectSynced = true
+                  this.setState(newState)
+                }
+              })
+        })
     }
 
     render = () => {
-        let color = "#3CB4CB";
-        return (
+        
+        let finalRender
+        
+        if (this.state.projectSynced) {
+
+            let color = "#3CB4CB";
+            // let taskKeys = Object.keys(this.state.project.taskList)
+
+            let tasks 
+            if (this.state.project.taskList) {
+                const taskKeys = Object.keys(this.state.project.taskList)
+                tasks = (
+                    taskKeys.map((key) => {
+                        return <Task key={key} task={this.state.project.taskList[key]}/>
+                    })
+                )
+            }
+
+            finalRender = (
                 <div id="taskDashboard">
-                    <ProjectTitleBar />
-                    <div id="taskDashContainer">
-                    </div>
-                    <ProjectCollaboratorsBar />
+                    <ProjectTitleBar title={this.state.project.projectName} />
+                    {/* <div id="taskDashContainer">
+                    </div> */}
+                    <ProjectCollaboratorsBar users={this.state.project.userList} />
                     <svg height="3" width="100%">
                         <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
                     </svg>
 
-                    <Task />
-                    <Task />
+                    {tasks}
 
                     <div onClick={() => {
-                        this.props.goToUrl("createtask");
+                        this.props.goToUrl("/createtask");
                     }}><NewProjectButton /></div>
 
-
-                 <Switch>
-                    <Route path="/createtask" render={() => {
-                        return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}
-                        setAppState={this.setAppState}/>
-                    }} />
-
-                </Switch>
-
                 </div>
+            )
+        } else {
+            finalRender = (
+                <div></div>
+            )
+        }
+
+        return (
+            <div id="taskDashboard">{finalRender}</div>
         )
     }
 

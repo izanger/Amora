@@ -23,17 +23,15 @@ class Task extends Component {
 
     switch = () => {
         if (this.state.open){
-            console.log(this.state.visible)
             this.setState({ open: false, visible: 'hidden' });
         } else {
-            console.log(this.state.visible)
             this.setState({ open: true, visible: 'visible' });
         }
 
     };
 
     css = () => {
-        if (this.state.open){
+        if (this.state.open) {
             /* CSS for larger task stuff */
             return ({
                 height: '100px',
@@ -72,12 +70,12 @@ class Task extends Component {
 
                                  <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox"/>
                             </svg>
-                            <h4 id="taskTitle">Task Title</h4>
+                            <h4 id="taskTitle">{this.props.task.taskName}</h4>
                         </div>
                         <h5 style={{right: '12px'}}><b>!!!</b> | 7h | 3d</h5>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
-                        <p id="taskDescription">{this.state.description}</p>
+                        <p id="taskDescription">{this.props.task.taskDescription}</p>
                         <div id="taskUsers">
                             <UserIcon />
                             <UserIcon />
