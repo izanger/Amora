@@ -79,6 +79,12 @@ class ProjectDashboard extends Component {
         this.setState({projectSynced: true})
     }
 
+    componentWillUnmount = () => {
+        this.setState({
+            projectSynced: false
+        })
+    }
+
     render = () => {
         
         let finalRender

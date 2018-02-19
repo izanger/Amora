@@ -60,13 +60,13 @@ class App extends Component {
 
       } else {
         // User is not signed in
+        if (this.bindingref) {
+          rebase.removeBinding(this.bindingref)
+        }
         const newState = { ...this.state }
         newState.user = { }
         this.setState(newState)
-        
-        if (this.bindingref) {
-          rebase.remmoveBinding(this.bindingref)
-        }
+        this.goToUrl("/")
       }
     })
   }

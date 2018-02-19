@@ -31,7 +31,8 @@ class Home extends Component {
     }
 
     signOut = () => {
-        const newState = { ...this.props.getAppState }
+        console.log("hi")
+        const newState = { ...this.props.getAppState() }
         newState.user = { }
         this.props.setAppState(newState)
         auth.signOut()
@@ -87,7 +88,7 @@ class Home extends Component {
                     <NewProjectButton onClick={() => {
                         this.props.goToUrl("/createproject");
                     }}/>
-                    <button onClick={this.signOut} style={{position: 'fixed', bottom: '0'}}>Sign out</button>
+                    <i onClick={this.signOut} style={{position: 'fixed', bottom: '0'}} className="material-icons">&#xE31B;</i>
                     <i className="material-icons notificationButton" onClick={() => {
                         this.props.goToUrl("/notifications");
                     }}>notifications_none</i>
