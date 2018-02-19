@@ -79,13 +79,11 @@ class ProjectDashboard extends Component {
         this.setState({projectSynced: true})
     }
 
-<<<<<<< HEAD
     componentWillUnmount = () => {
         this.setState({
             projectSynced: false
         })
     }
-=======
     // setProjectDashboardState = () =>{
 
     //     const newState = { ...this.state }
@@ -106,7 +104,6 @@ class ProjectDashboard extends Component {
     //     })
 
     // }
->>>>>>> AddTasks
 
     render = () => {
 
