@@ -79,11 +79,34 @@ class ProjectDashboard extends Component {
         this.setState({projectSynced: true})
     }
 
+<<<<<<< HEAD
     componentWillUnmount = () => {
         this.setState({
             projectSynced: false
         })
     }
+=======
+    // setProjectDashboardState = () =>{
+
+    //     const newState = { ...this.state }
+    //     rebase.fetch(`projects/${this.props.match.params.id}`, {
+    //         context: this,
+    //         then: (data) => {
+    //             newState.project = data
+    //         }
+    //     }).then(() => {
+    //         this.bindingref = rebase.syncState(`projects/${this.props.match.params.id}`, {
+    //             context: this,
+    //             state: 'project',
+    //             then: () => {
+    //               newState.projectSynced = true
+    //               this.setState(newState)
+    //             }
+    //         })
+    //     })
+
+    // }
+>>>>>>> AddTasks
 
     render = () => {
 
@@ -99,7 +122,7 @@ class ProjectDashboard extends Component {
                 const taskKeys = Object.keys(this.state.project.taskList)
                 tasks = (
                     taskKeys.map((key) => {
-                        return <Task key={key} task={this.state.project.taskList[key]}/>
+                        return <Task projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.taskList[key]}/>
                     })
                 )
             }

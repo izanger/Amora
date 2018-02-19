@@ -12,8 +12,6 @@ class CreateTaskForm extends Component {
         this.state = {
             titleValue: "",
             descriptionValue: "",
-            priorityValue: "!",
-            estimatedTimeOfCompletionValue: "",
             // Implement all other additions of tasks such as
             // Priotity level
             // Users assigned to tasks?
@@ -32,7 +30,11 @@ class CreateTaskForm extends Component {
             // to tell
             // you
 
-            errorValue: ""
+            errorValue: "",
+            estimatedTimeValue: "",
+            errorValue: "",
+            priorityLevel: "",
+            deadline: ""
 
         }
     }
@@ -54,7 +56,14 @@ class CreateTaskForm extends Component {
     // Method for changing estimated time value
     changeEstimatedTimeValue = (event) => {
         const newState = { ...this.state }
-        newState.estimatedTimeOfCompletionValue = event.target.value;
+        newState.estimatedTimeValue = event.target.value;
+        this.setState(newState)
+    }
+
+    // Method for changing deadline value
+    changeDeadline = (event) => {
+        const newState = { ...this.state }
+        newState.deadline = event.target.value;
         this.setState(newState)
     }
 
@@ -62,17 +71,14 @@ class CreateTaskForm extends Component {
     isTaskValid = () => {
         const newState = { ...this.state }
         if (this.state.titleValue === "") {
-            newState.errorValue = "Please enter a task title..."
             this.setState(newState)
             return false
         } 
         if (this.state.descriptionValue === ""){
-            newState.errorValue = "Please enter a task description..."
             this.setState(newState)
             return false
         }
         if (this.state.estimatedTimeValue === ""){
-            newState.errorValue = "Please enter an estimated time..."
             this.setState(newState)
             return false
 
@@ -80,24 +86,44 @@ class CreateTaskForm extends Component {
         return true
     }
 
+    myFunction = () => {
+        console.log("TESTING")
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
     // Let Firebase create a taskID and add all the relevant from the form
     createTask = () => {
         if (!this.isTaskValid()) {
             return
         }
+
+        var dropSelect = document.getElementById("dropdown");
+        var selectedText = dropSelect.options[dropSelect.selectedIndex].text;
+
+        const newState = { ...this.state }
+        newState.priorityLevel = selectedText
+        this.setState(newState)
+
         const ref = rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
             data: {
                 taskName: this.state.titleValue, 
-                taskDescription: this.state.descriptionValue
+                taskDescription: this.state.descriptionValue,
+                priorityLevel: this.state.priorityLevel,
+                EstimatedTimeValue: this.state.estimatedTimeValue,
+                deadline: this.state.deadline
+                
             }
         }).then((data) => {
             this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)
-        })
+        
 
+            })
     }
+
 
     // Mandatory render method
     render = () => {
+        console.log("Hello");
         
         return (
             <div id="taskDashboard">
@@ -106,15 +132,30 @@ class CreateTaskForm extends Component {
                 }}>backspace</i>
                 <input type="text" placeholder="Task title" className="createTaskInput" onChange={this.changeTitleValue}
                 value={this.state.titleValue} />
+
                 <input type="text" placeholder="Description of task" className="createTaskInput"
                 value={this.state.descriptionValue} onChange={this.changeDescriptionValue} />
+
                 <input type="text" placeholder="Estimated time" className="createTaskInput"
-                value={this.state.estimatedTimeOfCompletionValue} onChange={this.changeEstimatedTimeValue} />
+                value={this.state.estimatedTimeValue} onChange={this.changeEstimatedTimeValue} />
+
+                <input type="text" placeholder="Deadline" className="createTaskInput"
+                value={this.state.deadline} onChange={this.changeDeadline} />
+                
+                    <select name="dropbtn" id="dropdown">
+                        <option value="1">Low</option>
+                        <option value="2">Medium</option>
+                        <option value="3">High</option>
+                    </select>
+                    
+            
                 <p className="errorBox">{this.state.errorValue}</p>
                 <button className="createTaskInput" onClick={this.createTask}>Add Task</button>
             </div>
         )
     }
 }
+
+
 
 export default CreateTaskForm;

@@ -18,7 +18,8 @@ class Task extends Component {
 
       this.state = { open: false,
            visible: 'hidden',
-           description: 'I am a very descriptive description!'
+           description: 'I am a very descriptive description!',
+           taskID: ""
        }
     }
 
@@ -48,6 +49,17 @@ class Task extends Component {
 
     }
 
+    testFunction = () => {
+        rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+            if(!err){
+                console.log("shit")
+            //   Router.transitionTo('dashboard');
+            }
+          });
+
+
+    }
+
     /*
     This currently only is the box. It needs the following:
     1) Get the color for the project from Firebase
@@ -57,6 +69,8 @@ class Task extends Component {
     */
 
 /* style={{visibility: this.state.visible}} */
+
+
 
     render = () => {
         const { open } = this.state;
@@ -81,6 +95,12 @@ class Task extends Component {
                             <UserIcon />
                             <UserIcon />
                             <AddUserButton />
+
+                            <div id="Task">
+                            <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
+        
+            </div>
+
                         </div>
                         <div id="taskComments">
                             <Comment />

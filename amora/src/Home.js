@@ -111,6 +111,9 @@ class Home extends Component {
                     <Route path="/createtask" render={() => {
                         return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                     }} />
+                    {/* <Route path="/deletetask" render={() => {
+                        return <DeleteTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                    }} /> */}
                     <Route render={() => <Redirect to="/dashboard" />} />
                 </Switch>
 
