@@ -110,7 +110,7 @@ class CreateTaskForm extends Component {
                 taskDescription: this.state.descriptionValue,
                 priorityLevel: this.state.priorityLevel,
                 EstimatedTimeValue: this.state.estimatedTimeValue,
-                dealine: this.state.deadline
+                deadline: this.state.deadline
                 
             }
         }).then((data) => {
