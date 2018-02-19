@@ -28,6 +28,13 @@ class ProjectDashboard extends Component {
     3) If it's selected, stay expanded to the square
     4) If it's selected, have the box show on the side
     */
+
+    componentWillMount = () => {
+        const newState = { ...this.state }
+        newState.project = this.props.getAppState().user.projects[this.props.match.params.id]
+        this.setState(newState)
+    }
+
     render = () => {
         let color = "#3CB4CB";
         return (
@@ -42,22 +49,16 @@ class ProjectDashboard extends Component {
 
                     <Task />
                     <Task />
+
                     <div onClick={() => {
-                        console.log("Clicked")
                         this.props.goToUrl("createtask");
-                        console.log("uh oh")
                     }}><NewProjectButton /></div>
 
 
                  <Switch>
-                    {/* <Route path="/dashboard" render={() => {
-                        return (
-                            <ProjectDashboard />
-                        )
-                    }} /> */}
                     <Route path="/createtask" render={() => {
-                        console.log("hi")
-                        return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                        return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}
+                        setAppState={this.setAppState}/>
                     }} />
 
                 </Switch>

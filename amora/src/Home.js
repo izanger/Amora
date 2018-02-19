@@ -47,6 +47,8 @@ class Home extends Component {
                         const newState = { ...this.props.getAppState() }
                         newState.currentProject = newState.user.projects[projectKey]
                         this.props.setAppState(newState)
+                        console.log(projectKey)
+                        this.props.goToUrl(`/projects/${projectKey}`)
                     }}><ProjectIcon projectPhotoURL={projectsList[projectKey].projectPhotoURL}/></div>
                 })
             )
@@ -55,32 +57,29 @@ class Home extends Component {
         return (
             <div id="mainContainer">
                 <div id="projectsSelector">
-                    <ProjectIcon projectPhotoURL={this.props.getAppState().user.photoURL}/>
-
-                    <h5 id="projectProfileName">Name</h5>
-                    <img src={line} id="projectSeparatorLine"/>
-                    {/* <ProjectIcon />
-                    <ProjectIcon /> */}
-                    {projectIcons}
-
                     <div onClick={() => {
-                        console.log("HHHHH")
-                        this.props.goToUrl("createproject");
+                        this.props.goToUrl("/dashboard")
+                    }}><ProjectIcon projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
+                    <h5 id="projectProfileName">Name</h5>
+                    <img src={line} id="projectSeparatorLine"/>    
+                    {projectIcons}
+                    <div onClick={() => {
+                        this.props.goToUrl("/createproject");
                     }}><NewProjectButton /></div>
-                <button onClick={this.signOut} style={{position: 'fixed', bottom: '0'}}>Sign out</button>
-
-                    
+                    <button onClick={this.signOut} style={{position: 'fixed', bottom: '0'}}>Sign out</button>
                     <i className="material-icons notificationButton" onClick={() => {
-                        this.props.goToUrl("notifications");
+                        this.props.goToUrl("/notifications");
                     }}>notifications_none</i>
                 </div>
                 
                 <Switch>
                     <Route path="/dashboard" render={() => {
                         return (
-                            <ProjectDashboard goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} />
+                            <div id="taskDashboard"></div>
                         )
                     }} />
+                    <Route path="/projects/:id" render={(props) => <ProjectDashboard {...props} 
+                    goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} /> } />
                     <Route path="/createproject" render={() => {
                         return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                     }} />
@@ -88,7 +87,6 @@ class Home extends Component {
                         return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState}/>
                     }} />
                     <Route path="/createtask" render={() => {
-                        console.log("hi")
                         return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                     }} />
                     <Route render={() => <Redirect to="/dashboard" />} />

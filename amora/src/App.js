@@ -37,6 +37,7 @@ class App extends Component {
   }
 
   componentWillMount() {
+    this.goToUrl("/dashboard")
     auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in
@@ -54,6 +55,7 @@ class App extends Component {
             newState.userSynced = true
             this.setState(newState)
           }
+          
         })
 
       } else {
