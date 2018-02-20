@@ -17,3 +17,8 @@
 .projectDivider {
     margin-top: 10px;
 }
+
+#taskDashScrollableContent {
+    margin-top: 0px;
+    overflow: scroll;
+}
