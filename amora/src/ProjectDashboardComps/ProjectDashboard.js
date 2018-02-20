@@ -94,6 +94,14 @@ class ProjectDashboard extends Component {
         }
         
     }
+
+    getButtonText = () => {
+        if(this.state.showArchive){
+            return "Show Active Tasks"
+        } else {
+            return "Show Archived Tasks"
+        }
+    }
     // setProjectDashboardState = () =>{
 
     //     const newState = { ...this.state }
@@ -125,19 +133,21 @@ class ProjectDashboard extends Component {
             // let taskKeys = Object.keys(this.state.project.taskList)
 
             let tasks
-            if (this.state.project.taskList) {
-                if(!this.state.showArchive){
+            if(!this.state.showArchive){
+                if(this.state.project.taskList){
                     const taskKeys = Object.keys(this.state.project.taskList)
                     tasks = (
                         taskKeys.map((key) => {
                             return <Task archived={false} projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.taskList[key]}/>
                         })
                     )
-                } else {
+                }
+            } else {
+                if(this.state.project.archivedTaskList){
                     const taskKeys = Object.keys(this.state.project.archivedTaskList)
                     tasks = (
                         taskKeys.map((key) => {
-                           return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.archivedTaskList[key]}/>
+                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.archivedTaskList[key]}/>
                         })
                     )
                 }
@@ -152,7 +162,7 @@ class ProjectDashboard extends Component {
                     <svg height="13" width="100%">
                         <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                     </svg>
-                    <button onClick={this.toggleShowArchive}>Toggle Archive</button>
+                    <button onClick={this.toggleShowArchive}>{this.getButtonText()}</button>
                     <div id="taskDashScrollableContent">
 
 
