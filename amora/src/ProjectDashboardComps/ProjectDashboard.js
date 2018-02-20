@@ -18,6 +18,7 @@ class ProjectDashboard extends Component {
         super()
         this.state = {
             projectSynced: false,
+            showArchive: false,
             project: {
 
             }
@@ -84,6 +85,15 @@ class ProjectDashboard extends Component {
             projectSynced: false
         })
     }
+
+    toggleShowArchive = () => {
+        if(this.state.showArchive){
+            this.setState({showArchive: false})
+        } else {
+            this.setState({showArchive: true})
+        }
+        
+    }
     // setProjectDashboardState = () =>{
 
     //     const newState = { ...this.state }
@@ -116,12 +126,21 @@ class ProjectDashboard extends Component {
 
             let tasks
             if (this.state.project.taskList) {
-                const taskKeys = Object.keys(this.state.project.taskList)
-                tasks = (
-                    taskKeys.map((key) => {
-                        return <Task projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.taskList[key]}/>
-                    })
-                )
+                if(!this.state.showArchive){
+                    const taskKeys = Object.keys(this.state.project.taskList)
+                    tasks = (
+                        taskKeys.map((key) => {
+                            return <Task archived={false} projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.taskList[key]}/>
+                        })
+                    )
+                } else {
+                    const taskKeys = Object.keys(this.state.project.archivedTaskList)
+                    tasks = (
+                        taskKeys.map((key) => {
+                           return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.archivedTaskList[key]}/>
+                        })
+                    )
+                }
             }
 
             finalRender = (
@@ -133,6 +152,7 @@ class ProjectDashboard extends Component {
                     <svg height="13" width="100%">
                         <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                     </svg>
+                    <button onClick={this.toggleShowArchive}>Toggle Archive</button>
 
                     {tasks}
 
