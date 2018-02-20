@@ -24,7 +24,7 @@ class TaskComment extends Component {
                     <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
                 </svg>
                 <div id="taskCommentContents">
-                    <UserIcon id="taskUserIcon" />
+                    <div id="taskUserIcon" ><UserIcon  /></div>
                     <div id="taskNameAndComment">
                         <p id="taskCommentName">{this.state.name}</p>
                         <p id="taskCommentText">{this.state.comment}</p>
