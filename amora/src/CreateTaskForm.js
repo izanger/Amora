@@ -1,6 +1,12 @@
 import React, { Component } from "react"
 import rebase from "./rebase";
 import { emailRegistered, validateEmail, buildUserFromGoogle } from "./apphelpers.js"
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+import PropTypes from 'prop-types';
+import Moment from 'react-moment';
+
 
 import "./CreateTaskForm.css"
 
@@ -34,10 +40,16 @@ class CreateTaskForm extends Component {
             estimatedTimeValue: "",
             errorValue: "",
             priorityLevel: "",
-            deadline: ""
-
+            deadline: moment()
         }
+        this.handleChange = this.handleChange.bind(this);
     }
+
+    handleChange(date) {
+        this.setState({
+          deadline: date
+        });
+      }
 
     // Method for changing title value in state
     changeTitleValue = (event) => {
@@ -110,7 +122,7 @@ class CreateTaskForm extends Component {
                 taskDescription: this.state.descriptionValue,
                 priorityLevel: this.state.priorityLevel,
                 EstimatedTimeValue: this.state.estimatedTimeValue,
-                deadline: this.state.deadline
+                deadline: this.state.deadline.format()
                 
             }
         }).then((data) => {
@@ -139,9 +151,8 @@ class CreateTaskForm extends Component {
                 <input type="text" placeholder="Estimated time" className="createTaskInput"
                 value={this.state.estimatedTimeValue} onChange={this.changeEstimatedTimeValue} />
 
-                <input type="text" placeholder="Deadline" className="createTaskInput"
-                value={this.state.deadline} onChange={this.changeDeadline} />
-                
+                Deadline:<DatePicker placeholder="Deadline" selected={this.state.deadline} onChange={this.handleChange}/><br></br>
+                        
                     <select name="dropbtn" id="dropdown">
                         <option value="1">Low</option>
                         <option value="2">Medium</option>
