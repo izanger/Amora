@@ -16,10 +16,12 @@ class Task extends Component {
     constructor() {
       super();
 
-      this.state = { open: false,
+      this.state = { 
+           open: false,
            visible: 'hidden',
            description: 'I am a very descriptive description!',
-           taskID: ""
+           taskID: "",
+           archived: false,
        }
     }
 
@@ -50,14 +52,71 @@ class Task extends Component {
     }
 
     testFunction = () => {
-        rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
-            if(!err){
-                console.log("shit")
-            //   Router.transitionTo('dashboard');
-            }
-          });
+        if(!this.props.archived){
+            rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+                if(!err){
+                    console.log("fiddlesticks")
+                }
+              });
+        } else {
+            rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
+                if(!err){
+                    console.log("fiddlesticks")
+                }
+              });
+        }
+        
 
 
+    }
+
+    //Ian: Archive the task if it's archived. Unarchive it if it's not.
+    toggleArchived = () => {
+        if(this.props.archived){
+            //Unarchive
+            const projID = this.props.projectID;
+            const taskID = this.props.taskKey;
+            rebase.fetch(`projects/${projID}/archivedTaskList/${taskID}`, {
+                context: this,
+                then(taskData){
+                    //console.log(taskID);
+                    rebase.post(`projects/${projID}/taskList/${taskID}`, {
+                        data: taskData,
+                        then(err){
+                            //Thanks Alex
+                            rebase.remove(`projects/${projID}/archivedTaskList/${taskID}`, function(err){
+                                if(!err){
+                                    console.log("fickstiddles")
+                                }
+                              });
+                        }
+                    })
+    
+                }
+            })
+        } else {
+            //Archive
+            const projID = this.props.projectID;
+            const taskID = this.props.taskKey;
+            rebase.fetch(`projects/${projID}/taskList/${taskID}`, {
+                context: this,
+                then(taskData){
+                    //console.log(taskID);
+                    rebase.post(`projects/${projID}/archivedTaskList/${taskID}`, {
+                        data: taskData,
+                        then(err){
+                            //Thanks Alex
+                            rebase.remove(`projects/${projID}/taskList/${taskID}`, function(err){
+                                if(!err){
+                                    console.log("stickfiddles")
+                                }
+                              });
+                        }
+                    })
+    
+                }
+            })
+        }
     }
 
     /*
@@ -83,7 +142,7 @@ class Task extends Component {
                         <div id="taskCheckAndTitle">
                             <svg height="40" width="40">
 
-                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox"/>
+                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" onClick={this.toggleArchived}/>
                             </svg>
                             <h4 id="taskTitle">{this.props.task.taskName}</h4>
                         </div>
