@@ -16,7 +16,7 @@ class Task extends Component {
     constructor() {
       super();
 
-      this.state = { 
+      this.state = {
            open: false,
            visible: 'hidden',
            description: 'I am a very descriptive description!',
@@ -65,9 +65,21 @@ class Task extends Component {
                 }
               });
         }
-        
 
 
+
+    }
+
+    checkIsVisible = () => {
+        if (this.props.archived){
+            return ({
+                visibility: 'visible'
+            })
+        } else {
+            return ({
+                visibility: 'hidden'
+            })
+        }
     }
 
     //Ian: Archive the task if it's archived. Unarchive it if it's not.
@@ -91,7 +103,7 @@ class Task extends Component {
                               });
                         }
                     })
-    
+
                 }
             })
         } else {
@@ -113,7 +125,7 @@ class Task extends Component {
                               });
                         }
                     })
-    
+
                 }
             })
         }
@@ -143,6 +155,8 @@ class Task extends Component {
                             <svg height="40" width="40">
 
                                  <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" onClick={this.toggleArchived}/>
+                                 <line x1="5" x2="13" y1="17" y2="23" style={this.checkIsVisible()} className="checkBox" />
+                                 <line x1="13" x2="27" y1="23" y2="7" style={this.checkIsVisible()} className="checkBox" />
                             </svg>
                             <h4 id="taskTitle">{this.props.task.taskName}</h4>
                         </div>
@@ -157,7 +171,7 @@ class Task extends Component {
 
                             <div id="Task">
                             <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
-        
+
             </div>
 
                         </div>
