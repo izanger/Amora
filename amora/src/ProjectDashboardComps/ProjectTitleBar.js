@@ -30,6 +30,7 @@ class ProjectTitleBar extends Component {
             <div id="projectTitleContainer" style={{backgroundColor: color}}>
                 <h1 id="projectTitle">{this.props.title}</h1>
                 <div id="projectTitleLeftContents">
+                    <button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>
                    <img src={settingsIcon} id="projectSettingsIcon"/>
                    <img src={searchIcon} style={{right: '55px'}} id="projectSettingsIcon"/>
                </div>
