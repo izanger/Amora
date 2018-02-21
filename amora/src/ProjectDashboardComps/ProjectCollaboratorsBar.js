@@ -31,7 +31,7 @@ class ProjectCollaboratorsBar extends Component {
             <div>
                 <div id="ProjectCollaboratorsBarContainter">
                     {userKeys.map((key) => {
-                        return (<UserIcon key={key} user={this.props.users[key]} />)
+                        return (<UserIcon getAppState={this.props.getAppState} key={key} user={this.props.users[key]} />)
                     })}
                 </div>
             </div>
