@@ -9,6 +9,10 @@ import Modal from 'react-responsive-modal/lib/css';
 import UserIcon from "./UserIcon.js"
 import AddUserButton from "./AddUserButton.js"
 import Comment from "./TaskComment.js"
+import funnytemp from "../images/temp.jpg"
+import "./TaskComment.css"
+
+
 
 
 class Task extends Component {
@@ -165,8 +169,21 @@ class Task extends Component {
                     <div style={{visibility: this.state.visible}} id="taskInfo">
                         <p id="taskDescription">{this.props.task.taskDescription}</p>
                         <div id="taskUsers">
-                            {/*<UserIcon getAppState={this.props.getAppState} />*/}
-                            {/*<UserIcon getAppState={this.props.getAppState} />*/}
+
+                            {/*Temporarily commented out. Uncomment when actual image of person is displayed 
+                            <UserIcon getAppState={this.props.getAppState} />
+                            <UserIcon getAppState={this.props.getAppState} />*/}
+
+                             {/*Temporary image placeholder*/}
+                            <div id="userIconContainer" >
+                                <img src={funnytemp} className="projectPicture"/>                     
+                                <div id="projectIndicator" ></div>
+                            </div> 
+                            <div id="userIconContainer" >
+                                <img src={funnytemp} className="projectPicture"/>                     
+                                <div id="projectIndicator" ></div>
+                            </div> 
+
                             <AddUserButton />
 
                             <div id="Task">

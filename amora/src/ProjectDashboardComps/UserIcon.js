@@ -68,7 +68,7 @@ class UserIcon extends Component {
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                     <Modal open={open} onClose={this.onCloseModal} little>
-                      <h2>{this.props.getAppState().user.displayName}<br/><br/>The rest of it.</h2>
+                      <h2>{this.props.getAppState().user.displayName}<br/><br/>{this.props.getAppState().user.email}</h2>
                     </Modal>
             </div>
         )
