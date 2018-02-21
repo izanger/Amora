@@ -38,14 +38,14 @@ class UserIcon extends Component {
          if (this.state.isManager) {
              return ({
                  backgroundColor: this.color,
-                 borderColor: this.color,
+                 borderColor: this.props.color,
                  borderWidth: '2px',
                  borderStyle: 'solid'
              })
          } else {
              return ({
                  backgroundColor: this.color,
-                 borderColor: this.color,
+                 borderColor: this.props.color,
              })
 
          }

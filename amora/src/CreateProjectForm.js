@@ -3,7 +3,7 @@ import rebase from "./rebase";
 import InviteList from "./InviteList"
 
 import leftArrow from "./images/Icons/LeftArrow.svg"
-import { emailRegistered, validateEmail, buildUserFromGoogle } from "./apphelpers.js"
+import { emailRegistered, validateEmail } from "./apphelpers.js"
 
 
 import "./CreateProjectForm.css"
@@ -17,7 +17,7 @@ class CreateProjectForm extends Component {
             titleValue: "",
             inviteValue: "",
             errorValue: "",
-            colorValue: "#3498DB",
+            colorValue: "#E74C3C",
             userList: [ ],
             userEmails: [ ]
         }
@@ -28,6 +28,14 @@ class CreateProjectForm extends Component {
         const newState = { ...this.state }
         newState.titleValue = event.target.value
         this.setState(newState)
+    }
+
+    // Method for changing title value in state
+    changeColorValue = (color) => {
+        const newState = { ...this.state }
+        newState.colorValue = color
+        this.setState(newState)
+        console.log(this.state)
     }
 
     // Method for changins invite value in state
@@ -165,9 +173,22 @@ class CreateProjectForm extends Component {
 
     }
 
+    renderSwatch = (color) => {
+        if (color == this.state.colorValue) {
+            return <div onClick={() => {
+                this.changeColorValue(color)
+            }} className="colorSwatchSelector" key={color} style={{backgroundColor: color, borderWidth: '2px', borderStyle: 'solid'}}></div>
+        } else {
+            return <div onClick={() => {
+                this.changeColorValue(color)
+            }} className="colorSwatchSelector" key={color} style={{backgroundColor: color}}></div>
+        }
+    }
+
     // Mandatory render method
     render = () => {
         let color = "#3498DB";
+        let colors = ['#E74C3C', '#E67E22', '#F1C40F', '#E91E63', '#9B59B6', '#3498DB', '#2ECB71', '#18AE90']
         return (
             <div id="taskDashboard">
                 <div id="projectTitleContainer" style={{backgroundColor: color}}>
@@ -183,14 +204,9 @@ class CreateProjectForm extends Component {
                 <div id="colorPicker">
                     <h4>Project Color:</h4>
                     {/* BEN THIS IS WHERE THE COLORS WILL GO, MY DUDE*/}
-                    <div className="colorSwatchSelector" style={{backgroundColor: '#E74C3C'}}></div>
-                    <div className="colorSwatchSelector" style={{backgroundColor: '#E67E22'}}></div>
-                    <div className="colorSwatchSelector" style={{backgroundColor: '#F1C40F'}}></div>
-                    <div className="colorSwatchSelector" style={{backgroundColor: '#E91E63'}}></div>
-                    <div className="colorSwatchSelector" style={{backgroundColor: '#9B59B6'}}></div>
-                    <div className="colorSwatchSelector" style={{backgroundColor: '#3498DB'}}></div>
-                    <div className="colorSwatchSelector" style={{backgroundColor: '#2ECB71'}}></div>
-                    <div className="colorSwatchSelector" style={{backgroundColor: '#18AE90'}}></div>
+                    {colors.map((color) => {
+                        return this.renderSwatch(color)
+                    })}
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
                     <div id="addUserIconProjectContainer" title="Invite User" onClick={this.emailValidationProcess}>

@@ -169,7 +169,7 @@ class ProjectDashboard extends Component {
                     <ProjectTitleBar projectColor={this.state.project.projectColor} getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
                     {/* <div id="taskDashContainer">
                     </div> */}
-                    <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} />
+                    <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor} />
                     <svg height="13" width="100%">
                         <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                     </svg>
