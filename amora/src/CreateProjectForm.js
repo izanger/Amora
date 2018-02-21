@@ -167,7 +167,7 @@ class CreateProjectForm extends Component {
 
     // Mandatory render method
     render = () => {
-        let color = "#3CB4CB";
+        let color = "#3498DB";
         return (
             <div id="taskDashboard">
                 <div id="projectTitleContainer" style={{backgroundColor: color}}>
