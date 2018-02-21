@@ -59,12 +59,21 @@ class App extends Component {
               key: newLocation.key
           }
       })
-      rebase.fetch(`projects/${newLocation.key}`, {
+      rebase.update(`users/${this.state.user.uid}`, {
+        data: {
+          personalProjectID: newLocation.key
+        }
+      })
+      rebase.fetch(`projects/${newLocation.key}`, {//get the project data we just added to ~/projects
         context: this
       }).then(projData => {
-        rebase.update(`users/${this.state.user.uid}/projects/${newLocation.key}`, {
+        rebase.update(`users/${this.state.user.uid}/projects/${newLocation.key}`, { //Add the project we just created to user's list of projects
           data: projData
         })
+        let newState = { ...this.state }
+        newState.currentProject = projData
+        this.setState(newState)
+        this.props.history.push(`/projects/${newLocation.key}`)
       })
       
     })
@@ -81,7 +90,7 @@ class App extends Component {
         newState.user = newUser
         this.setState(newState)
         this.checkIfUserIsInDatabase(newUser)
-
+        
         this.bindingref = rebase.syncState(`users/${this.state.user.uid}`, {
           context: this,
           state: 'user',
@@ -89,10 +98,12 @@ class App extends Component {
             const newState = { ...this.state }
             newState.userSynced = true
             this.setState(newState)
+            console.log(this.state)
+
+
           }
           
         })
-
       } else {
         // User is not signed in
         if (this.bindingref) {

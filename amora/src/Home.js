@@ -59,7 +59,7 @@ class Home extends Component {
                 projectsKeys.map((projectKey) => {
                     return <div key={projectKey} onClick={() => {
                         const newState = { ...this.props.getAppState() }
-                        if (newState.project === undefined || newState.project.key !== projectKey) {
+                        if (newState.project === undefined || newState.project.key !== projectKey && (newState.project.isPersonalDashboardProject === "false")) {
                             newState.currentProject = newState.user.projects[projectKey]
                             this.props.setAppState(newState)
                             this.props.goToUrl(`/projects/${projectKey}`)
