@@ -10,6 +10,7 @@ import "./ProjectDashboard.css"
 import NewProjectButton from "../ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from '../CreateTaskForm.js';
 import App from '../App';
+import Archive from '../images/Icons/Archive.svg'
 
 
 class ProjectDashboard extends Component {
@@ -92,7 +93,7 @@ class ProjectDashboard extends Component {
         } else {
             this.setState({showArchive: true})
         }
-        
+
     }
 
     getButtonText = () => {
@@ -155,22 +156,21 @@ class ProjectDashboard extends Component {
 
             finalRender = (
                 <div id="taskDashboard">
-                    <ProjectTitleBar title={this.state.project.projectName} />
+                    <ProjectTitleBar getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
                     {/* <div id="taskDashContainer">
                     </div> */}
-                    <ProjectCollaboratorsBar users={this.state.project.userList} />
+                    <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} />
                     <svg height="13" width="100%">
                         <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                     </svg>
-                    <button onClick={this.toggleShowArchive}>{this.getButtonText()}</button>
                     <div id="taskDashScrollableContent">
 
 
                         {tasks}
 
-                        <div><NewProjectButton onClick={() => {
+                        <div id="addTaskButton" ><NewProjectButton onClick={() => {
                             this.props.goToUrl("/createtask");
-                        }}/></div>
+                        }} /></div>
                     </div>
 
 

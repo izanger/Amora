@@ -22,3 +22,10 @@
     margin-top: 0px;
     overflow: scroll;
 }
+
+#addTaskButton {
+    background-color: whitesmoke;
+    position: fixed;
+    /* bottom: 10px;
+    right: 10px; */
+}
