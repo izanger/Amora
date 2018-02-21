@@ -165,8 +165,8 @@ class Task extends Component {
                     <div style={{visibility: this.state.visible}} id="taskInfo">
                         <p id="taskDescription">{this.props.task.taskDescription}</p>
                         <div id="taskUsers">
-                            <UserIcon />
-                            <UserIcon />
+                            {/*<UserIcon getAppState={this.props.getAppState} />*/}
+                            {/*<UserIcon getAppState={this.props.getAppState} />*/}
                             <AddUserButton />
 
                             <div id="Task">

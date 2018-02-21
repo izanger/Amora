@@ -20,14 +20,9 @@ class UserIcon extends Component {
       this.state = {
            open: false,
            isManager: true, //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
-           //displayName: "Hello"
         };
        this.color = "#3CB4CB";
-    }
-
-    // componentWillMount() {
-    //     this.getInfo();
-    //  }
+    } 
 
     onOpenModal = () => {
       this.setState({ open: true });
@@ -36,17 +31,6 @@ class UserIcon extends Component {
     onCloseModal = () => {
       this.setState({ open: false });
     };
-
-    // getInfo() {
-    //     const id = this.getAppState().user.uid   
-    //     rebase.fetch(`users/${id}/displayName`, {
-    //         context: this,
-    //     }).then(data => {
-    //         let newState = { ...this.state}
-    //         newState.displayName = data
-    //         this.setState(newState);        
-    //       })
-    // }
 
     /*
     This currently only is the box. It needs the following:
