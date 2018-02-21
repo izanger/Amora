@@ -90,17 +90,19 @@ class App extends Component {
         newState.user = newUser
         this.setState(newState)
         this.checkIfUserIsInDatabase(newUser)
-        
+        console.log(user)
         this.bindingref = rebase.syncState(`users/${this.state.user.uid}`, {
           context: this,
           state: 'user',
           then: () => {
             const newState = { ...this.state }
             newState.userSynced = true
+            //newState.currentProject = this.state.user.projects[this.state.user.personalProjectID]
+            //this.props.history.push(`/projects/${this.state.user.personalProjectID}`)
+            //^ This was me trying to auto-route to the personal dashboard when a previous user logged in,
+            //but it caused weird errors
+
             this.setState(newState)
-            console.log(this.state)
-
-
           }
           
         })

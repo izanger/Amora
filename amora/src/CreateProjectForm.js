@@ -81,7 +81,7 @@ class CreateProjectForm extends Component {
             newState.userList.push(data.val()[newKey])
             newState.userEmails.push(this.state.inviteValue)
             this.setState(newState)
-            console.log(data.val()[newKey])
+            //console.log(data.val()[newKey])
             return true
         })
         // TODO:
@@ -143,7 +143,7 @@ class CreateProjectForm extends Component {
                     then: (dat) => {
                         newState.project = dat;
                         this.setState(newState)
-                        console.log(dat)
+                        //console.log(dat)
                         const key = this.state.key
                         rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
                             data: dat
