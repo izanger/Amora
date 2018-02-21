@@ -22,6 +22,7 @@ class Task extends Component {
            description: 'I am a very descriptive description!',
            taskID: "",
            archived: false,
+           color: '#3CB4CB'
        }
     }
 
@@ -73,11 +74,27 @@ class Task extends Component {
     checkIsVisible = () => {
         if (this.props.archived){
             return ({
-                visibility: 'visible'
+                visibility: 'visible',
+                stroke: 'white'
             })
         } else {
             return ({
                 visibility: 'hidden'
+            })
+        }
+    }
+
+    checkRectIsArchived = () => {
+        if (this.props.archived){
+            return ({
+                visibility: 'visible',
+
+                fill: '#3CB4CB'
+            })
+        } else {
+            return ({
+                fill: 'transparent',
+
             })
         }
     }
@@ -154,9 +171,9 @@ class Task extends Component {
                         <div id="taskCheckAndTitle">
                             <svg height="40" width="40">
 
-                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" onClick={this.toggleArchived}/>
-                                 <line x1="5" x2="13" y1="17" y2="23" style={this.checkIsVisible()} className="checkBox" />
-                                 <line x1="13" x2="27" y1="23" y2="7" style={this.checkIsVisible()} className="checkBox" />
+                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
+                                 <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
+                                 <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                             </svg>
                             <h4 id="taskTitle">{this.props.task.taskName}</h4>
                         </div>
