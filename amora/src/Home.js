@@ -59,12 +59,12 @@ class Home extends Component {
                 projectsKeys.map((projectKey) => {
                     return <div key={projectKey} onClick={() => {
                         const newState = { ...this.props.getAppState() }
-                        if (newState.project === undefined || newState.project.key !== projectKey) {
+                        if (newState.project === undefined || newState.project.key !== projectKey && (newState.project.isPersonalDashboardProject === "false")) {
                             newState.currentProject = newState.user.projects[projectKey]
                             this.props.setAppState(newState)
                             this.props.goToUrl(`/projects/${projectKey}`)
                         }
-                    }}><ProjectIcon projectPhotoURL={projectsList[projectKey].projectPhotoURL}/></div>
+                    }}><ProjectIcon projectID={projectsList[projectKey].key} personalProjectID={this.props.getAppState().user.personalProjectID} projectPhotoURL={projectsList[projectKey].projectPhotoURL}/></div>
                 })
             )
         }
@@ -73,8 +73,14 @@ class Home extends Component {
             <div id="mainContainer">
                 <div id="projectsSelector">
                     <div onClick={() => {
-                        this.props.goToUrl("/dashboard")
-                    }}><ProjectIcon projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
+                        const newState = { ...this.props.getAppState() }
+                        newState.currentProject = newState.user.projects[newState.user.personalProjectID]
+                        this.props.setAppState(newState)
+                        this.props.goToUrl(`/projects/${newState.user.personalProjectID}`)
+                        
+                        //this.props.goToUrl("/dashboard")
+
+                    }}><ProjectIcon personalIcon={true} projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
 
                     <h5 id="projectProfileName">{this.state.displayName}</h5>
                     <img alt={"Seperator"} src={line} id="projectSeparatorLine"/>

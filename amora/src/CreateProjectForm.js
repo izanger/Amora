@@ -89,7 +89,7 @@ class CreateProjectForm extends Component {
             newState.userList.push(data.val()[newKey])
             newState.userEmails.push(this.state.inviteValue)
             this.setState(newState)
-            console.log(data.val()[newKey])
+            //console.log(data.val()[newKey])
             return true
         })
         // TODO:
@@ -124,7 +124,8 @@ class CreateProjectForm extends Component {
                 projectName: this.state.titleValue,
                 projectColor: this.state.colorValue,
                 projectCreator: this.props.getAppState().user.uid,
-                projectPhotoURL: this.props.getAppState().user.photoURL
+                projectPhotoURL: this.props.getAppState().user.photoURL,
+                isPersonalDashboardProject: false,
             }
         }).then((newLocation) => {
             let newState = { ...this.state }
@@ -150,7 +151,7 @@ class CreateProjectForm extends Component {
                     then: (dat) => {
                         newState.project = dat;
                         this.setState(newState)
-                        console.log(dat)
+                        //console.log(dat)
                         const key = this.state.key
                         rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
                             data: dat
