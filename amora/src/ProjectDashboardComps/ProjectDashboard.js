@@ -166,7 +166,7 @@ class ProjectDashboard extends Component {
 
             finalRender = (
                 <div id="taskDashboard">
-                    <ProjectTitleBar getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
+                    <ProjectTitleBar projectColor={this.state.project.projectColor} getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
                     {/* <div id="taskDashContainer">
                     </div> */}
                     <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} />

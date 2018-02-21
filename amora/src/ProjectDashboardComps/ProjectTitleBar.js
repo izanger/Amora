@@ -23,7 +23,8 @@ class ProjectTitleBar extends Component {
     4) If it's selected, have the box show on the side
     */
     render = () => {
-        let color = "#3CB4CB";
+        //let color = "#3CB4CB";
+        let color = this.props.projectColor;
         return (
             <div id="projectTitleContainer" style={{backgroundColor: color}}>
                 <h1 id="projectTitle">{this.props.title}</h1>

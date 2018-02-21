@@ -14,7 +14,7 @@ class CreateProjectForm extends Component {
             titleValue: "",
             inviteValue: "",
             errorValue: "",
-            colorValue: "blue",
+            colorValue: "DeepSkyBlue",
             userList: [ ],
             userEmails: [ ]
         }
