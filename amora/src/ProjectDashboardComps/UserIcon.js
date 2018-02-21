@@ -14,7 +14,7 @@ class UserIcon extends Component {
            open: false,
            isManager: true //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
        };
-       this.color = "#3CB4CB";
+       this.color = "#3498DB";
     }
 
     onOpenModal = () => {

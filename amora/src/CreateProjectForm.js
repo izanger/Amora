@@ -17,7 +17,7 @@ class CreateProjectForm extends Component {
             titleValue: "",
             inviteValue: "",
             errorValue: "",
-            colorValue: "DeepSkyBlue",
+            colorValue: "#3498DB",
             userList: [ ],
             userEmails: [ ]
         }
@@ -183,7 +183,14 @@ class CreateProjectForm extends Component {
                 <div id="colorPicker">
                     <h4>Project Color:</h4>
                     {/* BEN THIS IS WHERE THE COLORS WILL GO, MY DUDE*/}
-                    <div className="colorSwatchSelector"></div>
+                    <div className="colorSwatchSelector" style={{backgroundColor: '#E74C3C'}}></div>
+                    <div className="colorSwatchSelector" style={{backgroundColor: '#E67E22'}}></div>
+                    <div className="colorSwatchSelector" style={{backgroundColor: '#F1C40F'}}></div>
+                    <div className="colorSwatchSelector" style={{backgroundColor: '#E91E63'}}></div>
+                    <div className="colorSwatchSelector" style={{backgroundColor: '#9B59B6'}}></div>
+                    <div className="colorSwatchSelector" style={{backgroundColor: '#3498DB'}}></div>
+                    <div className="colorSwatchSelector" style={{backgroundColor: '#2ECB71'}}></div>
+                    <div className="colorSwatchSelector" style={{backgroundColor: '#18AE90'}}></div>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
                     <div id="addUserIconProjectContainer" title="Invite User" onClick={this.emailValidationProcess}>
