@@ -116,7 +116,8 @@ class CreateProjectForm extends Component {
                 projectName: this.state.titleValue,
                 projectColor: this.state.colorValue,
                 projectCreator: this.props.getAppState().user.uid,
-                projectPhotoURL: this.props.getAppState().user.photoURL
+                projectPhotoURL: this.props.getAppState().user.photoURL,
+                isPersonalDashboardProject: false,
             }
         }).then((newLocation) => {
             let newState = { ...this.state }

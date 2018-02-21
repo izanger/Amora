@@ -33,6 +33,42 @@ class App extends Component {
     rebase.post(`users/${user.uid}`, {
       data: user
     });
+
+    //add personal project
+    rebase.push("projects", {
+      data: {
+          projectName: "Personal Dashboard",
+          projectColor: "DeepSkyBlue",
+          projectCreator: this.state.user.uid,
+          projectPhotoURL: this.state.user.photoURL,
+          isPersonalDashboardProject: true,
+      }
+    }).then((newLocation) => {
+      rebase.post(`projects/${newLocation.key}/managerList`, { //create list of managers within project, and add the user to it
+          data: {
+              [this.state.user.uid]: true
+          }
+      })
+      rebase.post(`projects/${newLocation.key}/userList`, { //create list of users on project, and add user to it
+          data: {
+              [this.state.user.uid]: this.state.user.photoURL
+          }
+      })
+      rebase.update(`projects/${newLocation.key}`, {
+          data: {
+              key: newLocation.key
+          }
+      })
+      rebase.fetch(`projects/${newLocation.key}`, {
+        context: this
+      }).then(projData => {
+        rebase.update(`users/${this.state.user.uid}/projects/${newLocation.key}`, {
+          data: projData
+        })
+      })
+      
+    })
+
   }
 
   componentWillMount() {
