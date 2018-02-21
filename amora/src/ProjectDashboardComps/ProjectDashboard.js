@@ -10,6 +10,7 @@ import "./ProjectDashboard.css"
 import NewProjectButton from "../ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from '../CreateTaskForm.js';
 import App from '../App';
+import Archive from '../images/Icons/Archive.svg'
 
 
 class ProjectDashboard extends Component {
@@ -92,7 +93,7 @@ class ProjectDashboard extends Component {
         } else {
             this.setState({showArchive: true})
         }
-        
+
     }
 
     getButtonText = () => {
@@ -167,9 +168,9 @@ class ProjectDashboard extends Component {
 
                         {tasks}
 
-                        <div><NewProjectButton onClick={() => {
+                        <div id="addTaskButton" ><NewProjectButton onClick={() => {
                             this.props.goToUrl("/createtask");
-                        }}/></div>
+                        }} /></div>
                     </div>
 
 
