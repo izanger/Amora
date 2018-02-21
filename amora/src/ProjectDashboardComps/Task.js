@@ -83,7 +83,7 @@ class Task extends Component {
         if (this.props.archived){
             return ({
                 visibility: 'visible',
-
+                borderWidth: '0px',
                 fill: '#3CB4CB'
             })
         } else {
