@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 import rebase, { auth, google} from "../rebase.js"
+import { Route, Switch, Redirect } from "react-router-dom";
 import { Row, Grid, Col } from 'react-bootstrap'
 
 import tempPic from "../images/temp.jpg"
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
+
+import { App } from "../App.js"
+
 
 
 class UserIcon extends Component {
@@ -15,10 +19,15 @@ class UserIcon extends Component {
 
       this.state = {
            open: false,
-           isManager: true //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
-       };
+           isManager: true, //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
+           //displayName: "Hello"
+        };
        this.color = "#3CB4CB";
     }
+
+    // componentWillMount() {
+    //     this.getInfo();
+    //  }
 
     onOpenModal = () => {
       this.setState({ open: true });
@@ -27,6 +36,17 @@ class UserIcon extends Component {
     onCloseModal = () => {
       this.setState({ open: false });
     };
+
+    // getInfo() {
+    //     const id = this.getAppState().user.uid   
+    //     rebase.fetch(`users/${id}/displayName`, {
+    //         context: this,
+    //     }).then(data => {
+    //         let newState = { ...this.state}
+    //         newState.displayName = data
+    //         this.setState(newState);        
+    //       })
+    // }
 
     /*
     This currently only is the box. It needs the following:
@@ -64,7 +84,7 @@ class UserIcon extends Component {
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                     <Modal open={open} onClose={this.onCloseModal} little>
-                      <h2>Simple centered modal.<br/><br/>Here is some more text.<br/><br/>The rest of it.</h2>
+                      <h2>{this.props.getAppState().user.displayName}<br/><br/>The rest of it.</h2>
                     </Modal>
             </div>
         )
