@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "./rebase.js"
-import { Route, Switch, Redirect } from "react-router-dom";
-import { Row, Grid, Col } from 'react-bootstrap'
+import rebase, { auth } from "./rebase.js"
+import { Route, Switch, Redirect } from "react-router-dom"
 
-import amoraLogo from "./images/amora_logo.png"
 import line from "./images/Line/Line.png"
 import "./Home.css"
-import { isObjectEmpty } from "./apphelpers.js"
 
 import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import CreateProjectForm from './CreateProjectForm.js';
@@ -31,7 +28,6 @@ class Home extends Component {
     }
 
     signOut = () => {
-        console.log("hi")
         const newState = { ...this.props.getAppState() }
         newState.user = { }
         this.props.setAppState(newState)
@@ -81,7 +77,7 @@ class Home extends Component {
                     }}><ProjectIcon projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
 
                     <h5 id="projectProfileName">{this.state.displayName}</h5>
-                    <img src={line} id="projectSeparatorLine"/>
+                    <img alt={"Seperator"} src={line} id="projectSeparatorLine"/>
 
                     {projectIcons}
 

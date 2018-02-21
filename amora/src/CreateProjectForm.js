@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import rebase from "./rebase";
 import InviteList from "./InviteList"
-import { emailRegistered, validateEmail, buildUserFromGoogle } from "./apphelpers.js"
+import { emailRegistered, validateEmail } from "./apphelpers.js"
 
 import "./CreateProjectForm.css"
 
@@ -54,7 +54,7 @@ class CreateProjectForm extends Component {
             return false
         }
 
-        if (this.state.inviteValue == this.props.getAppState().user.email) {
+        if (this.state.inviteValue === this.props.getAppState().user.email) {
             newState.errorValue = "You will be inherently added to the project..."
             this.setState(newState)
             return false
@@ -108,7 +108,7 @@ class CreateProjectForm extends Component {
         tempState.userEmails.push(this.props.getAppState().user.email)
         tempState.userList.push(this.props.getAppState().user)
         this.setState(tempState)
-        const ref = rebase.push("projects", {
+        rebase.push("projects", {
             data: {
                 projectName: this.state.titleValue, 
                 projectColor: this.state.colorValue, 
@@ -149,7 +149,9 @@ class CreateProjectForm extends Component {
                                 rebase.update(`users/${user.uid}/notifications/${this.state.key}`, {
                                     data: dat
                                 })
+                                return true
                             }
+                            return false
                         })
                     }
                 })

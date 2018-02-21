@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { auth, google } from "./rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
 
 import amoraLogo from "./images/amora_logo.png"
 import googleLoginNormal from "./images/btn_google_signin_light_normal_web@2x.png"
-import googleLoginPressed from "./images/btn_google_signin_dark_pressed_web@2x.png"
-import googleLoginHover from "./images/btn_google_signin_light_focus_web@2x.png"
+// import googleLoginPressed from "./images/btn_google_signin_dark_pressed_web@2x.png"
+// import googleLoginHover from "./images/btn_google_signin_light_focus_web@2x.png"
 import "./Login.css"
 
 class Login extends Component {
@@ -48,10 +47,10 @@ class Login extends Component {
                 </Row>
             </Grid>*/}
             <div>
-                <center><img className="amora" src={amoraLogo} /></center>
+                <center><img alt={"Amora"} className="amora" src={amoraLogo} /></center>
                 <div className="subtitle">Teamwork Makes the Dream Work</div>
 
-                <img onClick={this.signin} className="googleLogin" src={googleLoginNormal}></img>
+                <img alt={"Login"} onClick={this.signin} className="googleLogin" src={googleLoginNormal}></img>
             </div>
 
           </div>

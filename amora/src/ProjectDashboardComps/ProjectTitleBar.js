@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
 
-import tempPic from "../images/temp.jpg"
 import settingsIcon from "../images/Icons/Settings.svg"
 import searchIcon from "../images/Icons/Search.svg"
 import archiveIcon from "../images/Icons/Archive.svg"
@@ -32,9 +29,9 @@ class ProjectTitleBar extends Component {
                 <h1 id="projectTitle">{this.props.title}</h1>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
-                   <img src={settingsIcon} id="projectSettingsIcon"/>
-                   <img src={searchIcon} style={{right: '55px'}} id="projectSettingsIcon"/>
-                   <img src={archiveIcon} title={this.props.getButtonText()} style={{right: '100px'}} onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
+                   <img alt={"Settings"} src={settingsIcon} id="projectSettingsIcon"/>
+                   <img alt={"Search"} src={searchIcon} style={{right: '55px'}} id="projectSettingsIcon"/>
+                   <img alt={"Archive"} src={archiveIcon} title={this.props.getButtonText()} style={{right: '100px'}} onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
                </div>
             </div>
         )

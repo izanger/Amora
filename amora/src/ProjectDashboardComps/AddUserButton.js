@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
 
-import plusPic from "../images/Plus/Plus@2x.png"
+// import plusPic from "../images/Plus/Plus@2x.png"
 import "./AddUserButton.css"
 
 
@@ -23,7 +21,7 @@ class AddUserButton extends Component {
     4) If it's selected, have the box show on the side
     */
     render = () => {
-        let color = "#3CB4CB";
+        // let color = "#3CB4CB";
         return (
             <div id="addUserIconContainer">
                 <svg height="40" width="40">

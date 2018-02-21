@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
-import { Route, Switch, Redirect } from "react-router-dom";
-import tempPic from "../images/temp.jpg"
+import rebase from "../rebase.js"
 import Task from "./Task.js"
 import ProjectTitleBar from "./ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 import "./ProjectDashboard.css"
 import NewProjectButton from "../ProjectSelectorComps/NewProjectButton.js"
-import CreateTaskForm from '../CreateTaskForm.js';
-import App from '../App';
-import Archive from '../images/Icons/Archive.svg'
 
 
 class ProjectDashboard extends Component {
@@ -140,7 +134,7 @@ class ProjectDashboard extends Component {
 
         if (this.state.projectSynced) {
 
-            let color = "#3CB4CB";
+            // let color = "#3CB4CB";
             // let taskKeys = Object.keys(this.state.project.taskList)
 
             let tasks

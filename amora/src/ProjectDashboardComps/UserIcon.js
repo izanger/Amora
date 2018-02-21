@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
 
-import tempPic from "../images/temp.jpg"
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
@@ -38,10 +35,9 @@ class UserIcon extends Component {
 
     style = () => {
 
-         if(this.state.isManager){
+         if (this.state.isManager) {
              return ({
                  backgroundColor: this.color,
-                 borderColor: this.color,
                  borderColor: this.color,
                  borderWidth: '2px',
                  borderStyle: 'solid'
@@ -60,7 +56,7 @@ class UserIcon extends Component {
         const { open } = this.state;
         return (
             <div onClick={this.onOpenModal} id="userIconContainer" style={this.style()}>
-                <img src={this.props.user} className="projectPicture"/>
+                <img alt={"Project"} src={this.props.user} className="projectPicture"/>
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                     <Modal open={open} onClose={this.onCloseModal} little>

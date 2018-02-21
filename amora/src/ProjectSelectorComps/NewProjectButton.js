@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
 
-import plusPic from "../images/Plus/Plus@2x.png"
+// import plusPic from "../images/Plus/Plus@2x.png"
 import "./NewProjectButton.css"
 
 

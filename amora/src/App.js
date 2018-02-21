@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import rebase, { auth, google } from "./rebase.js"
+import rebase, { auth } from "./rebase.js"
 import { Route, Switch, Redirect } from "react-router-dom";
 import { isObjectEmpty, buildUserFromGoogle } from "./apphelpers.js"
 
 import Login from "./Login.js"
 import Home from "./Home.js"
 
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -20,7 +19,7 @@ class App extends Component {
   }
   
   checkIfUserIsInDatabase(user) {
-    let inDataBase = false
+    // let inDataBase = false
     rebase.fetch(`users/${user.uid}`, {
       context: this
     }).then((data) => {

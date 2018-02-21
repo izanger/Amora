@@ -1,11 +1,10 @@
 import React, { Component } from "react"
 import rebase from "./rebase";
-import { emailRegistered, validateEmail, buildUserFromGoogle } from "./apphelpers.js"
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import PropTypes from 'prop-types';
-import Moment from 'react-moment';
+// import PropTypes from 'prop-types';
+// import Moment from 'react-moment';
 
 
 import "./CreateTaskForm.css"
@@ -38,7 +37,6 @@ class CreateTaskForm extends Component {
 
             errorValue: "",
             estimatedTimeValue: "",
-            errorValue: "",
             priorityLevel: "",
             deadline: moment()
         }
@@ -116,7 +114,7 @@ class CreateTaskForm extends Component {
         newState.priorityLevel = selectedText
         this.setState(newState)
 
-        const ref = rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
+        rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
             data: {
                 taskName: this.state.titleValue, 
                 taskDescription: this.state.descriptionValue,
@@ -135,7 +133,6 @@ class CreateTaskForm extends Component {
 
     // Mandatory render method
     render = () => {
-        console.log("Hello");
         
         return (
             <div id="taskDashboard">

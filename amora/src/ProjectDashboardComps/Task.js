@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
+import rebase from "../rebase.js"
 import ContentEditable from 'react-contenteditable'
 
-import tempPic from "../images/temp.jpg"
 import "./Task.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
-import Modal from 'react-responsive-modal/lib/css';
 import UserIcon from "./UserIcon.js"
 import AddUserButton from "./AddUserButton.js"
 import Comment from "./TaskComment.js"
@@ -176,9 +173,6 @@ class Task extends Component {
 
 
     render = () => {
-        const { open } = this.state;
-
-
         return (
             <div onClick={() => {
                 if (!this.state.open) {
