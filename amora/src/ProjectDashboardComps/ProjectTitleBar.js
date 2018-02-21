@@ -30,8 +30,8 @@ class ProjectTitleBar extends Component {
                 <h1 id="projectTitle">{this.props.title}</h1>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
-                   <img alt={"Settings"} src={settingsIcon} id="projectSettingsIcon"/>
-                   <img alt={"Search"} src={searchIcon} style={{right: '55px'}} id="projectSettingsIcon"/>
+                   <img alt={"Settings"} src={settingsIcon} title={"Settings"} id="projectSettingsIcon"/>
+                   <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} id="projectSettingsIcon"/>
                    <img alt={"Archive"} src={archiveIcon} title={this.props.getButtonText()} style={{right: '100px'}} onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
                </div>
             </div>
