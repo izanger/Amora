@@ -78,6 +78,18 @@ class Task extends Component {
             })
         }
     }
+=======
+       var response = window.confirm("Are you sure you want to delete this task?")
+        if (response == true){
+            rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+                if(!err){
+                  //DONT FORGET TO HANDLE THIS ERROR EVEN THO IT SHOULD NEVER HAPPEN
+                //   Router.transitionTo('dashboard');
+                }
+            });
+        }
+            
+>>>>>>> DeletionGUI
 
     checkRectIsArchived = () => {
         if (this.props.archived){
