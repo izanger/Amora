@@ -26,7 +26,10 @@ class ProjectCollaboratorsBar extends Component {
     */
     render = () => {
         let color = "#3CB4CB";
-        const userKeys = Object.keys(this.props.users)
+        let userKeys
+        if (this.props.users) {
+            userKeys = Object.keys(this.props.users)
+        }
         return (
             <div>
                 <div id="ProjectCollaboratorsBarContainter">
