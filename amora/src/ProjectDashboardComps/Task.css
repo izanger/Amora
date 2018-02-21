@@ -74,3 +74,8 @@
     margin-left: -10px;
     margin-top: -15px;
 }
+
+.closeTaskButton {
+    margin: 8px;
+    font-size: 16px;
+}

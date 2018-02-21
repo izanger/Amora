@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import rebase, { auth, google} from "../rebase.js"
 import { Row, Grid, Col } from 'react-bootstrap'
+import ContentEditable from 'react-contenteditable'
 
 import tempPic from "../images/temp.jpg"
 import "./Task.css"
@@ -66,9 +67,6 @@ class Task extends Component {
                 }
               });
         }
-
-
-
     }
 
     checkIsVisible = () => {
@@ -101,7 +99,7 @@ class Task extends Component {
 
     //Ian: Archive the task if it's archived. Unarchive it if it's not.
     toggleArchived = () => {
-        if(this.props.archived){
+        if (this.props.archived){
             //Unarchive
             const projID = this.props.projectID;
             const taskID = this.props.taskKey;
@@ -124,7 +122,7 @@ class Task extends Component {
                 }
             })
         } else {
-            //Archive
+            // Archive
             const projID = this.props.projectID;
             const taskID = this.props.taskKey;
             rebase.fetch(`projects/${projID}/taskList/${taskID}`, {
@@ -156,7 +154,24 @@ class Task extends Component {
     4) If it's selected, have the box show on the side
     */
 
-/* style={{visibility: this.state.visible}} */
+    /* style={{visibility: this.state.visible}} */
+
+
+    changeTaskName = (event) => {
+        if (event.target.value.length !== 0) {
+            const newState = this.props.getProjectDashboardState()
+            newState.project.taskList[this.props.taskKey].taskName = event.target.value
+            this.props.setProjectDashboardState(newState)
+        }
+    }
+
+    changeTaskDescription = (event) => {
+        if (event.target.value !== "") {
+            const newState = this.props.getProjectDashboardState()
+            newState.project.taskList[this.props.taskKey].taskDescription = event.target.value
+            this.props.setProjectDashboardState(newState)
+        }
+    }
 
 
 
@@ -165,7 +180,11 @@ class Task extends Component {
 
 
         return (
-            <div onClick={this.switch} >
+            <div onClick={() => {
+                if (!this.state.open) {
+                    this.switch()
+                }
+            }} >
                 <div id="task" style={this.css()}>
                     <div id="taskStats">
                         <div id="taskCheckAndTitle">
@@ -175,12 +194,13 @@ class Task extends Component {
                                  <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                  <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                             </svg>
-                            <h4 id="taskTitle">{this.props.task.taskName}</h4>
+                            <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
                         </div>
                         <h5 style={{right: '12px'}}><b>!!!</b> | 7h | 3d</h5>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
-                        <p id="taskDescription">{this.props.task.taskDescription}</p>
+                        <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
+                        html={this.props.task.taskDescription} /> </p>
                         <div id="taskUsers">
                             <UserIcon />
                             <UserIcon />
@@ -196,6 +216,7 @@ class Task extends Component {
                             <Comment />
                             <Comment />
                         </div>
+                        <div className="closeTaskButton" onClick={this.switch}>CLICK ME TO CLOSE THE THING</div>
                     </div>
                 </div>
 

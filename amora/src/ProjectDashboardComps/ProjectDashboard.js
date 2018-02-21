@@ -103,6 +103,16 @@ class ProjectDashboard extends Component {
             return "Show Archived Tasks"
         }
     }
+
+    setProjectDashboardState = (newState) => {
+        this.setState(newState)
+    }
+
+    getProjectDashboardState = () => {
+        return this.state
+    }
+
+
     // setProjectDashboardState = () =>{
 
     //     const newState = { ...this.state }
@@ -139,7 +149,10 @@ class ProjectDashboard extends Component {
                     const taskKeys = Object.keys(this.state.project.taskList)
                     tasks = (
                         taskKeys.map((key) => {
-                            return <Task archived={false} projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.taskList[key]}/>
+                            return <Task archived={false} projectID = {this.props.getAppState().currentProject.key}
+                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState} 
+                            key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                            setProjectDashboardState={this.setProjectDashboardState} />
                         })
                     )
                 }
@@ -148,7 +161,10 @@ class ProjectDashboard extends Component {
                     const taskKeys = Object.keys(this.state.project.archivedTaskList)
                     tasks = (
                         taskKeys.map((key) => {
-                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.archivedTaskList[key]}/>
+                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} 
+                        taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
+                        task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                        setProjectDashboardState={this.setProjectDashboardState}/>
                         })
                     )
                 }
