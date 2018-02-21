@@ -1,7 +1,12 @@
 .createProjectInput {
-    margin: 8px;
+    margin: 15px;
+    margin-top: 5px;
     height: 30px;
-    font-family: sans-serif;
+    background-color: whitesmoke;
+    border: 0px;
+    border-bottom: 2px solid grey;
+    font-size: 14pt;
+    color: #4A4A4A;
 }
 
 .createProjectButton {
@@ -10,6 +15,71 @@
 }
 
 .errorBox {
+    background-color: rgb(218, 64, 64);
     margin: 12px;
-    color: rgb(218, 64, 64);
+    color: white;
+    text-align: left;
+    margin-left: 60px;
+    border-radius: 5px;
+}
+
+#addUserIconProjectContainer {
+    width: 23px;
+    height: 23px;
+    margin: 15px;
+    margin-top: 12px;
+    margin-bottom: 0px;
+    border-radius: 30px;
+    border-color: #C6C6C6;
+    border-style: solid;
+    border-width: 2px;
+    stroke: #C6C6C6;
+    stroke-width: 3px;
+}
+
+#addUserIconProjectContainer:hover {
+    animation-name: newProjectAnimationDarken;
+    animation-duration: 0.3s;
+    border-color: grey;
+    cursor: pointer;
+    stroke: grey;
+    margin-top: 11px;
+}
+
+.createProjectFinalButton {
+    border-color: #4A4A4A;
+    background-color: transparent;
+    width: 130px;
+    border-radius: 20px;
+    color: #4A4A4A;
+    margin-left: 15px;
+}
+
+.createProjectFinalButton:hover {
+    margin-top: -1px;
+}
+
+#colorPicker {
+    display: flex;
+    flex-direction: row;
+    align-content: left;
+    margin-left: 15px;
+}
+
+.colorSwatchSelector {
+    width: 25px;
+    height: 25px;
+    background-color: black;
+    margin: 10px;
+    margin-top: 7px;
+
+    border-radius: 5px;
+
+}
+
+.colorSwatchSelector:hover {
+    margin-top: 6px;
+    margin-bottom: 11px;
+    cursor: pointer;
+    box-shadow: 0px 1px 0px white;
 }
