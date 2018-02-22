@@ -20,7 +20,7 @@ class UserIcon extends Component {
            open: false,
            isManager: true, //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
            displayName: "",
-           email: ""
+           email: "",
         };
        this.color = "#3498DB";
     }
@@ -28,7 +28,6 @@ class UserIcon extends Component {
     componentWillMount() {
         this.getInfo();
         this.getEmail();
-        console.log(this.props.userID)
      }
 
     onOpenModal = () => {
@@ -40,22 +39,20 @@ class UserIcon extends Component {
     };
 
     getInfo() {
-        const id = this.props.getAppState().user.uid  
+        const id = this.props.userID  
         rebase.fetch(`users/${id}/displayName`, {
             context: this,
         }).then(data => {
-            //console.log(data)
             let newState = { ...this.state}
             newState.displayName = data
             this.setState(newState);        
           })
     }
     getEmail() {
-        const id = this.props.getAppState().user.uid   
+        const id = this.props.userID  
         rebase.fetch(`users/${id}/email`, {
             context: this,
         }).then(data => {
-            //console.log(data)
             let newState = { ...this.state}
             newState.email = data
             this.setState(newState);        
