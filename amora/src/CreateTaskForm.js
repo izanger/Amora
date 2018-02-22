@@ -1,11 +1,11 @@
 import React, { Component } from "react"
 import rebase from "./rebase";
-import { emailRegistered, validateEmail, buildUserFromGoogle } from "./apphelpers.js"
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import leftArrow from "./images/Icons/LeftArrow.svg"
 import 'react-datepicker/dist/react-datepicker.css';
-import PropTypes from 'prop-types';
-import Moment from 'react-moment';
+// import PropTypes from 'prop-types';
+// import Moment from 'react-moment';
 
 
 import "./CreateTaskForm.css"
@@ -25,9 +25,9 @@ class CreateTaskForm extends Component {
             // You get the idea
             // I'm
             // making
-            // this 
+            // this
             // longer
-            // so 
+            // so
             // people
             // see
             // it
@@ -38,7 +38,6 @@ class CreateTaskForm extends Component {
 
             errorValue: "",
             estimatedTimeValue: "",
-            errorValue: "",
             priorityLevel: "",
             deadline: moment()
         }
@@ -85,7 +84,7 @@ class CreateTaskForm extends Component {
         if (this.state.titleValue === "") {
             this.setState(newState)
             return false
-        } 
+        }
         if (this.state.descriptionValue === ""){
             this.setState(newState)
             return false
@@ -116,18 +115,19 @@ class CreateTaskForm extends Component {
         newState.priorityLevel = selectedText
         this.setState(newState)
 
-        const ref = rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
+        rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
             data: {
-                taskName: this.state.titleValue, 
+                taskName: this.state.titleValue,
                 taskDescription: this.state.descriptionValue,
                 priorityLevel: this.state.priorityLevel,
                 EstimatedTimeValue: this.state.estimatedTimeValue,
-                deadline: this.state.deadline.format()
-                
+                deadline: this.state.deadline.format(),
+                taskCreator: this.props.getAppState().user.uid,
+
             }
         }).then((data) => {
             this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)
-        
+
 
             })
     }
@@ -135,33 +135,39 @@ class CreateTaskForm extends Component {
 
     // Mandatory render method
     render = () => {
-        console.log("Hello");
-        
+        let color = "#3498DB";
         return (
             <div id="taskDashboard">
-                <i className="material-icons createTaskButton" onClick={() => {
-                    this.props.goToUrl("dashboard")
-                }}>backspace</i>
-                <input type="text" placeholder="Task title" className="createTaskInput" onChange={this.changeTitleValue}
+                <div id="projectTitleContainer" style={{backgroundColor: color}}>
+                    <img title="Go back" src={leftArrow} style={{height: '30px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
+                        this.props.goToUrl("dashboard")
+                    }} />
+                    <h1 style={{left: '35px'}} id="projectTitle">Create New Task</h1>
+
+                </div>
+
+                <input type="text" placeholder="Task title" className="createProjectInput" onChange={this.changeTitleValue}
                 value={this.state.titleValue} />
 
-                <input type="text" placeholder="Description of task" className="createTaskInput"
+                <input type="text" placeholder="Description of task" className="createProjectInput"
                 value={this.state.descriptionValue} onChange={this.changeDescriptionValue} />
 
-                <input type="text" placeholder="Estimated time" className="createTaskInput"
+                <input type="text" placeholder="Estimated time" className="createProjectInput"
                 value={this.state.estimatedTimeValue} onChange={this.changeEstimatedTimeValue} />
 
-                Deadline:<DatePicker placeholder="Deadline" selected={this.state.deadline} onChange={this.handleChange}/><br></br>
-                        
+                <div id="createTaskMoreInfo">
+                    <h4>Deadline:</h4><DatePicker placeholder="Deadline" id="dateSelector" selected={this.state.deadline} onChange={this.handleChange}/><br></br>
+
+                    <h4 style={{marginRight: '5px'}}>Priority:</h4>
                     <select name="dropbtn" id="dropdown">
                         <option value="1">Low</option>
                         <option value="2">Medium</option>
                         <option value="3">High</option>
                     </select>
-                    
-            
+                </div>
+
                 <p className="errorBox">{this.state.errorValue}</p>
-                <button className="createTaskInput" onClick={this.createTask}>Add Task</button>
+                <button className="createProjectFinalButton" onClick={this.createTask}>Add Task</button>
             </div>
         )
     }

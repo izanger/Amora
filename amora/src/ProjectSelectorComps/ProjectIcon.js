@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
 
-import tempPic from "../images/temp.jpg"
 import "./ProjectIcon.css"
 
 
@@ -24,13 +21,29 @@ class ProjectIcon extends Component {
     */
     render = () => {
         let color = "#3CB4CB";
-        return (
-            <div id="iconContainer" style={{backgroundColor: color}}>
-                <img src={this.props.projectPhotoURL} className="projectPicture"/>
-                {/*This should only appear if it is selected as the project*/}
-                <div id="projectIndicator" style={{backgroundColor: color}}></div>
-            </div>
-        )
+        if(this.props.projectID === this.props.personalProjectID){
+            if (this.props.personalIcon == true){
+                return (
+                    <div id="iconContainer" style={{backgroundColor: color}}>
+                        <img alt={"Project"} src={this.props.projectPhotoURL} className="projectPicture"/>
+                        {/*This should only appear if it is selected as the project*/}
+                        <div id="projectIndicator" style={{backgroundColor: color}}></div>
+                    </div>
+                )
+            } else {
+                return (<div></div>)
+            }
+            
+        } else {
+            return (
+                <div id="iconContainer" style={{backgroundColor: color}}>
+                    <img alt={"Project"} src={this.props.projectPhotoURL} className="projectPicture"/>
+                    {/*This should only appear if it is selected as the project*/}
+                    <div id="projectIndicator" style={{backgroundColor: color}}></div>
+                </div>
+            )
+        }
+        
     }
 
 }

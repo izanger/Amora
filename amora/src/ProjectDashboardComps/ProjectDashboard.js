@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
-import { Route, Switch, Redirect } from "react-router-dom";
-import tempPic from "../images/temp.jpg"
+import rebase from "../rebase.js"
 import Task from "./Task.js"
 import ProjectTitleBar from "./ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 import "./ProjectDashboard.css"
 import NewProjectButton from "../ProjectSelectorComps/NewProjectButton.js"
-import CreateTaskForm from '../CreateTaskForm.js';
-import App from '../App';
-import Archive from '../images/Icons/Archive.svg'
 
 
 class ProjectDashboard extends Component {
@@ -103,6 +97,16 @@ class ProjectDashboard extends Component {
             return "Show Archived Tasks"
         }
     }
+
+    setProjectDashboardState = (newState) => {
+        this.setState(newState)
+    }
+
+    getProjectDashboardState = () => {
+        return this.state
+    }
+
+
     // setProjectDashboardState = () =>{
 
     //     const newState = { ...this.state }
@@ -130,7 +134,7 @@ class ProjectDashboard extends Component {
 
         if (this.state.projectSynced) {
 
-            let color = "#3CB4CB";
+            // let color = "#3CB4CB";
             // let taskKeys = Object.keys(this.state.project.taskList)
 
             let tasks
@@ -139,7 +143,10 @@ class ProjectDashboard extends Component {
                     const taskKeys = Object.keys(this.state.project.taskList)
                     tasks = (
                         taskKeys.map((key) => {
-                            return <Task archived={false} projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.taskList[key]}/>
+                            return <Task archived={false} projectID = {this.props.getAppState().currentProject.key}
+                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState} 
+                            key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                            setProjectDashboardState={this.setProjectDashboardState} />
                         })
                     )
                 }
@@ -148,7 +155,10 @@ class ProjectDashboard extends Component {
                     const taskKeys = Object.keys(this.state.project.archivedTaskList)
                     tasks = (
                         taskKeys.map((key) => {
-                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} task={this.state.project.archivedTaskList[key]}/>
+                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} 
+                        taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
+                        task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                        setProjectDashboardState={this.setProjectDashboardState}/>
                         })
                     )
                 }
@@ -156,10 +166,10 @@ class ProjectDashboard extends Component {
 
             finalRender = (
                 <div id="taskDashboard">
-                    <ProjectTitleBar getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
+                    <ProjectTitleBar projectColor={this.state.project.projectColor} getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
                     {/* <div id="taskDashContainer">
                     </div> */}
-                    <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} />
+                    <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor} />
                     <svg height="13" width="100%">
                         <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                     </svg>

@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import { randomKey } from "./apphelpers"
 
 import "./InviteList.css"
 

@@ -1,4 +1,4 @@
-import rebase, { auth, google } from "./rebase.js"
+import rebase from "./rebase.js"
 
 export function isObjectEmpty(obj) {
     if (Object.keys(obj).length === 0) {
@@ -20,7 +20,6 @@ export function buildUserFromGoogle(user) {
 export function emailRegistered(email) {
     let ret = false
     ret = rebase.initializedApp.database().ref().child("users").orderByChild("email").equalTo(email).once("value", snapshot => {
-        const userData = snapshot.val()
         if (snapshot.val()) {
             ret =  true
         }
@@ -39,7 +38,6 @@ export function validateEmail(email) {
 export function checkIfManager(userID, projectID) {
    let ret = false;
         ret = rebase.initializedApp.database().ref().child("projects/" + projectID + "/managerList/" + userID).once("value", snapshot => {
-            const data = snapshot.val()
             if(snapshot.val()) {
                 ret = true
             }
@@ -53,7 +51,6 @@ export function checkIfManager(userID, projectID) {
 export function checkIfUserOnProject(userID, projectID) {
     let ret = false;
     ret = rebase.initializedApp.database().ref().child("projects/" + projectID + "/userList/" + userID).once("value", snapshot => {
-        const data = snapshot.val()
         if(snapshot.val()) {
             ret = true
         }

@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
 
 import UserIcon from "./UserIcon.js"
 import "./TaskComment.css"
@@ -19,7 +17,7 @@ class TaskComment extends Component {
     }
 
     render = () => {
-        let color = "#3CB4CB";
+        // let color = "#3CB4CB";
         return (
             <div id="taskCommentContainer">
                 <svg height="2px" width="100%" className="taskCommentDivider">

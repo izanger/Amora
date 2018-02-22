@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
+import rebase from "../rebase.js"
+import ContentEditable from 'react-contenteditable'
 
-import tempPic from "../images/temp.jpg"
 import "./Task.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
-import Modal from 'react-responsive-modal/lib/css';
 import UserIcon from "./UserIcon.js"
 import AddUserButton from "./AddUserButton.js"
 import Comment from "./TaskComment.js"
@@ -26,6 +24,7 @@ class Task extends Component {
            description: 'I am a very descriptive description!',
            taskID: "",
            archived: false,
+           color: '#3CB4CB'
        }
     }
 
@@ -56,10 +55,17 @@ class Task extends Component {
     }
 
     testFunction = () => {
+        var response = window.confirm("Are you sure you want to delete this task?")
+        if (response == true){
+            
+        
+
+
         if(!this.props.archived){
             rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
                 if(!err){
                     console.log("fiddlesticks")
+                    
                 }
               });
         } else {
@@ -69,15 +75,14 @@ class Task extends Component {
                 }
               });
         }
-
-
-
+    }
     }
 
     checkIsVisible = () => {
         if (this.props.archived){
             return ({
-                visibility: 'visible'
+                visibility: 'visible',
+                stroke: 'white'
             })
         } else {
             return ({
@@ -85,10 +90,27 @@ class Task extends Component {
             })
         }
     }
+      
+        
+
+    checkRectIsArchived = () => {
+        if (this.props.archived){
+            return ({
+                visibility: 'visible',
+                borderWidth: '0px',
+                fill: '#3CB4CB'
+            })
+        } else {
+            return ({
+                fill: 'transparent',
+
+            })
+        }
+    }
 
     //Ian: Archive the task if it's archived. Unarchive it if it's not.
     toggleArchived = () => {
-        if(this.props.archived){
+        if (this.props.archived){
             //Unarchive
             const projID = this.props.projectID;
             const taskID = this.props.taskKey;
@@ -111,7 +133,7 @@ class Task extends Component {
                 }
             })
         } else {
-            //Archive
+            // Archive
             const projID = this.props.projectID;
             const taskID = this.props.taskKey;
             rebase.fetch(`projects/${projID}/taskList/${taskID}`, {
@@ -143,31 +165,50 @@ class Task extends Component {
     4) If it's selected, have the box show on the side
     */
 
-/* style={{visibility: this.state.visible}} */
+    /* style={{visibility: this.state.visible}} */
+
+
+    changeTaskName = (event) => {
+        if (event.target.value.length !== 0) {
+            const newState = this.props.getProjectDashboardState()
+            newState.project.taskList[this.props.taskKey].taskName = event.target.value
+            this.props.setProjectDashboardState(newState)
+        }
+    }
+
+    changeTaskDescription = (event) => {
+        if (event.target.value !== "") {
+            const newState = this.props.getProjectDashboardState()
+            newState.project.taskList[this.props.taskKey].taskDescription = event.target.value
+            this.props.setProjectDashboardState(newState)
+        }
+    }
 
 
 
     render = () => {
-        const { open } = this.state;
-
-
         return (
-            <div onClick={this.switch} >
+            <div onClick={() => {
+                if (!this.state.open) {
+                    this.switch()
+                }
+            }} >
                 <div id="task" style={this.css()}>
                     <div id="taskStats">
                         <div id="taskCheckAndTitle">
                             <svg height="40" width="40">
 
-                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" onClick={this.toggleArchived}/>
-                                 <line x1="5" x2="13" y1="17" y2="23" style={this.checkIsVisible()} className="checkBox" />
-                                 <line x1="13" x2="27" y1="23" y2="7" style={this.checkIsVisible()} className="checkBox" />
+                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
+                                 <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
+                                 <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                             </svg>
-                            <h4 id="taskTitle">{this.props.task.taskName}</h4>
+                            <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
                         </div>
                         <h5 style={{right: '12px'}}><b>!!!</b> | 7h | 3d</h5>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
-                        <p id="taskDescription">{this.props.task.taskDescription}</p>
+                        <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
+                        html={this.props.task.taskDescription} /> </p>
                         <div id="taskUsers">
 
                             {/*Temporarily commented out. Uncomment when actual image of person is displayed 
@@ -196,6 +237,7 @@ class Task extends Component {
                             <Comment />
                             <Comment />
                         </div>
+                        <div className="closeTaskButton" onClick={this.switch}>CLICK ME TO CLOSE THE THING</div>
                     </div>
                 </div>
 

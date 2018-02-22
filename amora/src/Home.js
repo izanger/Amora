@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "./rebase.js"
-import { Route, Switch, Redirect } from "react-router-dom";
-import { Row, Grid, Col } from 'react-bootstrap'
+import rebase, { auth } from "./rebase.js"
+import { Route, Switch, Redirect } from "react-router-dom"
 
-import amoraLogo from "./images/amora_logo.png"
 import line from "./images/Line/Line.png"
 import "./Home.css"
-import { isObjectEmpty } from "./apphelpers.js"
 
 import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import CreateProjectForm from './CreateProjectForm.js';
@@ -31,7 +28,6 @@ class Home extends Component {
     }
 
     signOut = () => {
-        console.log("hi")
         const newState = { ...this.props.getAppState() }
         newState.user = { }
         this.props.setAppState(newState)
@@ -63,12 +59,12 @@ class Home extends Component {
                 projectsKeys.map((projectKey) => {
                     return <div key={projectKey} onClick={() => {
                         const newState = { ...this.props.getAppState() }
-                        if (newState.project === undefined || newState.project.key !== projectKey) {
+                        if (newState.project === undefined || newState.project.key !== projectKey && (newState.project.isPersonalDashboardProject === "false")) {
                             newState.currentProject = newState.user.projects[projectKey]
                             this.props.setAppState(newState)
                             this.props.goToUrl(`/projects/${projectKey}`)
                         }
-                    }}><ProjectIcon projectPhotoURL={projectsList[projectKey].projectPhotoURL}/></div>
+                    }}><ProjectIcon projectID={projectsList[projectKey].key} personalProjectID={this.props.getAppState().user.personalProjectID} projectPhotoURL={projectsList[projectKey].projectPhotoURL}/></div>
                 })
             )
         }
@@ -77,11 +73,17 @@ class Home extends Component {
             <div id="mainContainer">
                 <div id="projectsSelector">
                     <div onClick={() => {
-                        this.props.goToUrl("/dashboard")
-                    }}><ProjectIcon projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
+                        const newState = { ...this.props.getAppState() }
+                        newState.currentProject = newState.user.projects[newState.user.personalProjectID]
+                        this.props.setAppState(newState)
+                        this.props.goToUrl(`/projects/${newState.user.personalProjectID}`)
+                        
+                        //this.props.goToUrl("/dashboard")
+
+                    }}><ProjectIcon personalIcon={true} projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
 
                     <h5 id="projectProfileName">{this.state.displayName}</h5>
-                    <img src={line} id="projectSeparatorLine"/>
+                    <img alt={"Seperator"} src={line} id="projectSeparatorLine"/>
 
                     {projectIcons}
 

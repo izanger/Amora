@@ -1,7 +1,10 @@
 import React, { Component } from "react"
 import rebase from "./rebase";
 import InviteList from "./InviteList"
-import { emailRegistered, validateEmail, buildUserFromGoogle } from "./apphelpers.js"
+
+import leftArrow from "./images/Icons/LeftArrow.svg"
+import { emailRegistered, validateEmail } from "./apphelpers.js"
+
 
 import "./CreateProjectForm.css"
 
@@ -14,7 +17,7 @@ class CreateProjectForm extends Component {
             titleValue: "",
             inviteValue: "",
             errorValue: "",
-            colorValue: "blue",
+            colorValue: "#E74C3C",
             userList: [ ],
             userEmails: [ ]
         }
@@ -25,6 +28,14 @@ class CreateProjectForm extends Component {
         const newState = { ...this.state }
         newState.titleValue = event.target.value
         this.setState(newState)
+    }
+
+    // Method for changing title value in state
+    changeColorValue = (color) => {
+        const newState = { ...this.state }
+        newState.colorValue = color
+        this.setState(newState)
+        console.log(this.state)
     }
 
     // Method for changins invite value in state
@@ -54,7 +65,7 @@ class CreateProjectForm extends Component {
             return false
         }
 
-        if (this.state.inviteValue == this.props.getAppState().user.email) {
+        if (this.state.inviteValue === this.props.getAppState().user.email) {
             newState.errorValue = "You will be inherently added to the project..."
             this.setState(newState)
             return false
@@ -78,10 +89,10 @@ class CreateProjectForm extends Component {
             newState.userList.push(data.val()[newKey])
             newState.userEmails.push(this.state.inviteValue)
             this.setState(newState)
-            console.log(data.val()[newKey])
+            //console.log(data.val()[newKey])
             return true
         })
-        // TODO: 
+        // TODO:
         // DONE: ////// MAKE USER LIST HOLD USER OBJECTS //////
         // MAKE IT SO USERS GET AN INVITE IN DATABASE
         // WORK ON SYCINGSTATE WITH USERS SO THEIR INVITES WILL BE UPDATED ON THEIR CLIENTS AUTOMATICALLY
@@ -95,7 +106,7 @@ class CreateProjectForm extends Component {
             newState.errorValue = "Please enter a project title..."
             this.setState(newState)
             return false
-        } 
+        }
         return true
     }
 
@@ -108,12 +119,13 @@ class CreateProjectForm extends Component {
         tempState.userEmails.push(this.props.getAppState().user.email)
         tempState.userList.push(this.props.getAppState().user)
         this.setState(tempState)
-        const ref = rebase.push("projects", {
+        rebase.push("projects", {
             data: {
-                projectName: this.state.titleValue, 
-                projectColor: this.state.colorValue, 
+                projectName: this.state.titleValue,
+                projectColor: this.state.colorValue,
                 projectCreator: this.props.getAppState().user.uid,
-                projectPhotoURL: this.props.getAppState().user.photoURL
+                projectPhotoURL: this.props.getAppState().user.photoURL,
+                isPersonalDashboardProject: false,
             }
         }).then((newLocation) => {
             let newState = { ...this.state }
@@ -139,7 +151,7 @@ class CreateProjectForm extends Component {
                     then: (dat) => {
                         newState.project = dat;
                         this.setState(newState)
-                        console.log(dat)
+                        //console.log(dat)
                         const key = this.state.key
                         rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
                             data: dat
@@ -149,7 +161,9 @@ class CreateProjectForm extends Component {
                                 rebase.update(`users/${user.uid}/notifications/${this.state.key}`, {
                                     data: dat
                                 })
+                                return true
                             }
+                            return false
                         })
                     }
                 })
@@ -160,21 +174,60 @@ class CreateProjectForm extends Component {
 
     }
 
+    renderSwatch = (color) => {
+        if (color == this.state.colorValue) {
+            return <div onClick={() => {
+                this.changeColorValue(color)
+            }} className="colorSwatchSelector" key={color} style={{backgroundColor: color, borderWidth: '2px', borderStyle: 'solid'}}></div>
+        } else {
+            return <div onClick={() => {
+                this.changeColorValue(color)
+            }} className="colorSwatchSelector" key={color} style={{backgroundColor: color}}></div>
+        }
+    }
+
     // Mandatory render method
     render = () => {
+        let color = "#3498DB";
+        let colors = ['#E74C3C', '#E67E22', '#F1C40F', '#E91E63', '#9B59B6', '#3498DB', '#2ECB71', '#18AE90']
         return (
             <div id="taskDashboard">
-                <i className="material-icons createProjectButton" onClick={() => {
-                    this.props.goToUrl("dashboard")
-                }}>backspace</i>
-                <input type="text" placeholder="Project title" className="createProjectInput" onChange={this.changeTitleValue}
+                <div id="projectTitleContainer" style={{backgroundColor: color}}>
+                    <img src={leftArrow} style={{height: '30px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
+                        this.props.goToUrl("dashboard")
+                    }} />
+                    <h1 style={{left: '35px'}} id="projectTitle">Create New Project</h1>
+
+                </div>
+                <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue}
                 value={this.state.titleValue} />
-                <input type="text" placeholder="Email of person you'd like to invite" className="createProjectInput"
-                value={this.state.inviteValue} onChange={this.changeInviteValue} onKeyDown={this.enterInviteValue} />
-                <p className="errorBox">{this.state.errorValue}</p>
-                <button className="createProjectInput" onClick={this.emailValidationProcess}>Invite user</button>
+
+                <div id="colorPicker">
+                    <h4>Project Color:</h4>
+                    {/* BEN THIS IS WHERE THE COLORS WILL GO, MY DUDE*/}
+                    {colors.map((color) => {
+                        return this.renderSwatch(color)
+                    })}
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
+                    <div id="addUserIconProjectContainer" title="Invite User" onClick={this.emailValidationProcess}>
+                        <svg height="23" width="23">
+                            <line x1="4" y1="9" x2="15" y2="9" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                            <line x1="9.5" y1="4" x2="9.5" y2="15" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                        </svg>
+                        {/*This should only appear if it is selected as the project*/}
+
+                    </div>
+                    <input type="text" placeholder="Email of person you'd like to invite" className="createProjectInput"
+                    value={this.state.inviteValue} onChange={this.changeInviteValue} onKeyDown={this.enterInviteValue} style={{width: '100%'}}/>
+                </div>
+                <div >
+                    <p className="errorBox">{this.state.errorValue}</p>
+                </div>
+
+                {/*}<button className="createProjectInput" onClick={this.emailValidationProcess}>Invite user</button>*/}
                 <InviteList users={this.state.userList} />
-                <button className="createProjectInput" onClick={this.createProject}>Create project</button>
+                <button className="createProjectFinalButton" onClick={this.createProject}>Create project</button>
             </div>
         )
     }

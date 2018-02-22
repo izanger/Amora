@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Row, Grid, Col } from 'react-bootstrap'
 
-import tempPic from "../images/temp.jpg"
-import line from "../images/Line/Line@3x.png"
 import UserIcon from "./UserIcon.js"
 import "./ProjectCollaboratorsBar.css"
 
@@ -25,13 +21,16 @@ class ProjectCollaboratorsBar extends Component {
     4) If it's selected, have the box show on the side
     */
     render = () => {
-        let color = "#3CB4CB";
-        const userKeys = Object.keys(this.props.users)
+        // let color = "#3CB4CB";
+        let userKeys
+        if (this.props.users) {
+            userKeys = Object.keys(this.props.users)
+        }
         return (
             <div>
                 <div id="ProjectCollaboratorsBarContainter">
-                    {userKeys.map((key) => {
-                        return (<UserIcon getAppState={this.props.getAppState} key={key} user={this.props.users[key]} />)
+                    {userKeys && userKeys.map((key) => {
+                        return (<UserIcon color={this.props.color} getAppState={this.props.getAppState} key={key} user={this.props.users[key]} />)
                     })}
                 </div>
             </div>
