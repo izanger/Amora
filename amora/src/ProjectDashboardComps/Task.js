@@ -365,7 +365,7 @@ class Task extends Component {
                             <Comment />
                             <Comment />
                         </div>
-                        <div className="closeTaskButton" onClick={this.switch}>CLICK ME TO CLOSE THE THING</div>
+                        <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
                     </div>
                 </div>
 
