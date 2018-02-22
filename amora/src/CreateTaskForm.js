@@ -44,7 +44,64 @@ class CreateTaskForm extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
+    doMathToFixDateOk = () => {
+        //2018-02-21T18:28:59-05:00
+        const date = moment();
+        //2018  02   21T18:28:59  05:00
+
+        const firstSplit = date.split("-");
+
+        const month = firstSplit[1]; //02
+
+        const year = firstSplit[0];
+
+        //21     18:28:59
+        const secondSplit = firstSplit[2].split("T");
+
+        const day = secondSplit[0];
+
+        //time to assemble the pieces dudes
+
+        const finalOutput = "" + month + "/" + day + "/" + year;
+
+        return finalOutput;
+
+
+
+
+    }
+    fixDeadline = (date) => {
+        //2018-02-21T18:28:59-05:00
+        //const date = date
+        //2018  02   21T18:28:59  05:00
+
+        const firstSplit = date.split("-");
+
+        const month = firstSplit[1]; //02
+
+        const year = firstSplit[0];
+
+        //21     18:28:59
+        const secondSplit = firstSplit[2].split("T");
+
+        const day = secondSplit[0];
+
+        //time to assemble the pieces dudes
+
+        const finalOutput = "" + month + "/" + day + "/" + year;
+
+        return finalOutput;
+
+
+
+
+    }
+
     handleChange(date) {
+        console.log(date)
+        //var deadlineFixed = this.fixDeadline(date.format());
+        //newState.deadline = deadlineFixed;
+        //console.log("NEWDATE: " + deadlineFixed)
         this.setState({
           deadline: date
         });
@@ -73,9 +130,11 @@ class CreateTaskForm extends Component {
 
     // Method for changing deadline value
     changeDeadline = (event) => {
-        const newState = { ...this.state }
-        newState.deadline = event.target.value;
-        this.setState(newState)
+        // const newState = { ...this.state }
+        // var deadlineFixed = this.fixDeadline(event.target.value.format());
+        // newState.deadline = deadlineFixed;
+        // console.log("NEWDATE: " + deadlineFixed)
+        // this.setState(newState)
     }
 
     // Checks to see if task is valid or not
@@ -97,6 +156,11 @@ class CreateTaskForm extends Component {
         return true
     }
 
+    dateSelected = (selectedDate) => {
+
+        return selectedDate.format()
+    }
+
     myFunction = () => {
         console.log("TESTING")
         document.getElementById("myDropdown").classList.toggle("show");
@@ -110,18 +174,23 @@ class CreateTaskForm extends Component {
 
         var dropSelect = document.getElementById("dropdown");
         var selectedText = dropSelect.options[dropSelect.selectedIndex].text;
+        console.log(selectedText)
+        var deadlineFixed = this.fixDeadline(this.state.deadline.format());
+        //console.log("NEWIISTSD: " +deadlineFixed)
 
         const newState = { ...this.state }
         newState.priorityLevel = selectedText
+        //newState.deadline = deadlineFixed
+
         this.setState(newState)
 
         rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
             data: {
                 taskName: this.state.titleValue,
                 taskDescription: this.state.descriptionValue,
-                priorityLevel: this.state.priorityLevel,
+                priorityLevel: selectedText,
                 EstimatedTimeValue: this.state.estimatedTimeValue,
-                deadline: this.state.deadline.format(),
+                deadline: deadlineFixed,
                 taskCreator: this.props.getAppState().user.uid,
 
             }
@@ -152,14 +221,14 @@ class CreateTaskForm extends Component {
                 <input type="text" placeholder="Description of task" className="createProjectInput"
                 value={this.state.descriptionValue} onChange={this.changeDescriptionValue} />
 
-                <input type="text" placeholder="Estimated time" className="createProjectInput"
+                <input type="number" placeholder="Estimated time in hours" className="createProjectInput"
                 value={this.state.estimatedTimeValue} onChange={this.changeEstimatedTimeValue} />
 
                 <div id="createTaskMoreInfo">
                     <h4>Deadline:</h4><DatePicker placeholder="Deadline" id="dateSelector" selected={this.state.deadline} onChange={this.handleChange}/><br></br>
 
                     <h4 style={{marginRight: '5px'}}>Priority:</h4>
-                    <select name="dropbtn" id="dropdown">
+                    <select name="dropdown" id="dropdown">
                         <option value="1">Low</option>
                         <option value="2">Medium</option>
                         <option value="3">High</option>
