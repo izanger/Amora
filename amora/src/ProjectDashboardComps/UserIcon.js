@@ -28,6 +28,7 @@ class UserIcon extends Component {
     componentWillMount() {
         this.getInfo();
         this.getEmail();
+        console.log(this.props.userID)
      }
 
     onOpenModal = () => {
@@ -43,7 +44,7 @@ class UserIcon extends Component {
         rebase.fetch(`users/${id}/displayName`, {
             context: this,
         }).then(data => {
-            console.log(data)
+            //console.log(data)
             let newState = { ...this.state}
             newState.displayName = data
             this.setState(newState);        
@@ -54,7 +55,7 @@ class UserIcon extends Component {
         rebase.fetch(`users/${id}/email`, {
             context: this,
         }).then(data => {
-            console.log(data)
+            //console.log(data)
             let newState = { ...this.state}
             newState.email = data
             this.setState(newState);        
