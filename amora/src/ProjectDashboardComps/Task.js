@@ -198,6 +198,21 @@ class Task extends Component {
             this.props.setProjectDashboardState(newState)
         }
     }
+    changePriorityLevel = (event) => {
+        if (event.target.value !== "") {
+            const newState = this.props.getProjectDashboardState()
+            newState.project.taskList[this.props.taskKey].priorityLevel = event.target.value
+            this.props.setProjectDashboardState(newState)
+        }
+    }
+
+    changeEstimatedTimeValue = (event) => {
+        if (event.target.value !== "") {
+            const newState = this.props.getProjectDashboardState()
+            newState.project.taskList[this.props.taskKey].EstimatedTimeValue = event.target.value
+            this.props.setProjectDashboardState(newState)
+        }
+    }
 
     getPriorityLevel = () => {
         console.log(this.props.task.priorityLevel)
@@ -317,7 +332,7 @@ class Task extends Component {
                             </svg>
                             <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
                         </div>
-                        <h5 style={{right: '12px'}}><b>{this.props.task.priorityLevel}</b> | {(this.props.task.EstimatedTimeValue) + " hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </h5>
+                        <h5 style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </h5>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
                         <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
@@ -350,7 +365,7 @@ class Task extends Component {
                             <Comment />
                             <Comment />
                         </div>
-                        <div className="closeTaskButton" onClick={this.switch}>CLICK ME TO CLOSE THE THING</div>
+                        <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
                     </div>
                 </div>
 
