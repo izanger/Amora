@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
+import rebase, { auth, google} from "../rebase.js"
+import { Route, Switch, Redirect } from "react-router-dom";
+import { Row, Grid, Col } from 'react-bootstrap'
 
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
+
+import { App } from "../App.js"
+
 
 
 class UserIcon extends Component {
@@ -60,7 +66,7 @@ class UserIcon extends Component {
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                     <Modal open={open} onClose={this.onCloseModal} little>
-                      <h2>Simple centered modal.<br/><br/>Here is some more text.<br/><br/>The rest of it.</h2>
+                      <h2>{this.props.getAppState().user.displayName}<br/><br/>{this.props.getAppState().user.email}</h2>
                     </Modal>
             </div>
         )

@@ -7,6 +7,10 @@ import 'react-responsive-modal/lib/react-responsive-modal.css';
 import UserIcon from "./UserIcon.js"
 import AddUserButton from "./AddUserButton.js"
 import Comment from "./TaskComment.js"
+import funnytemp from "../images/temp.jpg"
+import "./TaskComment.css"
+
+
 
 
 class Task extends Component {
@@ -206,8 +210,21 @@ class Task extends Component {
                         <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
                         html={this.props.task.taskDescription} /> </p>
                         <div id="taskUsers">
-                            <UserIcon />
-                            <UserIcon />
+
+                            {/*Temporarily commented out. Uncomment when actual image of person is displayed 
+                            <UserIcon getAppState={this.props.getAppState} />
+                            <UserIcon getAppState={this.props.getAppState} />*/}
+
+                             {/*Temporary image placeholder*/}
+                            <div id="userIconContainer" >
+                                <img src={funnytemp} className="projectPicture"/>                     
+                                <div id="projectIndicator" ></div>
+                            </div> 
+                            <div id="userIconContainer" >
+                                <img src={funnytemp} className="projectPicture"/>                     
+                                <div id="projectIndicator" ></div>
+                            </div> 
+
                             <AddUserButton />
 
                             <div id="Task">
