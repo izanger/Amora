@@ -11,6 +11,7 @@ class ProjectCollaboratorsBar extends Component {
         this.state = {
 
         }
+        
     }
 
     /*
@@ -26,11 +27,12 @@ class ProjectCollaboratorsBar extends Component {
         if (this.props.users) {
             userKeys = Object.keys(this.props.users)
         }
+        console.log(this.props)
         return (
             <div>
                 <div id="ProjectCollaboratorsBarContainter">
                     {userKeys && userKeys.map((key) => {
-                        return (<UserIcon color={this.props.color} getAppState={this.props.getAppState} key={key} user={this.props.users[key]} />)
+                        return (<UserIcon color={this.props.color} getAppState={this.props.getAppState} key={key} user={this.props.users[key]} userID={key} />)
                     })}
                 </div>
             </div>

@@ -7,6 +7,13 @@ import 'react-responsive-modal/lib/react-responsive-modal.css';
 import UserIcon from "./UserIcon.js"
 import AddUserButton from "./AddUserButton.js"
 import Comment from "./TaskComment.js"
+import funnytemp from "../images/temp.jpg"
+import "./TaskComment.css"
+
+
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import { validateDate } from "../apphelpers.js"
 
 
 class Task extends Component {
@@ -20,7 +27,9 @@ class Task extends Component {
            description: 'I am a very descriptive description!',
            taskID: "",
            archived: false,
-           color: '#3CB4CB'
+           color: '#3CB4CB',
+           editedDate: false
+        
        }
     }
 
@@ -44,7 +53,7 @@ class Task extends Component {
                  marginBottom: '5px'
             })
         } else {
-            return ({height: '40px'})
+            return ({height: '80px'})
 
         }
 
@@ -172,6 +181,16 @@ class Task extends Component {
         }
     }
 
+    changeDeadline = (event) => {
+        if (validateDate(event.target.value)){
+            console.log("SUCCESS")
+            const newState = this.props.getProjectDashboardState()
+            newState.project.taskList[this.props.taskKey].deadline = event.target.value;
+            this.props.setProjectDashboardState(newState);
+        }
+
+    }
+
     changeTaskDescription = (event) => {
         if (event.target.value !== "") {
             const newState = this.props.getProjectDashboardState()
@@ -180,9 +199,107 @@ class Task extends Component {
         }
     }
 
+    getPriorityLevel = () => {
+        console.log(this.props.task.priorityLevel)
+        return "!!"
+    
+
+    }
+
+    getEstimatedTime = () => {
+
+
+    }
+    // fixDeadline = () => {
+    //     //2018-02-21T18:28:59-05:00
+    //     const date = this.props.task.deadline
+    //     //2018  02   21T18:28:59  05:00
+
+    //     const boolContinue = date.includes("-");
+    //     if (!boolContinue){
+    //         const newState = { ...this.state }
+    //     newState.editedDate = true
+    //     this.setState(newState)
+    //         return date;
+    //     }
+    //     const firstSplit = date.split("-");
+
+    //     const month = firstSplit[1]; //02
+
+    //     const year = firstSplit[0];
+
+    //     //21     18:28:59
+    //     const secondSplit = firstSplit[2].split("T");
+
+    //     const day = secondSplit[0];
+
+    //     //time to assemble the pieces dudes
+
+    //     const finalOutput = "" + month + "/" + day + "/" + year;
+
+    //     return finalOutput;
+
+
+
+
+    // }
+    
+
+    getDaysLeft = () => {
+            //const thing = this.props.task.deadline
+            const fixedDeadline = this.props.task.deadline
+            //console.log(fixedDeadline)
+            if (this.state.open){
+                console.log("HERE" + this.props.task.deadline)
+                return this.props.task.deadline;
+            }
+            
+        
+        // MM/DD/YY
+
+        const dueDate = fixedDeadline.split("/");
+        //const curDate = this.fixCurrentDate.split("/");
+        console.log(dueDate[2])
+        console.log(dueDate[1])
+        console.log(dueDate[0])
+        const year = dueDate[2];
+        let month = dueDate[0];
+        const day = dueDate[1]
+        month = month - 1
+
+        moment.updateLocale('en', {
+            relativeTime : {
+                future: "in %s",
+                past:   "%s ago",
+                s  : 'a few seconds',
+                ss : '%d seconds',
+                m:  "a minute",
+                mm: "%d minutes",
+                h:  "an hour",
+                hh: "%d hours",
+                d:  "a day",
+                dd: "%d days",
+                M:  "a month",
+                MM: "%d months",
+                y:  "a year",
+                yy: "%d years"
+            }
+        });
+
+        // const banana = moment([dueDate[2], dueDate[1], dueDate[0]]).fromNow();
+        console.log("Year: " + year)
+        console.log("Month: " + month)
+        console.log("Day: " + day)
+        const banana = moment([year, month, day]).fromNow();
+        console.log("THIS ONE: " +banana)
+
+        return banana
+    }
+
 
 
     render = () => {
+        console.log(this.props.task.priorityLevel)
         return (
             <div onClick={() => {
                 if (!this.state.open) {
@@ -200,14 +317,27 @@ class Task extends Component {
                             </svg>
                             <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
                         </div>
-                        <h5 style={{right: '12px'}}><b>!!!</b> | 7h | 3d</h5>
+                        <h5 style={{right: '12px'}}><b>{this.props.task.priorityLevel}</b> | {(this.props.task.EstimatedTimeValue) + " hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </h5>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
                         <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
                         html={this.props.task.taskDescription} /> </p>
                         <div id="taskUsers">
-                            <UserIcon />
-                            <UserIcon />
+
+                            {/*Temporarily commented out. Uncomment when actual image of person is displayed 
+                            <UserIcon getAppState={this.props.getAppState} />
+                            <UserIcon getAppState={this.props.getAppState} />*/}
+
+                             {/*Temporary image placeholder*/}
+                            <div id="userIconContainer" >
+                                <img src={funnytemp} className="projectPicture"/>                     
+                                <div id="projectIndicator" ></div>
+                            </div> 
+                            <div id="userIconContainer" >
+                                <img src={funnytemp} className="projectPicture"/>                     
+                                <div id="projectIndicator" ></div>
+                            </div> 
+
                             <AddUserButton />
 
                             <div id="Task">
