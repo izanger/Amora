@@ -30,7 +30,7 @@ class TaskComment extends Component {
                     {/*Temporary image placeholder*/}
                     <div id="userIconContainer" >
                         <img src={funnytemp} className="projectPicture"/>                     
-                        <div id="projectIndicator" style={{backgroundColor: color}}></div>
+                        <div id="projectIndicator" ></div>
                     </div>          
 
                     <div id="taskNameAndComment">

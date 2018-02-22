@@ -60,6 +60,7 @@ class UserIcon extends Component {
 
     render = () => {
         const { open } = this.state;
+        console.log(this.props)
         return (
             <div onClick={this.onOpenModal} id="userIconContainer" style={this.style()}>
                 <img alt={"Project"} src={this.props.user} className="projectPicture"/>
