@@ -2,7 +2,9 @@
   "name": "amora",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://izanger.github.io/CS307-Project/",
   "dependencies": {
+    "gh-pages": "^1.1.0",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
     "re-base": "^3.2.2",
@@ -19,6 +21,8 @@
     "react-scripts": "1.1.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
