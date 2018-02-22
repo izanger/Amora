@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import rebase from "../rebase";
 import settingsIcon from "../images/Icons/Settings.svg"
 import searchIcon from "../images/Icons/Search.svg"
 import archiveIcon from "../images/Icons/Archive.svg"
@@ -15,19 +15,64 @@ class ProjectTitleBar extends Component {
         super()
     
         this.state = {
-            open: false
+            open: false,
+            titleValue: "",
         }
+    }
+
+    componentDidMount = () => {
+        const newState = this.state
+        newState.colorValue = this.props.getAppState().currentProject.projectColor
+        this.setState(newState)
     }
 
     onOpenModal = () => {
         this.setState({ open: true });
       };
   
-      onCloseModal = () => {
+    onCloseModal = () => {
         this.setState({ open: false });
-      };
+    };
 
+    changeTitleValue = (event) => {
+        const newState = { ...this.state }
+        newState.titleValue = event.target.value
+        this.setState(newState)
+    }
 
+    submitChanges = () => {
+        const newState = this.props.getAppState();
+        newState.currentProject.projectName = this.state.titleValue
+        newState.currentProject.projectColor = this.state.colorValue
+        this.props.setAppState(newState)
+
+        rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
+            data: {
+                projectName: this.state.titleValue,
+            }
+        })
+        rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
+            data: {
+                projectColor: this.state.colorValue,
+            }
+        })
+        rebase.update(`users/${this.props.getAppState().user.uid}/projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
+            data: {
+                projectColor: this.state.colorValue,
+            }
+        })
+        rebase.update(`users/${this.props.getAppState().user.uid}/projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
+            data: {
+                projectName: this.state.titleValue,
+            }
+        })
+    }
+
+    changeColorValue = (color) => {
+        const newState = { ...this.state }
+        newState.colorValue = color
+        this.setState(newState)
+    }
 
     /*
     This currently only is the box. It needs the following:
@@ -38,7 +83,16 @@ class ProjectTitleBar extends Component {
     */
 
    renderSwatch = (color) => {
-        return <div className="colorSwatchSelector" key={color} style={{backgroundColor: color, borderWidth: '2px', borderStyle: 'solid'}}></div>
+        //return <div className="colorSwatchSelector" key={color} style={{backgroundColor: color, borderWidth: '2px', borderStyle: 'solid'}}></div>
+        if (color == this.state.colorValue) {
+            return <div onClick={() => {
+                this.changeColorValue(color)
+            }} className="colorSwatchSelector" key={color} style={{backgroundColor: color, borderWidth: '2px', borderStyle: 'solid'}}></div>
+        } else {
+            return <div onClick={() => {
+                this.changeColorValue(color)
+            }} className="colorSwatchSelector" key={color} style={{backgroundColor: color}}></div>
+        }
     }
 
 
@@ -56,7 +110,7 @@ class ProjectTitleBar extends Component {
                   
                    <img alt={"Settings"} src={settingsIcon} title={"Settings"} onClick={this.onOpenModal} id="projectSettingsIcon"/>
                    <Modal open={open} onClose={this.onCloseModal} little>
-                   <input type="text" placeholder="Enter Project Name" className="createProjectInput" />
+                   <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue} />
 
                 <div id="colorPicker">
                     <h4>Project Color:</h4>
@@ -65,6 +119,7 @@ class ProjectTitleBar extends Component {
                         return this.renderSwatch(color)
                     })}
                 </div>
+                <button className="submitFinalButton" onClick={this.submitChanges}>Submit</button>
                     </Modal>
                   
                    <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} id="projectSettingsIcon"/>

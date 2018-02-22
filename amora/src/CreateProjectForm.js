@@ -35,7 +35,7 @@ class CreateProjectForm extends Component {
         const newState = { ...this.state }
         newState.colorValue = color
         this.setState(newState)
-        console.log(this.state)
+        //console.log(this.state)
     }
 
     // Method for changins invite value in state

@@ -103,7 +103,7 @@ class Home extends Component {
                         )
                     }} />
                     <Route path="/projects/:id" render={(props) => <ProjectDashboard {...props} 
-                    goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} /> } />
+                    goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.props.setAppState} /> } />
                     <Route path="/createproject" render={() => {
                         return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                     }} />
