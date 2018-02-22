@@ -18,10 +18,17 @@ class UserIcon extends Component {
 
       this.state = {
            open: false,
-           isManager: true //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
-       };
+           isManager: true, //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
+           displayName: "",
+           email: "",
+        };
        this.color = "#3498DB";
     }
+
+    componentWillMount() {
+        this.getInfo();
+        this.getEmail();
+     }
 
     onOpenModal = () => {
       this.setState({ open: true });
@@ -30,6 +37,27 @@ class UserIcon extends Component {
     onCloseModal = () => {
       this.setState({ open: false });
     };
+
+    getInfo() {
+        const id = this.props.userID  
+        rebase.fetch(`users/${id}/displayName`, {
+            context: this,
+        }).then(data => {
+            let newState = { ...this.state}
+            newState.displayName = data
+            this.setState(newState);        
+          })
+    }
+    getEmail() {
+        const id = this.props.userID  
+        rebase.fetch(`users/${id}/email`, {
+            context: this,
+        }).then(data => {
+            let newState = { ...this.state}
+            newState.email = data
+            this.setState(newState);        
+          })
+    }
 
     /*
     This currently only is the box. It needs the following:
@@ -67,7 +95,7 @@ class UserIcon extends Component {
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                     <Modal open={open} onClose={this.onCloseModal} little>
-                      <h2>{this.props.getAppState().user.displayName}<br/><br/>{this.props.getAppState().user.email}</h2>
+                      <h2>{this.state.displayName}<br/><br/>{this.state.email}</h2>
                     </Modal>
             </div>
         )
