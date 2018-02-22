@@ -27,6 +27,7 @@ class ProjectCollaboratorsBar extends Component {
         if (this.props.users) {
             userKeys = Object.keys(this.props.users)
         }
+        console.log(this.props)
         return (
             <div>
                 <div id="ProjectCollaboratorsBarContainter">
