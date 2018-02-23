@@ -146,6 +146,14 @@ class ProjectDashboard extends Component {
             else {
                 console.log("ERROR: Unit test 3 Failed!")
             }
+
+            console.log("Running test 4: Sync Estimated Time")
+            //this.createTask()
+            this.sleep(10000)
+            this.findEstimatedTime()
+            //this.removeTask()
+            this.sleep(10000)
+
           }).catch(error => {
             //handle error
             console.log("ERROR: Unit test 2 Failed!")
@@ -184,28 +192,164 @@ class ProjectDashboard extends Component {
               });
     }
 
+    findEstimatedTime = () => {
+        console.log("Estimated time on task: 10")
+
+        let taskTime = ""
+        rebase.fetch(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
+            context: this,
+            asArray: true
+          }).then(data => {
+            //console.log(data);
+            let present = false;
+            
+            const name = "Unit Test Task"
+            for (let tasks of data) {
+                //console.log(tasks);
+                if (tasks.taskName === name){
+                    taskTime = tasks.EstimatedTimeValue
+                    console.log(tasks.EstimatedTimeValue)
+                }
+            }
+            console.log("Estimated time in database: " + taskTime)
+        if (taskTime == 10){
+            console.log("Success: Estimated Time synced with Firebase!")
+        }
+        else {
+            console.log("ERROR: Unit Test 4 Failed!")
+        }
+        })
+        // console.log("Estimated time in database: " + taskTime)
+        // if (taskTime == 10){
+        //     console.log("Success: Estimated Time synced with Firebase!")
+        // }
+        // else {
+        //     console.log("ERROR: Unit Test 4 Failed!")
+        // }
+
+    }
+
+    findDeadlineDate = () => {
+        console.log("Deadline on task: 02/23/2018")
+
+        let taskDeadline = ""
+        rebase.fetch(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
+            context: this,
+            asArray: true
+          }).then(data => {
+            //console.log(data);
+            let present = false;
+            
+            const name = "Unit Test Task"
+            for (let tasks of data) {
+                //console.log(tasks);
+                if (tasks.taskName === name){
+                    taskDeadline = tasks.deadline
+                }
+            }
+            console.log("Deadline in database: " + taskDeadline)
+        if (taskDeadline === "02/23/2018"){
+            console.log("Success: Deadline synced with Firebase!")
+        }
+        else {
+            console.log("ERROR: Unit Test 5 Failed!")
+        }
+        })
+        // console.log("Deadline in database: " + taskDeadline)
+        // if (taskDeadline === "02/23/2018"){
+        //     console.log("Success: Deadline synced with Firebase!")
+        // }
+        // else {
+        //     console.log("ERROR: Unit Test 5 Failed!")
+        // }
+    }
+
+    findPriorityLevel = () => {
+
+        console.log("Priority on task: High")
+
+        let taskPriority = ""
+        rebase.fetch(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
+            context: this,
+            asArray: true
+          }).then(data => {
+            //console.log(data);
+            let present = false;
+            
+            const name = "Unit Test Task"
+            for (let tasks of data) {
+                //console.log(tasks);
+                if (tasks.taskName === name){
+                    taskPriority = tasks.priorityLevel
+                }
+            }
+            console.log("Priority Level in database: " + taskPriority)
+            if (taskPriority === "High"){
+                console.log("Success: Priority level synced with Firebase!")
+            }
+            else {
+                console.log("ERROR: Unit Test 6 Failed!")
+            }
+        })
+        // console.log("Priority Level in database: " + taskPriority)
+        // if (taskPriority === "High"){
+        //     console.log("Success: Priority level synced with Firebase!")
+        // }
+        // else {
+        //     console.log("ERROR: Unit Test 6 Failed!")
+        // }
+        
+
+    }
+
+    sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+          if ((new Date().getTime() - start) > milliseconds){
+            break;
+          }
+        }
+      }
 
     runUnitTests = () => {
-        console.log("Running test 1: Add Task to Project")
         //UNIT TEST 1
+        console.log("Running test 1: Add Task to Project")
         this.createTask()
-        // END UNIT TEST 1
+        this.sleep(10000)
 
         //UNIT TEST 2
         console.log("Running test 2: Check Task is in database")
         this.checkInDataBase()
-        //END UNIT TEST 2
+        this.sleep(10000)
 
         //UNIT TEST 3
         console.log("Running test 3: Remove task from database")
         //this.createTask()
-        this.removeTask()
-        //END UNIT TEST 3
+        //this.removeTask()
+        this.sleep(10000)
+       
 
+        //UNIT TEST 4
+        // console.log("Running test 4: Sync Estimated Time")
+        // //this.createTask()
+        // this.sleep(10000)
+        // this.findEstimatedTime()
+        // //this.removeTask()
+        // this.sleep(10000)
 
-              
+        //UNIT TEST 5
+        // console.log("Running test 5: Sync Deadline Date")
+        // //this.createTask()
+        // this.findDeadlineDate()
+        // //this.removeTask()
+        // this.sleep(10000)
 
-
+        //UNIT TEST 6
+        console.log("Running test 6: Sync Priority Level")
+        //this.createTask()
+        this.findPriorityLevel()
+        //this.removeTask()
+        this.sleep(10000)
 
     }
 
