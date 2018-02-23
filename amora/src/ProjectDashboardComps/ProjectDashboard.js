@@ -106,6 +106,109 @@ class ProjectDashboard extends Component {
         return this.state
     }
 
+    createTask = () => {
+
+        rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
+            data: {
+                taskName: "Unit Test Task",
+                taskDescription: "This is a unit test",
+                priorityLevel: "High",
+                EstimatedTimeValue: "10",
+                deadline: "02/23/2018",
+                taskCreator: this.props.getAppState().user.uid,
+
+            }
+        }).then((data) => {
+            this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)
+            })
+            
+            console.log("Success: Task created");
+    }
+
+    checkInDataBase = () => {
+
+        rebase.fetch(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
+            context: this,
+            asArray: true
+          }).then(data => {
+            //console.log(data);
+            let present = false;
+            const name = "Unit Test Task"
+            for (let tasks of data) {
+                //console.log(tasks);
+                if (tasks.taskName === name){
+                    present = true;
+                }
+            }
+            if (present){
+                console.log("Success: Task stored in Firebase")
+            }
+            else {
+                console.log("ERROR: Unit test 3 Failed!")
+            }
+          }).catch(error => {
+            //handle error
+            console.log("ERROR: Unit test 2 Failed!")
+          })
+
+    }
+
+    removeTask = () => {
+        let taskKeyID = ""
+        rebase.fetch(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
+            context: this,
+            asArray: true
+          }).then(data => {
+            //console.log(data);
+            let present = false;
+            
+            const name = "Unit Test Task"
+            for (let tasks of data) {
+                //console.log(tasks);
+                if (tasks.taskName === name){
+                    taskKeyID = tasks.key
+                }
+            }
+        })
+    
+
+
+            rebase.remove(`projects/${this.props.getAppState().currentProject.key}/taskList/${taskKeyID}`, function(err){
+                if(!err){
+                    console.log("Success: Task removed from Firebase")
+                    
+                }
+                else {
+                    console.log("Error: Unit test 3 Failed!")
+                }
+              });
+    }
+
+
+    runUnitTests = () => {
+        console.log("Running test 1: Add Task to Project")
+        //UNIT TEST 1
+        this.createTask()
+        // END UNIT TEST 1
+
+        //UNIT TEST 2
+        console.log("Running test 2: Check Task is in database")
+        this.checkInDataBase()
+        //END UNIT TEST 2
+
+        //UNIT TEST 3
+        console.log("Running test 3: Remove task from database")
+        //this.createTask()
+        this.removeTask()
+        //END UNIT TEST 3
+
+
+              
+
+
+
+    }
+
 
     // setProjectDashboardState = () =>{
 
@@ -182,7 +285,7 @@ class ProjectDashboard extends Component {
                             this.props.goToUrl("/createtask");
                         }} /></div>
                     </div>
-
+                    <button className="unitTestButton" onClick={this.runUnitTests.bind(null,null)}>Run Unit Tests</button>
 
                 </div>
             )

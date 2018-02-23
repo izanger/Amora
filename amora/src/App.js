@@ -90,7 +90,7 @@ class App extends Component {
         newState.user = newUser
         this.setState(newState)
         this.checkIfUserIsInDatabase(newUser)
-        console.log(user)
+        //console.log(user)
         this.bindingref = rebase.syncState(`users/${this.state.user.uid}`, {
           context: this,
           state: 'user',
