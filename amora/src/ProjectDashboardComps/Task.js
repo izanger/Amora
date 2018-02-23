@@ -29,7 +29,7 @@ class Task extends Component {
            archived: false,
            color: '#3CB4CB',
            editedDate: false
-        
+
        }
     }
 
@@ -53,7 +53,7 @@ class Task extends Component {
                  marginBottom: '5px'
             })
         } else {
-            return ({height: '80px'})
+            return ({height: '40px'})
 
         }
 
@@ -62,15 +62,15 @@ class Task extends Component {
     testFunction = () => {
         var response = window.confirm("Are you sure you want to delete this task?")
         if (response == true){
-            
-        
+
+
 
 
         if(!this.props.archived){
             rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
                 if(!err){
                     console.log("fiddlesticks")
-                    
+
                 }
               });
         } else {
@@ -95,8 +95,8 @@ class Task extends Component {
             })
         }
     }
-      
-        
+
+
 
     checkRectIsArchived = () => {
         if (this.props.archived){
@@ -217,7 +217,7 @@ class Task extends Component {
     getPriorityLevel = () => {
         console.log(this.props.task.priorityLevel)
         return "!!"
-    
+
 
     }
 
@@ -258,7 +258,7 @@ class Task extends Component {
 
 
     // }
-    
+
 
     getDaysLeft = () => {
             //const thing = this.props.task.deadline
@@ -268,8 +268,8 @@ class Task extends Component {
                 //console.log("HERE" + this.props.task.deadline)
                 return this.props.task.deadline;
             }
-            
-        
+
+
         // MM/DD/YY
 
         const dueDate = fixedDeadline.split("/");
@@ -332,26 +332,26 @@ class Task extends Component {
                             </svg>
                             <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
                         </div>
-                        <h5 style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </h5>
+                        <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
                         <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
                         html={this.props.task.taskDescription} /> </p>
                         <div id="taskUsers">
 
-                            {/*Temporarily commented out. Uncomment when actual image of person is displayed 
+                            {/*Temporarily commented out. Uncomment when actual image of person is displayed
                             <UserIcon getAppState={this.props.getAppState} />
                             <UserIcon getAppState={this.props.getAppState} />*/}
 
                              {/*Temporary image placeholder*/}
                             <div id="userIconContainer" >
-                                <img src={funnytemp} className="projectPicture"/>                     
+                                <img src={funnytemp} className="projectPicture"/>
                                 <div id="projectIndicator" ></div>
-                            </div> 
+                            </div>
                             <div id="userIconContainer" >
-                                <img src={funnytemp} className="projectPicture"/>                     
+                                <img src={funnytemp} className="projectPicture"/>
                                 <div id="projectIndicator" ></div>
-                            </div> 
+                            </div>
 
                             <AddUserButton />
 

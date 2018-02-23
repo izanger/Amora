@@ -68,6 +68,13 @@
     font-weight: lighter;
 }
 
+#taskContentInfo {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    padding: 0px;
+}
+
 #taskUsers {
     display: flex;
     flex-direction: row;
