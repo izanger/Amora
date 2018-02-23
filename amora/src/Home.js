@@ -120,7 +120,7 @@ class Home extends Component {
                 </Switch>
 
                 <div id="myDay">
-                    This is my day, okay
+                    Today
                 </div>
             </div>
         )

@@ -12,7 +12,7 @@ class TaskComment extends Component {
         super()
         this.state = {
             name: 'User\'s Name',
-            comment: 'Comment and the like. This is a very nice comment. Lots to say. I just won\' shutup, now will I?'
+            comment: 'Example Comment'
         }
     }
 
