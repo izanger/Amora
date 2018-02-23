@@ -265,7 +265,7 @@ class Task extends Component {
             const fixedDeadline = this.props.task.deadline
             //console.log(fixedDeadline)
             if (this.state.open){
-                console.log("HERE" + this.props.task.deadline)
+                //console.log("HERE" + this.props.task.deadline)
                 return this.props.task.deadline;
             }
             
@@ -274,9 +274,9 @@ class Task extends Component {
 
         const dueDate = fixedDeadline.split("/");
         //const curDate = this.fixCurrentDate.split("/");
-        console.log(dueDate[2])
-        console.log(dueDate[1])
-        console.log(dueDate[0])
+        //console.log(dueDate[2])
+        //console.log(dueDate[1])
+        //console.log(dueDate[0])
         const year = dueDate[2];
         let month = dueDate[0];
         const day = dueDate[1]
@@ -302,11 +302,11 @@ class Task extends Component {
         });
 
         // const banana = moment([dueDate[2], dueDate[1], dueDate[0]]).fromNow();
-        console.log("Year: " + year)
-        console.log("Month: " + month)
-        console.log("Day: " + day)
+        //console.log("Year: " + year)
+        //console.log("Month: " + month)
+        //console.log("Day: " + day)
         const banana = moment([year, month, day]).fromNow();
-        console.log("THIS ONE: " +banana)
+        //console.log("THIS ONE: " +banana)
 
         return banana
     }
@@ -314,7 +314,7 @@ class Task extends Component {
 
 
     render = () => {
-        console.log(this.props.task.priorityLevel)
+        //console.log(this.props.task.priorityLevel)
         return (
             <div onClick={() => {
                 if (!this.state.open) {

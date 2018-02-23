@@ -55,6 +55,16 @@ export function checkIfManager(userID, projectID) {
         })
         return ret
     }
+
+    // export function getTaskID(userID, projectID) {
+    //     let ret = false;
+    //          ret = rebase.initializedApp.database().ref().child("projects/" + projectID + "/taskList/" + userID).once("value", snapshot => {
+    //              if(snapshot.val()) {
+    //                  ret = true
+    //              }
+    //          })
+    //          return ret
+    //      }
     
 //Returns a promise regarding the user's status as part of that project
 //For example of how to use this function, check out Ben's use of the emailRegistered()
