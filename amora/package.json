@@ -9,6 +9,7 @@
     "prop-types": "^15.6.0",
     "re-base": "^3.2.2",
     "react": "^16.2.0",
+    "react-beautiful-dnd": "^5.0.0",
     "react-bootstrap": "^0.32.1",
     "react-contenteditable": "^2.0.7",
     "react-datepicker": "^1.2.1",

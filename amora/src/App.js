@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import rebase, { auth } from "./rebase.js"
 import { Route, Switch, Redirect } from "react-router-dom";
 import { isObjectEmpty, buildUserFromGoogle } from "./apphelpers.js"
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import Login from "./Login.js"
 import Home from "./Home.js"
@@ -133,6 +134,7 @@ class App extends Component {
 
   render() {
     return (
+      <DragDropContext>
       <div className="App">
         <Switch>
           <Route path="/" render={() => {
@@ -145,6 +147,7 @@ class App extends Component {
           <Route render={() => <Redirect to="/" />} />
         </Switch>
       </div>
+      </DragDropContext>
     );
   }
 }

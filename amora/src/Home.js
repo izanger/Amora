@@ -11,6 +11,7 @@ import ProjectDashboard from "./ProjectDashboardComps/ProjectDashboard.js"
 import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from './CreateTaskForm.js';
 import Notifications from "./Notifications.js"
+import TodayView from "./TodayView.js"
 
 
 
@@ -119,8 +120,8 @@ class Home extends Component {
                     <Route render={() => <Redirect to="/dashboard" />} />
                 </Switch>
 
-                <div id="myDay">
-                    Today
+                <div id="myDay">                
+                     <TodayView/> 
                 </div>
             </div>
         )

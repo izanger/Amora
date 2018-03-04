@@ -5,6 +5,7 @@ import ProjectTitleBar from "./ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 import "./ProjectDashboard.css"
 import NewProjectButton from "../ProjectSelectorComps/NewProjectButton.js"
+import TodayView from "../TodayView.js"
 
 
 class ProjectDashboard extends Component {
@@ -378,7 +379,7 @@ class ProjectDashboard extends Component {
     render = () => {
 
         let finalRender
-
+        <TodayView/> 
         if (this.state.projectSynced) {
 
             // let color = "#3CB4CB";
@@ -430,6 +431,8 @@ class ProjectDashboard extends Component {
                         }} /></div>
                     </div>
                     <button className="unitTestButton" onClick={this.runUnitTests.bind(null,null)}>Run Unit Tests</button>
+                    <TodayView/> 
+                    <TodayView/> 
 
                 </div>
             )
