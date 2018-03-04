@@ -429,7 +429,7 @@ class ProjectDashboard extends Component {
                             this.props.goToUrl("/createtask");
                         }} /></div>
                     </div>
-                    <button className="unitTestButton" onClick={this.runUnitTests.bind(null,null)}>Run Unit Tests</button>
+                    {/* <button className="unitTestButton" onClick={this.runUnitTests.bind(null,null)}>Run Unit Tests</button> */}
 
                 </div>
             )
