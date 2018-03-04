@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import Notification from "./Notification.js"
+import Invite from "./Invite.js"
 
 import "./Notifications.css"
 
@@ -23,8 +24,13 @@ class Notifications extends Component {
         if (notifications) {
             finalRender = (
                 notificationKeys.map((notificationKey) => {
-                    return <Notification key={notificationKey} notificationKey={notificationKey} notification={notifications[notificationKey]}
-                    getAppState={this.props.getAppState} setAppState={this.setAppState} />
+                    if (notifications[notificationKey].type === "invite") {
+                        return <Invite key={notificationKey} notificationKey={notificationKey} notification={notifications[notificationKey]}
+                        getAppState={this.props.getAppState} setAppState={this.setAppState} />
+                    } else {
+                        return <Notification key={notificationKey} notificationKey={notificationKey} notification={notifications[notificationKey]}
+                        getAppState={this.props.getAppState} setAppState={this.setAppState} />
+                    }
                 })
             )
         } else {

@@ -151,7 +151,12 @@ class CreateProjectForm extends Component {
                     then: (dat) => {
                         newState.project = dat;
                         this.setState(newState)
-                        //console.log(dat)
+                        const notification = {
+                            type: "invite",
+                            projectName: dat.projectName,
+                            projectColor: dat.projectColor,
+                            projectPhotoURL: dat.projectPhotoURL
+                        }
                         const key = this.state.key
                         rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
                             data: dat
@@ -159,7 +164,7 @@ class CreateProjectForm extends Component {
                         this.state.userList.map((user) => {
                             if (user.email !== this.props.getAppState().user.email) {
                                 rebase.update(`users/${user.uid}/notifications/${this.state.key}`, {
-                                    data: dat
+                                    data: notification
                                 })
                                 return true
                             }
