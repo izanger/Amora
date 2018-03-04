@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import Notification from "./Notification.js"
 import Invite from "./Invite.js"
+import NoNotifications from "./NoNotifications.js"
+import leftArrow from "./images/Icons/LeftArrow.svg"
 
 import "./Notifications.css"
 
@@ -15,7 +17,6 @@ class Notifications extends Component {
     render = () => {
 
         const notifications = this.props.getAppState().user.notifications
-        console.log(notifications)
         let notificationKeys = null
         if (notifications) {
             notificationKeys = Object.keys(notifications)
@@ -35,18 +36,22 @@ class Notifications extends Component {
             )
         } else {
             finalRender = (
-                <div>
-                    <p className="noNotifications noNotificationsTop">Currently no notifications</p>
-                    <p className="noNotifications">:^)</p>
-                </div>
+                <NoNotifications />
             )
         }
 
+        const color = "#3498DB"
+
         return (
+
             <div id="taskDashboard">
-                <i className="material-icons createProjectButton" onClick={() => {
-                    this.props.goToUrl("dashboard")
-                }}>backspace</i>
+                <div id="projectTitleContainer" style={{backgroundColor: color}}>
+                    <img src={leftArrow} style={{height: '30px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
+                        this.props.goToUrl("dashboard")
+                    }} />
+                    <h1 style={{left: '35px'}} id="projectTitle">Notifications</h1>
+
+                </div>
                 {finalRender}
             </div>
         )

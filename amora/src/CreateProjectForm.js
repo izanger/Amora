@@ -151,15 +151,23 @@ class CreateProjectForm extends Component {
                     then: (dat) => {
                         newState.project = dat;
                         this.setState(newState)
+                        const key = this.state.key
                         const notification = {
                             type: "invite",
                             projectName: dat.projectName,
                             projectColor: dat.projectColor,
-                            projectPhotoURL: dat.projectPhotoURL
+                            projectPhotoURL: dat.projectPhotoURL,
+                            key: key
                         }
-                        const key = this.state.key
+                        const userProject = {
+                            projectName: dat.projectName,
+                            projectPhotoURL: dat.projectPhotoURL,
+                            key: key,
+                            projectColor: dat.projectColor,
+                            isPersonalDashboardProject: "false"
+                        }
                         rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
-                            data: dat
+                            data: userProject
                         })
                         this.state.userList.map((user) => {
                             if (user.email !== this.props.getAppState().user.email) {
@@ -231,7 +239,7 @@ class CreateProjectForm extends Component {
                 </div>
 
                 {/*}<button className="createProjectInput" onClick={this.emailValidationProcess}>Invite user</button>*/}
-                <InviteList users={this.state.userList} />
+                <InviteList uid={this.props.getAppState().user.uid} users={this.state.userList} />
                 <button className="createProjectFinalButton" onClick={this.createProject}>Create project</button>
             </div>
         )

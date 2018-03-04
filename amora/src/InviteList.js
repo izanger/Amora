@@ -19,11 +19,15 @@ class InviteList extends Component {
     render = () => {
 
         const keys = Object.keys(this.props.users)
+        console.log(this.props.users)
 
         return (
             <div>
                 {keys.map((key) => {
-                    return (this.renderUser(this.props.users[key]))
+                    console.log(key)
+                    if (this.props.users[key].uid !== this.props.uid) {
+                        return (this.renderUser(this.props.users[key]))
+                    }
                 })}
             </div>
         )

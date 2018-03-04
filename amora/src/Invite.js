@@ -12,10 +12,16 @@ class Notification extends Component {
     }
 
     acceptInvite = () => {
+        const key = this.props.notification.key
+        const userProject = {
+            projectName: this.props.notification.projectName,
+            projectPhotoURL: this.props.notification.projectPhotoURL,
+            key: key,
+            isPersonalDashboardProject: "false"
+        }
         rebase.post(`users/${this.props.getAppState().user.uid}/projects/${this.props.notificationKey}`, {
-            data: this.props.notification
+            data: userProject
         })
-        console.log(this.props.notification)
         rebase.post(`projects/${this.props.notification.key}/userList/${this.props.getAppState().user.uid}`, {
             data: this.props.getAppState().user.photoURL
         })
