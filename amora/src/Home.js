@@ -12,9 +12,6 @@ import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from './CreateTaskForm.js';
 import Notifications from "./Notifications.js"
 
-
-
-
 class Home extends Component {
     constructor() {
         super()
@@ -60,16 +57,20 @@ class Home extends Component {
                     return <div key={projectKey} onClick={() => {
                         const newState = { ...this.props.getAppState() }
                         //if (newState.currentProject === undefined || newState.currentProject.key !== projectKey && (newState.currentProject.isPersonalDashboardProject === "false")) {
-                            console.log(newState.user.projects[projectKey])
                             newState.currentProject = newState.user.projects[projectKey]
-                            console.log(newState)
                             this.props.setAppState(newState)
-                            console.log(this.props.getAppState())
                             this.props.goToUrl(`/projects/${projectKey}`)
                         //}
                     }}><ProjectIcon projectID={projectsList[projectKey].key} personalProjectID={this.props.getAppState().user.personalProjectID} projectPhotoURL={projectsList[projectKey].projectPhotoURL}/></div>
                 })
             )
+        }
+
+        let notificationText
+        if (this.props.getAppState().user.notifications) {
+            notificationText = "notifications_active"
+        } else {
+            notificationText = "notifications_none"
         }
 
         return (
@@ -96,7 +97,7 @@ class Home extends Component {
                     <i onClick={this.signOut} style={{position: 'fixed', bottom: '0'}} className="material-icons">&#xE31B;</i>
                     <i className="material-icons notificationButton" onClick={() => {
                         this.props.goToUrl("/notifications");
-                    }}>notifications_none</i>
+                    }}>{notificationText}</i>
                 </div>
                 
                 <Switch>
