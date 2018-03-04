@@ -48,13 +48,13 @@ export function validateDate(date) {
 //function in the emailValidationProcess() method of CreateProjectForm.js
 export function checkIfManager(userID, projectID) {
    let ret = false;
-        ret = rebase.initializedApp.database().ref().child("projects/" + projectID + "/managerList/" + userID).once("value", snapshot => {
-            if(snapshot.val()) {
-                ret = true
-            }
-        })
-        return ret
-    }
+    ret = rebase.initializedApp.database().ref().child("projects/" + projectID + "/managerList/" + userID).once("value", snapshot => {
+        if(snapshot.val()) {
+            ret = true
+        }
+    })
+    return ret
+}
 
     // export function getTaskID(userID, projectID) {
     //     let ret = false;

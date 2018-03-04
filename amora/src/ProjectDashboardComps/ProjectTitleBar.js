@@ -3,6 +3,8 @@ import rebase from "../rebase";
 import settingsIcon from "../images/Icons/Settings.svg"
 import searchIcon from "../images/Icons/Search.svg"
 import archiveIcon from "../images/Icons/Archive.svg"
+import { checkIfManager } from "../apphelpers.js"
+
 import "./ProjectTitleBar.css"
 
 import "./UserIcon.css"
@@ -17,7 +19,19 @@ class ProjectTitleBar extends Component {
         this.state = {
             open: false,
             titleValue: "",
+            renderAsManager: false,
         }
+    }
+
+    componentWillMount = () => {
+        const promise = checkIfManager(this.props.getAppState().user.uid, this.props.getAppState().currentProject.key)
+        promise.then((data) => {
+            if (data.val()) {
+                const newState = this.state
+                newState.renderAsManager = true 
+                this.setState(newState)
+            }
+        })
     }
 
     componentDidMount = () => {
@@ -74,6 +88,30 @@ class ProjectTitleBar extends Component {
         this.setState(newState)
     }
 
+    //Returns what should be rendered in the settings pane
+    renderSettings = (color, colors) => {
+        if (!this.state.renderAsManager) { //user is not a manager
+            return (
+                <h1>User Settings</h1>
+            )
+        } else { //user is a manager
+            return (
+                <div>
+                    <h1>Manager Settings</h1>
+                    <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue} />
+                    <div id="colorPicker">
+                        <h4>Project Color:</h4>
+                        {colors.map((color) => {
+                            return this.renderSwatch(color)
+                        })}
+                    </div>
+                    <button className="submitFinalButton" onClick={this.submitChanges}>Submit</button>
+                </div>
+            )
+        }
+        
+    }
+
     /*
     This currently only is the box. It needs the following:
     1) Get the color for the project from Firebase
@@ -102,24 +140,16 @@ class ProjectTitleBar extends Component {
         let colors = ['#E74C3C', '#E67E22', '#F1C40F', '#E91E63', '#9B59B6', '#3498DB', '#2ECB71', '#18AE90']
         const { open } = this.state;
 
+        let settings = this.renderSettings(color, colors)
         return (
             <div id="projectTitleContainer" style={{backgroundColor: color}}>
                 <h1 id="projectTitle">{this.props.title}</h1>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
-                  
+                    
                    <img alt={"Settings"} src={settingsIcon} title={"Settings"} onClick={this.onOpenModal} id="projectSettingsIcon"/>
                    <Modal open={open} onClose={this.onCloseModal} little>
-                   <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue} />
-
-                <div id="colorPicker">
-                    <h4>Project Color:</h4>
-                    {/* BEN THIS IS WHERE THE COLORS WILL GO, MY DUDE*/}
-                    {colors.map((color) => {
-                        return this.renderSwatch(color)
-                    })}
-                </div>
-                <button className="submitFinalButton" onClick={this.submitChanges}>Submit</button>
+                         {settings}
                     </Modal>
                   
                    <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} id="projectSettingsIcon"/>
