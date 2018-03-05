@@ -23,7 +23,7 @@ class AddUserButton extends Component {
     render = () => {
         // let color = "#3CB4CB";
         return (
-            <div id="addUserIconContainer">
+            <div id="addUserIconContainer" onClick={this.props.onClick}>
                 <svg height="40" width="40">
                     <line x1="19" y1="9" x2="19" y2="29" className="newProjectPlus" />
                     <line x1="9" y1="19" x2="29" y2="19" className="newProjectPlus" />

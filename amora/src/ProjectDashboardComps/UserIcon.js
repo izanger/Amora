@@ -69,7 +69,7 @@ class UserIcon extends Component {
 
     style = () => {
 
-         if (this.state.isManager) {
+         if (this.props.hasBorder) {
              return ({
                  backgroundColor: this.color,
                  borderColor: this.props.color,
@@ -88,9 +88,16 @@ class UserIcon extends Component {
 
     render = () => {
         const { open } = this.state;
+        const hasOnClick = this.props.onClick
         //console.log(this.props)
         return (
-            <div onClick={this.onOpenModal} id="userIconContainer" style={this.style()}>
+            <div onClick={() => {
+                if (!hasOnClick) {
+                    this.onOpenModal()
+                } else {
+                    this.props.onClick()
+                }
+            }} id="userIconContainer" style={this.style()}>
                 <img alt={"Project"} src={this.props.user} className="projectPicture"/>
                 {/*This should only appear if it is selected as the project*/}
                 <div id="projectIndicator" style={{backgroundColor: this.color}}></div>

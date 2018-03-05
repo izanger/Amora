@@ -13,6 +13,7 @@ import "./TaskComment.css"
 
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import Modal from 'react-responsive-modal/lib/css';
 import { validateDate } from "../apphelpers.js"
 
 
@@ -28,8 +29,9 @@ class Task extends Component {
            taskID: "",
            archived: false,
            color: '#3CB4CB',
-           editedDate: false
-
+           editedDate: false,
+           addUserOpen: false,
+           addUserId: ""
        }
     }
 
@@ -314,7 +316,12 @@ class Task extends Component {
 
 
     render = () => {
-        //console.log(this.props.task.priorityLevel)
+        
+        let userKeys
+        if (this.props.users) {
+            userKeys = Object.keys(this.props.users)
+        }
+
         return (
             <div onClick={() => {
                 if (!this.state.open) {
@@ -353,7 +360,26 @@ class Task extends Component {
                                 <div id="projectIndicator" ></div>
                             </div>
 
-                            <AddUserButton />
+                            <AddUserButton onClick={() => {
+                                this.setState({addUserOpen: true})
+                            }}/>
+                            <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little>
+                                <div>
+                                    <h1 className="taskAssignment">Task assignment</h1>
+                                    <p className="taskAssignmentInstructions">Select a user to assign the project to</p>
+                                    <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin": "14px"}}>
+                                        {userKeys && userKeys.map((key) => {
+                                            return (<UserIcon hasBorder={key == this.state.addUserId} color={"none"} getAppState={this.props.getAppState} 
+                                            onClick={() => {
+                                                console.log(this)
+                                                this.setState({addUserId: key})
+                                                console.log(this.state)
+                                            }} key={key} user={this.props.users[key]} userID={key} />)
+                                        })}
+                                    </div>
+                                    <button className="submitFinalButton taskAssignmentButton">Submit</button>
+                                </div>
+                            </Modal>
 
                             <div id="Task">
                             <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
