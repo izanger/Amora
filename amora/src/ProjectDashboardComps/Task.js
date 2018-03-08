@@ -390,6 +390,9 @@ class Task extends Component {
                         <div id="taskComments">
                             <Comment />
                             <Comment />
+                        <textarea rows="3" cols="50" >
+                            </textarea>
+                        <button type = "button">Comment</button>
                         </div>
                         <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
                     </div>
