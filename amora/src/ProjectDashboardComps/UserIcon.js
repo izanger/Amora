@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import rebase, { auth, google} from "../rebase.js"
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Row, Grid, Col } from 'react-bootstrap'
-
+import { checkIfManager } from "../apphelpers.js"
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
@@ -18,7 +18,7 @@ class UserIcon extends Component {
 
       this.state = {
            open: false,
-           isManager: true, //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
+           isManager: false, //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
            displayName: "",
            email: "",
         };
@@ -28,6 +28,14 @@ class UserIcon extends Component {
     componentWillMount() {
         this.getInfo();
         this.getEmail();
+        const promise = checkIfManager(this.props.userID, this.props.projectID)
+        promise.then((data) => {
+            if (data.val()) {
+                const newState = this.state
+                newState.isManager = true 
+                this.setState(newState)
+            }
+        })
      }
 
     onOpenModal = () => {
@@ -46,7 +54,8 @@ class UserIcon extends Component {
             let newState = { ...this.state}
             newState.displayName = data
             this.setState(newState);        
-          })
+        })
+
     }
     getEmail() {
         const id = this.props.userID  
@@ -69,7 +78,7 @@ class UserIcon extends Component {
 
     style = () => {
 
-         if (this.props.hasBorder) {
+         if (this.state.isManager) {
              return ({
                  backgroundColor: this.color,
                  borderColor: this.props.color,
