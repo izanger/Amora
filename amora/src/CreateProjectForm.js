@@ -15,6 +15,7 @@ class CreateProjectForm extends Component {
         super()
         this.state = {
             titleValue: "",
+            descriptionValue: "",
             inviteValue: "",
             errorValue: "",
             colorValue: "#E74C3C",
@@ -42,6 +43,12 @@ class CreateProjectForm extends Component {
     changeInviteValue = (event) => {
         const newState = { ...this.state }
         newState.inviteValue = event.target.value;
+        this.setState(newState)
+    }
+
+    changeDescriptionValue = (event) => {
+        const newState = { ...this.state }
+        newState.descriptionValue = event.target.value
         this.setState(newState)
     }
 
@@ -125,6 +132,7 @@ class CreateProjectForm extends Component {
                 projectColor: this.state.colorValue,
                 projectCreator: this.props.getAppState().user.uid,
                 projectPhotoURL: this.props.getAppState().user.photoURL,
+                projectDescription: this.state.descriptionValue,
                 isPersonalDashboardProject: false,
             }
         }).then((newLocation) => {
@@ -157,6 +165,7 @@ class CreateProjectForm extends Component {
                             projectName: dat.projectName,
                             projectColor: dat.projectColor,
                             projectPhotoURL: dat.projectPhotoURL,
+                            projectDescription: dat.projectDescription,
                             key: key
                         }
                         const userProject = {
@@ -164,6 +173,7 @@ class CreateProjectForm extends Component {
                             projectPhotoURL: dat.projectPhotoURL,
                             key: key,
                             projectColor: dat.projectColor,
+                            projectDescription: dat.projectDescription,
                             isPersonalDashboardProject: "false"
                         }
                         rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
@@ -214,6 +224,7 @@ class CreateProjectForm extends Component {
                 </div>
                 <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue}
                 value={this.state.titleValue} />
+                <input type="text" placeholder="Enter Project Description" onChange={this.changeDescriptionValue} value={this.state.descriptionValue}/>
 
                 <div id="colorPicker">
                     <h4>Project Color:</h4>

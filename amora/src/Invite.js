@@ -37,6 +37,7 @@ class Notification extends Component {
             <div className="inviteContainer">
                 <p className="inviteText">This one is an invite</p>
                 <p className="inviteText">You've been invited to join: {this.props.notification.projectName}</p>
+                <p>Description: {this.props.notification.projectDescription}</p>
                 <button className="inviteButton" onClick={this.acceptInvite}>Accept</button>
                 <button className="inviteButton" onClick={this.declineInvite}>Decline</button>
             </div>
