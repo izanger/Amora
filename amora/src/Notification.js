@@ -19,7 +19,6 @@ class Notification extends Component {
             <div>
                 <p>This one is a standard notification</p>
                 <p>You've been invited to join: {this.props.notification.projectName}</p>
-                <p>Description: {this.props.notification.projectDescription}</p>
                 <button onClick={this.removeNotification}>Remove notification</button>
                 <p>(Zach make this look nice)</p>
             </div>

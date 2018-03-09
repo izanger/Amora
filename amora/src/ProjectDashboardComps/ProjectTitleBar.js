@@ -20,18 +20,25 @@ class ProjectTitleBar extends Component {
             open: false,
             titleValue: "",
             renderAsManager: false,
+            projectDescription:"",
         }
     }
 
     componentWillMount = () => {
+        const s = this.state
+        s.projectDescription = this.props.projectDescription
+        s.titleValue = this.props.title
+        this.setState(s)
         const promise = checkIfManager(this.props.getAppState().user.uid, this.props.getAppState().currentProject.key)
         promise.then((data) => {
             if (data.val()) {
                 const newState = this.state
                 newState.renderAsManager = true 
+                //newState.projectDescription = this.props.projectDescription
                 this.setState(newState)
             }
         })
+        
     }
 
     componentDidMount = () => {
@@ -54,30 +61,31 @@ class ProjectTitleBar extends Component {
         this.setState(newState)
     }
 
+    changeDescriptionValue = (event) => {
+        const newState = { ...this.state }
+        newState.projectDescription = event.target.value
+        this.setState(newState)
+    }
+
     submitChanges = () => {
         const newState = this.props.getAppState();
         newState.currentProject.projectName = this.state.titleValue
         newState.currentProject.projectColor = this.state.colorValue
+        newState.currentProject.projectDescription = this.state.projectDescription
         this.props.setAppState(newState)
 
-        rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
+        rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project 
             data: {
                 projectName: this.state.titleValue,
-            }
-        })
-        rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
-            data: {
                 projectColor: this.state.colorValue,
+                projectDescription: this.state.projectDescription,
             }
         })
-        rebase.update(`users/${this.props.getAppState().user.uid}/projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
-            data: {
-                projectColor: this.state.colorValue,
-            }
-        })
-        rebase.update(`users/${this.props.getAppState().user.uid}/projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
+        rebase.update(`users/${this.props.getAppState().user.uid}/projects/${this.props.getAppState().currentProject.key}`, { //Update in user's project list
             data: {
                 projectName: this.state.titleValue,
+                projectColor: this.state.colorValue,
+                projectDescription: this.state.projectDescription,
             }
         })
     }
@@ -98,9 +106,12 @@ class ProjectTitleBar extends Component {
             return (
                 <div>
                     <h1>Manager Settings</h1>
-                    <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue} />
+                    <h4>Change Project Name:</h4>
+                    <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue} value={this.state.titleValue} />
+                    <h4>Change Project Description:</h4>
+                    <input type="text" onChange={this.changeDescriptionValue} value={this.state.projectDescription}/>
                     <div id="colorPicker">
-                        <h4>Project Color:</h4>
+                        <h4>Change Project Color:</h4>
                         {colors.map((color) => {
                             return this.renderSwatch(color)
                         })}
