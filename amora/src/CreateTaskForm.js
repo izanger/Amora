@@ -51,9 +51,7 @@ class CreateTaskForm extends Component {
             context: this,
             then(data){
                 if(data.key !== this.props.getAppState().currentProject.key){
-                  console.log("Here's your data:" + data.key)
                   this.props.goToUrl("/dashboard")
-                  //this.props.goBack()
                 }
             }
         })

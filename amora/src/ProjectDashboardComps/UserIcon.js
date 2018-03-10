@@ -78,8 +78,11 @@ class UserIcon extends Component {
     }
 
     removeUser = () => {
-        rebase.remove(`users/${this.props.userID}/projects/${this.props.projectID}`)
-        rebase.remove(`projects/${this.props.projectID}/userList/${this.props.userID}`)
+        var response = window.confirm("Are you sure you want to remove this user?")
+        if (response == true){
+            rebase.remove(`users/${this.props.userID}/projects/${this.props.projectID}`)
+            rebase.remove(`projects/${this.props.projectID}/userList/${this.props.userID}`)
+        }
     }
 
     style = () => {

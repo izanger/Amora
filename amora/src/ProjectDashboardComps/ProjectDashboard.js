@@ -49,9 +49,7 @@ class ProjectDashboard extends Component {
                         context: this,
                         then(data){
                             if(data.key !== this.props.match.params.id){
-                                console.log("Here's your data:" + data.key)
                                 this.props.goToUrl("/dashboard")
-                                //this.props.goBack()
                             }
                         }
                     })
