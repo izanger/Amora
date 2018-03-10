@@ -75,6 +75,12 @@ class App extends Component {
         newState.currentProject = projData
         this.setState(newState)
         this.props.history.push(`/projects/${newLocation.key}`)
+
+        rebase.update(`users/${this.state.user.uid}/projects/${newLocation.key}`, { //Add the project we just created to user's list of projects
+          data: {
+            taskAlertTime: "None",
+          }
+        })
       })
       
     })

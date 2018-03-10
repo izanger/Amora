@@ -232,15 +232,15 @@ class CreateProjectForm extends Component {
                 <input type="text" placeholder="Enter Project Description" onChange={this.changeDescriptionValue} value={this.state.descriptionValue}/>
 
                 <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
-                    <select name="taskAlertDropdown" id="taskAlertDropdown">
-                        <option value="1">None</option>
-                        <option value="2">5 minutes</option>
-                        <option value="3">10 minutes</option>
-                        <option value="4">15 minutes</option>
-                        <option value="5">20 minutes</option>
-                        <option value="6">30 minutes</option>
-                        <option value="7">60 minutes</option>
-                    </select>
+                <select name="taskAlertDropdown" id="taskAlertDropdown">
+                    <option value="1">None</option>
+                    <option value="2">5 minutes</option>
+                    <option value="3">10 minutes</option>
+                    <option value="4">15 minutes</option>
+                    <option value="5">20 minutes</option>
+                    <option value="6">30 minutes</option>
+                    <option value="7">60 minutes</option>
+                </select>
 
                 <div id="colorPicker">
                     <h4>Project Color:</h4>

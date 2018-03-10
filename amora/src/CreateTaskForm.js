@@ -174,7 +174,7 @@ class CreateTaskForm extends Component {
 
         var dropSelect = document.getElementById("dropdown");
         var selectedText = dropSelect.options[dropSelect.selectedIndex].text;
-        console.log(selectedText)
+
         var deadlineFixed = this.fixDeadline(this.state.deadline.format());
         //console.log("NEWIISTSD: " +deadlineFixed)
 
@@ -183,7 +183,6 @@ class CreateTaskForm extends Component {
         //newState.deadline = deadlineFixed
 
         this.setState(newState)
-
         rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
             data: {
                 taskName: this.state.titleValue,
