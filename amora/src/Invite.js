@@ -17,7 +17,8 @@ class Notification extends Component {
             projectName: this.props.notification.projectName,
             projectPhotoURL: this.props.notification.projectPhotoURL,
             key: key,
-            isPersonalDashboardProject: "false"
+            isPersonalDashboardProject: "false",
+            taskAlertTime: this.props.notification.taskAlertTime,
         }
         rebase.post(`users/${this.props.getAppState().user.uid}/projects/${this.props.notificationKey}`, {
             data: userProject

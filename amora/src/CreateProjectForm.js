@@ -122,6 +122,9 @@ class CreateProjectForm extends Component {
         if (!this.isProjectValid()) {
             return
         }
+        var dropSelect = document.getElementById("taskAlertDropdown");
+        var selectedText = dropSelect.options[dropSelect.selectedIndex].text;
+
         const tempState = { ...this.state }
         tempState.userEmails.push(this.props.getAppState().user.email)
         tempState.userList.push(this.props.getAppState().user)
@@ -166,7 +169,8 @@ class CreateProjectForm extends Component {
                             projectColor: dat.projectColor,
                             projectPhotoURL: dat.projectPhotoURL,
                             projectDescription: dat.projectDescription,
-                            key: key
+                            key: key,
+                            taskAlertTime: selectedText,
                         }
                         const userProject = {
                             projectName: dat.projectName,
@@ -174,7 +178,8 @@ class CreateProjectForm extends Component {
                             key: key,
                             projectColor: dat.projectColor,
                             projectDescription: dat.projectDescription,
-                            isPersonalDashboardProject: "false"
+                            isPersonalDashboardProject: "false",
+                            taskAlertTime: selectedText,
                         }
                         rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
                             data: userProject
@@ -225,6 +230,17 @@ class CreateProjectForm extends Component {
                 <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue}
                 value={this.state.titleValue} />
                 <input type="text" placeholder="Enter Project Description" onChange={this.changeDescriptionValue} value={this.state.descriptionValue}/>
+
+                <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
+                    <select name="taskAlertDropdown" id="taskAlertDropdown">
+                        <option value="1">None</option>
+                        <option value="2">5 minutes</option>
+                        <option value="3">10 minutes</option>
+                        <option value="4">15 minutes</option>
+                        <option value="5">20 minutes</option>
+                        <option value="6">30 minutes</option>
+                        <option value="7">60 minutes</option>
+                    </select>
 
                 <div id="colorPicker">
                     <h4>Project Color:</h4>
