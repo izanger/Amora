@@ -138,13 +138,17 @@ class App extends Component {
     this.props.history.push(url)
   }
 
+  goBack = () => {
+    this.props.history.goBack()
+  }
+
   render() {
     return (
       <div className="App">
         <Switch>
           <Route path="/" render={() => {
             if (!isObjectEmpty(this.state.user)) {
-              return <Home getAppState={this.getAppState} setAppState={this.setAppState} goToUrl={this.goToUrl}/>
+              return <Home getAppState={this.getAppState} setAppState={this.setAppState} goToUrl={this.goToUrl} goBack={this.goBack}/>
             } else {
               return <Login />
             }

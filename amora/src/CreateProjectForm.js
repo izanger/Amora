@@ -53,11 +53,11 @@ class CreateProjectForm extends Component {
     }
 
     // Check to see if user has pressed enter key
-    enterInviteValue = (event) => {
-        if (event.keyCode === 13) {
-            this.inviteUser()
-        }
-    }
+    // enterInviteValue = (event) => {
+    //     if (event.keyCode === 13) {
+    //         this.inviteUser()
+    //     }
+    // }
 
     // Checks to see is this.state.emailValue is valid
     emailValidationProcess = () => {
@@ -259,7 +259,7 @@ class CreateProjectForm extends Component {
 
                     </div>
                     <input type="text" placeholder="Email of person you'd like to invite" className="createProjectInput"
-                    value={this.state.inviteValue} onChange={this.changeInviteValue} onKeyDown={this.enterInviteValue} style={{width: '100%'}}/>
+                    value={this.state.inviteValue} onChange={this.changeInviteValue} style={{width: '100%'}}/>
                 </div>
                 <div >
                     <p className="errorBox">{this.state.errorValue}</p>

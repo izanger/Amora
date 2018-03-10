@@ -44,6 +44,21 @@ class CreateTaskForm extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
+    componentWillMount = () => {
+        //Check in case user was deleted from the project they were creating a task for.
+        //If they were, route them back to the dashboard
+        rebase.listenTo(`users/${this.props.getAppState().user.uid}/projects/${this.props.getAppState().currentProject.key}`, {
+            context: this,
+            then(data){
+                if(data.key !== this.props.getAppState().currentProject.key){
+                  console.log("Here's your data:" + data.key)
+                  this.props.goToUrl("/dashboard")
+                  //this.props.goBack()
+                }
+            }
+        })
+    }
+
     doMathToFixDateOk = () => {
         //2018-02-21T18:28:59-05:00
         const date = moment();

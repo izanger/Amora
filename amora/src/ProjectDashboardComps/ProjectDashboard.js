@@ -40,8 +40,21 @@ class ProjectDashboard extends Component {
                 context: this,
                 state: 'project',
                 then: () => {
-                  newState.projectSynced = true
-                  this.setState(newState)
+                    newState.projectSynced = true
+                    this.setState(newState)
+
+                    //Check in case user was deleted from the project they are viewing
+                    //If they were, route them back to the dashboard
+                    rebase.listenTo(`users/${this.props.getAppState().user.uid}/projects/${this.props.match.params.id}`, {
+                        context: this,
+                        then(data){
+                            if(data.key !== this.props.match.params.id){
+                                console.log("Here's your data:" + data.key)
+                                this.props.goToUrl("/dashboard")
+                                //this.props.goBack()
+                            }
+                        }
+                    })
                 }
             })
         })
