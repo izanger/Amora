@@ -40,8 +40,19 @@ class ProjectDashboard extends Component {
                 context: this,
                 state: 'project',
                 then: () => {
-                  newState.projectSynced = true
-                  this.setState(newState)
+                    newState.projectSynced = true
+                    this.setState(newState)
+
+                    //Check in case user was deleted from the project they are viewing
+                    //If they were, route them back to the dashboard
+                    rebase.listenTo(`users/${this.props.getAppState().user.uid}/projects/${this.props.match.params.id}`, {
+                        context: this,
+                        then(data){
+                            if(data.key !== this.props.match.params.id){
+                                this.props.goToUrl("/dashboard")
+                            }
+                        }
+                    })
                 }
             })
         })
@@ -413,10 +424,12 @@ class ProjectDashboard extends Component {
 
             finalRender = (
                 <div id="taskDashboard">
-                    <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} projectColor={this.state.project.projectColor} getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
+                    <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} projectColor={this.state.project.projectColor} 
+                        getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} 
+                        projectDescription={this.state.project.projectDescription}/>
                     {/* <div id="taskDashContainer">
                     </div> */}
-                    <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor} />
+                    <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor} projectID={this.state.project.key}/>
                     <svg height="13" width="100%">
                         <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                     </svg>

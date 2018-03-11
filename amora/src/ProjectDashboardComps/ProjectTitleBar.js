@@ -20,18 +20,26 @@ class ProjectTitleBar extends Component {
             open: false,
             titleValue: "",
             renderAsManager: false,
+            projectDescription:"",
+            taskAlertTime: "",
         }
     }
 
     componentWillMount = () => {
+        const s = this.state
+        s.projectDescription = this.props.projectDescription
+        s.titleValue = this.props.title
+        this.setState(s)
         const promise = checkIfManager(this.props.getAppState().user.uid, this.props.getAppState().currentProject.key)
         promise.then((data) => {
             if (data.val()) {
                 const newState = this.state
                 newState.renderAsManager = true 
+                //newState.projectDescription = this.props.projectDescription
                 this.setState(newState)
             }
         })
+        
     }
 
     componentDidMount = () => {
@@ -54,32 +62,50 @@ class ProjectTitleBar extends Component {
         this.setState(newState)
     }
 
-    submitChanges = () => {
-        const newState = this.props.getAppState();
-        newState.currentProject.projectName = this.state.titleValue
-        newState.currentProject.projectColor = this.state.colorValue
-        this.props.setAppState(newState)
+    changeDescriptionValue = (event) => {
+        const newState = { ...this.state }
+        newState.projectDescription = event.target.value
+        this.setState(newState)
+    }
 
-        rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
-            data: {
-                projectName: this.state.titleValue,
-            }
-        })
-        rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
-            data: {
-                projectColor: this.state.colorValue,
-            }
-        })
-        rebase.update(`users/${this.props.getAppState().user.uid}/projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
-            data: {
-                projectColor: this.state.colorValue,
-            }
-        })
-        rebase.update(`users/${this.props.getAppState().user.uid}/projects/${this.props.getAppState().currentProject.key}`, { //Update project name in database
-            data: {
-                projectName: this.state.titleValue,
-            }
-        })
+    submitChanges = () => {
+        var dropSelect = document.getElementById("taskAlertDropdown");
+        var taskAlertText = dropSelect.options[dropSelect.selectedIndex].text;
+        const newState = this.props.getAppState();
+
+        if(this.state.renderAsManager){
+            newState.currentProject.projectName = this.state.titleValue
+            newState.currentProject.projectColor = this.state.colorValue
+            newState.currentProject.projectDescription = this.state.projectDescription
+            newState.currentProject.taskAlertTime = taskAlertText
+            this.props.setAppState(newState)
+
+            rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project 
+                data: {
+                    projectName: this.state.titleValue,
+                    projectColor: this.state.colorValue,
+                    projectDescription: this.state.projectDescription,
+                }
+            })
+            rebase.update(`users/${this.props.getAppState().user.uid}/projects/${this.props.getAppState().currentProject.key}`, { //Update in user's project list
+                data: {
+                    projectName: this.state.titleValue,
+                    projectColor: this.state.colorValue,
+                    projectDescription: this.state.projectDescription,
+                    taskAlertTime: taskAlertText,
+                }
+            })
+
+        } else {
+            newState.currentProject.taskAlertTime = taskAlertText
+            this.props.setAppState(newState)
+
+            rebase.update(`users/${this.props.getAppState().user.uid}/projects/${this.props.getAppState().currentProject.key}`, { //Update in user's project list
+                data: {
+                    taskAlertTime: taskAlertText,
+                }
+            })
+        }    
     }
 
     changeColorValue = (color) => {
@@ -90,17 +116,44 @@ class ProjectTitleBar extends Component {
 
     //Returns what should be rendered in the settings pane
     renderSettings = (color, colors) => {
+        
         if (!this.state.renderAsManager) { //user is not a manager
             return (
-                <h1>User Settings</h1>
+                <div>
+                    <h1>User Settings</h1>
+                    <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
+                    <select name="taskAlertDropdown" id="taskAlertDropdown">
+                        <option value="1">None</option>
+                        <option value="2">5 minutes</option>
+                        <option value="3">10 minutes</option>
+                        <option value="4">15 minutes</option>
+                        <option value="5">20 minutes</option>
+                        <option value="6">30 minutes</option>
+                        <option value="7">60 minutes</option>
+                    </select>
+                    <button className="submitFinalButton" onClick={this.submitChanges}>Submit</button>
+                </div>
             )
         } else { //user is a manager
             return (
                 <div>
                     <h1>Manager Settings</h1>
-                    <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue} />
+                    <h4>Change Project Name:</h4>
+                    <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue} value={this.state.titleValue} />
+                    <h4>Change Project Description:</h4>
+                    <input type="text" onChange={this.changeDescriptionValue} value={this.state.projectDescription}/>
+                    <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
+                    <select name="taskAlertDropdown" id="taskAlertDropdown">
+                        <option value="1">None</option>
+                        <option value="2">5 minutes</option>
+                        <option value="3">10 minutes</option>
+                        <option value="4">15 minutes</option>
+                        <option value="5">20 minutes</option>
+                        <option value="6">30 minutes</option>
+                        <option value="7">60 minutes</option>
+                    </select>`
                     <div id="colorPicker">
-                        <h4>Project Color:</h4>
+                        <h4>Change Project Color:</h4>
                         {colors.map((color) => {
                             return this.renderSwatch(color)
                         })}

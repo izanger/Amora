@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import rebase, { auth, google} from "../rebase.js"
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Row, Grid, Col } from 'react-bootstrap'
-
+import { checkIfManager } from "../apphelpers.js"
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
@@ -18,9 +18,10 @@ class UserIcon extends Component {
 
       this.state = {
            open: false,
-           isManager: true, //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
+           iconIsManager: false, //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
            displayName: "",
            email: "",
+           viewingAsManager: false,
         };
        this.color = "#3498DB";
     }
@@ -28,6 +29,22 @@ class UserIcon extends Component {
     componentWillMount() {
         this.getInfo();
         this.getEmail();
+        const promise = checkIfManager(this.props.userID, this.props.projectID)
+        promise.then((data) => {
+            if (data.val()) {
+                const newState = this.state
+                newState.iconIsManager = true 
+                this.setState(newState)
+            }
+        })
+        const promise2ElectricBoogaloo = checkIfManager(this.props.getAppState().user.uid, this.props.projectID)
+        promise2ElectricBoogaloo.then((data) => {
+            if (data.val()) {
+                const newState = this.state
+                newState.viewingAsManager = true 
+                this.setState(newState)
+            }
+        })
      }
 
     onOpenModal = () => {
@@ -46,7 +63,8 @@ class UserIcon extends Component {
             let newState = { ...this.state}
             newState.displayName = data
             this.setState(newState);        
-          })
+        })
+
     }
     getEmail() {
         const id = this.props.userID  
@@ -59,17 +77,18 @@ class UserIcon extends Component {
           })
     }
 
-    /*
-    This currently only is the box. It needs the following:
-    1) Get the color for the project from Firebase
-    2) Some way of knowing if it's currently selected
-    3) If it's selected, stay expanded to the square
-    4) If it's selected, have the box show on the side
-    */
+    removeUser = () => {
+        var response = window.confirm("Are you sure you want to remove this user?")
+        if (response == true){
+            rebase.remove(`users/${this.props.userID}/projects/${this.props.projectID}`)
+            rebase.remove(`projects/${this.props.projectID}/userList/${this.props.userID}`)
+            rebase.remove(`projects/${this.props.projectID}/managerList/${this.props.userID}`)
+        }
+    }
 
     style = () => {
 
-         if (this.props.hasBorder) {
+         if (this.state.iconIsManager) {
              return ({
                  backgroundColor: this.color,
                  borderColor: this.props.color,
@@ -89,23 +108,45 @@ class UserIcon extends Component {
     render = () => {
         const { open } = this.state;
         const hasOnClick = this.props.onClick
-        //console.log(this.props)
-        return (
-            <div onClick={() => {
-                if (!hasOnClick) {
-                    this.onOpenModal()
-                } else {
-                    this.props.onClick()
-                }
-            }} id="userIconContainer" style={this.style()}>
-                <img alt={"Project"} src={this.props.user} className="projectPicture"/>
-                {/*This should only appear if it is selected as the project*/}
-                <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
-                    <Modal open={open} onClose={this.onCloseModal} little>
-                      <h2>{this.state.displayName}<br/><br/>{this.state.email}</h2>
-                    </Modal>
-            </div>
-        )
+
+        //Render "remove" button if the user is a manager and isn't viewing themselves
+        if(this.state.viewingAsManager && (this.props.userID !== this.props.getAppState().user.uid)){ 
+            return (
+                <div onClick={() => {
+                    if (!hasOnClick) {
+                        this.onOpenModal()
+                    } else {
+                        this.props.onClick()
+                    }
+                }} id="userIconContainer" style={this.style()}>
+                    <img alt={"Project"} src={this.props.user} className="projectPicture"/>
+                    {/*This should only appear if it is selected as the project*/}
+                    <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
+                        <Modal open={open} onClose={this.onCloseModal} little>
+                          <h2>{this.state.displayName}<br/><br/>{this.state.email}</h2>
+                          <button onClick={this.removeUser}>Remove User from Project</button>
+                        </Modal>
+                </div>
+            )
+        }else {
+            return (
+                <div onClick={() => {
+                    if (!hasOnClick) {
+                        this.onOpenModal()
+                    } else {
+                        this.props.onClick()
+                    }
+                }} id="userIconContainer" style={this.style()}>
+                    <img alt={"Project"} src={this.props.user} className="projectPicture"/>
+                    {/*This should only appear if it is selected as the project*/}
+                    <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
+                        <Modal open={open} onClose={this.onCloseModal} little>
+                          <h2>{this.state.displayName}<br/><br/>{this.state.email}</h2>
+                        </Modal>
+                </div>
+            )
+        }
+        
     }
 
 }

@@ -17,7 +17,8 @@ class Notification extends Component {
             projectName: this.props.notification.projectName,
             projectPhotoURL: this.props.notification.projectPhotoURL,
             key: key,
-            isPersonalDashboardProject: "false"
+            isPersonalDashboardProject: "false",
+            taskAlertTime: this.props.notification.taskAlertTime,
         }
         rebase.post(`users/${this.props.getAppState().user.uid}/projects/${this.props.notificationKey}`, {
             data: userProject
@@ -37,6 +38,7 @@ class Notification extends Component {
             <div className="inviteContainer">
                 <p className="inviteText">This one is an invite</p>
                 <p className="inviteText">You've been invited to join: {this.props.notification.projectName}</p>
+                <p>Description: {this.props.notification.projectDescription}</p>
                 <button className="inviteButton" onClick={this.acceptInvite}>Accept</button>
                 <button className="inviteButton" onClick={this.declineInvite}>Decline</button>
             </div>

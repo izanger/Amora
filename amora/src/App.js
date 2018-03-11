@@ -42,6 +42,7 @@ class App extends Component {
           projectCreator: this.state.user.uid,
           projectPhotoURL: this.state.user.photoURL,
           isPersonalDashboardProject: true,
+          projectDescription: `${user.displayName}'s Personal Dashboard`,
       }
     }).then((newLocation) => {
       rebase.post(`projects/${newLocation.key}/managerList`, { //create list of managers within project, and add the user to it
@@ -74,6 +75,12 @@ class App extends Component {
         newState.currentProject = projData
         this.setState(newState)
         this.props.history.push(`/projects/${newLocation.key}`)
+
+        rebase.update(`users/${this.state.user.uid}/projects/${newLocation.key}`, { //Add the project we just created to user's list of projects
+          data: {
+            taskAlertTime: "None",
+          }
+        })
       })
       
     })
@@ -131,13 +138,17 @@ class App extends Component {
     this.props.history.push(url)
   }
 
+  goBack = () => {
+    this.props.history.goBack()
+  }
+
   render() {
     return (
       <div className="App">
         <Switch>
           <Route path="/" render={() => {
             if (!isObjectEmpty(this.state.user)) {
-              return <Home getAppState={this.getAppState} setAppState={this.setAppState} goToUrl={this.goToUrl}/>
+              return <Home getAppState={this.getAppState} setAppState={this.setAppState} goToUrl={this.goToUrl} goBack={this.goBack}/>
             } else {
               return <Login />
             }

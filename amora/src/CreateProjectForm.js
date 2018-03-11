@@ -15,6 +15,7 @@ class CreateProjectForm extends Component {
         super()
         this.state = {
             titleValue: "",
+            descriptionValue: "",
             inviteValue: "",
             errorValue: "",
             colorValue: "#E74C3C",
@@ -45,12 +46,18 @@ class CreateProjectForm extends Component {
         this.setState(newState)
     }
 
-    // Check to see if user has pressed enter key
-    enterInviteValue = (event) => {
-        if (event.keyCode === 13) {
-            this.inviteUser()
-        }
+    changeDescriptionValue = (event) => {
+        const newState = { ...this.state }
+        newState.descriptionValue = event.target.value
+        this.setState(newState)
     }
+
+    // Check to see if user has pressed enter key
+    // enterInviteValue = (event) => {
+    //     if (event.keyCode === 13) {
+    //         this.inviteUser()
+    //     }
+    // }
 
     // Checks to see is this.state.emailValue is valid
     emailValidationProcess = () => {
@@ -115,6 +122,9 @@ class CreateProjectForm extends Component {
         if (!this.isProjectValid()) {
             return
         }
+        var dropSelect = document.getElementById("taskAlertDropdown");
+        var selectedText = dropSelect.options[dropSelect.selectedIndex].text;
+
         const tempState = { ...this.state }
         tempState.userEmails.push(this.props.getAppState().user.email)
         tempState.userList.push(this.props.getAppState().user)
@@ -125,6 +135,7 @@ class CreateProjectForm extends Component {
                 projectColor: this.state.colorValue,
                 projectCreator: this.props.getAppState().user.uid,
                 projectPhotoURL: this.props.getAppState().user.photoURL,
+                projectDescription: this.state.descriptionValue,
                 isPersonalDashboardProject: false,
             }
         }).then((newLocation) => {
@@ -157,14 +168,18 @@ class CreateProjectForm extends Component {
                             projectName: dat.projectName,
                             projectColor: dat.projectColor,
                             projectPhotoURL: dat.projectPhotoURL,
-                            key: key
+                            projectDescription: dat.projectDescription,
+                            key: key,
+                            taskAlertTime: selectedText,
                         }
                         const userProject = {
                             projectName: dat.projectName,
                             projectPhotoURL: dat.projectPhotoURL,
                             key: key,
                             projectColor: dat.projectColor,
-                            isPersonalDashboardProject: "false"
+                            projectDescription: dat.projectDescription,
+                            isPersonalDashboardProject: "false",
+                            taskAlertTime: selectedText,
                         }
                         rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
                             data: userProject
@@ -214,6 +229,18 @@ class CreateProjectForm extends Component {
                 </div>
                 <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue}
                 value={this.state.titleValue} />
+                <input type="text" placeholder="Enter Project Description" onChange={this.changeDescriptionValue} value={this.state.descriptionValue}/>
+
+                <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
+                <select name="taskAlertDropdown" id="taskAlertDropdown">
+                    <option value="1">None</option>
+                    <option value="2">5 minutes</option>
+                    <option value="3">10 minutes</option>
+                    <option value="4">15 minutes</option>
+                    <option value="5">20 minutes</option>
+                    <option value="6">30 minutes</option>
+                    <option value="7">60 minutes</option>
+                </select>
 
                 <div id="colorPicker">
                     <h4>Project Color:</h4>
@@ -232,7 +259,7 @@ class CreateProjectForm extends Component {
 
                     </div>
                     <input type="text" placeholder="Email of person you'd like to invite" className="createProjectInput"
-                    value={this.state.inviteValue} onChange={this.changeInviteValue} onKeyDown={this.enterInviteValue} style={{width: '100%'}}/>
+                    value={this.state.inviteValue} onChange={this.changeInviteValue} style={{width: '100%'}}/>
                 </div>
                 <div >
                     <p className="errorBox">{this.state.errorValue}</p>

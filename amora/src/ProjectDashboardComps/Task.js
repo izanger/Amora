@@ -391,12 +391,11 @@ class Task extends Component {
                             
                             <Comment />
                                                  
-                            <Comment />
-                       
-                      
+                            <Comment />                       
+
                         <textarea rows="3" cols="50" >
                             </textarea>
-                <button type = "button">Comment</button>
+                        <button type = "button">Comment</button>
 
                         </div>
                         
