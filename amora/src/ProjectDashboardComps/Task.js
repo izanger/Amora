@@ -227,6 +227,12 @@ class Task extends Component {
 
 
     }
+
+    postComment = () => {
+        //push comment to fireBase
+
+    }
+
     // fixDeadline = () => {
     //     //2018-02-21T18:28:59-05:00
     //     const date = this.props.task.deadline
@@ -314,7 +320,6 @@ class Task extends Component {
     }
 
 
-
     render = () => {
         
         let userKeys
@@ -385,20 +390,13 @@ class Task extends Component {
                             <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
 
             </div>
-
                         </div>
-                        <div id="taskComments">
-                            
-                            <Comment />
-                                                 
+                        <div id="taskComments">                           
+                            <Comment />                                                
                             <Comment />                       
-
-                        <textarea rows="3" cols="50" >
-                            </textarea>
-                        <button type = "button">Comment</button>
-
-                        </div>
-                        
+                            <textarea rows="3" cols="50" ></textarea>
+                            <button onClick={this.postComment}>Comment</button>
+                        </div>                    
                         <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
                     </div>
                 </div>

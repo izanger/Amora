@@ -35,11 +35,8 @@ class TaskComment extends Component {
 
                     <div id="taskNameAndComment">
                         <p id="taskCommentName">{this.state.name}</p>
-
                         <p id="taskCommentText">{this.state.comment}</p>
-                       
                     </div>
-                    
                 </div>
 
             </div>
