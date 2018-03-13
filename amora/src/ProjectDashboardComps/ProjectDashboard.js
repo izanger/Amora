@@ -402,7 +402,7 @@ class ProjectDashboard extends Component {
                     tasks = (
                         taskKeys.map((key) => {
                             return <Task archived={false} projectID = {this.props.getAppState().currentProject.key}
-                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState} 
+                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState} getAppState = {this.props.getAppState()}
                             key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
                             setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} />
                         })

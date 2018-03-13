@@ -16,6 +16,8 @@ import moment from 'moment';
 import Modal from 'react-responsive-modal/lib/css';
 import { validateDate } from "../apphelpers.js"
 
+import { App } from "../App.js"
+
 
 class Task extends Component {
 
@@ -31,7 +33,8 @@ class Task extends Component {
            color: '#3CB4CB',
            editedDate: false,
            addUserOpen: false,
-           addUserId: ""
+           addUserId: "",
+           commentValue: "this comment"
        }
     }
 
@@ -224,13 +227,24 @@ class Task extends Component {
     }
 
     getEstimatedTime = () => {
-
-
+        
     }
 
+    //push comment to fireBase
     postComment = () => {
-        //push comment to fireBase
-
+        const projectID = this.props.projectID
+        const usID = this.props.getAppState.user.uid
+        const tID = this.props.taskKey
+        const comment = this.state.commentValue
+        console.log(projectID)
+        console.log(usID)
+        console.log(tID)
+        console.log(comment)
+        rebase.push(`${projectID}/taskList/${tID}/taskComments`, {
+            data: {
+                usID: comment  
+            }
+        })
     }
 
     // fixDeadline = () => {
@@ -392,8 +406,9 @@ class Task extends Component {
             </div>
                         </div>
                         <div id="taskComments">                           
+                            {/*Pass state, user, and comment value down through <Comment /> to help with dispalying comment*/}
+                            <Comment />
                             <Comment />                                                
-                            <Comment />                       
                             <textarea rows="3" cols="50" ></textarea>
                             <button onClick={this.postComment}>Comment</button>
                         </div>                    
