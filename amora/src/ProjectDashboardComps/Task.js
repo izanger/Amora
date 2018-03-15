@@ -34,7 +34,7 @@ class Task extends Component {
            editedDate: false,
            addUserOpen: false,
            addUserId: "",
-           commentValue: "this comment"
+           commentValue: ""
        }
     }
 
@@ -230,22 +230,33 @@ class Task extends Component {
         
     }
 
+    
+
     //push comment to fireBase
     postComment = () => {
         const projectID = this.props.projectID
         const usID = this.props.getAppState.user.uid
         const tID = this.props.taskKey
         const comment = this.state.commentValue
-        console.log(projectID)
-        console.log(usID)
-        console.log(tID)
-        console.log(comment)
-        rebase.push(`${projectID}/taskList/${tID}/taskComments`, {
+        //console.log(projectID)
+        //console.log(usID)
+        //console.log(tID)
+        //console.log(comment)
+        rebase.push(`projects/${projectID}/taskList/${tID}/taskComments`, {
             data: {
-                usID: comment  
+                [this.props.getAppState.user.uid]: comment   
             }
-        })
+        });
+        //document.getElementById("CommentField").value = '';
+        //console.log(document.getElementById("CommentField").value)
     }
+
+    sendComment = (event) => {
+        const newState = { ...this.state }
+        newState.commentValue = event.target.value
+        this.setState(newState)
+    }
+
 
     // fixDeadline = () => {
     //     //2018-02-21T18:28:59-05:00
@@ -333,7 +344,6 @@ class Task extends Component {
         return banana
     }
 
-
     render = () => {
         
         let userKeys
@@ -405,12 +415,15 @@ class Task extends Component {
 
             </div>
                         </div>
+                        
                         <div id="taskComments">                           
                             {/*Pass state, user, and comment value down through <Comment /> to help with dispalying comment*/}
                             <Comment />
                             <Comment />                                                
-                            <textarea rows="3" cols="50" ></textarea>
-                            <button onClick={this.postComment}>Comment</button>
+                            <input type="text" name="Comment" id="CommentField" rows="3" cols="50" onChange={this.sendComment}
+                            value={this.state.commentValue}></input>
+                            {/*need to call document.getElementById("CommentField") = '' somewhere here*/}
+                            <button type="button" onClick={this.postComment}>Comment</button>
                         </div>                    
                         <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
                     </div>
