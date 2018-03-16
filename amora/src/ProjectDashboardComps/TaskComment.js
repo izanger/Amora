@@ -11,8 +11,8 @@ class TaskComment extends Component {
     constructor() {
         super()
         this.state = {
-            name: 'User\'s Name',
-            comment: 'Example Comment'
+            uid: '',
+            commentValue: ''
         }
     }
 
@@ -34,8 +34,8 @@ class TaskComment extends Component {
                     </div>          
 
                     <div id="taskNameAndComment">
-                        <p id="taskCommentName">{this.state.name}</p>
-                        <p id="taskCommentText">{this.state.comment}</p>
+                        <p id="taskCommentName">{this.props.uid}</p>
+                        <p id="taskCommentText">{this.props.commentValue}</p>
                     </div>
                     
                 </div>

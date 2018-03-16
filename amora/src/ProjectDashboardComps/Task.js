@@ -34,7 +34,8 @@ class Task extends Component {
            editedDate: false,
            addUserOpen: false,
            addUserId: "",
-           commentValue: ""
+           commentValue: "",
+           addedComment: false
        }
     }
 
@@ -230,25 +231,19 @@ class Task extends Component {
         
     }
 
-    
-
     //push comment to fireBase
     postComment = () => {
         const projectID = this.props.projectID
         const usID = this.props.getAppState.user.uid
         const tID = this.props.taskKey
         const comment = this.state.commentValue
-        //console.log(projectID)
-        //console.log(usID)
-        //console.log(tID)
-        //console.log(comment)
         rebase.push(`projects/${projectID}/taskList/${tID}/taskComments`, {
             data: {
-                [this.props.getAppState.user.uid]: comment   
+                [usID]: comment   
             }
         });
-        //document.getElementById("CommentField").value = '';
-        //console.log(document.getElementById("CommentField").value)
+        this.setState({addedComment: true})
+        this.clearComment()
     }
 
     sendComment = (event) => {
@@ -256,6 +251,13 @@ class Task extends Component {
         newState.commentValue = event.target.value
         this.setState(newState)
     }
+
+    clearComment = () => {
+        const newState = { ...this.state }
+        newState.commentValue = ''
+        this.setState(newState)
+    }
+
 
 
     // fixDeadline = () => {
@@ -418,8 +420,14 @@ class Task extends Component {
                         
                         <div id="taskComments">                           
                             {/*Pass state, user, and comment value down through <Comment /> to help with dispalying comment*/}
-                            <Comment />
-                            <Comment />                                                
+                            <div onKeyPress={() => {
+                                console.log(this.state.addedComment)
+                                if (this.state.addedComment) {
+                                    <Comment uid={this.props.uid} commentValue={this.props.commentValue}/>
+                                    this.setState({addedComment: false})
+                                }
+                            }} >
+                            </div>
                             <input type="text" name="Comment" id="CommentField" rows="3" cols="50" onChange={this.sendComment}
                             value={this.state.commentValue}></input>
                             {/*need to call document.getElementById("CommentField") = '' somewhere here*/}
