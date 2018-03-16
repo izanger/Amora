@@ -24,14 +24,14 @@ class TaskComment extends Component {
                     <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
                 </svg>
                 <div id="taskCommentContents">
-                    {/*Temporarily commented out. Uncomment when actual image of person is displayed 
+                    {/*Temporarily commented out. Uncomment when actual image of person is displayed
                     <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
-                    
+
                     {/*Temporary image placeholder*/}
-                    <div id="userIconContainer" >
-                        <img src={funnytemp} className="projectPicture"/>                     
+                    <div id="commentUserIconContainer" >
+                        <img src={funnytemp} className="projectPicture"/>
                         <div id="projectIndicator" ></div>
-                    </div>          
+                    </div>
 
                     <div id="taskNameAndComment">
                         <p id="taskCommentName">{this.state.name}</p>

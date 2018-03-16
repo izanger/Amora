@@ -316,7 +316,7 @@ class Task extends Component {
 
 
     render = () => {
-        
+
         let userKeys
         if (this.props.users) {
             userKeys = Object.keys(this.props.users)
@@ -369,7 +369,7 @@ class Task extends Component {
                                     <p className="taskAssignmentInstructions">Select a user to assign the project to</p>
                                     <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin": "14px"}}>
                                         {userKeys && userKeys.map((key) => {
-                                            return (<UserIcon hasBorder={key == this.state.addUserId} color={"none"} getAppState={this.props.getAppState} 
+                                            return (<UserIcon hasBorder={key == this.state.addUserId} color={"none"} getAppState={this.props.getAppState}
                                             onClick={() => {
                                                 console.log(this)
                                                 this.setState({addUserId: key})
@@ -390,11 +390,11 @@ class Task extends Component {
                         <div id="taskComments">
                             <Comment />
                             <Comment />
-                        <textarea rows="3" cols="50" >
-                            </textarea>
-                        <button type = "button">Comment</button>
+                            <input type="text" placeholder="Comment" className="commentInput"
+                             style={{width: '100%'}}/>
+                             <button className="addCommentButton">Add Comment</button>
+                             <button className="addCommentButton" onClick={this.switch} style={{marginLeft:'10px'}} >Close Task</button>
                         </div>
-                        <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
                     </div>
                 </div>
 
