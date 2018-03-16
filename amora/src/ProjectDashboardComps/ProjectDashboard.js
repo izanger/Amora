@@ -404,7 +404,8 @@ class ProjectDashboard extends Component {
                             return <Task archived={false} projectID = {this.props.getAppState().currentProject.key}
                             taskKey={key} deleteTaskMethod={this.setProjectDashboardState} 
                             key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} />
+                            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} 
+                            getAppState={this.props.getAppState} />
                         })
                     )
                 }
@@ -416,7 +417,8 @@ class ProjectDashboard extends Component {
                         return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} 
                         taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
                         task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                        setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} />
+                        setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList}
+                        getAppState={this.props.getAppState} />
                         })
                     )
                 }
@@ -434,10 +436,7 @@ class ProjectDashboard extends Component {
                         <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                     </svg>
                     <div id="taskDashScrollableContent">
-
-
                         {tasks}
-
                         <div id="addTaskButton" ><NewProjectButton onClick={() => {
                             this.props.goToUrl("/createtask");
                         }} /></div>

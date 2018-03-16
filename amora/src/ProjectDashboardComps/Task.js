@@ -313,13 +313,44 @@ class Task extends Component {
         return banana
     }
 
+    assignTask = (key) => {
+        const dashboardState = { ...this.props.getProjectDashboardState() }
+        if (key === null) {
+            dashboardState.project.taskList[this.props.taskKey].assignedTo = undefined
+        } else {
+            dashboardState.project.taskList[this.props.taskKey].assignedTo = key
+            this.props.setProjectDashboardState(dashboardState)
+        }
+        this.sendAssignmentNotification(key)
+        this.setState({addUserOpen: false})
+    }
 
+    sendAssignmentNotification = (id) => {
+        const notification = {
+            type: "assignment",
+            projectName: this.props.getProjectDashboardState().project.projectName,
+            projectColor: this.props.getProjectDashboardState().project.projectColor,
+            projectPhotoURL: this.props.getProjectDashboardState().project.projectPhotoURL,
+            taskName: this.props.task.taskName
+        }
+        rebase.update(`users/${id}/notifications/${this.props.taskKey}`, {
+            data: notification
+        })
+    }
 
     render = () => {
 
         let userKeys
         if (this.props.users) {
             userKeys = Object.keys(this.props.users)
+        }
+
+        let assignedTo
+        if (this.props.task.assignedTo) {
+            console.log(this.props.task.assignedTo)
+            assignedTo = (
+                <UserIcon getAppState={this.props.getAppState} user={this.props.users[this.props.task.assignedTo]} userID={this.props.task.assignedTo} />
+            )
         }
 
         return (
@@ -351,14 +382,15 @@ class Task extends Component {
                             <UserIcon getAppState={this.props.getAppState} />*/}
 
                              {/*Temporary image placeholder*/}
-                            <div id="userIconContainer" >
+                            {/* <div id="userIconContainer" >
                                 <img src={funnytemp} className="projectPicture"/>
                                 <div id="projectIndicator" ></div>
                             </div>
                             <div id="userIconContainer" >
                                 <img src={funnytemp} className="projectPicture"/>
                                 <div id="projectIndicator" ></div>
-                            </div>
+                            </div> */}
+                            {assignedTo}
 
                             <AddUserButton onClick={() => {
                                 this.setState({addUserOpen: true})
@@ -369,15 +401,18 @@ class Task extends Component {
                                     <p className="taskAssignmentInstructions">Select a user to assign the project to</p>
                                     <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin": "14px"}}>
                                         {userKeys && userKeys.map((key) => {
-                                            return (<UserIcon hasBorder={key == this.state.addUserId} color={"none"} getAppState={this.props.getAppState}
-                                            onClick={() => {
-                                                console.log(this)
-                                                this.setState({addUserId: key})
-                                                console.log(this.state)
-                                            }} key={key} user={this.props.users[key]} userID={key} />)
+                                            return (
+                                                <UserIcon getAppState={this.props.getAppState}
+                                                onClick={() => {
+                                                    this.assignTask(key)
+                                                }} key={key} user={this.props.users[key]} userID={key} 
+                                                />
+                                            )
                                         })}
                                     </div>
-                                    <button className="submitFinalButton taskAssignmentButton">Submit</button>
+                                    <button className="addCommentButton" onClick={() => {
+                                        this.assignTask(null)
+                                    }}>Clear task assignment</button>
                                 </div>
                             </Modal>
 

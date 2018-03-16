@@ -14,11 +14,9 @@ class Notification extends Component {
     }
 
     render = () => {
-        console.log(this.props.notification)
         return (
             <div>
-                <p>This one is a standard notification</p>
-                <p>You've been invited to join: {this.props.notification.projectName}</p>
+                <p>You've been assigned to {this.props.notification.taskName} in the project: {this.props.notification.projectName}</p>
                 <button onClick={this.removeNotification}>Remove notification</button>
                 <p>(Zach make this look nice)</p>
             </div>
