@@ -15,7 +15,7 @@ class ProjectTitleBar extends Component {
 
     constructor() {
         super()
-    
+
         this.state = {
             open: false,
             titleValue: "",
@@ -34,12 +34,12 @@ class ProjectTitleBar extends Component {
         promise.then((data) => {
             if (data.val()) {
                 const newState = this.state
-                newState.renderAsManager = true 
+                newState.renderAsManager = true
                 //newState.projectDescription = this.props.projectDescription
                 this.setState(newState)
             }
         })
-        
+
     }
 
     componentDidMount = () => {
@@ -51,7 +51,7 @@ class ProjectTitleBar extends Component {
     onOpenModal = () => {
         this.setState({ open: true });
       };
-  
+
     onCloseModal = () => {
         this.setState({ open: false });
     };
@@ -80,7 +80,7 @@ class ProjectTitleBar extends Component {
             newState.currentProject.taskAlertTime = taskAlertText
             this.props.setAppState(newState)
 
-            rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project 
+            rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project
                 data: {
                     projectName: this.state.titleValue,
                     projectColor: this.state.colorValue,
@@ -105,7 +105,7 @@ class ProjectTitleBar extends Component {
                     taskAlertTime: taskAlertText,
                 }
             })
-        }    
+        }
     }
 
     changeColorValue = (color) => {
@@ -116,7 +116,7 @@ class ProjectTitleBar extends Component {
 
     //Returns what should be rendered in the settings pane
     renderSettings = (color, colors) => {
-        
+
         if (!this.state.renderAsManager) { //user is not a manager
             return (
                 <div>
@@ -139,11 +139,11 @@ class ProjectTitleBar extends Component {
                 <div>
                     <h1>Manager Settings</h1>
                     <h4>Change Project Name:</h4>
-                    <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue} value={this.state.titleValue} />
+                    <input type="text" placeholder="Enter Project Name" style={{marginLeft:'0px', width:'100%', backgroundColor:'white'}} className="createProjectInput" onChange={this.changeTitleValue} value={this.state.titleValue} />
                     <h4>Change Project Description:</h4>
-                    <input type="text" onChange={this.changeDescriptionValue} value={this.state.projectDescription}/>
+                    <input type="text" className="createProjectInput" style={{marginLeft:'0px', width:'100%', backgroundColor:'white'}} onChange={this.changeDescriptionValue} value={this.state.projectDescription}/>
                     <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
-                    <select name="taskAlertDropdown" id="taskAlertDropdown">
+                    <select name="taskAlertDropdown" id="taskAlertDropdown" >
                         <option value="1">None</option>
                         <option value="2">5 minutes</option>
                         <option value="3">10 minutes</option>
@@ -151,18 +151,18 @@ class ProjectTitleBar extends Component {
                         <option value="5">20 minutes</option>
                         <option value="6">30 minutes</option>
                         <option value="7">60 minutes</option>
-                    </select>`
-                    <div id="colorPicker">
+                    </select>
+                    <div id="colorPicker" style={{marginLeft:'0px'}}>
                         <h4>Change Project Color:</h4>
                         {colors.map((color) => {
                             return this.renderSwatch(color)
                         })}
                     </div>
-                    <button className="submitFinalButton" onClick={this.submitChanges}>Submit</button>
+                    <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
                 </div>
             )
         }
-        
+
     }
 
     /*
@@ -199,12 +199,12 @@ class ProjectTitleBar extends Component {
                 <h1 id="projectTitle">{this.props.title}</h1>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
-                    
+
                    <img alt={"Settings"} src={settingsIcon} title={"Settings"} onClick={this.onOpenModal} id="projectSettingsIcon"/>
                    <Modal open={open} onClose={this.onCloseModal} little>
                          {settings}
                    </Modal>
-                  
+
                    <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} id="projectSettingsIcon"/>
                    <img alt={"Archive"} src={archiveIcon} title={this.props.getButtonText()} style={{right: '100px'}} onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
                </div>
