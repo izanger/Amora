@@ -4,6 +4,7 @@ import settingsIcon from "../images/Icons/Settings.svg"
 import searchIcon from "../images/Icons/Search.svg"
 import archiveIcon from "../images/Icons/Archive.svg"
 import { checkIfManager } from "../apphelpers.js"
+import { emailRegistered, validateEmail } from "../apphelpers.js"
 
 import "./ProjectTitleBar.css"
 
@@ -22,6 +23,9 @@ class ProjectTitleBar extends Component {
             renderAsManager: false,
             projectDescription:"",
             taskAlertTime: "",
+            inviteValue: "",
+            userList: [ ],
+            userEmails: [ ]
         }
     }
 
@@ -96,6 +100,23 @@ class ProjectTitleBar extends Component {
                 }
             })
 
+            this.state.userList.map((user) => {
+                const notification = {
+                    type: "invite",
+                    projectName: this.props.title,
+                    projectColor: this.props.projectColor,
+                    projectPhotoURL: this.props.project.projectPhotoURL,
+                    projectDescription: this.props.project.projectDescription,
+                    key: this.props.project.key,
+                    taskAlertTime: this.props.this.props.getAppState().currentProject.key.taskAlertTime
+                }
+                this.state.userList.map((user) => {
+                        rebase.update(`users/${user.uid}/notifications/${this.state.key}`, {
+                            data: notification
+                        })
+                })
+            })
+
         } else {
             newState.currentProject.taskAlertTime = taskAlertText
             this.props.setAppState(newState)
@@ -113,6 +134,61 @@ class ProjectTitleBar extends Component {
         newState.colorValue = color
         this.setState(newState)
     }
+
+    emailValidationProcess = () => {
+        if (this.state.inviteValue === "") {
+            return false
+        }
+
+        const newState = { ...this.state }
+        if (!validateEmail(this.state.inviteValue)) {
+            newState.errorValue = "Please enter a valid email address..."
+            this.setState(newState)
+            return false
+        }
+
+        if (this.state.inviteValue === this.props.getAppState().user.email) {
+            newState.errorValue = "Thats already a user in this project..."
+            this.setState(newState)
+            return false
+        }
+
+        const promise = emailRegistered(this.state.inviteValue)
+        promise.then((data) => {
+            if (!data.val()) {
+                newState.errorValue = "That email address has not been registered with Amora..."
+                this.setState(newState)
+                return false
+            }
+            if (this.state.userEmails.includes(this.state.inviteValue)) {
+                newState.errorValue = "Thats already a user in this project..."
+                this.setState(newState)
+                return false
+            }
+            const newKey = Object.keys(data.val())
+            newState.errorValue = ""
+            newState.inviteValue = "";
+            newState.userList.push(data.val()[newKey])
+            newState.userEmails.push(this.state.inviteValue)
+            this.setState(newState)
+            //console.log(data.val()[newKey])
+            return true
+        })
+        // TODO:
+        // DONE: ////// MAKE USER LIST HOLD USER OBJECTS //////
+        // MAKE IT SO USERS GET AN INVITE IN DATABASE
+        // WORK ON SYCINGSTATE WITH USERS SO THEIR INVITES WILL BE UPDATED ON THEIR CLIENTS AUTOMATICALLY
+        // MAKE INVITE PAGE / ACCEPTING INVTITE LOGIC
+    }
+
+    // Method for changins invite value in state
+    changeInviteValue = (event) => {
+        const newState = { ...this.state }
+        newState.inviteValue = event.target.value;
+        this.setState(newState)
+    }
+
+    
 
     //Returns what should be rendered in the settings pane
     renderSettings = (color, colors) => {
@@ -158,6 +234,21 @@ class ProjectTitleBar extends Component {
                             return this.renderSwatch(color)
                         })}
                     </div>
+                    <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
+                    <div id="addUserIconProjectContainer" title="Invite User" onClick={this.emailValidationProcess}>
+                        <svg height="23" width="23">
+                            <line x1="4" y1="9" x2="15" y2="9" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                            <line x1="9.5" y1="4" x2="9.5" y2="15" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                        </svg>
+                        {/*This should only appear if it is selected as the project*/}
+
+                    </div>
+                    <input type="text" placeholder="Email of person you'd like to invite" className="createProjectInput"
+                    value={this.state.inviteValue} onChange={this.changeInviteValue} style={{width: '100%'}}/>
+                    <div>
+                        <p className="errorBox">{this.state.errorValue}</p>
+                    </div>
+                </div>
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
                 </div>
             )
