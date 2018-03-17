@@ -12,17 +12,73 @@ import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from './CreateTaskForm.js';
 import Notifications from "./Notifications.js"
 import TodayView from "./TodayView.js"
+import ReactDOM from 'react-dom';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+  const getItems = count =>
+  Array.from({ length: count }, (v, k) => k).map(k => ({
+    id: `item-${k+9}`,
+    content: `item ${k+9}`,
+  }));
 
-
+const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+  
+    return result;
+  };
 
 class Home extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            displayName: ""
-        }
+            displayName: "",
+            todayItems: getItems(10),
+          }
+          this.onDragEnd = this.onDragEnd.bind(this);
+          //this.handleChange = this.handleChange.bind(this);
     }
+
+    onDragEnd(result) {
+        //dropped outside the list
+        if (!result.destination) {
+          return;
+        }
+        console.log(result);
+        return;
+        if (result.destination.droppableId === "droppable" && result.source.droppableId === "droppable1"){
+            //add to secondItems
+            //add to todayItems and Database
+            rebase.push(`users/${this.props.getAppState().user.uid}/todayView/taskList`, {
+                data: {
+                    taskName: this.state.titleValue,
+                    taskDescription: this.state.descriptionValue,
+                    //priorityLevel: selectedText,
+                    //EstimatedTimeValue: this.state.estimatedTimeValue,
+                    //deadline: deadlineFixed,
+                    //taskCreator: this.props.getAppState().user.uid,
+    
+                }
+            })
+        }
+        else {
+            //remove from todayItems and database
+
+        }
+    
+        // const todayItems = reorder(
+        //   this.state.todayItems,
+        //   result.source.index,
+        //   result.destination.index,
+        // );
+  
+    
+        // this.setState({
+        //   todayItems
+        // });
+    }
+
 
     componentWillMount() {
        this.getName();
@@ -71,7 +127,9 @@ class Home extends Component {
         }
 
         return (
+            <DragDropContext onDragEnd={this.onDragEnd}>
             <div id="mainContainer">
+
                 <div id="projectsSelector">
                     <div onClick={() => {
                         const newState = { ...this.props.getAppState() }
@@ -124,6 +182,7 @@ class Home extends Component {
                      <TodayView/> 
                 </div>
             </div>
+            </DragDropContext>
         )
     }
 

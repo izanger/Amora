@@ -64,55 +64,55 @@ class TodayView extends Component {
       console.log(result);
 
 
-      if (source.droppableId === destination.droppableId) {
-        const reordered = reorder(
-          current,
-          source.index,
-          destination.index,
-        );
-        const result: QuoteMap = {
-          ...quoteMap,
-          [source.droppableId]: reordered,
-        };
-        return {
-          quoteMap: result,
-          // not auto focusing in own list
-          autoFocusQuoteId: null,
-        };
-      }
+      // if (source.droppableId === destination.droppableId) {
+      //   const reordered = reorder(
+      //     current,
+      //     source.index,
+      //     destination.index,
+      //   );
+      //   // const result: QuoteMap = {
+      //   //   ...quoteMap,
+      //   //   [source.droppableId]: reordered,
+      //   // };
+      //   // return {
+      //   //   quoteMap: result,
+      //   //   // not auto focusing in own list
+      //   //   autoFocusQuoteId: null,
+      //   // };
+      // }
     
       // moving to different list
     
       // remove from original
-      current.splice(source.index, 1);
-      // insert into next
-      next.splice(destination.index, 0, target);
+      // current.splice(source.index, 1);
+      // // insert into next
+      // next.splice(destination.index, 0, target);
     
-      const result: QuoteMap = {
-        ...quoteMap,
-        [source.droppableId]: current,
-        [destination.droppableId]: next,
-      };
+      // const result: QuoteMap = {
+      //   ...quoteMap,
+      //   [source.droppableId]: current,
+      //   [destination.droppableId]: next,
+      // };
 
-    //   if (result.destination.droppableId === "droppable" && result.soure.droppableId === "droppable1"){
-    //       //add to secondItems
-    //       const newState = { ...this.state }
-    //     newState.secondItems = 
-    //     this.setState(newState)
-    //   }
+      if (result.destination.droppableId === "droppable" && result.source.droppableId === "droppable1"){
+          //add to secondItems
+          const newState = { ...this.state }
+        newState.secondItems = 
+        this.setState(newState)
+      }
   
-    //   const items = reorder(
-    //     this.state.items,
-    //     result.source.index,
-    //     result.destination.index,
-    //   );
+      const items = reorder(
+        this.state.items,
+        result.source.index,
+        result.destination.index,
+      );
 
-    //   const secondItems = reorder (
-    //     this.state.secondItems,
-    //     result.source.index,
-    //     result.destination.index,
+      const secondItems = reorder (
+        this.state.secondItems,
+        result.source.index,
+        result.destination.index,
 
-    //   );
+      );
   
       this.setState({
         items
@@ -123,7 +123,7 @@ class TodayView extends Component {
     // But in this example everything is just done in one place for simplicity
     render() {
       return (
-        <DragDropContext onDragEnd={this.onDragEnd}>
+        //  <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided, snapshot) => (
               <div
@@ -154,42 +154,13 @@ class TodayView extends Component {
               </div>
             )}
           </Droppable>
-          <Droppable droppableId="droppable1">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}
-              >
-                {this.state.secondItems.map((secondItems, index) => (
-                  <Draggable key={secondItems.id} draggableId={secondItems.id} index={index}>
-                    {(provided, snapshot) => (
-                      <div>
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                        >
-                          {secondItems.content}
-                        </div>
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      );
+         //{/* </DragDropContext> */}
+          )
+            {/* //</DragDropContext> */}
     }
   }
   
   // Put the thing into the DOM!
-  ReactDOM.render(<TodayView />, document.getElementById('root'));
+  //ReactDOM.render(<TodayView />, document.getElementById('root'));
   export default TodayView;
   

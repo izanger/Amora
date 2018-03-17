@@ -6,15 +6,57 @@ import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 import "./ProjectDashboard.css"
 import NewProjectButton from "../ProjectSelectorComps/NewProjectButton.js"
 import TodayView from "../TodayView.js"
+import ReactDOM from 'react-dom';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+
+
+const getItems = count =>
+  Array.from({ length: count }, (v, k) => k).map(k => ({
+    id: `item-${k+9}`,
+    content: `item ${k+9}`,
+  }));
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
+const grid = 8;
+
+const getItemStyle = (isDragging, draggableStyle) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: 'none',
+    padding: grid * 2,
+    margin: `0 0 ${grid}px 0`,
+  
+    // change background colour if dragging
+    background: isDragging ? 'lightgreen' : 'grey',
+  
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  });
+  
+  const getListStyle = isDraggingOver => ({
+    background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    padding: grid,
+    width: 250,
+  });
+
 
 
 class ProjectDashboard extends Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             projectSynced: false,
             showArchive: false,
+            items: getItems(10),
             project: {
 
             }
@@ -379,16 +421,23 @@ class ProjectDashboard extends Component {
     render = () => {
 
         let finalRender
-        <TodayView/> 
+        let tasks
+        //<TodayView/> 
+                    
+        
+              
+
         if (this.state.projectSynced) {
 
             // let color = "#3CB4CB";
             // let taskKeys = Object.keys(this.state.project.taskList)
 
-            let tasks
+            //let tasks
             if(!this.state.showArchive){
                 if(this.state.project.taskList){
                     const taskKeys = Object.keys(this.state.project.taskList)
+
+
                     tasks = (
                         taskKeys.map((key) => {
                             return <Task archived={false} projectID = {this.props.getAppState().currentProject.key}
@@ -413,7 +462,12 @@ class ProjectDashboard extends Component {
             }
 
             finalRender = (
+
+                
                 <div id="taskDashboard">
+
+            
+
                     <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} projectColor={this.state.project.projectColor} getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
                     {/* <div id="taskDashContainer">
                     </div> */}
@@ -430,9 +484,8 @@ class ProjectDashboard extends Component {
                             this.props.goToUrl("/createtask");
                         }} /></div>
                     </div>
-                    <button className="unitTestButton" onClick={this.runUnitTests.bind(null,null)}>Run Unit Tests</button>
-                    <TodayView/> 
-                    <TodayView/> 
+                    {/* <button className="unitTestButton" onClick={this.runUnitTests.bind(null,null)}>Run Unit Tests</button> */}
+                     
 
                 </div>
             )
@@ -441,10 +494,49 @@ class ProjectDashboard extends Component {
                 <div></div>
             )
         }
-
+        //const taskKeys = Object.keys(this.state.project.taskList);
         return (
-            <div id="taskDashboard">{finalRender}</div>
+            
+            
+            <div id="taskDashboard">{finalRender}
+            <Droppable droppableId="droppable1">
+            
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            style={getListStyle(snapshot.isDraggingOver)}
+          >
+            {this.state.items.map((item, index) => (
+              <Draggable key={item.id} draggableId={item.id} index={index}>
+                {(provided, snapshot) => (
+                  <div>
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    //   style={getItemStyle(
+                    //     snapshot.isDragging,
+                    //     provided.draggableProps.style
+                    //   )}
+                    >
+                    {/* put tasks here */}
+                    {tasks}
+                      {item.content}
+                    </div>
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      
+            </Droppable>
+            </div>
+        
         )
+        
     }
 
 }

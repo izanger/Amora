@@ -14,6 +14,7 @@ import "./TaskComment.css"
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { validateDate } from "../apphelpers.js"
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 
 class Task extends Component {
@@ -316,6 +317,7 @@ class Task extends Component {
     render = () => {
         //console.log(this.props.task.priorityLevel)
         return (
+
             <div onClick={() => {
                 if (!this.state.open) {
                     this.switch()
@@ -370,6 +372,7 @@ class Task extends Component {
                 </div>
 
             </div>
+
         )
 
     }
