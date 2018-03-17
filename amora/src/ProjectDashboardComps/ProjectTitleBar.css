@@ -39,3 +39,16 @@
 .submitFinalButton:hover {
     margin-top: -1px;
 }
+
+.settingsPopupOverlay {
+    background-color: transparent !important;
+    /* background: rgba(186, 191, 190, 0.6) !important; */
+}
+
+.settingsPopupModal {
+     position: absolute !important;
+    top: 60px !important;
+    right: 350px !important;
+    border-radius: 5px;
+    border: 1px solid grey;
+}
