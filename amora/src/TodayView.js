@@ -124,7 +124,7 @@ class TodayView extends Component {
     render() {
       return (
         //  <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId="droppable">
+          <Droppable droppableId="TodayView">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}

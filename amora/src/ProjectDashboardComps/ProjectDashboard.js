@@ -422,6 +422,7 @@ class ProjectDashboard extends Component {
 
         let finalRender
         let tasks
+        let count = 0
         //<TodayView/> 
                     
         
@@ -440,12 +441,54 @@ class ProjectDashboard extends Component {
 
                     tasks = (
                         taskKeys.map((key) => {
+
                             return <Task archived={false} projectID = {this.props.getAppState().currentProject.key}
                             taskKey={key} deleteTaskMethod={this.setProjectDashboardState} 
                             key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
                             setProjectDashboardState={this.setProjectDashboardState} />
+                            
                         })
                     )
+                    
+                    return <Droppable droppableId="TaskContainer">
+            
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            style={getListStyle(snapshot.isDraggingOver)}
+          >
+            
+            {Object.keys(this.state.project.taskList).map((item, index) => (
+              <Draggable key={item} draggableId={item} index={index}>
+                {(provided, snapshot) => (
+                  <div>
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                      )}
+                    >
+                    {/* put tasks here */}
+                    {console.log(tasks)}
+                    {console.log(count)}
+                    {console.log(item)}
+                     {/* {tasks} */}
+                      {tasks[index]}
+                    </div>
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+            </Droppable>
+                    
+
                 }
             } else {
                 if(this.state.project.archivedTaskList){
@@ -495,44 +538,14 @@ class ProjectDashboard extends Component {
             )
         }
         //const taskKeys = Object.keys(this.state.project.taskList);
+        
         return (
-            
-            
+                        
             <div id="taskDashboard">{finalRender}
-            <Droppable droppableId="droppable1">
+
+
             
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
-          >
-            {this.state.items.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided, snapshot) => (
-                  <div>
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    //   style={getItemStyle(
-                    //     snapshot.isDragging,
-                    //     provided.draggableProps.style
-                    //   )}
-                    >
-                    {/* put tasks here */}
-                    {tasks}
-                      {item.content}
-                    </div>
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      
-            </Droppable>
+    
             </div>
         
         )
