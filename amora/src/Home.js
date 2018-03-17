@@ -10,7 +10,8 @@ import CreateProjectForm from './CreateProjectForm.js';
 import ProjectDashboard from "./ProjectDashboardComps/ProjectDashboard.js"
 import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from './CreateTaskForm.js';
-import Notifications from "./Notifications.js"
+import Notifications from "./Notifications.js";
+import MyDayTitleBar from "./MyDayComps/MyDayTitleBar.js"
 
 class Home extends Component {
     constructor() {
@@ -32,16 +33,16 @@ class Home extends Component {
     }
 
     getName() {
-        const id = this.props.getAppState().user.uid   
+        const id = this.props.getAppState().user.uid
         rebase.fetch(`users/${id}/displayName`, {
             context: this,
         }).then(data => {
             let newState = { ...this.state}
             newState.displayName = data
-            this.setState(newState);        
+            this.setState(newState);
           })
     }
-    
+
 
     render = () => {
 
@@ -81,7 +82,7 @@ class Home extends Component {
                         newState.currentProject = newState.user.projects[newState.user.personalProjectID]
                         this.props.setAppState(newState)
                         this.props.goToUrl(`/projects/${newState.user.personalProjectID}`)
-                        
+
                         //this.props.goToUrl("/dashboard")
 
                     }}><ProjectIcon personalIcon={true} projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
@@ -99,14 +100,14 @@ class Home extends Component {
                         this.props.goToUrl("/notifications");
                     }}>{notificationText}</i>
                 </div>
-                
+
                 <Switch>
                     <Route path="/dashboard" render={() => {
                         return (
                             <div id="taskDashboard"></div>
                         )
                     }} />
-                    <Route path="/projects/:id" render={(props) => <ProjectDashboard {...props} 
+                    <Route path="/projects/:id" render={(props) => <ProjectDashboard {...props}
                         goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.props.setAppState} goBack={this.props.goBack}/> } />
                     <Route path="/createproject" render={() => {
                         return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
@@ -124,7 +125,7 @@ class Home extends Component {
                 </Switch>
 
                 <div id="myDay">
-                    Today
+                    <MyDayTitleBar />
                 </div>
             </div>
         )

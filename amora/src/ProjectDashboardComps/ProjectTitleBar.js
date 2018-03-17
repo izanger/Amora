@@ -188,7 +188,7 @@ class ProjectTitleBar extends Component {
         this.setState(newState)
     }
 
-    
+
 
     //Returns what should be rendered in the settings pane
     renderSettings = (color, colors) => {
@@ -243,8 +243,8 @@ class ProjectTitleBar extends Component {
                         {/*This should only appear if it is selected as the project*/}
 
                     </div>
-                    <input type="text" placeholder="Email of person you'd like to invite" className="createProjectInput"
-                    value={this.state.inviteValue} onChange={this.changeInviteValue} style={{width: '100%'}}/>
+                    <input type="text" placeholder="Email of person you'd like to invite" style={{marginLeft:'0px', width:'200%', backgroundColor:'white'}} className="createProjectInput"
+                    value={this.state.inviteValue} onChange={this.changeInviteValue} />
                     <div>
                         <p className="errorBox">{this.state.errorValue}</p>
                     </div>
