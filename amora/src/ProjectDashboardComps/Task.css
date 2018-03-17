@@ -123,6 +123,19 @@
 }
 
 .addCommentButton:hover {
-    margin-top: -3px;
-    margin-bottom: 10px;
+    background-color: #4A4A4A;
+    color: white;
+}
+
+.assignUserOverlay {
+    background-color: lightgrey !important;
+    background: rgba(186, 191, 190, 0.6) !important;
+}
+
+.assignUserModal {
+    /* position: absolute !important;
+    top: 0px !important;
+    left: 0px !important; */
+    border-radius: 5px;
+    border: 1px solid grey;
 }

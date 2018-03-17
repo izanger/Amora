@@ -395,24 +395,24 @@ class Task extends Component {
                             <AddUserButton onClick={() => {
                                 this.setState({addUserOpen: true})
                             }}/>
-                            <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little>
+                            <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
                                 <div>
-                                    <h1 className="taskAssignment">Task assignment</h1>
-                                    <p className="taskAssignmentInstructions">Select a user to assign the project to</p>
-                                    <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin": "14px"}}>
+                                    {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                    <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select users to assign to this task</h4>
+                                    <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                         {userKeys && userKeys.map((key) => {
                                             return (
                                                 <UserIcon getAppState={this.props.getAppState}
                                                 onClick={() => {
                                                     this.assignTask(key)
-                                                }} key={key} user={this.props.users[key]} userID={key} 
+                                                }} key={key} user={this.props.users[key]} userID={key}
                                                 />
                                             )
                                         })}
                                     </div>
-                                    <button className="addCommentButton" onClick={() => {
+                                    <button className="addCommentButton" style={{width: '200px'}} onClick={() => {
                                         this.assignTask(null)
-                                    }}>Clear task assignment</button>
+                                    }}>Clear All Assigned Users</button>
                                 </div>
                             </Modal>
 
