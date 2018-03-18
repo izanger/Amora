@@ -3,8 +3,9 @@ import rebase from "../rebase";
 import settingsIcon from "../images/Icons/Settings.svg"
 import searchIcon from "../images/Icons/Search.svg"
 import archiveIcon from "../images/Icons/Archive.svg"
-import { checkIfManager } from "../apphelpers.js"
+import { checkIfManager, checkIfUserOnProject } from "../apphelpers.js"
 import { emailRegistered, validateEmail } from "../apphelpers.js"
+import InviteList from "../InviteList.js"
 
 import "./ProjectTitleBar.css"
 
@@ -100,21 +101,22 @@ class ProjectTitleBar extends Component {
                 }
             })
 
+            const newKey = this.props.getProjectDashboardState().project.key
+            const notification = {
+                type: "invite",
+                projectName: this.props.getProjectDashboardState().project.projectName,
+                projectColor: this.props.getProjectDashboardState().project.projectColor,
+                projectPhotoURL: this.props.getProjectDashboardState().project.projectPhotoURL,
+                projectDescription: this.props.getProjectDashboardState().project.projectDescription,
+                key: newKey,
+                taskAlertTime: taskAlertText,
+            }
             this.state.userList.map((user) => {
-                const notification = {
-                    type: "invite",
-                    projectName: this.props.title,
-                    projectColor: this.props.projectColor,
-                    projectPhotoURL: this.props.project.projectPhotoURL,
-                    projectDescription: this.props.project.projectDescription,
-                    key: this.props.project.key,
-                    taskAlertTime: this.props.this.props.getAppState().currentProject.key.taskAlertTime
+                if (user.email !== this.props.getAppState().user.email) {
+                    rebase.update(`users/${user.uid}/notifications/${newKey}`, {
+                        data: notification
+                    })
                 }
-                this.state.userList.map((user) => {
-                        rebase.update(`users/${user.uid}/notifications/${this.state.key}`, {
-                            data: notification
-                        })
-                })
             })
 
         } else {
@@ -161,7 +163,15 @@ class ProjectTitleBar extends Component {
                 return false
             }
             if (this.state.userEmails.includes(this.state.inviteValue)) {
-                newState.errorValue = "Thats already a user in this project..."
+                newState.errorValue = "You've already invited that user..."
+                this.setState(newState)
+                return false
+            }
+            const valKeys = Object.keys(data.val())
+            const person = data.val()[valKeys[0]]
+            const projectKeys = Object.keys(person.projects)
+            if (projectKeys.includes(this.props.getProjectDashboardState().project.key)) {
+                newState.errorValue = "That user is already in this project..."
                 this.setState(newState)
                 return false
             }
@@ -248,6 +258,7 @@ class ProjectTitleBar extends Component {
                     <div>
                         <p className="errorBox">{this.state.errorValue}</p>
                     </div>
+                    <InviteList uid={this.props.getAppState().user.uid} users={this.state.userList} />
                 </div>
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
                 </div>
