@@ -349,7 +349,8 @@ class Task extends Component {
         if (this.props.task.assignedTo) {
             console.log(this.props.task.assignedTo)
             assignedTo = (
-                <UserIcon getAppState={this.props.getAppState} user={this.props.users[this.props.task.assignedTo]} userID={this.props.task.assignedTo} />
+                <UserIcon color={this.props.getProjectDashboardState().project.projectColor} getAppState={this.props.getAppState} 
+                user={this.props.users[this.props.task.assignedTo]} userID={this.props.task.assignedTo} projectID={this.props.getProjectDashboardState().project.key} />
             )
         }
 
@@ -402,7 +403,8 @@ class Task extends Component {
                                     <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                         {userKeys && userKeys.map((key) => {
                                             return (
-                                                <UserIcon getAppState={this.props.getAppState}
+                                                <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
                                                 onClick={() => {
                                                     this.assignTask(key)
                                                 }} key={key} user={this.props.users[key]} userID={key}
