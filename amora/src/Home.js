@@ -46,21 +46,57 @@ class Home extends Component {
           return;
         }
         console.log(result);
-        return;
-        if (result.destination.droppableId === "droppable" && result.source.droppableId === "droppable1"){
+        // return;
+        if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TaskContainer"){
             //add to secondItems
             //add to todayItems and Database
-            rebase.push(`users/${this.props.getAppState().user.uid}/todayView/taskList`, {
-                data: {
-                    taskName: this.state.titleValue,
-                    taskDescription: this.state.descriptionValue,
-                    //priorityLevel: selectedText,
-                    //EstimatedTimeValue: this.state.estimatedTimeValue,
-                    //deadline: deadlineFixed,
-                    //taskCreator: this.props.getAppState().user.uid,
-    
-                }
-            })
+            let projectArray = [];
+            let taskname;
+
+            //result.draggableId is the key for the task
+            //fetch it, save some properties and then push it to today view.
+            const id = this.props.getAppState().user.uid   
+            const taskID = result.draggableId;
+        rebase.fetch(`users/${id}/projects`, {
+            context: this,
+        }).then(data => {
+            console.log(data)   
+            projectArray = Object.keys(data);
+            for (var i = 0; i < projectArray.length;i++ ){
+                let pid = projectArray[i];
+
+                rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
+                    context: this,
+                }).then(data => {
+                    console.log(data)
+                    if (data.taskName){
+                        console.log(data.taskName)
+                        taskname = data.taskName
+
+                        //taskName is set, so we can push it to the todayView
+
+                        rebase.push(`users/${this.props.getAppState().user.uid}/todayView/taskList/`, {
+                            data: {
+                                taskIDNumber: taskID,
+                                taskName: taskname,
+                                //taskDescription: this.state.descriptionValue,
+                                //priorityLevel: selectedText,
+                                //EstimatedTimeValue: this.state.estimatedTimeValue,
+                                //deadline: deadlineFixed,
+                                //taskCreator: this.props.getAppState().user.uid,
+                
+                            }
+                        })
+                    }
+                       
+
+
+                })
+            }
+                    
+          })
+
+              return;
         }
         else {
             //remove from todayItems and database
