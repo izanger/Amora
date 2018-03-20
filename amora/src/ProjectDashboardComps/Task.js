@@ -350,7 +350,8 @@ class Task extends Component {
             console.log(this.props.task.assignedTo)
             assignedTo = (
                 <UserIcon color={this.props.getProjectDashboardState().project.projectColor} getAppState={this.props.getAppState} 
-                user={this.props.users[this.props.task.assignedTo]} userID={this.props.task.assignedTo} projectID={this.props.getProjectDashboardState().project.key} />
+                user={this.props.users[this.props.task.assignedTo]} userID={this.props.task.assignedTo}
+                project={this.props.getProjectDashboardState().project} projectID={this.props.getProjectDashboardState().project.key} />
             )
         }
 
@@ -407,7 +408,7 @@ class Task extends Component {
                                                 getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
                                                 onClick={() => {
                                                     this.assignTask(key)
-                                                }} key={key} user={this.props.users[key]} userID={key}
+                                                }} key={key} user={this.props.users[key]} userID={key} project={this.props.getProjectDashboardState().project}
                                                 />
                                             )
                                         })}

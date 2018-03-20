@@ -3,6 +3,7 @@ import rebase from "../rebase";
 import settingsIcon from "../images/Icons/Settings.svg"
 import searchIcon from "../images/Icons/Search.svg"
 import archiveIcon from "../images/Icons/Archive.svg"
+import UserIcon from "./UserIcon.js"
 import { checkIfManager, checkIfUserOnProject } from "../apphelpers.js"
 import { emailRegistered, validateEmail } from "../apphelpers.js"
 import InviteList from "../InviteList.js"
@@ -198,10 +199,36 @@ class ProjectTitleBar extends Component {
         this.setState(newState)
     }
 
+    assignManager = (key) => {
+        const dashboardState = { ...this.props.getProjectDashboardState() }
+        dashboardState.project.managerList[key] = true
+        this.props.setProjectDashboardState(dashboardState)
+        // this.sendManagerNotification(key)
+        this.setState({addManagerOpen: false})
+    }
+
+    sendmanagerNotification = (id) => {
+        const notification = {
+            type: "assignment",
+            projectName: this.props.getProjectDashboardState().project.projectName,
+            projectColor: this.props.getProjectDashboardState().project.projectColor,
+            projectPhotoURL: this.props.getProjectDashboardState().project.projectPhotoURL,
+            taskName: this.props.task.taskName
+        }
+        rebase.update(`users/${id}/notifications/${this.props.taskKey}`, {
+            data: notification
+        })
+    }
+
 
 
     //Returns what should be rendered in the settings pane
     renderSettings = (color, colors) => {
+
+        let userKeys
+        if (this.props.project.userList) {
+            userKeys = Object.keys(this.props.project.userList)
+        }
 
         if (!this.state.renderAsManager) { //user is not a manager
             return (
@@ -244,22 +271,44 @@ class ProjectTitleBar extends Component {
                             return this.renderSwatch(color)
                         })}
                     </div>
+                    <button onClick={() => {
+                        this.setState({addManagerOpen: true})
+                    }}>Promote user to manager</button>
                     <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
-                    <div id="addUserIconProjectContainer" title="Invite User" onClick={this.emailValidationProcess}>
-                        <svg height="23" width="23">
-                            <line x1="4" y1="9" x2="15" y2="9" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
-                            <line x1="9.5" y1="4" x2="9.5" y2="15" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
-                        </svg>
-                        {/*This should only appear if it is selected as the project*/}
+                        <div id="addUserIconProjectContainer" title="Invite User" onClick={this.emailValidationProcess}>
+                            <svg height="23" width="23">
+                                <line x1="4" y1="9" x2="15" y2="9" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                                <line x1="9.5" y1="4" x2="9.5" y2="15" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                            </svg>
+                            {/*This should only appear if it is selected as the project*/}
 
+                        </div>
+                        <Modal open={this.state.addManagerOpen} onClose={() => this.setState({addManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                            <div>
+                                {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a user to promote to manager status</h4>
+                                <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
+                                    {userKeys && userKeys.map((key) => {
+                                        if (!Object.keys(this.props.project.managerList).includes(key)) {
+                                            return (
+                                                <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
+                                                onClick={() => {
+                                                    this.assignManager(key)
+                                                }} key={key} user={this.props.project.userList[key]} userID={key} project={this.props.project} />
+                                            )
+                                        }   
+                                    })}
+                                </div>
+                            </div>
+                        </Modal>
+                        <input type="text" placeholder="Email of person you'd like to invite" style={{marginLeft:'0px', width:'200%', backgroundColor:'white'}} className="createProjectInput"
+                        value={this.state.inviteValue} onChange={this.changeInviteValue} />
+                        <div>
+                            <p className="errorBox">{this.state.errorValue}</p>
+                        </div>
+                        <InviteList uid={this.props.getAppState().user.uid} users={this.state.userList} />
                     </div>
-                    <input type="text" placeholder="Email of person you'd like to invite" style={{marginLeft:'0px', width:'200%', backgroundColor:'white'}} className="createProjectInput"
-                    value={this.state.inviteValue} onChange={this.changeInviteValue} />
-                    <div>
-                        <p className="errorBox">{this.state.errorValue}</p>
-                    </div>
-                    <InviteList uid={this.props.getAppState().user.uid} users={this.state.userList} />
-                </div>
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
                 </div>
             )

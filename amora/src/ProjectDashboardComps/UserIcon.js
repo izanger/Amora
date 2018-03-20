@@ -26,25 +26,49 @@ class UserIcon extends Component {
        this.color = "#3498DB";
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (Object.keys(this.props.project.managerList).includes(this.props.userID)) {
+            const newState = this.state
+            newState.iconIsManager = true 
+            this.setState(newState)
+        }
+        if (Object.keys(this.props.project.managerList).includes(this.props.getAppState().user.uid)) {
+            const newState = this.state
+            newState.viewingAsManager = true 
+            this.setState(newState)
+        }
+    }
+
     componentWillMount() {
         this.getInfo();
         this.getEmail();
-        const promise = checkIfManager(this.props.userID, this.props.projectID)
-        promise.then((data) => {
-            if (data.val()) {
-                const newState = this.state
-                newState.iconIsManager = true 
-                this.setState(newState)
-            }
-        })
-        const promise2ElectricBoogaloo = checkIfManager(this.props.getAppState().user.uid, this.props.projectID)
-        promise2ElectricBoogaloo.then((data) => {
-            if (data.val()) {
-                const newState = this.state
-                newState.viewingAsManager = true 
-                this.setState(newState)
-            }
-        })
+        console.log(this.props)
+        // const promise = checkIfManager(this.props.userID, this.props.projectID)
+        // promise.then((data) => {
+        //     if (data.val()) {
+        //         const newState = this.state
+        //         newState.iconIsManager = true 
+        //         this.setState(newState)
+        //     }
+        // })
+        // const promise2ElectricBoogaloo = checkIfManager(this.props.getAppState().user.uid, this.props.projectID)
+        // promise2ElectricBoogaloo.then((data) => {
+        //     if (data.val()) {
+        //         const newState = this.state
+        //         newState.viewingAsManager = true 
+        //         this.setState(newState)
+        //     }
+        // })
+        if (Object.keys(this.props.project.managerList).includes(this.props.userID)) {
+            const newState = this.state
+            newState.iconIsManager = true 
+            this.setState(newState)
+        }
+        if (Object.keys(this.props.project.managerList).includes(this.props.getAppState().user.uid)) {
+            const newState = this.state
+            newState.viewingAsManager = true 
+            this.setState(newState)
+        }
      }
 
     onOpenModal = () => {

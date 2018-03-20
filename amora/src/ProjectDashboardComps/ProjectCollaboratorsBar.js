@@ -32,7 +32,8 @@ class ProjectCollaboratorsBar extends Component {
             <div>
                 <div id="ProjectCollaboratorsBarContainter">
                     {userKeys && userKeys.map((key) => {
-                        return (<UserIcon hasBorder={true} color={this.props.color} getAppState={this.props.getAppState} key={key} user={this.props.users[key]} userID={key} projectID={this.props.projectID}/>)
+                        return (<UserIcon hasBorder={true} color={this.props.color} getAppState={this.props.getAppState}
+                        key={key} user={this.props.users[key]} userID={key} projectID={this.props.projectID} project={this.props.project}/>)
                     })}
                 </div>
             </div>
