@@ -27,7 +27,9 @@ class ProjectTitleBar extends Component {
             taskAlertTime: "",
             inviteValue: "",
             userList: [ ],
-            userEmails: [ ]
+            userEmails: [ ],
+            addManagerOpen: false,
+            addProjectCreatorOpen: false
         }
     }
 
@@ -207,6 +209,14 @@ class ProjectTitleBar extends Component {
         this.setState({addManagerOpen: false})
     }
 
+    assignProjectCreator = (key) => {
+        const dashboardState = { ...this.props.getProjectDashboardState() }
+        dashboardState.project.projectCreator = key
+        this.props.setProjectDashboardState(dashboardState)
+        // this.sendProjectCreatorNotification(key)
+        this.setState({addProjectCreatorOpen: false})
+    }
+
     sendmanagerNotification = (id) => {
         const notification = {
             type: "assignment",
@@ -220,6 +230,12 @@ class ProjectTitleBar extends Component {
         })
     }
 
+    renderProjectCreatorButton = () => {
+        return (<button onClick={() => {
+            this.setState({addProjectCreatorOpen: true})
+        }}>Give other user project creator status</button>)
+    }
+
 
 
     //Returns what should be rendered in the settings pane
@@ -229,6 +245,15 @@ class ProjectTitleBar extends Component {
         if (this.props.project.userList) {
             userKeys = Object.keys(this.props.project.userList)
         }
+        let isProjectOwner = false
+        if (this.props.getProjectDashboardState().project.projectCreator == this.props.getAppState().user.uid) {
+            isProjectOwner = true
+        }
+        let creatorButton
+        if (isProjectOwner) {
+            creatorButton = this.renderProjectCreatorButton()
+        }
+
 
         if (!this.state.renderAsManager) { //user is not a manager
             return (
@@ -271,6 +296,26 @@ class ProjectTitleBar extends Component {
                             return this.renderSwatch(color)
                         })}
                     </div>
+                    {creatorButton}
+                    <Modal open={this.state.addProjectCreatorOpen} onClose={() => this.setState({addProjectCreatorOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                            <div>
+                                {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a user to promote to manager status</h4>
+                                <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
+                                    {userKeys && userKeys.map((key) => {
+                                        if (key != this.props.project.projectCreator) {
+                                            return (
+                                                <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
+                                                onClick={() => {
+                                                    this.assignProjectCreator(key)
+                                                }} key={key} user={this.props.project.userList[key]} userID={key} project={this.props.project} />
+                                            )
+                                        }   
+                                    })}
+                                </div>
+                            </div>
+                        </Modal>
                     <button onClick={() => {
                         this.setState({addManagerOpen: true})
                     }}>Promote user to manager</button>
