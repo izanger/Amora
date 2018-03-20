@@ -179,7 +179,7 @@ class Home extends Component {
                 </Switch>
 
                 <div id="myDay">                
-                     <TodayView/> 
+                     <TodayView/>
                 </div>
             </div>
             </DragDropContext>

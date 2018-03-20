@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import rebase from "./rebase.js"
 
 
 // fake data generator
@@ -10,11 +11,6 @@ const getItems = count =>
     content: `item ${k}`,
   }));
 
-  const getSecondItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k+9}`,
-    content: `item ${k+9}`,
-  }));
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -51,10 +47,62 @@ class TodayView extends Component {
       super(props);
       this.state = {
         items: getItems(10),
-        secondItems: getSecondItems(10)
       };
       this.onDragEnd = this.onDragEnd.bind(this);
     }
+
+  //   componentDidMount = () => {
+  //     const newState = { ...this.state }
+  //     rebase.fetch(`projects/${this.props.match.params.id}`, {
+  //         context: this,
+  //         then: (data) => {
+  //             newState.project = data
+  //         }
+  //     }).then(() => {
+  //         this.bindingref = rebase.syncState(`projects/${this.props.match.params.id}`, {
+  //             context: this,
+  //             state: 'project',
+  //             then: () => {
+  //               newState.projectSynced = true
+  //               this.setState(newState)
+  //             }
+  //         })
+  //     })
+  // }
+
+  // componentWillReceiveProps = (nextProps) => {
+  //     const nextId = nextProps.match.params.id
+  //     this.setState({projectSynced: false})
+  //     if (nextId !== this.props.match.params.id) {
+  //         this.setState({projectSynced: false})
+  //         if (this.bindingref) {
+  //             rebase.removeBinding(this.bindingref)
+  //         }
+  //         const newState = { ...this.state }
+  //         rebase.fetch(`projects/${nextId}`, {
+  //             context: this,
+  //             then: (data) => {
+  //                 newState.project = data
+  //             }
+  //         }).then(() => {
+  //             this.bindingref = rebase.syncState(`projects/${nextId}`, {
+  //                 context: this,
+  //                 state: 'project',
+  //                 then: () => {
+  //                     newState.projectSynced = true
+  //                     this.setState(newState)
+  //                 }
+  //             })
+  //         })
+  //     }
+  //     this.setState({projectSynced: true})
+  // }
+
+  // componentWillUnmount = () => {
+  //     this.setState({
+  //         projectSynced: false
+  //     })
+  // }
   
     onDragEnd(result) {
       //dropped outside the list
@@ -62,6 +110,7 @@ class TodayView extends Component {
         return;
       }
       console.log(result);
+      console.log("hello")
 
 
       // if (source.droppableId === destination.droppableId) {
@@ -93,25 +142,11 @@ class TodayView extends Component {
       //   [source.droppableId]: current,
       //   [destination.droppableId]: next,
       // };
-
-      if (result.destination.droppableId === "droppable" && result.source.droppableId === "droppable1"){
-          //add to secondItems
-          const newState = { ...this.state }
-        newState.secondItems = 
-        this.setState(newState)
-      }
   
       const items = reorder(
         this.state.items,
         result.source.index,
         result.destination.index,
-      );
-
-      const secondItems = reorder (
-        this.state.secondItems,
-        result.source.index,
-        result.destination.index,
-
       );
   
       this.setState({
