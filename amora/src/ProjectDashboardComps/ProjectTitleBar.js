@@ -259,6 +259,8 @@ class ProjectTitleBar extends Component {
             return (
                 <div>
                     <h1>User Settings</h1>
+                    <h4>Project Description:</h4>
+                    <p>{this.props.project.projectDescription}</p>
                     <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
                     <select name="taskAlertDropdown" id="taskAlertDropdown">
                         <option value="1">None</option>
@@ -276,6 +278,8 @@ class ProjectTitleBar extends Component {
             return (
                 <div>
                     <h1>Manager Settings</h1>
+                    <h4>Project Description:</h4>
+                    <p>{this.props.project.projectDescription}</p>
                     <h4>Change Project Name:</h4>
                     <input type="text" placeholder="Enter Project Name" style={{marginLeft:'0px', width:'100%', backgroundColor:'white'}} className="createProjectInput" onChange={this.changeTitleValue} value={this.state.titleValue} />
                     <h4>Change Project Description:</h4>
