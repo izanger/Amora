@@ -45,21 +45,55 @@ class Task extends Component {
 
     componentWillMount = () => {
         const newState = { ...this.state }
-        rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
-            context: this,
-            then: (data) => {
-                newState.taskComments = data
-            }
-        }).then(() => {
-            this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+        let arch = this.props.archived
+        if(arch){
+            rebase.fetch(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
                 context: this,
-                state: 'taskComments',
-                then: () => {
-                    newState.commentsSynced = true
-                    this.setState(newState)
+                then: (data) => {
+                    newState.taskComments = data
                 }
+            }).then(() => {
+                this.bindingref = rebase.syncState(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
+                    context: this,
+                    state: 'taskComments',
+                    then: () => {
+                        newState.commentsSynced = true
+                        this.setState(newState)
+                    }
+                })
             })
-        })
+        }else {
+            rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+                context: this,
+                then: (data) => {
+                    newState.taskComments = data
+                }
+            }).then(() => {
+                this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+                    context: this,
+                    state: 'taskComments',
+                    then: () => {
+                        newState.commentsSynced = true
+                        this.setState(newState)
+                    }
+                })
+            })
+        }
+        // rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+        //     context: this,
+        //     then: (data) => {
+        //         newState.taskComments = data
+        //     }
+        // }).then(() => {
+        //     this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+        //         context: this,
+        //         state: 'taskComments',
+        //         then: () => {
+        //             newState.commentsSynced = true
+        //             this.setState(newState)
+        //         }
+        //     })
+        // })
     }
 
     componentWillUnmount = () => {
@@ -96,14 +130,13 @@ class Task extends Component {
         if (response == true){
             if(!this.props.archived){
                 rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
-                    if(!err){
+                    if(err){
                         console.log("fiddlesticks")
-
                     }
                 });
             } else {
                 rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
-                    if(!err){
+                    if(err){
                         console.log("fiddlesticks")
                     }
                 });
@@ -141,6 +174,29 @@ class Task extends Component {
         }
     }
 
+    toggleSync = (archive) => {
+        if(archive){
+            if(this.bindingref){
+                rebase.removeBinding(this.bindingref)
+            }
+            this.bindingref = rebase.syncState(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
+                context: this,
+                state: 'taskComments',
+            
+            })
+
+        }else {
+            if(this.bindingref){
+                rebase.removeBinding(this.bindingref)
+            }
+            this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+                context: this,
+                state: 'taskComments',
+                
+            })
+        }
+    }
+
     //Ian: Archive the task if it's archived. Unarchive it if it's not.
     toggleArchived = () => {
         if (this.props.archived){
@@ -156,10 +212,13 @@ class Task extends Component {
                         then(err){
                             //Thanks Alex
                             rebase.remove(`projects/${projID}/archivedTaskList/${taskID}`, function(err){
-                                if(!err){
+                                if(err){
                                     console.log("fickstiddles")
                                 }
-                              });
+                            });
+
+                            //this.toggleSync(false)
+                            
                         }
                     })
 
@@ -178,10 +237,13 @@ class Task extends Component {
                         then(err){
                             //Thanks Alex
                             rebase.remove(`projects/${projID}/taskList/${taskID}`, function(err){
-                                if(!err){
+                                if(err){
                                     console.log("stickfiddles")
                                 }
-                              });
+                            });
+
+                            //this.toggleSync(true)
+
                         }
                     })
 
@@ -204,7 +266,11 @@ class Task extends Component {
     changeTaskName = (event) => {
         if (event.target.value.length !== 0) {
             const newState = this.props.getProjectDashboardState()
-            newState.project.taskList[this.props.taskKey].taskName = event.target.value
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].taskName = event.target.value
+            }else {
+                newState.project.taskList[this.props.taskKey].taskName = event.target.value
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
@@ -213,7 +279,11 @@ class Task extends Component {
         if (validateDate(event.target.value)){
             console.log("SUCCESS")
             const newState = this.props.getProjectDashboardState()
-            newState.project.taskList[this.props.taskKey].deadline = event.target.value;
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].deadline = event.target.value;
+            }else {
+                newState.project.taskList[this.props.taskKey].deadline = event.target.value;
+            }
             this.props.setProjectDashboardState(newState);
         }
 
@@ -222,14 +292,22 @@ class Task extends Component {
     changeTaskDescription = (event) => {
         if (event.target.value !== "") {
             const newState = this.props.getProjectDashboardState()
-            newState.project.taskList[this.props.taskKey].taskDescription = event.target.value
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].taskDescription = event.target.value
+            }else {
+                newState.project.taskList[this.props.taskKey].taskDescription = event.target.value
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
     changePriorityLevel = (event) => {
         if (event.target.value !== "") {
             const newState = this.props.getProjectDashboardState()
-            newState.project.taskList[this.props.taskKey].priorityLevel = event.target.value
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].priorityLevel = event.target.value
+            }else {
+                newState.project.taskList[this.props.taskKey].priorityLevel = event.target.value
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
@@ -237,7 +315,11 @@ class Task extends Component {
     changeEstimatedTimeValue = (event) => {
         if (event.target.value !== "") {
             const newState = this.props.getProjectDashboardState()
-            newState.project.taskList[this.props.taskKey].EstimatedTimeValue = event.target.value
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].EstimatedTimeValue = event.target.value
+            }else {
+                newState.project.taskList[this.props.taskKey].EstimatedTimeValue = event.target.value
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
@@ -245,12 +327,6 @@ class Task extends Component {
     getPriorityLevel = () => {
         console.log(this.props.task.priorityLevel)
         return "!!"
-
-
-    }
-
-    getEstimatedTime = () => {
-        
     }
 
     //push comment to fireBase
@@ -261,15 +337,26 @@ class Task extends Component {
         const comment = this.state.commentValue
         const uname = this.props.getAppState.user.displayName
         const img = this.props.getAppState.user.photoURL
+        if(this.props.archived){
+            rebase.push(`projects/${projectID}/archivedTaskList/${tID}/taskComments`, {
+                data: {
+                    uid: [usID],
+                    text: comment, 
+                    username: uname,
+                    image: img,
+                }
+            });
+        }else {
+            rebase.push(`projects/${projectID}/taskList/${tID}/taskComments`, {
+                data: {
+                    uid: [usID],
+                    text: comment, 
+                    username: uname,
+                    image: img,
+                }
+            });
+        }
         
-        rebase.push(`projects/${projectID}/taskList/${tID}/taskComments`, {
-            data: {
-                uid: [usID],
-                text: comment, 
-                username: uname,
-                image: img,
-            }
-        });
         this.setState({addedComment: true})
         this.clearComment()
     }
@@ -390,7 +477,7 @@ class Task extends Component {
                         }
                         return <TaskComment username={this.state.taskComments[key].username} uid={this.state.taskComments[key].uid} 
                             commentValue={this.state.taskComments[key].text} key={key} image={this.state.taskComments[key].image}
-                            showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key}/>
+                            showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key} archived={this.props.archived}/>
                     })
                 )
             }

@@ -17,7 +17,13 @@ class TaskComment extends Component {
     }
 
     deleteComment = () => {
-        rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
+        if(this.props.archived){
+            rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
+
+        }else {
+            rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
+
+        }
     }
 
     render = () => {
