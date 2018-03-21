@@ -401,11 +401,10 @@ class ProjectDashboard extends Component {
                     const taskKeys = Object.keys(this.state.project.taskList)
                     tasks = (
                         taskKeys.map((key) => {
-                            return <Task archived={false} projectID = {this.props.getAppState().currentProject.key}
+                            return <Task archived={false} projectID={this.props.getAppState().currentProject.key}
                             taskKey={key} deleteTaskMethod={this.setProjectDashboardState} getAppState = {this.props.getAppState()}
                             key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} 
-                            getAppState={this.props.getAppState} />
+                            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} getAppStateFunc={this.props.getAppState} />
                         })
                     )
                 }
@@ -414,12 +413,11 @@ class ProjectDashboard extends Component {
                     const taskKeys = Object.keys(this.state.project.archivedTaskList)
                     tasks = (
                         taskKeys.map((key) => {
-                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} 
-                        taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
-                        task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-
-                        setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} 
-                          getAppState = {this.props.getAppState()}/>
+                        return <Task archived={true} projectID={this.props.getAppState().currentProject.key} 
+                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
+                            task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} 
+                            getAppState={this.props.getAppState()} getAppStateFunc={this.props.getAppState}/>
 
                         })
                     )

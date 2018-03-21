@@ -494,7 +494,7 @@ class Task extends Component {
         if (this.props.task.assignedTo) {
             console.log(this.props.task.assignedTo)
             assignedTo = (
-                <UserIcon color={this.props.getProjectDashboardState().project.projectColor} getAppState={this.props.getAppState} 
+                <UserIcon color={this.props.getProjectDashboardState().project.projectColor} getAppState={this.props.getAppStateFunc} 
                 user={this.props.users[this.props.task.assignedTo]} userID={this.props.task.assignedTo}
                 project={this.props.getProjectDashboardState().project} projectID={this.props.getProjectDashboardState().project.key} />
             )
@@ -542,39 +542,30 @@ class Task extends Component {
                             <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
                             html={this.props.task.taskDescription} /> </p>
                             <div id="taskUsers">
-    
-                                {/*Temporarily commented out. Uncomment when actual image of person is displayed
-                                <UserIcon getAppState={this.props.getAppState} />
-                                <UserIcon getAppState={this.props.getAppState} />*/}
-    
-                                 {/*Temporary image placeholder*/}
-                                <div id="userIconContainer" >
-                                    <img src={funnytemp} className="projectPicture"/>
-                                    <div id="projectIndicator" ></div>
-                                </div>
-                                <div id="userIconContainer" >
-                                    <img src={funnytemp} className="projectPicture"/>
-                                    <div id="projectIndicator" ></div>
-                                </div>
+                                {assignedTo}
     
                                 <AddUserButton onClick={() => {
                                     this.setState({addUserOpen: true})
                                 }}/>
-                                <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little>
+                                <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
                                     <div>
-                                        <h1 className="taskAssignment">Task assignment</h1>
-                                        <p className="taskAssignmentInstructions">Select a user to assign the project to</p>
-                                        <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin": "14px"}}>
+                                        {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                        <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select users to assign to this task</h4>
+                                        <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                             {userKeys && userKeys.map((key) => {
-                                                return (<UserIcon hasBorder={key == this.state.addUserId} color={"none"} getAppState={this.props.getAppState} 
-                                                onClick={() => {
-                                                    console.log(this)
-                                                    this.setState({addUserId: key})
-                                                    console.log(this.state)
-                                                }} key={key} user={this.props.users[key]} userID={key} />)
+                                                return (
+                                                    <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                    getAppState={this.props.getAppStateFunc} projectID={this.props.getProjectDashboardState().project.key}
+                                                    onClick={() => {
+                                                        this.assignTask(key)
+                                                    }} key={key} user={this.props.users[key]} userID={key} project={this.props.getProjectDashboardState().project}
+                                                    />
+                                                )
                                             })}
                                         </div>
-                                        <button className="submitFinalButton taskAssignmentButton">Submit</button>
+                                        <button className="addCommentButton" style={{width: '200px'}} onClick={() => {
+                                            this.assignTask(null)
+                                        }}>Clear All Assigned Users</button>
                                     </div>
                                 </Modal>
     
@@ -623,39 +614,30 @@ class Task extends Component {
                             <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
                             html={this.props.task.taskDescription} /> </p>
                             <div id="taskUsers">
-    
-                                {/*Temporarily commented out. Uncomment when actual image of person is displayed
-                                <UserIcon getAppState={this.props.getAppState} />
-                                <UserIcon getAppState={this.props.getAppState} />*/}
-    
-                                 {/*Temporary image placeholder*/}
-                                <div id="userIconContainer" >
-                                    <img src={funnytemp} className="projectPicture"/>
-                                    <div id="projectIndicator" ></div>
-                                </div>
-                                <div id="userIconContainer" >
-                                    <img src={funnytemp} className="projectPicture"/>
-                                    <div id="projectIndicator" ></div>
-                                </div>
+                                {assignedTo}
     
                                 <AddUserButton onClick={() => {
                                     this.setState({addUserOpen: true})
                                 }}/>
-                                <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little>
+                                <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
                                     <div>
-                                        <h1 className="taskAssignment">Task assignment</h1>
-                                        <p className="taskAssignmentInstructions">Select a user to assign the project to</p>
-                                        <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin": "14px"}}>
+                                        {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                        <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select users to assign to this task</h4>
+                                        <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                             {userKeys && userKeys.map((key) => {
-                                                return (<UserIcon hasBorder={key == this.state.addUserId} color={"none"} getAppState={this.props.getAppState} 
-                                                onClick={() => {
-                                                    console.log(this)
-                                                    this.setState({addUserId: key})
-                                                    console.log(this.state)
-                                                }} key={key} user={this.props.users[key]} userID={key} />)
+                                                return (
+                                                    <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                    getAppState={this.props.getAppStateFunc} projectID={this.props.getProjectDashboardState().project.key}
+                                                    onClick={() => {
+                                                        this.assignTask(key)
+                                                    }} key={key} user={this.props.users[key]} userID={key} project={this.props.getProjectDashboardState().project}
+                                                    />
+                                                )
                                             })}
                                         </div>
-                                        <button className="submitFinalButton taskAssignmentButton">Submit</button>
+                                        <button className="addCommentButton" style={{width: '200px'}} onClick={() => {
+                                            this.assignTask(null)
+                                        }}>Clear All Assigned Users</button>
                                     </div>
                                 </Modal>
     
@@ -666,7 +648,6 @@ class Task extends Component {
                             </div>
                             
                             <div id="taskComments">  
-    
                                 <button type="button" onClick={this.postComment}>Comment</button>
                                 
                             </div>                    
@@ -707,20 +688,6 @@ class Task extends Component {
                         <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
                         html={this.props.task.taskDescription} /> </p>
                         <div id="taskUsers">
-
-                            {/*Temporarily commented out. Uncomment when actual image of person is displayed
-                            <UserIcon getAppState={this.props.getAppState} />
-                            <UserIcon getAppState={this.props.getAppState} />*/}
-
-                             {/*Temporary image placeholder*/}
-                            {/* <div id="userIconContainer" >
-                                <img src={funnytemp} className="projectPicture"/>
-                                <div id="projectIndicator" ></div>
-                            </div>
-                            <div id="userIconContainer" >
-                                <img src={funnytemp} className="projectPicture"/>
-                                <div id="projectIndicator" ></div>
-                            </div> */}
                             {assignedTo}
 
                             <AddUserButton onClick={() => {
