@@ -456,11 +456,48 @@ class Task extends Component {
         //console.log("THIS ONE: " +banana)
         return banana
     }
+    
+    assignTask = (key) => {
+        const dashboardState = { ...this.props.getProjectDashboardState() }
+        if (key === null) {
+            dashboardState.project.taskList[this.props.taskKey].assignedTo = undefined
+        } else {
+            dashboardState.project.taskList[this.props.taskKey].assignedTo = key
+            this.props.setProjectDashboardState(dashboardState)
+        }
+        this.sendAssignmentNotification(key)
+        this.setState({addUserOpen: false})
+    }
+
+    sendAssignmentNotification = (id) => {
+        const notification = {
+            type: "assignment",
+            projectName: this.props.getProjectDashboardState().project.projectName,
+            projectColor: this.props.getProjectDashboardState().project.projectColor,
+            projectPhotoURL: this.props.getProjectDashboardState().project.projectPhotoURL,
+            taskName: this.props.task.taskName
+        }
+        rebase.update(`users/${id}/notifications/${this.props.taskKey}`, {
+            data: notification
+        })
+    }
 
     render = () => {
+
         let userKeys
         if (this.props.users) {
             userKeys = Object.keys(this.props.users)
+        }
+
+
+        let assignedTo
+        if (this.props.task.assignedTo) {
+            console.log(this.props.task.assignedTo)
+            assignedTo = (
+                <UserIcon color={this.props.getProjectDashboardState().project.projectColor} getAppState={this.props.getAppState} 
+                user={this.props.users[this.props.task.assignedTo]} userID={this.props.task.assignedTo}
+                project={this.props.getProjectDashboardState().project} projectID={this.props.getProjectDashboardState().project.key} />
+            )
         }
 
         let taskComments
@@ -647,7 +684,6 @@ class Task extends Component {
         
 
         //old stuff
-
         return (
             <div onClick={() => {
                 if (!this.state.open) {
@@ -677,33 +713,38 @@ class Task extends Component {
                             <UserIcon getAppState={this.props.getAppState} />*/}
 
                              {/*Temporary image placeholder*/}
-                            <div id="userIconContainer" >
+                            {/* <div id="userIconContainer" >
                                 <img src={funnytemp} className="projectPicture"/>
                                 <div id="projectIndicator" ></div>
                             </div>
                             <div id="userIconContainer" >
                                 <img src={funnytemp} className="projectPicture"/>
                                 <div id="projectIndicator" ></div>
-                            </div>
+                            </div> */}
+                            {assignedTo}
 
                             <AddUserButton onClick={() => {
                                 this.setState({addUserOpen: true})
                             }}/>
-                            <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little>
+                            <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
                                 <div>
-                                    <h1 className="taskAssignment">Task assignment</h1>
-                                    <p className="taskAssignmentInstructions">Select a user to assign the project to</p>
-                                    <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin": "14px"}}>
+                                    {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                    <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select users to assign to this task</h4>
+                                    <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                         {userKeys && userKeys.map((key) => {
-                                            return (<UserIcon hasBorder={key == this.state.addUserId} color={"none"} getAppState={this.props.getAppState} 
-                                            onClick={() => {
-                                                console.log(this)
-                                                this.setState({addUserId: key})
-                                                console.log(this.state)
-                                            }} key={key} user={this.props.users[key]} userID={key} />)
+                                            return (
+                                                <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
+                                                onClick={() => {
+                                                    this.assignTask(key)
+                                                }} key={key} user={this.props.users[key]} userID={key} project={this.props.getProjectDashboardState().project}
+                                                />
+                                            )
                                         })}
                                     </div>
-                                    <button className="submitFinalButton taskAssignmentButton">Submit</button>
+                                    <button className="addCommentButton" style={{width: '200px'}} onClick={() => {
+                                        this.assignTask(null)
+                                    }}>Clear All Assigned Users</button>
                                 </div>
                             </Modal>
 

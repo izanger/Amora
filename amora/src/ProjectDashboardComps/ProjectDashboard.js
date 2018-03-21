@@ -404,7 +404,8 @@ class ProjectDashboard extends Component {
                             return <Task archived={false} projectID = {this.props.getAppState().currentProject.key}
                             taskKey={key} deleteTaskMethod={this.setProjectDashboardState} getAppState = {this.props.getAppState()}
                             key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} />
+                            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} 
+                            getAppState={this.props.getAppState} />
                         })
                     )
                 }
@@ -416,7 +417,10 @@ class ProjectDashboard extends Component {
                         return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} 
                         taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
                         task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                        setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} getAppState = {this.props.getAppState()}/>
+
+                        setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} 
+                          getAppState = {this.props.getAppState()}/>
+
                         })
                     )
                 }
@@ -424,19 +428,20 @@ class ProjectDashboard extends Component {
 
             finalRender = (
                 <div id="taskDashboard">
-                    <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} projectColor={this.state.project.projectColor} 
+                    <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} project={this.state.project} projectColor={this.state.project.projectColor} 
                         getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} 
-                        projectDescription={this.state.project.projectDescription}/>
+                        projectDescription={this.state.project.projectDescription} getProjectDashboardState={this.getProjectDashboardState}
+                        setProjectDashboardState={this.setProjectDashboardState}/>
                     {/* <div id="taskDashContainer">
                     </div> */}
-                    <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor} projectID={this.state.project.key}/>
+                    <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor}
+                    projectID={this.state.project.key} project={this.state.project}/>
                     <svg height="13" width="100%">
                         <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                     </svg>
                     <div id="taskDashScrollableContent">
-                       
-                        {tasks}
 
+                        {tasks}
                         <div id="addTaskButton" ><NewProjectButton onClick={() => {
                             this.props.goToUrl("/createtask");
                         }} /></div>

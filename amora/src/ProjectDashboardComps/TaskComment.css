@@ -34,5 +34,14 @@
 }
 
 #taskNameAndComment {
-    padding-left: 30px;
+    padding-left: 10px;
+}
+
+#commentUserIconContainer {
+    width: 40px;
+    height: 40px;
+    margin-left: 12px;
+    margin-top: 2px;
+    border-radius: 30px;
+    overflow: hidden;
 }

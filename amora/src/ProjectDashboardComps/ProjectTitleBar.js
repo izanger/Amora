@@ -3,7 +3,10 @@ import rebase from "../rebase";
 import settingsIcon from "../images/Icons/Settings.svg"
 import searchIcon from "../images/Icons/Search.svg"
 import archiveIcon from "../images/Icons/Archive.svg"
-import { checkIfManager } from "../apphelpers.js"
+import UserIcon from "./UserIcon.js"
+import { checkIfManager, checkIfUserOnProject } from "../apphelpers.js"
+import { emailRegistered, validateEmail } from "../apphelpers.js"
+import InviteList from "../InviteList.js"
 
 import "./ProjectTitleBar.css"
 
@@ -15,13 +18,18 @@ class ProjectTitleBar extends Component {
 
     constructor() {
         super()
-    
+
         this.state = {
             open: false,
             titleValue: "",
             renderAsManager: false,
             projectDescription:"",
             taskAlertTime: "",
+            inviteValue: "",
+            userList: [ ],
+            userEmails: [ ],
+            addManagerOpen: false,
+            addProjectCreatorOpen: false
         }
     }
 
@@ -34,12 +42,12 @@ class ProjectTitleBar extends Component {
         promise.then((data) => {
             if (data.val()) {
                 const newState = this.state
-                newState.renderAsManager = true 
+                newState.renderAsManager = true
                 //newState.projectDescription = this.props.projectDescription
                 this.setState(newState)
             }
         })
-        
+
     }
 
     componentDidMount = () => {
@@ -51,7 +59,7 @@ class ProjectTitleBar extends Component {
     onOpenModal = () => {
         this.setState({ open: true });
       };
-  
+
     onCloseModal = () => {
         this.setState({ open: false });
     };
@@ -80,7 +88,7 @@ class ProjectTitleBar extends Component {
             newState.currentProject.taskAlertTime = taskAlertText
             this.props.setAppState(newState)
 
-            rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project 
+            rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project
                 data: {
                     projectName: this.state.titleValue,
                     projectColor: this.state.colorValue,
@@ -93,6 +101,24 @@ class ProjectTitleBar extends Component {
                     projectColor: this.state.colorValue,
                     projectDescription: this.state.projectDescription,
                     taskAlertTime: taskAlertText,
+                }
+            })
+
+            const newKey = this.props.getProjectDashboardState().project.key
+            const notification = {
+                type: "invite",
+                projectName: this.props.getProjectDashboardState().project.projectName,
+                projectColor: this.props.getProjectDashboardState().project.projectColor,
+                projectPhotoURL: this.props.getProjectDashboardState().project.projectPhotoURL,
+                projectDescription: this.props.getProjectDashboardState().project.projectDescription,
+                key: newKey,
+                taskAlertTime: taskAlertText,
+            }
+            this.state.userList.map((user) => {
+                if (user.email !== this.props.getAppState().user.email) {
+                    rebase.update(`users/${user.uid}/notifications/${newKey}`, {
+                        data: notification
+                    })
                 }
             })
 
@@ -105,7 +131,7 @@ class ProjectTitleBar extends Component {
                     taskAlertTime: taskAlertText,
                 }
             })
-        }    
+        }
     }
 
     changeColorValue = (color) => {
@@ -114,13 +140,127 @@ class ProjectTitleBar extends Component {
         this.setState(newState)
     }
 
+    emailValidationProcess = () => {
+        if (this.state.inviteValue === "") {
+            return false
+        }
+
+        const newState = { ...this.state }
+        if (!validateEmail(this.state.inviteValue)) {
+            newState.errorValue = "Please enter a valid email address..."
+            this.setState(newState)
+            return false
+        }
+
+        if (this.state.inviteValue === this.props.getAppState().user.email) {
+            newState.errorValue = "Thats already a user in this project..."
+            this.setState(newState)
+            return false
+        }
+
+        const promise = emailRegistered(this.state.inviteValue)
+        promise.then((data) => {
+            if (!data.val()) {
+                newState.errorValue = "That email address has not been registered with Amora..."
+                this.setState(newState)
+                return false
+            }
+            if (this.state.userEmails.includes(this.state.inviteValue)) {
+                newState.errorValue = "You've already invited that user..."
+                this.setState(newState)
+                return false
+            }
+            const valKeys = Object.keys(data.val())
+            const person = data.val()[valKeys[0]]
+            const projectKeys = Object.keys(person.projects)
+            if (projectKeys.includes(this.props.getProjectDashboardState().project.key)) {
+                newState.errorValue = "That user is already in this project..."
+                this.setState(newState)
+                return false
+            }
+            const newKey = Object.keys(data.val())
+            newState.errorValue = ""
+            newState.inviteValue = "";
+            newState.userList.push(data.val()[newKey])
+            newState.userEmails.push(this.state.inviteValue)
+            this.setState(newState)
+            //console.log(data.val()[newKey])
+            return true
+        })
+        // TODO:
+        // DONE: ////// MAKE USER LIST HOLD USER OBJECTS //////
+        // MAKE IT SO USERS GET AN INVITE IN DATABASE
+        // WORK ON SYCINGSTATE WITH USERS SO THEIR INVITES WILL BE UPDATED ON THEIR CLIENTS AUTOMATICALLY
+        // MAKE INVITE PAGE / ACCEPTING INVTITE LOGIC
+    }
+
+    // Method for changins invite value in state
+    changeInviteValue = (event) => {
+        const newState = { ...this.state }
+        newState.inviteValue = event.target.value;
+        this.setState(newState)
+    }
+
+    assignManager = (key) => {
+        const dashboardState = { ...this.props.getProjectDashboardState() }
+        dashboardState.project.managerList[key] = true
+        this.props.setProjectDashboardState(dashboardState)
+        // this.sendManagerNotification(key)
+        this.setState({addManagerOpen: false})
+    }
+
+    assignProjectCreator = (key) => {
+        const dashboardState = { ...this.props.getProjectDashboardState() }
+        dashboardState.project.projectCreator = key
+        this.props.setProjectDashboardState(dashboardState)
+        // this.sendProjectCreatorNotification(key)
+        this.setState({addProjectCreatorOpen: false})
+    }
+
+    sendmanagerNotification = (id) => {
+        const notification = {
+            type: "assignment",
+            projectName: this.props.getProjectDashboardState().project.projectName,
+            projectColor: this.props.getProjectDashboardState().project.projectColor,
+            projectPhotoURL: this.props.getProjectDashboardState().project.projectPhotoURL,
+            taskName: this.props.task.taskName
+        }
+        rebase.update(`users/${id}/notifications/${this.props.taskKey}`, {
+            data: notification
+        })
+    }
+
+    renderProjectCreatorButton = () => {
+        return (<button onClick={() => {
+            this.setState({addProjectCreatorOpen: true})
+        }}>Give other user project creator status</button>)
+    }
+
+
+
     //Returns what should be rendered in the settings pane
     renderSettings = (color, colors) => {
-        
+
+        let userKeys
+        if (this.props.project.userList) {
+            userKeys = Object.keys(this.props.project.userList)
+        }
+        let isProjectOwner = false
+        if (this.props.getProjectDashboardState().project.projectCreator == this.props.getAppState().user.uid) {
+            isProjectOwner = true
+        }
+        let creatorButton
+        if (isProjectOwner) {
+            creatorButton = this.renderProjectCreatorButton()
+        }
+
+
         if (!this.state.renderAsManager) { //user is not a manager
             return (
                 <div>
                     <h1>User Settings</h1>
+                    <h4>Project Description:</h4>
+                    <p>{this.props.project.projectDescription}</p>
                     <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
                     <select name="taskAlertDropdown" id="taskAlertDropdown">
                         <option value="1">None</option>
@@ -138,12 +278,14 @@ class ProjectTitleBar extends Component {
             return (
                 <div>
                     <h1>Manager Settings</h1>
+                    <h4>Project Description:</h4>
+                    <p>{this.props.project.projectDescription}</p>
                     <h4>Change Project Name:</h4>
-                    <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue} value={this.state.titleValue} />
+                    <input type="text" placeholder="Enter Project Name" style={{marginLeft:'0px', width:'100%', backgroundColor:'white'}} className="createProjectInput" onChange={this.changeTitleValue} value={this.state.titleValue} />
                     <h4>Change Project Description:</h4>
-                    <input type="text" onChange={this.changeDescriptionValue} value={this.state.projectDescription}/>
+                    <input type="text" className="createProjectInput" style={{marginLeft:'0px', width:'100%', backgroundColor:'white'}} onChange={this.changeDescriptionValue} value={this.state.projectDescription}/>
                     <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
-                    <select name="taskAlertDropdown" id="taskAlertDropdown">
+                    <select name="taskAlertDropdown" id="taskAlertDropdown" >
                         <option value="1">None</option>
                         <option value="2">5 minutes</option>
                         <option value="3">10 minutes</option>
@@ -151,18 +293,76 @@ class ProjectTitleBar extends Component {
                         <option value="5">20 minutes</option>
                         <option value="6">30 minutes</option>
                         <option value="7">60 minutes</option>
-                    </select>`
-                    <div id="colorPicker">
+                    </select>
+                    <div id="colorPicker" style={{marginLeft:'0px'}}>
                         <h4>Change Project Color:</h4>
                         {colors.map((color) => {
                             return this.renderSwatch(color)
                         })}
                     </div>
-                    <button className="submitFinalButton" onClick={this.submitChanges}>Submit</button>
+                    {creatorButton}
+                    <Modal open={this.state.addProjectCreatorOpen} onClose={() => this.setState({addProjectCreatorOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                            <div>
+                                {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a user to promote to manager status</h4>
+                                <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
+                                    {userKeys && userKeys.map((key) => {
+                                        if (key != this.props.project.projectCreator) {
+                                            return (
+                                                <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
+                                                onClick={() => {
+                                                    this.assignProjectCreator(key)
+                                                }} key={key} user={this.props.project.userList[key]} userID={key} project={this.props.project} />
+                                            )
+                                        }   
+                                    })}
+                                </div>
+                            </div>
+                        </Modal>
+                    <button onClick={() => {
+                        this.setState({addManagerOpen: true})
+                    }}>Promote user to manager</button>
+                    <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
+                        <div id="addUserIconProjectContainer" title="Invite User" onClick={this.emailValidationProcess}>
+                            <svg height="23" width="23">
+                                <line x1="4" y1="9" x2="15" y2="9" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                                <line x1="9.5" y1="4" x2="9.5" y2="15" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                            </svg>
+                            {/*This should only appear if it is selected as the project*/}
+
+                        </div>
+                        <Modal open={this.state.addManagerOpen} onClose={() => this.setState({addManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                            <div>
+                                {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a user to promote to manager status</h4>
+                                <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
+                                    {userKeys && userKeys.map((key) => {
+                                        if (!Object.keys(this.props.project.managerList).includes(key)) {
+                                            return (
+                                                <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
+                                                onClick={() => {
+                                                    this.assignManager(key)
+                                                }} key={key} user={this.props.project.userList[key]} userID={key} project={this.props.project} />
+                                            )
+                                        }   
+                                    })}
+                                </div>
+                            </div>
+                        </Modal>
+                        <input type="text" placeholder="Email of person you'd like to invite" style={{marginLeft:'0px', width:'200%', backgroundColor:'white'}} className="createProjectInput"
+                        value={this.state.inviteValue} onChange={this.changeInviteValue} />
+                        <div>
+                            <p className="errorBox">{this.state.errorValue}</p>
+                        </div>
+                        <InviteList uid={this.props.getAppState().user.uid} users={this.state.userList} />
+                    </div>
+                    <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
                 </div>
             )
         }
-        
+
     }
 
     /*
@@ -199,12 +399,12 @@ class ProjectTitleBar extends Component {
                 <h1 id="projectTitle">{this.props.title}</h1>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
-                    
+
                    <img alt={"Settings"} src={settingsIcon} title={"Settings"} onClick={this.onOpenModal} id="projectSettingsIcon"/>
-                   <Modal open={open} onClose={this.onCloseModal} little>
+                   <Modal open={open} onClose={this.onCloseModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
                          {settings}
                    </Modal>
-                  
+
                    <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} id="projectSettingsIcon"/>
                    <img alt={"Archive"} src={archiveIcon} title={this.props.getButtonText()} style={{right: '100px'}} onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
                </div>

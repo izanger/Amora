@@ -48,7 +48,6 @@ class TaskComment extends Component {
                             <p id="taskCommentName">{this.props.username}</p>
                             <p id="taskCommentText">{this.props.commentValue}</p>
                         </div>
-                        
                     </div>
                     <button onClick={this.deleteComment}>Delete Comment</button>
     
