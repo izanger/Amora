@@ -27,7 +27,8 @@ class TaskComment extends Component {
     }
 
     render = () => {
-
+        var date = new Date(this.props.timestamp)
+        let formattedDate =  date.toLocaleTimeString() + " on " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
         // let color = "#3CB4CB"; 
         if(this.props.showDelete){
             return (
@@ -50,7 +51,7 @@ class TaskComment extends Component {
                         key={this.props.userKey} user={this.props.project.userList[this.props.userID]} userID={this.props.userID} project={this.props.project} />  
     
                         <div id="taskNameAndComment">
-                            <p id="taskCommentName">{this.props.username}</p>
+                            <p id="taskCommentName">{this.props.username} | {formattedDate}</p>
                             <p id="taskCommentText">{this.props.commentValue}</p>
                         </div>
                     </div>
@@ -78,7 +79,7 @@ class TaskComment extends Component {
                         key={this.props.userKey} user={this.props.project.userList[this.props.userKey]} userID={this.props.userKey} project={this.props.project} />      
     
                         <div id="taskNameAndComment">
-                            <p id="taskCommentName">{this.props.username}</p>
+                            <p id="taskCommentName">{this.props.username} | {formattedDate}</p>
                             <p id="taskCommentText">{this.props.commentValue}</p>
                         </div>
                         

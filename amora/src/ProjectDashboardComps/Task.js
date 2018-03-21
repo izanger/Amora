@@ -337,6 +337,7 @@ class Task extends Component {
         const comment = this.state.commentValue
         const uname = this.props.getAppState.user.displayName
         const img = this.props.getAppState.user.photoURL
+        var today = new Date();
         if(this.props.archived){
             rebase.push(`projects/${projectID}/archivedTaskList/${tID}/taskComments`, {
                 data: {
@@ -344,6 +345,7 @@ class Task extends Component {
                     text: comment, 
                     username: uname,
                     image: img,
+                    timestamp: today.getTime()
                 }
             });
         }else {
@@ -353,6 +355,7 @@ class Task extends Component {
                     text: comment, 
                     username: uname,
                     image: img,
+                    timestamp: today.getTime()
                 }
             });
         }
@@ -517,7 +520,7 @@ class Task extends Component {
                             commentValue={this.state.taskComments[key].text} key={key} image={this.state.taskComments[key].image}
                             showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key} archived={this.props.archived} 
                             user={this.props.users[userKey]} userID={userKey} project={this.props.getProjectDashboardState().project} 
-                            getProjectDashboardState={this.props.getProjectDashboardState} getAppState={this.props.getAppStateFunc}/>
+                            getProjectDashboardState={this.props.getProjectDashboardState} getAppState={this.props.getAppStateFunc} timestamp={this.state.taskComments[key].timestamp}/>
                     })
                 )
             }
