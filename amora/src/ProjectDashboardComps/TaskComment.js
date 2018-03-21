@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import rebase from "../rebase.js"
 import UserIcon from "./UserIcon.js"
 import "./TaskComment.css"
 import funnytemp from "../images/temp.jpg"
@@ -14,6 +14,10 @@ class TaskComment extends Component {
             uid: '',
             commentValue: ''
         }
+    }
+
+    deleteComment = () => {
+        rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
     }
 
     render = () => {
@@ -40,7 +44,7 @@ class TaskComment extends Component {
                         </div>
                         
                     </div>
-                    <button>Delete Comment</button>
+                    <button onClick={this.deleteComment}>Delete Comment</button>
     
                 </div>
             )

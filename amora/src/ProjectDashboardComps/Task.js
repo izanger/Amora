@@ -390,7 +390,7 @@ class Task extends Component {
                         }
                         return <TaskComment username={this.state.taskComments[key].username} uid={this.state.taskComments[key].uid} 
                             commentValue={this.state.taskComments[key].text} key={key} image={this.state.taskComments[key].image}
-                            showDelete={del}/>
+                            showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key}/>
                     })
                 )
             }
