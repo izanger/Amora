@@ -43,6 +43,12 @@ class Home extends Component {
           })
     }
 
+    addTaskHours(){
+         var x = document.getElementById("myText").value
+        document.getElementById("hours").innerHTML = x  
+       
+    }
+
 
     render = () => {
 
@@ -99,12 +105,21 @@ class Home extends Component {
                     <i className="material-icons notificationButton" onClick={() => {
                         this.props.goToUrl("/notifications");
                     }}>{notificationText}</i>
-                </div>
 
+                                 <textarea id="myText" rows="1" cols="3"></textarea>
+                                    <button type="button" onClick={this.addTaskHours} >Submit Hours</button>
+                                    <p id="hours"></p>
+        
+                                                                     
+
+
+                </div>
+ 
                 <Switch>
                     <Route path="/dashboard" render={() => {
                         return (
                             <div id="taskDashboard"></div>
+
                         )
                     }} />
                     <Route path="/projects/:id" render={(props) => <ProjectDashboard {...props}
@@ -130,6 +145,7 @@ class Home extends Component {
             </div>
         )
     }
+    
 
 }
 
