@@ -27,6 +27,7 @@ class TaskComment extends Component {
     }
 
     render = () => {
+
         // let color = "#3CB4CB"; 
         if(this.props.showDelete){
             return (
@@ -39,10 +40,14 @@ class TaskComment extends Component {
                         <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
                         
                         {/*Temporary image placeholder*/}
-                        <div id="userIconContainer" >
+                        {/* <div id="userIconContainer" >
                             <img src={this.props.image} className="projectPicture"/>                     
                             <div id="projectIndicator" ></div>
-                        </div>          
+                        </div>           */}
+                        {console.log(this.props)}
+                        <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                        getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
+                        key={this.props.userKey} user={this.props.project.userList[this.props.userID]} userID={this.props.userID} project={this.props.project} />  
     
                         <div id="taskNameAndComment">
                             <p id="taskCommentName">{this.props.username}</p>
@@ -64,10 +69,13 @@ class TaskComment extends Component {
                         <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
                         
                         {/*Temporary image placeholder*/}
-                        <div id="userIconContainer" >
+                        {/* <div id="userIconContainer" >
                             <img src={this.props.image} className="projectPicture"/>                     
                             <div id="projectIndicator" ></div>
-                        </div>          
+                        </div>     */}
+                        <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                        getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
+                        key={this.props.userKey} user={this.props.project.userList[this.props.userKey]} userID={this.props.userKey} project={this.props.project} />      
     
                         <div id="taskNameAndComment">
                             <p id="taskCommentName">{this.props.username}</p>

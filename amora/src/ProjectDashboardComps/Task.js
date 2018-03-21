@@ -512,9 +512,12 @@ class Task extends Component {
                         if(this.props.getAppState.user.uid == this.state.taskComments[key].uid){
                             del = true;
                         }
-                        return <TaskComment username={this.state.taskComments[key].username} uid={this.state.taskComments[key].uid} 
+                        const userKey = this.state.taskComments[key].uid[0]
+                        return <TaskComment username={this.state.taskComments[key].username} uid={this.state.taskComments[key].uid[0]} 
                             commentValue={this.state.taskComments[key].text} key={key} image={this.state.taskComments[key].image}
-                            showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key} archived={this.props.archived}/>
+                            showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key} archived={this.props.archived} 
+                            user={this.props.users[userKey]} userID={userKey} project={this.props.getProjectDashboardState().project} 
+                            getProjectDashboardState={this.props.getProjectDashboardState} getAppState={this.props.getAppStateFunc}/>
                     })
                 )
             }
