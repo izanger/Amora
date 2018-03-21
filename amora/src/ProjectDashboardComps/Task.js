@@ -6,7 +6,7 @@ import "./Task.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import UserIcon from "./UserIcon.js"
 import AddUserButton from "./AddUserButton.js"
-import Comment from "./TaskComment.js"
+import TaskComment from "./TaskComment.js"
 import funnytemp from "../images/temp.jpg"
 import "./TaskComment.css"
 
@@ -35,8 +35,37 @@ class Task extends Component {
            addUserOpen: false,
            addUserId: "",
            commentValue: "",
-           addedComment: false
+           addedComment: false,
+           commentsSynced: false,
+           taskComments: {
+
+           }
        }
+    }
+
+    componentWillMount = () => {
+        const newState = { ...this.state }
+        rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+            context: this,
+            then: (data) => {
+                newState.taskComments = data
+            }
+        }).then(() => {
+            this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+                context: this,
+                state: 'taskComments',
+                then: () => {
+                    newState.commentsSynced = true
+                    this.setState(newState)
+                }
+            })
+        })
+    }
+
+    componentWillUnmount = () => {
+        this.setState({
+            commentsSynced: false
+        })
     }
 
     switch = () => {
@@ -45,7 +74,6 @@ class Task extends Component {
         } else {
             this.setState({ open: true, visible: 'visible' });
         }
-
     };
 
     css = () => {
@@ -60,33 +88,27 @@ class Task extends Component {
             })
         } else {
             return ({height: '40px'})
-
         }
-
     }
 
     testFunction = () => {
         var response = window.confirm("Are you sure you want to delete this task?")
         if (response == true){
+            if(!this.props.archived){
+                rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+                    if(!err){
+                        console.log("fiddlesticks")
 
-
-
-
-        if(!this.props.archived){
-            rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
-                if(!err){
-                    console.log("fiddlesticks")
-
-                }
-              });
-        } else {
-            rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
-                if(!err){
-                    console.log("fiddlesticks")
-                }
-              });
+                    }
+                });
+            } else {
+                rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
+                    if(!err){
+                        console.log("fiddlesticks")
+                    }
+                });
+            }
         }
-    }
     }
 
     checkIsVisible = () => {
@@ -237,9 +259,15 @@ class Task extends Component {
         const usID = this.props.getAppState.user.uid
         const tID = this.props.taskKey
         const comment = this.state.commentValue
+        const uname = this.props.getAppState.user.displayName
+        const img = this.props.getAppState.user.photoURL
+        
         rebase.push(`projects/${projectID}/taskList/${tID}/taskComments`, {
             data: {
-                [usID]: comment   
+                uid: [usID],
+                text: comment, 
+                username: uname,
+                image: img,
             }
         });
         this.setState({addedComment: true})
@@ -296,17 +324,14 @@ class Task extends Component {
 
 
     getDaysLeft = () => {
-            //const thing = this.props.task.deadline
-            const fixedDeadline = this.props.task.deadline
-            //console.log(fixedDeadline)
-            if (this.state.open){
-                //console.log("HERE" + this.props.task.deadline)
-                return this.props.task.deadline;
-            }
-
-
+        //const thing = this.props.task.deadline
+        const fixedDeadline = this.props.task.deadline
+        //console.log(fixedDeadline)
+        if (this.state.open){
+            //console.log("HERE" + this.props.task.deadline)
+            return this.props.task.deadline;
+        }
         // MM/DD/YY
-
         const dueDate = fixedDeadline.split("/");
         //const curDate = this.fixCurrentDate.split("/");
         //console.log(dueDate[2])
@@ -342,16 +367,199 @@ class Task extends Component {
         //console.log("Day: " + day)
         const banana = moment([year, month, day]).fromNow();
         //console.log("THIS ONE: " +banana)
-
         return banana
     }
 
     render = () => {
-        
         let userKeys
         if (this.props.users) {
             userKeys = Object.keys(this.props.users)
         }
+
+        let taskComments
+        let finalRender
+
+        if(this.state.commentsSynced){
+            if(this.state.taskComments){
+                const commentKeys = Object.keys(this.state.taskComments)
+                taskComments = (
+                    commentKeys.map((key) => {
+                        let del = false;
+                        if(this.props.getAppState.user.uid == this.state.taskComments[key].uid){
+                            del = true;
+                        }
+                        return <TaskComment username={this.state.taskComments[key].username} uid={this.state.taskComments[key].uid} 
+                            commentValue={this.state.taskComments[key].text} key={key} image={this.state.taskComments[key].image}
+                            showDelete={del}/>
+                    })
+                )
+            }
+
+            finalRender = (
+                <div onClick={() => {
+                    if (!this.state.open) {
+                        this.switch()
+                    }
+                }} >
+                    <div id="task" style={this.css()}>
+                        <div id="taskStats">
+                            <div id="taskCheckAndTitle">
+                                <svg height="40" width="40">
+    
+                                     <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
+                                     <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
+                                     <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
+                                </svg>
+                                <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
+                            </div>
+                            <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
+                        </div>
+                        <div style={{visibility: this.state.visible}} id="taskInfo">
+                            <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
+                            html={this.props.task.taskDescription} /> </p>
+                            <div id="taskUsers">
+    
+                                {/*Temporarily commented out. Uncomment when actual image of person is displayed
+                                <UserIcon getAppState={this.props.getAppState} />
+                                <UserIcon getAppState={this.props.getAppState} />*/}
+    
+                                 {/*Temporary image placeholder*/}
+                                <div id="userIconContainer" >
+                                    <img src={funnytemp} className="projectPicture"/>
+                                    <div id="projectIndicator" ></div>
+                                </div>
+                                <div id="userIconContainer" >
+                                    <img src={funnytemp} className="projectPicture"/>
+                                    <div id="projectIndicator" ></div>
+                                </div>
+    
+                                <AddUserButton onClick={() => {
+                                    this.setState({addUserOpen: true})
+                                }}/>
+                                <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little>
+                                    <div>
+                                        <h1 className="taskAssignment">Task assignment</h1>
+                                        <p className="taskAssignmentInstructions">Select a user to assign the project to</p>
+                                        <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin": "14px"}}>
+                                            {userKeys && userKeys.map((key) => {
+                                                return (<UserIcon hasBorder={key == this.state.addUserId} color={"none"} getAppState={this.props.getAppState} 
+                                                onClick={() => {
+                                                    console.log(this)
+                                                    this.setState({addUserId: key})
+                                                    console.log(this.state)
+                                                }} key={key} user={this.props.users[key]} userID={key} />)
+                                            })}
+                                        </div>
+                                        <button className="submitFinalButton taskAssignmentButton">Submit</button>
+                                    </div>
+                                </Modal>
+    
+                                <div id="Task">
+                                <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
+    
+                                </div>
+                            </div>
+                            
+                            <div id="taskComments">  
+    
+                                {taskComments}
+                                <input type="text" name="Comment" id="CommentField" rows="3" cols="50" onChange={this.sendComment}
+                                    value={this.state.commentValue}></input>
+                                <button type="button" onClick={this.postComment}>Comment</button>
+                                
+                            </div>                    
+                            <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
+                        </div>
+                    </div>
+    
+                </div>
+            )
+
+        } else {
+            finalRender = (
+                <div onClick={() => {
+                    if (!this.state.open) {
+                        this.switch()
+                    }
+                }} >
+                    <div id="task" style={this.css()}>
+                        <div id="taskStats">
+                            <div id="taskCheckAndTitle">
+                                <svg height="40" width="40">
+    
+                                     <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
+                                     <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
+                                     <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
+                                </svg>
+                                <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
+                            </div>
+                            <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
+                        </div>
+                        <div style={{visibility: this.state.visible}} id="taskInfo">
+                            <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
+                            html={this.props.task.taskDescription} /> </p>
+                            <div id="taskUsers">
+    
+                                {/*Temporarily commented out. Uncomment when actual image of person is displayed
+                                <UserIcon getAppState={this.props.getAppState} />
+                                <UserIcon getAppState={this.props.getAppState} />*/}
+    
+                                 {/*Temporary image placeholder*/}
+                                <div id="userIconContainer" >
+                                    <img src={funnytemp} className="projectPicture"/>
+                                    <div id="projectIndicator" ></div>
+                                </div>
+                                <div id="userIconContainer" >
+                                    <img src={funnytemp} className="projectPicture"/>
+                                    <div id="projectIndicator" ></div>
+                                </div>
+    
+                                <AddUserButton onClick={() => {
+                                    this.setState({addUserOpen: true})
+                                }}/>
+                                <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little>
+                                    <div>
+                                        <h1 className="taskAssignment">Task assignment</h1>
+                                        <p className="taskAssignmentInstructions">Select a user to assign the project to</p>
+                                        <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin": "14px"}}>
+                                            {userKeys && userKeys.map((key) => {
+                                                return (<UserIcon hasBorder={key == this.state.addUserId} color={"none"} getAppState={this.props.getAppState} 
+                                                onClick={() => {
+                                                    console.log(this)
+                                                    this.setState({addUserId: key})
+                                                    console.log(this.state)
+                                                }} key={key} user={this.props.users[key]} userID={key} />)
+                                            })}
+                                        </div>
+                                        <button className="submitFinalButton taskAssignmentButton">Submit</button>
+                                    </div>
+                                </Modal>
+    
+                                <div id="Task">
+                                <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
+    
+                                </div>
+                            </div>
+                            
+                            <div id="taskComments">  
+    
+                                <button type="button" onClick={this.postComment}>Comment</button>
+                                
+                            </div>                    
+                            <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
+                        </div>
+                    </div>
+    
+                </div>
+            )
+        }
+
+        return (
+            <div>{finalRender}</div>
+        )
+        
+
+        //old stuff
 
         return (
             <div onClick={() => {
@@ -415,13 +623,15 @@ class Task extends Component {
                             <div id="Task">
                             <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
 
-            </div>
+                            </div>
                         </div>
                         
-                        <div id="taskComments">                           
+                        <div id="taskComments">  
+
+                                         
                             {/*Pass state, user, and comment value down through <Comment /> to help with dispalying comment*/}
-                            <div onKeyPress={() => {
-                                console.log(this.state.addedComment)
+                            {/* <div onKeyPress={() => {
+                                //console.log(this.state.addedComment)
                                 if (this.state.addedComment) {
                                     <Comment uid={this.props.uid} commentValue={this.props.commentValue}/>
                                     this.setState({addedComment: false})
@@ -429,9 +639,10 @@ class Task extends Component {
                             }} >
                             </div>
                             <input type="text" name="Comment" id="CommentField" rows="3" cols="50" onChange={this.sendComment}
-                            value={this.state.commentValue}></input>
+                            value={this.state.commentValue}></input> */}
                             {/*need to call document.getElementById("CommentField") = '' somewhere here*/}
                             <button type="button" onClick={this.postComment}>Comment</button>
+                            
                         </div>                    
                         <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
                     </div>

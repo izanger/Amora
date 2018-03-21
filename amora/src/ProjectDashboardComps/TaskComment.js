@@ -17,31 +17,60 @@ class TaskComment extends Component {
     }
 
     render = () => {
-        // let color = "#3CB4CB";
-        return (
-            <div id="taskCommentContainer">
-                <svg height="2px" width="100%" className="taskCommentDivider">
-                    <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
-                </svg>
-                <div id="taskCommentContents">
-                    {/*Temporarily commented out. Uncomment when actual image of person is displayed 
-                    <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
-                    
-                    {/*Temporary image placeholder*/}
-                    <div id="userIconContainer" >
-                        <img src={funnytemp} className="projectPicture"/>                     
-                        <div id="projectIndicator" ></div>
-                    </div>          
-
-                    <div id="taskNameAndComment">
-                        <p id="taskCommentName">{this.props.uid}</p>
-                        <p id="taskCommentText">{this.props.commentValue}</p>
+        // let color = "#3CB4CB"; 
+        if(this.props.showDelete){
+            return (
+                <div id="taskCommentContainer">
+                    <svg height="2px" width="100%" className="taskCommentDivider">
+                        <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
+                    </svg>
+                    <div id="taskCommentContents">
+                        {/*Temporarily commented out. Uncomment when actual image of person is displayed 
+                        <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
+                        
+                        {/*Temporary image placeholder*/}
+                        <div id="userIconContainer" >
+                            <img src={this.props.image} className="projectPicture"/>                     
+                            <div id="projectIndicator" ></div>
+                        </div>          
+    
+                        <div id="taskNameAndComment">
+                            <p id="taskCommentName">{this.props.username}</p>
+                            <p id="taskCommentText">{this.props.commentValue}</p>
+                        </div>
+                        
                     </div>
-                    
+                    <button>Delete Comment</button>
+    
                 </div>
-
-            </div>
-        )
+            )
+        }else {
+            return (
+                <div id="taskCommentContainer">
+                    <svg height="2px" width="100%" className="taskCommentDivider">
+                        <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
+                    </svg>
+                    <div id="taskCommentContents">
+                        {/*Temporarily commented out. Uncomment when actual image of person is displayed 
+                        <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
+                        
+                        {/*Temporary image placeholder*/}
+                        <div id="userIconContainer" >
+                            <img src={this.props.image} className="projectPicture"/>                     
+                            <div id="projectIndicator" ></div>
+                        </div>          
+    
+                        <div id="taskNameAndComment">
+                            <p id="taskCommentName">{this.props.username}</p>
+                            <p id="taskCommentText">{this.props.commentValue}</p>
+                        </div>
+                        
+                    </div>
+    
+                </div>
+            )
+        }
+        
     }
 
 }
