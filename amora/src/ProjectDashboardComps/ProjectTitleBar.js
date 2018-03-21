@@ -29,7 +29,8 @@ class ProjectTitleBar extends Component {
             userList: [ ],
             userEmails: [ ],
             addManagerOpen: false,
-            addProjectCreatorOpen: false
+            addProjectCreatorOpen: false,
+            demoteManagerOpen: false
         }
     }
 
@@ -201,6 +202,14 @@ class ProjectTitleBar extends Component {
         this.setState(newState)
     }
 
+    demoteManager = (key) => {
+        const dashboardState = { ...this.props.getProjectDashboardState() }
+        dashboardState.project.managerList[key] = null
+        this.props.setProjectDashboardState(dashboardState)
+        // this.sendManagerNotification(key)
+        this.setState({demoteManagerOpen: false})
+    }
+
     assignManager = (key) => {
         const dashboardState = { ...this.props.getProjectDashboardState() }
         dashboardState.project.managerList[key] = true
@@ -231,9 +240,15 @@ class ProjectTitleBar extends Component {
     }
 
     renderProjectCreatorButton = () => {
-        return (<button onClick={() => {
-            this.setState({addProjectCreatorOpen: true})
-        }}>Give other user project creator status</button>)
+        return (
+        <div>
+            <button onClick={() => {
+                this.setState({addProjectCreatorOpen: true})
+            }}>Give other user project creator status</button>
+            <button onClick={() => {
+                this.setState({demoteManagerOpen: true})
+            }}>Demote manager</button>
+        </div>)
     }
 
 
@@ -249,9 +264,9 @@ class ProjectTitleBar extends Component {
         if (this.props.getProjectDashboardState().project.projectCreator == this.props.getAppState().user.uid) {
             isProjectOwner = true
         }
-        let creatorButton
+        let creatorButtons
         if (isProjectOwner) {
-            creatorButton = this.renderProjectCreatorButton()
+            creatorButtons = this.renderProjectCreatorButton()
         }
 
 
@@ -300,7 +315,7 @@ class ProjectTitleBar extends Component {
                             return this.renderSwatch(color)
                         })}
                     </div>
-                    {creatorButton}
+                    {creatorButtons}
                     <Modal open={this.state.addProjectCreatorOpen} onClose={() => this.setState({addProjectCreatorOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
                             <div>
                                 {/* <h1 className="taskAssignment">Task assignment</h1>*/}
@@ -323,6 +338,24 @@ class ProjectTitleBar extends Component {
                     <button onClick={() => {
                         this.setState({addManagerOpen: true})
                     }}>Promote user to manager</button>
+                    <Modal open={this.state.demoteManagerOpen} onClose={() => this.setState({demoteManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                        <div>
+                            <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a manager to demote</h4>
+                            <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
+                                {userKeys && userKeys.map((key) => {
+                                    if (Object.keys(this.props.project.managerList).includes(key) && key != this.props.getAppState().user.uid) {
+                                        return (
+                                            <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                            getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
+                                            onClick={() => {
+                                                this.demoteManager(key)
+                                            }} key={key} user={this.props.project.userList[key]} userID={key} project={this.props.project} />
+                                        )
+                                    }   
+                                })}
+                            </div>
+                        </div>
+                    </Modal>
                     <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
                         <div id="addUserIconProjectContainer" title="Invite User" onClick={this.emailValidationProcess}>
                             <svg height="23" width="23">
