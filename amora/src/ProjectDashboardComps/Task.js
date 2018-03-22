@@ -6,7 +6,7 @@ import "./Task.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import UserIcon from "./UserIcon.js"
 import AddUserButton from "./AddUserButton.js"
-import Comment from "./TaskComment.js"
+import TaskComment from "./TaskComment.js"
 import funnytemp from "../images/temp.jpg"
 import "./TaskComment.css"
 
@@ -15,6 +15,8 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Modal from 'react-responsive-modal/lib/css';
 import { validateDate } from "../apphelpers.js"
+
+import { App } from "../App.js"
 
 
 class Task extends Component {
@@ -31,8 +33,73 @@ class Task extends Component {
            color: '#3CB4CB',
            editedDate: false,
            addUserOpen: false,
-           addUserId: ""
+           addUserId: "",
+           commentValue: "",
+           addedComment: false,
+           commentsSynced: false,
+           taskComments: {
+
+           }
        }
+    }
+
+    componentWillMount = () => {
+        const newState = { ...this.state }
+        let arch = this.props.archived
+        if(arch){
+            rebase.fetch(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
+                context: this,
+                then: (data) => {
+                    newState.taskComments = data
+                }
+            }).then(() => {
+                this.bindingref = rebase.syncState(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
+                    context: this,
+                    state: 'taskComments',
+                    then: () => {
+                        newState.commentsSynced = true
+                        this.setState(newState)
+                    }
+                })
+            })
+        }else {
+            rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+                context: this,
+                then: (data) => {
+                    newState.taskComments = data
+                }
+            }).then(() => {
+                this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+                    context: this,
+                    state: 'taskComments',
+                    then: () => {
+                        newState.commentsSynced = true
+                        this.setState(newState)
+                    }
+                })
+            })
+        }
+        // rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+        //     context: this,
+        //     then: (data) => {
+        //         newState.taskComments = data
+        //     }
+        // }).then(() => {
+        //     this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+        //         context: this,
+        //         state: 'taskComments',
+        //         then: () => {
+        //             newState.commentsSynced = true
+        //             this.setState(newState)
+        //         }
+        //     })
+        // })
+    }
+
+    componentWillUnmount = () => {
+        this.setState({
+            commentsSynced: false
+        })
     }
 
     switch = () => {
@@ -41,7 +108,6 @@ class Task extends Component {
         } else {
             this.setState({ open: true, visible: 'visible' });
         }
-
     };
 
     css = () => {
@@ -56,33 +122,26 @@ class Task extends Component {
             })
         } else {
             return ({height: '40px'})
-
         }
-
     }
 
     testFunction = () => {
         var response = window.confirm("Are you sure you want to delete this task?")
         if (response == true){
-
-
-
-
-        if(!this.props.archived){
-            rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
-                if(!err){
-                    console.log("fiddlesticks")
-
-                }
-              });
-        } else {
-            rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
-                if(!err){
-                    console.log("fiddlesticks")
-                }
-              });
+            if(!this.props.archived){
+                rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+                    if(err){
+                        console.log("fiddlesticks")
+                    }
+                });
+            } else {
+                rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
+                    if(err){
+                        console.log("fiddlesticks")
+                    }
+                });
+            }
         }
-    }
     }
 
     checkIsVisible = () => {
@@ -115,6 +174,29 @@ class Task extends Component {
         }
     }
 
+    toggleSync = (archive) => {
+        if(archive){
+            if(this.bindingref){
+                rebase.removeBinding(this.bindingref)
+            }
+            this.bindingref = rebase.syncState(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
+                context: this,
+                state: 'taskComments',
+
+            })
+
+        }else {
+            if(this.bindingref){
+                rebase.removeBinding(this.bindingref)
+            }
+            this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
+                context: this,
+                state: 'taskComments',
+
+            })
+        }
+    }
+
     //Ian: Archive the task if it's archived. Unarchive it if it's not.
     toggleArchived = () => {
         if (this.props.archived){
@@ -130,10 +212,13 @@ class Task extends Component {
                         then(err){
                             //Thanks Alex
                             rebase.remove(`projects/${projID}/archivedTaskList/${taskID}`, function(err){
-                                if(!err){
+                                if(err){
                                     console.log("fickstiddles")
                                 }
-                              });
+                            });
+
+                            //this.toggleSync(false)
+
                         }
                     })
 
@@ -152,10 +237,13 @@ class Task extends Component {
                         then(err){
                             //Thanks Alex
                             rebase.remove(`projects/${projID}/taskList/${taskID}`, function(err){
-                                if(!err){
+                                if(err){
                                     console.log("stickfiddles")
                                 }
-                              });
+                            });
+
+                            //this.toggleSync(true)
+
                         }
                     })
 
@@ -178,7 +266,11 @@ class Task extends Component {
     changeTaskName = (event) => {
         if (event.target.value.length !== 0) {
             const newState = this.props.getProjectDashboardState()
-            newState.project.taskList[this.props.taskKey].taskName = event.target.value
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].taskName = event.target.value
+            }else {
+                newState.project.taskList[this.props.taskKey].taskName = event.target.value
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
@@ -187,7 +279,11 @@ class Task extends Component {
         if (validateDate(event.target.value)){
             console.log("SUCCESS")
             const newState = this.props.getProjectDashboardState()
-            newState.project.taskList[this.props.taskKey].deadline = event.target.value;
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].deadline = event.target.value;
+            }else {
+                newState.project.taskList[this.props.taskKey].deadline = event.target.value;
+            }
             this.props.setProjectDashboardState(newState);
         }
 
@@ -196,14 +292,22 @@ class Task extends Component {
     changeTaskDescription = (event) => {
         if (event.target.value !== "") {
             const newState = this.props.getProjectDashboardState()
-            newState.project.taskList[this.props.taskKey].taskDescription = event.target.value
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].taskDescription = event.target.value
+            }else {
+                newState.project.taskList[this.props.taskKey].taskDescription = event.target.value
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
     changePriorityLevel = (event) => {
         if (event.target.value !== "") {
             const newState = this.props.getProjectDashboardState()
-            newState.project.taskList[this.props.taskKey].priorityLevel = event.target.value
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].priorityLevel = event.target.value
+            }else {
+                newState.project.taskList[this.props.taskKey].priorityLevel = event.target.value
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
@@ -211,7 +315,11 @@ class Task extends Component {
     changeEstimatedTimeValue = (event) => {
         if (event.target.value !== "") {
             const newState = this.props.getProjectDashboardState()
-            newState.project.taskList[this.props.taskKey].EstimatedTimeValue = event.target.value
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].EstimatedTimeValue = event.target.value
+            }else {
+                newState.project.taskList[this.props.taskKey].EstimatedTimeValue = event.target.value
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
@@ -219,14 +327,57 @@ class Task extends Component {
     getPriorityLevel = () => {
         console.log(this.props.task.priorityLevel)
         return "!!"
-
-
     }
 
-    getEstimatedTime = () => {
+    //push comment to fireBase
+    postComment = () => {
+        const projectID = this.props.projectID
+        const usID = this.props.getAppState.user.uid
+        const tID = this.props.taskKey
+        const comment = this.state.commentValue
+        const uname = this.props.getAppState.user.displayName
+        const img = this.props.getAppState.user.photoURL
+        var today = new Date();
+        if(this.props.archived){
+            rebase.push(`projects/${projectID}/archivedTaskList/${tID}/taskComments`, {
+                data: {
+                    uid: [usID],
+                    text: comment,
+                    username: uname,
+                    image: img,
+                    timestamp: today.getTime()
+                }
+            });
+        }else {
+            rebase.push(`projects/${projectID}/taskList/${tID}/taskComments`, {
+                data: {
+                    uid: [usID],
+                    text: comment,
+                    username: uname,
+                    image: img,
+                    timestamp: today.getTime()
+                }
+            });
+        }
 
-
+        this.setState({addedComment: true})
+        this.clearComment()
     }
+
+    sendComment = (event) => {
+        const newState = { ...this.state }
+        newState.commentValue = event.target.value
+        this.setState(newState)
+    }
+
+    clearComment = () => {
+        const newState = { ...this.state }
+        newState.commentValue = ''
+        this.setState(newState)
+    }
+
+
+
     // fixDeadline = () => {
     //     //2018-02-21T18:28:59-05:00
     //     const date = this.props.task.deadline
@@ -263,17 +414,14 @@ class Task extends Component {
 
 
     getDaysLeft = () => {
-            //const thing = this.props.task.deadline
-            const fixedDeadline = this.props.task.deadline
-            //console.log(fixedDeadline)
-            if (this.state.open){
-                //console.log("HERE" + this.props.task.deadline)
-                return this.props.task.deadline;
-            }
-
-
+        //const thing = this.props.task.deadline
+        const fixedDeadline = this.props.task.deadline
+        //console.log(fixedDeadline)
+        if (this.state.open){
+            //console.log("HERE" + this.props.task.deadline)
+            return this.props.task.deadline;
+        }
         // MM/DD/YY
-
         const dueDate = fixedDeadline.split("/");
         //const curDate = this.fixCurrentDate.split("/");
         //console.log(dueDate[2])
@@ -309,7 +457,6 @@ class Task extends Component {
         //console.log("Day: " + day)
         const banana = moment([year, month, day]).fromNow();
         //console.log("THIS ONE: " +banana)
-
         return banana
     }
 
@@ -345,98 +492,184 @@ class Task extends Component {
             userKeys = Object.keys(this.props.users)
         }
 
+
         let assignedTo
         if (this.props.task.assignedTo) {
             console.log(this.props.task.assignedTo)
             assignedTo = (
-                <UserIcon color={this.props.getProjectDashboardState().project.projectColor} getAppState={this.props.getAppState} 
+                <UserIcon color={this.props.getProjectDashboardState().project.projectColor} getAppState={this.props.getAppStateFunc}
                 user={this.props.users[this.props.task.assignedTo]} userID={this.props.task.assignedTo}
                 project={this.props.getProjectDashboardState().project} projectID={this.props.getProjectDashboardState().project.key} />
             )
         }
 
-        return (
-            <div onClick={() => {
-                if (!this.state.open) {
-                    this.switch()
-                }
-            }} >
-                <div id="task" style={this.css()}>
-                    <div id="taskStats">
-                        <div id="taskCheckAndTitle">
-                            <svg height="40" width="40">
+        let taskComments
+        let finalRender
 
-                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
-                                 <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
-                                 <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
-                            </svg>
-                            <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
-                        </div>
-                        <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
-                    </div>
-                    <div style={{visibility: this.state.visible}} id="taskInfo">
-                        <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
-                        html={this.props.task.taskDescription} /> </p>
-                        <div id="taskUsers">
+        if(this.state.commentsSynced){
+            if(this.state.taskComments){
+                const commentKeys = Object.keys(this.state.taskComments)
+                taskComments = (
+                    commentKeys.map((key) => {
+                        let del = false;
+                        if(this.props.getAppState.user.uid == this.state.taskComments[key].uid){
+                            del = true;
+                        }
+                        const userKey = this.state.taskComments[key].uid[0]
+                        return <TaskComment username={this.state.taskComments[key].username} uid={this.state.taskComments[key].uid[0]}
+                            commentValue={this.state.taskComments[key].text} key={key} image={this.state.taskComments[key].image}
+                            showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key} archived={this.props.archived}
+                            user={this.props.users[userKey]} userID={userKey} project={this.props.getProjectDashboardState().project}
+                            getProjectDashboardState={this.props.getProjectDashboardState} getAppState={this.props.getAppStateFunc} timestamp={this.state.taskComments[key].timestamp}/>
+                    })
+                )
+            }
 
-                            {/*Temporarily commented out. Uncomment when actual image of person is displayed
-                            <UserIcon getAppState={this.props.getAppState} />
-                            <UserIcon getAppState={this.props.getAppState} />*/}
+            finalRender = (
+                <div onClick={() => {
+                    if (!this.state.open) {
+                        this.switch()
+                    }
+                }} >
+                    <div id="task" style={this.css()}>
+                        <div id="taskStats">
+                            <div id="taskCheckAndTitle">
+                                <svg height="40" width="40">
 
-                             {/*Temporary image placeholder*/}
-                            {/* <div id="userIconContainer" >
-                                <img src={funnytemp} className="projectPicture"/>
-                                <div id="projectIndicator" ></div>
+                                     <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
+                                     <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
+                                     <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
+                                </svg>
+                                <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
                             </div>
-                            <div id="userIconContainer" >
-                                <img src={funnytemp} className="projectPicture"/>
-                                <div id="projectIndicator" ></div>
-                            </div> */}
-                            {assignedTo}
-
-                            <AddUserButton onClick={() => {
-                                this.setState({addUserOpen: true})
-                            }}/>
-                            <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
-                                <div>
-                                    {/* <h1 className="taskAssignment">Task assignment</h1>*/}
-                                    <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select users to assign to this task</h4>
-                                    <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
-                                        {userKeys && userKeys.map((key) => {
-                                            return (
-                                                <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
-                                                getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
-                                                onClick={() => {
-                                                    this.assignTask(key)
-                                                }} key={key} user={this.props.users[key]} userID={key} project={this.props.getProjectDashboardState().project}
-                                                />
-                                            )
-                                        })}
-                                    </div>
-                                    <button className="addCommentButton" style={{width: '200px'}} onClick={() => {
-                                        this.assignTask(null)
-                                    }}>Clear All Assigned Users</button>
-                                </div>
-                            </Modal>
-
-                            <div id="Task">
-                            <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
-
-            </div>
-
+                            <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
                         </div>
-                        <div id="taskComments">
-                            <Comment />
-                            <Comment />
-                            <input type="text" placeholder="Comment" className="commentInput"
-                             style={{width: '100%'}}/>
-                             <button className="addCommentButton">Add Comment</button>
-                             <button className="addCommentButton" onClick={this.switch} style={{marginLeft:'10px'}} >Close Task</button>
+                        <div style={{visibility: this.state.visible}} id="taskInfo">
+                            <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
+                            html={this.props.task.taskDescription} /> </p>
+                            <div id="taskUsers">
+                                {assignedTo}
+
+                                <AddUserButton onClick={() => {
+                                    this.setState({addUserOpen: true})
+                                }}/>
+                                <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                                    <div>
+                                        {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                        <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select users to assign to this task</h4>
+                                        <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
+                                            {userKeys && userKeys.map((key) => {
+                                                return (
+                                                    <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                    getAppState={this.props.getAppStateFunc} projectID={this.props.getProjectDashboardState().project.key}
+                                                    onClick={() => {
+                                                        this.assignTask(key)
+                                                    }} key={key} user={this.props.users[key]} userID={key} project={this.props.getProjectDashboardState().project}
+                                                    />
+                                                )
+                                            })}
+                                        </div>
+                                        <button className="addCommentButton" style={{width: '200px'}} onClick={() => {
+                                            this.assignTask(null)
+                                        }}>Clear All Assigned Users</button>
+                                    </div>
+                                </Modal>
+
+                                <div id="Task">
+                                <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
+
+                                </div>
+                            </div>
+
+                            <div id="taskComments">
+
+                                {taskComments}
+
+                                
+                                    <input type="text" name="Comment" id="CommentField" onChange={this.sendComment} value={this.state.commentValue} placeholder="Comment" className="commentInput" style={{width: '100%'}}/>
+                                  <button className="addCommentButton" onClick={this.postComment}>Add Comment</button>
+                                  <button className="addCommentButton" onClick={this.switch} style={{marginLeft:'10px'}} >Close Task</button>
+                            </div>
+                            <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
                         </div>
                     </div>
-                </div>
 
-            </div>
+                </div>
+            )
+
+        } else {
+            finalRender = (
+                <div onClick={() => {
+                    if (!this.state.open) {
+                        this.switch()
+                    }
+                }} >
+                    <div id="task" style={this.css()}>
+                        <div id="taskStats">
+                            <div id="taskCheckAndTitle">
+                                <svg height="40" width="40">
+
+                                     <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
+                                     <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
+                                     <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
+                                </svg>
+                                <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
+                            </div>
+                            <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
+                        </div>
+                        <div style={{visibility: this.state.visible}} id="taskInfo">
+                            <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
+                            html={this.props.task.taskDescription} /> </p>
+                            <div id="taskUsers">
+                                {assignedTo}
+
+                                <AddUserButton onClick={() => {
+                                    this.setState({addUserOpen: true})
+                                }}/>
+                                <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                                    <div>
+                                        {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                        <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select users to assign to this task</h4>
+                                        <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
+                                            {userKeys && userKeys.map((key) => {
+                                                return (
+                                                    <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                    getAppState={this.props.getAppStateFunc} projectID={this.props.getProjectDashboardState().project.key}
+                                                    onClick={() => {
+                                                        this.assignTask(key)
+                                                    }} key={key} user={this.props.users[key]} userID={key} project={this.props.getProjectDashboardState().project}
+                                                    />
+                                                )
+                                            })}
+                                        </div>
+                                        <button className="addCommentButton" style={{width: '200px'}} onClick={() => {
+                                            this.assignTask(null)
+                                        }}>Clear All Assigned Users</button>
+                                    </div>
+                                </Modal>
+
+                                <div id="Task">
+                                <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
+
+                                </div>
+                            </div>
+
+                            <div id="taskComments">
+                                // <button type="button" onClick={this.postComment}>Comment</button>
+                                    <input type="text" placeholder="Comment" className="commentInput" style={{width: '100%'}}/>
+                                  <button className="addCommentButton" onClick={this.postComment}>Add Comment</button>
+                                  <button className="addCommentButton" onClick={this.switch} style={{marginLeft:'10px'}} >Close Task</button>
+                            </div>
+                            // <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
+                        </div>
+                    </div>
+
+                </div>
+            )
+        }
+
+        return (
+            <div>{finalRender}</div>
         )
 
     }
