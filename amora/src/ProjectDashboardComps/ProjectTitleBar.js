@@ -22,7 +22,6 @@ class ProjectTitleBar extends Component {
         this.state = {
             open: false,
             titleValue: "",
-            renderAsManager: false,
             projectDescription:"",
             taskAlertTime: "",
             inviteValue: "",
@@ -46,7 +45,7 @@ class ProjectTitleBar extends Component {
         this.setState(newState)
     }
 
-    // Method for changing title value in state
+    // Method for changing color value in state
     changenewColorValue = (color) => {
         const newState = { ...this.state }
         newState.newcolorValue = color
@@ -65,15 +64,15 @@ class ProjectTitleBar extends Component {
         s.projectDescription = this.props.projectDescription
         s.titleValue = this.props.title
         this.setState(s)
-        const promise = checkIfManager(this.props.getAppState().user.uid, this.props.getAppState().currentProject.key)
-        promise.then((data) => {
-            if (data.val()) {
-                const newState = this.state
-                newState.renderAsManager = true
-                //newState.projectDescription = this.props.projectDescription
-                this.setState(newState)
-            }
-        })
+        // const promise = checkIfManager(this.props.getAppState().user.uid, this.props.getAppState().currentProject.key)
+        // promise.then((data) => {
+        //     if (data.val()) {
+        //         const newState = this.state
+        //         newState.renderAsManager = true
+        //         //newState.projectDescription = this.props.projectDescription
+        //         this.setState(newState)
+        //     }
+        // })
 
     }
 
@@ -89,6 +88,7 @@ class ProjectTitleBar extends Component {
 
     onCloseModal = () => {
         this.setState({ open: false });
+        this.setState({ colorValue: this.props.getProjectDashboardState().project.projectColor })
     };
 
     changeTitleValue = (event) => {
@@ -108,7 +108,7 @@ class ProjectTitleBar extends Component {
         var taskAlertText = dropSelect.options[dropSelect.selectedIndex].text;
         const newState = this.props.getAppState();
 
-        if(this.state.renderAsManager){
+        if(this.props.getProjectDashboardState().project.managerList[this.props.getAppState().user.uid]){
             newState.currentProject.projectName = this.state.titleValue
             newState.currentProject.projectColor = this.state.colorValue
             newState.currentProject.projectDescription = this.state.projectDescription
@@ -247,6 +247,7 @@ class ProjectTitleBar extends Component {
     assignProjectCreator = (key) => {
         const dashboardState = { ...this.props.getProjectDashboardState() }
         dashboardState.project.projectCreator = key
+        dashboardState.project.managerList[key] = true
         this.props.setProjectDashboardState(dashboardState)
         // this.sendProjectCreatorNotification(key)
         this.setState({addProjectCreatorOpen: false})
@@ -353,6 +354,7 @@ class ProjectTitleBar extends Component {
 
     renderSwatch = (color) => {
         if (color == this.state.colorValue) {
+        //if(color == this.props.getProjectDashboardState().project.projectColor){
             return <div onClick={() => {
                 this.changeColorValue(color)
             }} className="colorSwatchSelector" key={color} style={{backgroundColor: color, borderWidth: '2px', borderStyle: 'solid'}}></div>
@@ -394,7 +396,7 @@ class ProjectTitleBar extends Component {
         let colorsArray = ['#E74C3C', '#E67E22', '#F1C40F', '#E91E63', '#9B59B6', '#3498DB', '#2ECB71', '#18AE90']
 
 
-        if (!this.state.renderAsManager) { //user is not a manager
+        if(!this.props.getProjectDashboardState().project.managerList[this.props.getAppState().user.uid]){ //user is not a manager
             return (
                 <div>
                     <h1>User Settings</h1>
@@ -440,10 +442,10 @@ class ProjectTitleBar extends Component {
                         })}
                     </div>
                     {creatorButtons}
-                    <Modal open={this.state.addProjectCreatorOpen} onClose={() => this.setState({addProjectCreatorOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                    <Modal open={this.state.addProjectCreatorOpen} onClose={() => this.setState({addProjectCreatorOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'promoteToCreatorModal'}}>
                             <div>
                                 {/* <h1 className="taskAssignment">Task assignment</h1>*/}
-                                <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a user to promote to manager status</h4>
+                                <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a user to promote to creator status</h4>
                                 <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                     {userKeys && userKeys.map((key) => {
                                         if (key != this.props.project.projectCreator) {
@@ -462,7 +464,7 @@ class ProjectTitleBar extends Component {
                     <button onClick={() => {
                         this.setState({addManagerOpen: true})
                     }}>Promote user to manager</button>
-                    <Modal open={this.state.demoteManagerOpen} onClose={() => this.setState({demoteManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                    <Modal open={this.state.demoteManagerOpen} onClose={() => this.setState({demoteManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'demoteManagerModal'}}>
                         <div>
                             <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a manager to demote</h4>
                             <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
@@ -480,8 +482,8 @@ class ProjectTitleBar extends Component {
                             </div>
                         </div>
                     </Modal>
-                    <Modal open={this.state.createNewProjectOpen} onClose={() => this.setState({createNewProjectOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
-                            <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a manager to demote</h4>
+                    <Modal open={this.state.createNewProjectOpen} onClose={() => this.setState({createNewProjectOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'copyProjectModal'}}>
+                            <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Create New Project with Same Team</h4>
                             <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                 <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changenewTitleValue}
                                 value={this.state.newtitleValue} />
@@ -507,7 +509,7 @@ class ProjectTitleBar extends Component {
                             {/*This should only appear if it is selected as the project*/}
 
                         </div>
-                        <Modal open={this.state.addManagerOpen} onClose={() => this.setState({addManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                        <Modal open={this.state.addManagerOpen} onClose={() => this.setState({addManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'promoteUserToManagerModal'}}>
                             <div>
                                 {/* <h1 className="taskAssignment">Task assignment</h1>*/}
                                 <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a user to promote to manager status</h4>
@@ -548,20 +550,6 @@ class ProjectTitleBar extends Component {
     4) If it's selected, have the box show on the side
     */
 
-   renderSwatch = (color) => {
-        //return <div className="colorSwatchSelector" key={color} style={{backgroundColor: color, borderWidth: '2px', borderStyle: 'solid'}}></div>
-        if (color == this.state.colorValue) {
-            return <div onClick={() => {
-                this.changeColorValue(color)
-            }} className="colorSwatchSelector" key={color} style={{backgroundColor: color, borderWidth: '2px', borderStyle: 'solid'}}></div>
-        } else {
-            return <div onClick={() => {
-                this.changeColorValue(color)
-            }} className="colorSwatchSelector" key={color} style={{backgroundColor: color}}></div>
-        }
-    }
-
-
     render = () => {
         //let color = "#3CB4CB";
         let color = this.props.projectColor;
@@ -572,7 +560,7 @@ class ProjectTitleBar extends Component {
         return (
             <div id="projectTitleContainer" style={{backgroundColor: color}}>
                 <h3 id="projectTitle">{this.props.title}</h3>
-                <h5 id="projectDescription"><i>Somebody add the description here >:-P</i></h5>
+                <h5 id="projectDescription"><i>{this.props.getProjectDashboardState().project.projectDescription}</i></h5>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
 
