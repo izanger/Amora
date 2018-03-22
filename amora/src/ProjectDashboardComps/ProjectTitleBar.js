@@ -333,7 +333,7 @@ class ProjectTitleBar extends Component {
                     })
                 })
             })
-    
+
     }
 
     renderProjectCreatorButton = () => {
@@ -454,7 +454,7 @@ class ProjectTitleBar extends Component {
                                                     this.assignProjectCreator(key)
                                                 }} key={key} user={this.props.project.userList[key]} userID={key} project={this.props.project} />
                                             )
-                                        }   
+                                        }
                                     })}
                                 </div>
                             </div>
@@ -475,7 +475,7 @@ class ProjectTitleBar extends Component {
                                                 this.demoteManager(key)
                                             }} key={key} user={this.props.project.userList[key]} userID={key} project={this.props.project} />
                                         )
-                                    }   
+                                    }
                                 })}
                             </div>
                         </div>
@@ -485,7 +485,7 @@ class ProjectTitleBar extends Component {
                             <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                 <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changenewTitleValue}
                                 value={this.state.newtitleValue} />
-                                <input type="text" placeholder="Enter Project Description" className="createProjectInput" 
+                                <input type="text" placeholder="Enter Project Description" className="createProjectInput"
                                 onChange={this.changenewDescriptionValue} value={this.state.newdescriptionValue} />
                                 <div id="colorPicker">
                                     <h4>Project Color:</h4>
@@ -521,7 +521,7 @@ class ProjectTitleBar extends Component {
                                                     this.assignManager(key)
                                                 }} key={key} user={this.props.project.userList[key]} userID={key} project={this.props.project} />
                                             )
-                                        }   
+                                        }
                                     })}
                                 </div>
                             </div>
@@ -571,7 +571,8 @@ class ProjectTitleBar extends Component {
         let settings = this.renderSettings(color, colors)
         return (
             <div id="projectTitleContainer" style={{backgroundColor: color}}>
-                <h1 id="projectTitle">{this.props.title}</h1>
+                <h3 id="projectTitle">{this.props.title}</h3>
+                <h5 id="projectDescription"><i>Somebody add the description here >:-P</i></h5>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
 
