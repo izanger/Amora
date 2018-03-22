@@ -27,13 +27,20 @@ class TaskComment extends Component {
         }
     }
 
-    changeComment = (event) => {
+    changeComment = (event) => { 
         if (event.target.value.length !== 0) {
             const newState = this.props.getProjectDashboardState()
+
+            //var date = new Date(this.props.timestamp)
+            //let formattedDate =  date.toLocaleTimeString() + " on " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
+            var today = new Date();
+
             if(this.props.archived){
-                newState.project.archivedTaskList[this.props.taskKey].commentValue = event.target.value
+                newState.project.archivedTaskList[this.props.taskKey].taskComments[this.props.commentID].text = event.target.value
+                newState.project.archivedTaskList[this.props.taskKey].taskComments[this.props.commentID].timestamp = today.getTime()
             }else {
-                newState.project.taskList[this.props.taskKey].commentValue = event.target.value
+                newState.project.taskList[this.props.taskKey].taskComments[this.props.commentID].text = event.target.value
+                newState.project.taskList[this.props.taskKey].taskComments[this.props.commentID].timestamp = today.getTime()
             }
             this.props.setProjectDashboardState(newState)
         }
