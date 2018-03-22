@@ -35,6 +35,7 @@
 
 #taskNameAndComment {
     padding-left: 10px;
+    width: 100%;
 }
 
 #commentUserIconContainer {

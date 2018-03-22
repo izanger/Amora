@@ -182,7 +182,7 @@ class Task extends Component {
             this.bindingref = rebase.syncState(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
                 context: this,
                 state: 'taskComments',
-            
+
             })
 
         }else {
@@ -192,7 +192,7 @@ class Task extends Component {
             this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
                 context: this,
                 state: 'taskComments',
-                
+
             })
         }
     }
@@ -218,7 +218,7 @@ class Task extends Component {
                             });
 
                             //this.toggleSync(false)
-                            
+
                         }
                     })
 
@@ -342,7 +342,7 @@ class Task extends Component {
             rebase.push(`projects/${projectID}/archivedTaskList/${tID}/taskComments`, {
                 data: {
                     uid: [usID],
-                    text: comment, 
+                    text: comment,
                     username: uname,
                     image: img,
                     timestamp: today.getTime()
@@ -352,14 +352,14 @@ class Task extends Component {
             rebase.push(`projects/${projectID}/taskList/${tID}/taskComments`, {
                 data: {
                     uid: [usID],
-                    text: comment, 
+                    text: comment,
                     username: uname,
                     image: img,
                     timestamp: today.getTime()
                 }
             });
         }
-        
+
         this.setState({addedComment: true})
         this.clearComment()
     }
@@ -459,7 +459,7 @@ class Task extends Component {
         //console.log("THIS ONE: " +banana)
         return banana
     }
-    
+
     assignTask = (key) => {
         const dashboardState = { ...this.props.getProjectDashboardState() }
         if (key === null) {
@@ -497,7 +497,7 @@ class Task extends Component {
         if (this.props.task.assignedTo) {
             console.log(this.props.task.assignedTo)
             assignedTo = (
-                <UserIcon color={this.props.getProjectDashboardState().project.projectColor} getAppState={this.props.getAppStateFunc} 
+                <UserIcon color={this.props.getProjectDashboardState().project.projectColor} getAppState={this.props.getAppStateFunc}
                 user={this.props.users[this.props.task.assignedTo]} userID={this.props.task.assignedTo}
                 project={this.props.getProjectDashboardState().project} projectID={this.props.getProjectDashboardState().project.key} />
             )
@@ -516,10 +516,10 @@ class Task extends Component {
                             del = true;
                         }
                         const userKey = this.state.taskComments[key].uid[0]
-                        return <TaskComment username={this.state.taskComments[key].username} uid={this.state.taskComments[key].uid[0]} 
+                        return <TaskComment username={this.state.taskComments[key].username} uid={this.state.taskComments[key].uid[0]}
                             commentValue={this.state.taskComments[key].text} key={key} image={this.state.taskComments[key].image}
-                            showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key} archived={this.props.archived} 
-                            user={this.props.users[userKey]} userID={userKey} project={this.props.getProjectDashboardState().project} 
+                            showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key} archived={this.props.archived}
+                            user={this.props.users[userKey]} userID={userKey} project={this.props.getProjectDashboardState().project}
                             getProjectDashboardState={this.props.getProjectDashboardState} getAppState={this.props.getAppStateFunc} timestamp={this.state.taskComments[key].timestamp}/>
                     })
                 )
@@ -535,7 +535,7 @@ class Task extends Component {
                         <div id="taskStats">
                             <div id="taskCheckAndTitle">
                                 <svg height="40" width="40">
-    
+
                                      <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
                                      <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                      <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
@@ -549,7 +549,7 @@ class Task extends Component {
                             html={this.props.task.taskDescription} /> </p>
                             <div id="taskUsers">
                                 {assignedTo}
-    
+
                                 <AddUserButton onClick={() => {
                                     this.setState({addUserOpen: true})
                                 }}/>
@@ -574,25 +574,26 @@ class Task extends Component {
                                         }}>Clear All Assigned Users</button>
                                     </div>
                                 </Modal>
-    
+
                                 <div id="Task">
                                 <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
-    
+
                                 </div>
                             </div>
-                            
-                            <div id="taskComments">  
-    
+
+                            <div id="taskComments">
+
                                 {taskComments}
-                                <input type="text" name="Comment" id="CommentField" rows="3" cols="50" onChange={this.sendComment}
-                                    value={this.state.commentValue}></input>
-                                <button type="button" onClick={this.postComment}>Comment</button>
+
                                 
-                            </div>                    
+                                    <input type="text" name="Comment" id="CommentField" onChange={this.sendComment} value={this.state.commentValue} placeholder="Comment" className="commentInput" style={{width: '100%'}}/>
+                                  <button className="addCommentButton" onClick={this.postComment}>Add Comment</button>
+                                  <button className="addCommentButton" onClick={this.switch} style={{marginLeft:'10px'}} >Close Task</button>
+                            </div>
                             <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
                         </div>
                     </div>
-    
+
                 </div>
             )
 
@@ -607,7 +608,7 @@ class Task extends Component {
                         <div id="taskStats">
                             <div id="taskCheckAndTitle">
                                 <svg height="40" width="40">
-    
+
                                      <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
                                      <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                      <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
@@ -621,7 +622,7 @@ class Task extends Component {
                             html={this.props.task.taskDescription} /> </p>
                             <div id="taskUsers">
                                 {assignedTo}
-    
+
                                 <AddUserButton onClick={() => {
                                     this.setState({addUserOpen: true})
                                 }}/>
@@ -646,21 +647,23 @@ class Task extends Component {
                                         }}>Clear All Assigned Users</button>
                                     </div>
                                 </Modal>
-    
+
                                 <div id="Task">
                                 <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
-    
+
                                 </div>
                             </div>
-                            
-                            <div id="taskComments">  
-                                <button type="button" onClick={this.postComment}>Comment</button>
-                                
-                            </div>                    
-                            <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
+
+                            <div id="taskComments">
+                                // <button type="button" onClick={this.postComment}>Comment</button>
+                                    <input type="text" placeholder="Comment" className="commentInput" style={{width: '100%'}}/>
+                                  <button className="addCommentButton" onClick={this.postComment}>Add Comment</button>
+                                  <button className="addCommentButton" onClick={this.switch} style={{marginLeft:'10px'}} >Close Task</button>
+                            </div>
+                            // <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
                         </div>
                     </div>
-    
+
                 </div>
             )
         }

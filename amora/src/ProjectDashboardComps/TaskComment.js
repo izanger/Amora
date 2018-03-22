@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import rebase from "../rebase.js"
 import UserIcon from "./UserIcon.js"
+import CommentUserIcon from "./CommentUserIcon.js"
 import "./TaskComment.css"
 import funnytemp from "../images/temp.jpg"
 
@@ -29,34 +30,38 @@ class TaskComment extends Component {
     render = () => {
         var date = new Date(this.props.timestamp)
         let formattedDate =  date.toLocaleTimeString() + " on " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
-        // let color = "#3CB4CB"; 
+        // let color = "#3CB4CB";
         if(this.props.showDelete){
             return (
                 <div id="taskCommentContainer">
-                    <svg height="2px" width="100%" className="taskCommentDivider">
-                        <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
+                    <svg height="2px" width="101%" className="taskCommentDivider">
+                        <line x1="12" y1="0" x2="100%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
                     </svg>
                     <div id="taskCommentContents">
-                        {/*Temporarily commented out. Uncomment when actual image of person is displayed 
+                        {/*Temporarily commented out. Uncomment when actual image of person is displayed
                         <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
-                        
+
                         {/*Temporary image placeholder*/}
                         {/* <div id="userIconContainer" >
-                            <img src={this.props.image} className="projectPicture"/>                     
+                            <img src={this.props.image} className="projectPicture"/>
                             <div id="projectIndicator" ></div>
                         </div>           */}
                         {console.log(this.props)}
-                        <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                        <CommentUserIcon color={this.props.getProjectDashboardState().project.projectColor}
                         getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
-                        key={this.props.userKey} user={this.props.project.userList[this.props.userID]} userID={this.props.userID} project={this.props.project} />  
-    
+                        key={this.props.userKey} user={this.props.project.userList[this.props.userID]} userID={this.props.userID} project={this.props.project} />
+
                         <div id="taskNameAndComment">
-                            <p id="taskCommentName">{this.props.username} | {formattedDate}</p>
+                            <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
+                                <p id="taskCommentName">{this.props.username}</p>
+                                <p id="taskCommentText" style={{marginBottom: '0px'}}>{formattedDate}</p>
+                            </div>
+
                             <p id="taskCommentText">{this.props.commentValue}</p>
                         </div>
                     </div>
                     <button onClick={this.deleteComment}>Delete Comment</button>
-    
+
                 </div>
             )
         }else {
@@ -66,29 +71,29 @@ class TaskComment extends Component {
                         <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
                     </svg>
                     <div id="taskCommentContents">
-                        {/*Temporarily commented out. Uncomment when actual image of person is displayed 
+                        {/*Temporarily commented out. Uncomment when actual image of person is displayed
                         <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
-                        
+
                         {/*Temporary image placeholder*/}
                         {/* <div id="userIconContainer" >
-                            <img src={this.props.image} className="projectPicture"/>                     
+                            <img src={this.props.image} className="projectPicture"/>
                             <div id="projectIndicator" ></div>
                         </div>     */}
-                        <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                        <CommentUserIcon color={this.props.getProjectDashboardState().project.projectColor}
                         getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
-                        key={this.props.userKey} user={this.props.project.userList[this.props.userKey]} userID={this.props.userKey} project={this.props.project} />      
-    
+                        key={this.props.userKey} user={this.props.project.userList[this.props.userKey]} userID={this.props.userKey} project={this.props.project} />
+
                         <div id="taskNameAndComment">
                             <p id="taskCommentName">{this.props.username} | {formattedDate}</p>
-                            <p id="taskCommentText">{this.props.commentValue}</p>
+                            <p id="taskCommentText">{formattedDate} | {this.props.commentValue}</p>
                         </div>
-                        
+
                     </div>
-    
+
                 </div>
             )
         }
-        
+
     }
 
 }
