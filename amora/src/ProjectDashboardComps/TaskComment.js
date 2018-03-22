@@ -4,7 +4,7 @@ import UserIcon from "./UserIcon.js"
 import CommentUserIcon from "./CommentUserIcon.js"
 import "./TaskComment.css"
 import funnytemp from "../images/temp.jpg"
-
+import ContentEditable from 'react-contenteditable'
 
 
 class TaskComment extends Component {
@@ -24,6 +24,18 @@ class TaskComment extends Component {
         }else {
             rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
 
+        }
+    }
+
+    changeComment = (event) => {
+        if (event.target.value.length !== 0) {
+            const newState = this.props.getProjectDashboardState()
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].commentValue = event.target.value
+            }else {
+                newState.project.taskList[this.props.taskKey].commentValue = event.target.value
+            }
+            this.props.setProjectDashboardState(newState)
         }
     }
 
@@ -57,7 +69,7 @@ class TaskComment extends Component {
                                 <p id="taskCommentText" style={{marginBottom: '0px'}}>{formattedDate}</p>
                             </div>
 
-                            <p id="taskCommentText">{this.props.commentValue}</p>
+                            <p id="taskCommentText"><ContentEditable disabled={false} onChange={this.changeComment} html={this.props.commentValue}/></p>
                         </div>
                     </div>
                     <button onClick={this.deleteComment}>Delete Comment</button>

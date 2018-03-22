@@ -520,7 +520,8 @@ class Task extends Component {
                             commentValue={this.state.taskComments[key].text} key={key} image={this.state.taskComments[key].image}
                             showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key} archived={this.props.archived}
                             user={this.props.users[userKey]} userID={userKey} project={this.props.getProjectDashboardState().project}
-                            getProjectDashboardState={this.props.getProjectDashboardState} getAppState={this.props.getAppStateFunc} timestamp={this.state.taskComments[key].timestamp}/>
+                            getProjectDashboardState={this.props.getProjectDashboardState} setProjectDashboardState={this.props.setProjectDashboardState} 
+                            getAppState={this.props.getAppStateFunc} timestamp={this.state.taskComments[key].timestamp}/>
                     })
                 )
             }
