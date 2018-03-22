@@ -13,6 +13,7 @@ import CreateTaskForm from './CreateTaskForm.js';
 import Notifications from "./Notifications.js";
 import MyDayTitleBar from "./MyDayComps/MyDayTitleBar.js"
 import { doubleToIEEE754String } from '@firebase/database/dist/esm/src/core/util/util';
+import estimatedTimeValue from './CreateTaskForm.js';
 
 class Home extends Component {
     constructor() {
@@ -46,8 +47,12 @@ class Home extends Component {
     }
 
     addTaskHours = () => {
-    this.state.varHours = document.getElementById("myText").value 
+    this.state.varHours = document.getElementById("myText").value
+    var x = parseInt(this.state.varHours) + parseInt(estimatedTimeValue)
+    //document.getElementById("hours").innerHTML = x
+
     document.getElementById("hours").innerHTML = this.state.varHours
+
    //var x = document.getElementById("myText").value
   //document.getElementById("hours").innerHTML = x  
        
