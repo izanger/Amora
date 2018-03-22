@@ -12,12 +12,14 @@ import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from './CreateTaskForm.js';
 import Notifications from "./Notifications.js";
 import MyDayTitleBar from "./MyDayComps/MyDayTitleBar.js"
+import { doubleToIEEE754String } from '@firebase/database/dist/esm/src/core/util/util';
 
 class Home extends Component {
     constructor() {
         super()
         this.state = {
-            displayName: ""
+            displayName: "",
+            varHours:""
         }
     }
 
@@ -43,9 +45,11 @@ class Home extends Component {
           })
     }
 
-    addTaskHours(){
-         var x = document.getElementById("myText").value
-        document.getElementById("hours").innerHTML = x  
+    addTaskHours = () => {
+    this.state.varHours = document.getElementById("myText").value 
+    document.getElementById("hours").innerHTML = this.state.varHours
+   //var x = document.getElementById("myText").value
+  //document.getElementById("hours").innerHTML = x  
        
     }
 
@@ -108,7 +112,8 @@ class Home extends Component {
 
                                  <textarea id="myText" rows="1" cols="3"></textarea>
                                     <button type="button" onClick={this.addTaskHours} >Submit Hours</button>
-                                    <p id="hours"></p>
+                                    <p id="remainingHours">Remaining Hours</p>
+                                    <p id="hours">{this.state.varHours}</p>
         
                                                                      
 
