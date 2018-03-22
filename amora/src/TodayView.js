@@ -47,28 +47,32 @@ class TodayView extends Component {
       super(props);
       this.state = {
         items: getItems(10),
+        viewSynced: false,
+        tasks: []
       };
       this.onDragEnd = this.onDragEnd.bind(this);
     }
 
-  //   componentDidMount = () => {
-  //     const newState = { ...this.state }
-  //     rebase.fetch(`projects/${this.props.match.params.id}`, {
-  //         context: this,
-  //         then: (data) => {
-  //             newState.project = data
-  //         }
-  //     }).then(() => {
-  //         this.bindingref = rebase.syncState(`projects/${this.props.match.params.id}`, {
-  //             context: this,
-  //             state: 'project',
-  //             then: () => {
-  //               newState.projectSynced = true
-  //               this.setState(newState)
-  //             }
-  //         })
-  //     })
-  // }
+    componentDidMount = () => {
+      const newState = { ...this.state }
+      let userID = this.props.getAppState().user.uid
+      console.log(userID)
+      rebase.fetch(`users/${userID}/todayView`, {
+          context: this,
+          then: (data) => {
+              newState.tasks = data
+          }
+      }).then(() => {
+          this.bindingref = rebase.syncState(`users/${userID}/todayView`, {
+              context: this,
+              state: 'tasks',
+              then: () => {
+                newState.viewSynced = true
+                this.setState(newState)
+              }
+          })
+      })
+  }
 
   // componentWillReceiveProps = (nextProps) => {
   //     const nextId = nextProps.match.params.id
@@ -98,11 +102,11 @@ class TodayView extends Component {
   //     this.setState({projectSynced: true})
   // }
 
-  // componentWillUnmount = () => {
-  //     this.setState({
-  //         projectSynced: false
-  //     })
-  // }
+  componentWillUnmount = () => {
+      this.setState({
+          viewSynced: false
+      })
+  }
   
     onDragEnd(result) {
       //dropped outside the list
@@ -153,49 +157,115 @@ class TodayView extends Component {
         items
       });
     }
+
+
+
+
+
   
-    // Normally you would want to split things out into separate components.
-    // But in this example everything is just done in one place for simplicity
-    render() {
-      return (
-        //  <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId="TodayView">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}
-              >
-                {this.state.items.map((item, index) => (
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
-                    {(provided, snapshot) => (
+    render = () => {
+      let finalRender
+      let taskArr = []
+      console.log("Checkpoint1")
+      if (this.state.viewSynced){
+        console.log("Checkpoint2")
+        console.log(this.state.tasks.length)
+        console.log(this.state.tasks)
+        if (this.state.tasks){
+
+          // for (var task in this.state.tasks){
+             let tasks = (Object.values(this.state.tasks))
+          //   taskArr.push(task)
+          // }
+
+          finalRender = (
+        <Droppable droppableId="TodayView">
+              
+                  {(provided, snapshot) => (
+                  <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+          
+                  {Object.keys(this.state.tasks).map((item, index) => (
+                  <Draggable key={item} draggableId={item} index={index}>
+                      {(provided, snapshot) => (
                       <div>
-                        <div
+                      <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
+                           snapshot.isDragging,
+                              provided.draggableProps.style
                           )}
-                        >
-                          {item.content}
-                        </div>
-                        {provided.placeholder}
+                          >
+                          {/* console.log("hi") */}
+                          {/* put tasks here */}
+                          {/* {console.log(item)} */}
+                          {/* {tasks} */}
+                          {tasks[index].taskName}
+                          </div>
+                          {provided.placeholder}
                       </div>
-                    )}
+                      )}
                   </Draggable>
-                ))}
-                {provided.placeholder}
+                  ))}
+                  {provided.placeholder}
               </div>
-            )}
-          </Droppable>
-         //{/* </DragDropContext> */}
+              )}
+                   </Droppable>
           )
-            {/* //</DragDropContext> */}
+        }
+        else {
+          <div>Hello</div>
+
+        }
+
+
+
+
+      }
+      return (
+        <div>  
+                    <div>{finalRender}
+          </div>
+                    
+        </div>
+
+
+//  <Droppable droppableId="TodayView">
+//             {(provided, snapshot) => (
+//               <div
+//                 ref={provided.innerRef}
+//                 style={getListStyle(snapshot.isDraggingOver)}
+//               >
+//                 {this.state.items.map((item, index) => (
+//                   <Draggable key={item.id} draggableId={item.id} index={index}>
+//                     {(provided, snapshot) => (
+//                       <div>
+//                         <div
+//                           ref={provided.innerRef}
+//                           {...provided.draggableProps}
+//                           {...provided.dragHandleProps}
+//                           style={getItemStyle(
+//                             snapshot.isDragging,
+//                             provided.draggableProps.style
+//                           )}
+//                         >
+//                           {item.content}
+//                         </div>
+//                         {provided.placeholder}
+//                       </div>
+//                     )}
+//                   </Draggable>
+//                 ))}
+//                 {provided.placeholder}
+//               </div>
+//             )}
+//           </Droppable> 
+          
+          )
+          
     }
   }
   
-  // Put the thing into the DOM!
-  //ReactDOM.render(<TodayView />, document.getElementById('root'));
   export default TodayView;
   

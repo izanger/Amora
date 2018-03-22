@@ -35,6 +35,7 @@ class Home extends Component {
         this.state = {
             displayName: "",
             todayItems: getItems(10),
+    
           }
           this.onDragEnd = this.onDragEnd.bind(this);
           //this.handleChange = this.handleChange.bind(this);
@@ -47,7 +48,8 @@ class Home extends Component {
         }
         console.log(result);
         // return;
-        if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TaskContainer"){
+         if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TaskContainer"){
+            //if (result.source.droppableId === "TaskContainer"){
             //add to secondItems
             //add to todayItems and Database
             let projectArray = [];
@@ -75,7 +77,7 @@ class Home extends Component {
 
                         //taskName is set, so we can push it to the todayView
 
-                        rebase.push(`users/${this.props.getAppState().user.uid}/todayView/taskList/`, {
+                        rebase.push(`users/${this.props.getAppState().user.uid}/todayView/`, {
                             data: {
                                 taskIDNumber: taskID,
                                 taskName: taskname,
@@ -100,6 +102,24 @@ class Home extends Component {
         }
         else {
             //remove from todayItems and database
+            const id = this.props.getAppState().user.uid   
+            const taskID = result.draggableId;
+            console.log("hey")
+            rebase.remove(`users/${id}/todayView/${taskID}`, function(err){
+                if(!err){
+                    console.log("Success: Task removed from Firebase")
+                    
+                }
+                else {
+                    console.log("Error: Unit test 3 Failed!")
+                }
+              });
+
+
+
+
+
+
 
         }
     
@@ -215,7 +235,7 @@ class Home extends Component {
                 </Switch>
 
                 <div id="myDay">                
-                     <TodayView/>
+                     <TodayView getAppState={this.props.getAppState}/>
                 </div>
             </div>
             </DragDropContext>

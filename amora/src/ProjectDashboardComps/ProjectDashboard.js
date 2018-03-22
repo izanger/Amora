@@ -64,6 +64,8 @@ class ProjectDashboard extends Component {
         }
     }
 
+
+
     /*
     This currently only is the box. It needs the following:
     1) Get the color for the project from Firebase
@@ -519,6 +521,50 @@ class ProjectDashboard extends Component {
                 // </div>
                 // )}
                 //     </Droppable>
+
+
+                taskRender = (
+                    <Droppable droppableId="TaskContainer">
+              
+                  {(provided, snapshot) => (
+                  <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+          
+          
+                  {Object.keys(this.state.project.taskList).map((item, index) => (
+                  <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
+                      {(provided, snapshot) => (
+                      <div>
+                      <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                           snapshot.isDragging,
+                              provided.draggableProps.style
+                          )}
+                          >
+                          {/* put tasks here */}
+                          {console.log(tasks[index].props.task.taskName)}
+                          {console.log(count)}
+                          {console.log(item)}
+                          {/* {tasks} */}
+                          {tasks[index]}
+                          </div>
+                          {provided.placeholder}
+                      </div>
+                      )}
+                  </Draggable>
+                  ))}
+                  {provided.placeholder}
+              </div>
+              )}
+                   </Droppable>
+  
+  
+              )
+
+
+                
                     
 
                  }
@@ -536,45 +582,45 @@ class ProjectDashboard extends Component {
                 }
             }
 
-            taskRender = (
-                  <Droppable droppableId="TaskContainer">
+            // taskRender = (
+            //       <Droppable droppableId="TaskContainer">
             
-                {(provided, snapshot) => (
-                <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+            //     {(provided, snapshot) => (
+            //     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
         
         
-                {Object.keys(this.state.project.taskList).map((item, index) => (
-                <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
-                    {(provided, snapshot) => (
-                    <div>
-                    <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={getItemStyle(
-                         snapshot.isDragging,
-                            provided.draggableProps.style
-                        )}
-                        >
-                        {/* put tasks here */}
-                        {console.log(tasks[index].props.task.taskName)}
-                        {console.log(count)}
-                        {console.log(item)}
-                        {/* {tasks} */}
-                        {tasks[index]}
-                        </div>
-                        {provided.placeholder}
-                    </div>
-                    )}
-                </Draggable>
-                ))}
-                {provided.placeholder}
-            </div>
-            )}
-                 </Droppable>
+            //     {Object.keys(this.state.project.taskList).map((item, index) => (
+            //     <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
+            //         {(provided, snapshot) => (
+            //         <div>
+            //         <div
+            //             ref={provided.innerRef}
+            //             {...provided.draggableProps}
+            //             {...provided.dragHandleProps}
+            //             style={getItemStyle(
+            //              snapshot.isDragging,
+            //                 provided.draggableProps.style
+            //             )}
+            //             >
+            //             {/* put tasks here */}
+            //             {console.log(tasks[index].props.task.taskName)}
+            //             {console.log(count)}
+            //             {console.log(item)}
+            //             {/* {tasks} */}
+            //             {tasks[index]}
+            //             </div>
+            //             {provided.placeholder}
+            //         </div>
+            //         )}
+            //     </Draggable>
+            //     ))}
+            //     {provided.placeholder}
+            // </div>
+            // )}
+            //      </Droppable>
 
 
-            )
+            // )
 
             finalRender = (
                 
