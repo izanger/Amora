@@ -4,7 +4,7 @@ import UserIcon from "./UserIcon.js"
 import CommentUserIcon from "./CommentUserIcon.js"
 import "./TaskComment.css"
 import funnytemp from "../images/temp.jpg"
-
+import ContentEditable from 'react-contenteditable'
 
 
 class TaskComment extends Component {
@@ -24,6 +24,25 @@ class TaskComment extends Component {
         }else {
             rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
 
+        }
+    }
+
+    changeComment = (event) => { 
+        if (event.target.value.length !== 0) {
+            const newState = this.props.getProjectDashboardState()
+
+            //var date = new Date(this.props.timestamp)
+            //let formattedDate =  date.toLocaleTimeString() + " on " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
+            var today = new Date();
+
+            if(this.props.archived){
+                newState.project.archivedTaskList[this.props.taskKey].taskComments[this.props.commentID].text = event.target.value
+                newState.project.archivedTaskList[this.props.taskKey].taskComments[this.props.commentID].timestamp = today.getTime()
+            }else {
+                newState.project.taskList[this.props.taskKey].taskComments[this.props.commentID].text = event.target.value
+                newState.project.taskList[this.props.taskKey].taskComments[this.props.commentID].timestamp = today.getTime()
+            }
+            this.props.setProjectDashboardState(newState)
         }
     }
 
@@ -57,7 +76,7 @@ class TaskComment extends Component {
                                 <p id="taskCommentText" style={{marginBottom: '0px'}}>{formattedDate}</p>
                             </div>
 
-                            <p id="taskCommentText">{this.props.commentValue}</p>
+                            <p id="taskCommentText"><ContentEditable disabled={false} onChange={this.changeComment} html={this.props.commentValue}/></p>
                         </div>
                     </div>
                     <button onClick={this.deleteComment}>Delete Comment</button>
