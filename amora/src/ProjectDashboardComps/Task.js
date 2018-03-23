@@ -39,12 +39,14 @@ class Task extends Component {
            commentsSynced: false,
            taskComments: {
 
-           }
+           },
+           isManager: false
        }
     }
 
     componentWillMount = () => {
         const newState = { ...this.state }
+        newState.isManager = !(this.props.getProjectDashboardState().project.managerList[this.props.getAppStateFunc().user.uid] == undefined)
         let arch = this.props.archived
         if(arch){
             rebase.fetch(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
@@ -271,6 +273,12 @@ class Task extends Component {
             }else {
                 newState.project.taskList[this.props.taskKey].taskName = event.target.value
             }
+            if (!newState.project.taskList[this.props.taskKey].titleLocked && this.state.isManager) {
+                this.postCommentForManagerEdit("Title value has been locked by a manager")
+            }
+            if (this.state.isManager) {
+                newState.project.taskList[this.props.taskKey].titleLocked = true;
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
@@ -283,6 +291,12 @@ class Task extends Component {
                 newState.project.archivedTaskList[this.props.taskKey].deadline = event.target.value;
             }else {
                 newState.project.taskList[this.props.taskKey].deadline = event.target.value;
+            }
+            if (!newState.project.taskList[this.props.taskKey].dateLocked && this.state.isManager) {
+                this.postCommentForManagerEdit("Date value has been locked by a manager")
+            }
+            if (this.state.isManager) {
+                newState.project.taskList[this.props.taskKey].dateLocked = true;
             }
             this.props.setProjectDashboardState(newState);
         }
@@ -297,6 +311,12 @@ class Task extends Component {
             }else {
                 newState.project.taskList[this.props.taskKey].taskDescription = event.target.value
             }
+            if (!newState.project.taskList[this.props.taskKey].descriptionLocked && this.state.isManager) {
+                this.postCommentForManagerEdit("Description value has been locked by a manager")
+            }
+            if (this.state.isManager) {
+                newState.project.taskList[this.props.taskKey].descriptionLocked = true;
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
@@ -307,6 +327,12 @@ class Task extends Component {
                 newState.project.archivedTaskList[this.props.taskKey].priorityLevel = event.target.value
             }else {
                 newState.project.taskList[this.props.taskKey].priorityLevel = event.target.value
+            }
+            if (!newState.project.taskList[this.props.taskKey].priorityLocked && this.state.isManager) {
+                this.postCommentForManagerEdit("Priority value has been locked by a manager")
+            }
+            if (this.state.isManager) {
+                newState.project.taskList[this.props.taskKey].priorityLocked = true;
             }
             this.props.setProjectDashboardState(newState)
         }
@@ -320,6 +346,12 @@ class Task extends Component {
             }else {
                 newState.project.taskList[this.props.taskKey].EstimatedTimeValue = event.target.value
             }
+            if (!newState.project.taskList[this.props.taskKey].hoursLocked && this.state.isManager) {
+                this.postCommentForManagerEdit("Estimated time value has been locked by a manager")
+            }
+            if (this.state.isManager) {
+                newState.project.taskList[this.props.taskKey].hoursLocked = true;
+            }
             this.props.setProjectDashboardState(newState)
         }
     }
@@ -327,6 +359,41 @@ class Task extends Component {
     getPriorityLevel = () => {
         console.log(this.props.task.priorityLevel)
         return "!!"
+    }
+
+    //push comment to fireBase
+    postCommentForManagerEdit = (text) => {
+        const projectID = this.props.projectID
+        const usID = this.props.getAppState.user.uid
+        const tID = this.props.taskKey
+        const comment = text
+        const uname = this.props.getAppState.user.displayName
+        const img = this.props.getAppState.user.photoURL
+        var today = new Date();
+        if(this.props.archived){
+            rebase.push(`projects/${projectID}/archivedTaskList/${tID}/taskComments`, {
+                data: {
+                    uid: [usID],
+                    text: comment,
+                    username: uname,
+                    image: img,
+                    timestamp: today.getTime()
+                }
+            });
+        }else {
+            rebase.push(`projects/${projectID}/taskList/${tID}/taskComments`, {
+                data: {
+                    uid: [usID],
+                    text: comment,
+                    username: uname,
+                    image: img,
+                    timestamp: today.getTime()
+                }
+            });
+        }
+
+        this.setState({addedComment: true})
+        this.clearComment()
     }
 
     //push comment to fireBase
@@ -492,6 +559,8 @@ class Task extends Component {
             userKeys = Object.keys(this.props.users)
         }
 
+        let isManager = !(this.props.getProjectDashboardState().project.managerList[this.props.getAppStateFunc().user.uid] == undefined)
+
 
         let assignedTo
         if (this.props.task.assignedTo) {
@@ -541,12 +610,12 @@ class Task extends Component {
                                      <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                      <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                                 </svg>
-                                <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
+                                <h4 id="taskTitle"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
                             </div>
-                            <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
+                            <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
                         </div>
                         <div style={{visibility: this.state.visible}} id="taskInfo">
-                            <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
+                            <p id="taskDescription"><ContentEditable disabled={this.props.task.descriptionLocked && !this.state.isManager} onChange={this.changeTaskDescription}
                             html={this.props.task.taskDescription} /> </p>
                             <div id="taskUsers">
                                 {assignedTo}
@@ -614,12 +683,12 @@ class Task extends Component {
                                      <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                      <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                                 </svg>
-                                <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
+                                <h4 id="taskTitle"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
                             </div>
-                            <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
+                            <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled={this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
                         </div>
                         <div style={{visibility: this.state.visible}} id="taskInfo">
-                            <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
+                            <p id="taskDescription"><ContentEditable disabled={this.props.task.descriptionLocked && !isManager} onChange={this.changeTaskDescription}
                             html={this.props.task.taskDescription} /> </p>
                             <div id="taskUsers">
                                 {assignedTo}

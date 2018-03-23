@@ -204,7 +204,11 @@ class CreateTaskForm extends Component {
                 EstimatedTimeValue: this.state.estimatedTimeValue,
                 deadline: deadlineFixed,
                 taskCreator: this.props.getAppState().user.uid,
-
+                titleLocked: false,
+                descriptionLocked: false,
+                dateLocked: false,
+                priorityLocked: false,
+                hoursLocked: false
             }
         }).then((data) => {
             this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)

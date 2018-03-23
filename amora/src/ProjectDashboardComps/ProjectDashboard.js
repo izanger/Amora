@@ -386,6 +386,18 @@ class ProjectDashboard extends Component {
 
     // }
 
+    renderTask = (key, archived) => {
+        let taskList = this.state.project.taskList
+        if (archived) {
+            taskList = this.state.project.archivedTaskList
+        }
+        return <Task archived={archived} projectID={this.props.getAppState().currentProject.key}
+            taskKey={key} deleteTaskMethod={this.setProjectDashboardState} getAppState = {this.props.getAppState()}
+            key={key} task={taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} 
+            getAppStateFunc={this.props.getAppState} />
+    }
+
     render = () => {
 
         let finalRender
@@ -401,10 +413,7 @@ class ProjectDashboard extends Component {
                     const taskKeys = Object.keys(this.state.project.taskList)
                     tasks = (
                         taskKeys.map((key) => {
-                            return <Task archived={false} projectID={this.props.getAppState().currentProject.key}
-                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState} getAppState = {this.props.getAppState()}
-                            key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} getAppStateFunc={this.props.getAppState} />
+                            return this.renderTask(key, false)
                         })
                     )
                 }
@@ -413,12 +422,7 @@ class ProjectDashboard extends Component {
                     const taskKeys = Object.keys(this.state.project.archivedTaskList)
                     tasks = (
                         taskKeys.map((key) => {
-                        return <Task archived={true} projectID={this.props.getAppState().currentProject.key} 
-                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
-                            task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} 
-                            getAppState={this.props.getAppState()} getAppStateFunc={this.props.getAppState}/>
-
+                            return this.renderTask(key, true)
                         })
                     )
                 }
@@ -429,7 +433,7 @@ class ProjectDashboard extends Component {
                     <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} project={this.state.project} projectColor={this.state.project.projectColor} 
                         getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} 
                         projectDescription={this.state.project.projectDescription} getProjectDashboardState={this.getProjectDashboardState}
-                        setProjectDashboardState={this.setProjectDashboardState}/>
+                        setProjectDashboardState={this.setProjectDashboardState} />
                     {/* <div id="taskDashContainer">
                     </div> */}
                     <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor}
