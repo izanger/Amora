@@ -160,6 +160,14 @@ class TodayView extends Component {
     }
 
 
+    testfunction = (completed, name) => {
+      if (completed){
+        return '<strike>'+ name +'</strike>'
+    }else {
+        return name
+    }
+
+    }
 
 
 
@@ -202,7 +210,9 @@ class TodayView extends Component {
                           {/* put tasks here */}
                           { console.log(tasks[index].estimatedTimeValue) }
                           {/* {tasks} */}
-                          {tasks[index].taskName}
+                          {this.testfunction(tasks[index].completed, tasks[index].taskName)}
+                          
+                    
                           </div>
                           {provided.placeholder}
                       </div>
