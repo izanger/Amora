@@ -11,7 +11,7 @@ import ProjectDashboard from "./ProjectDashboardComps/ProjectDashboard.js"
 import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from './CreateTaskForm.js';
 import MyDayTitleBar from "./MyDayComps/MyDayTitleBar.js"
-import { doubleToIEEE754String } from '@firebase/database/dist/esm/src/core/util/util';
+// import { doubleToIEEE754String } from '@firebase/database/dist/esm/src/core/util/util';
 import Notifications from "./Notifications.js"
 import TodayView from "./TodayView.js"
 import ReactDOM from 'react-dom';
