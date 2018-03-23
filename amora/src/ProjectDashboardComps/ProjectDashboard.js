@@ -441,7 +441,7 @@ class ProjectDashboard extends Component {
             taskKey={key} deleteTaskMethod={this.setProjectDashboardState} getAppState = {this.props.getAppState()}
             key={key} task={taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
             setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} 
-            getAppStateFunc={this.props.getAppState} />
+            getAppStateFunc={this.props.getAppState} userID={this.props.getAppState().user.uid} />
     }
 
     render = () => {
@@ -602,7 +602,6 @@ class ProjectDashboard extends Component {
                         taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
                         task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
                         setProjectDashboardState={this.setProjectDashboardState}/>
->>>>>>> Drag-and-Drop
                         })
                     )
                 }
@@ -657,9 +656,7 @@ class ProjectDashboard extends Component {
                         projectDescription={this.state.project.projectDescription} getProjectDashboardState={this.getProjectDashboardState}
                         setProjectDashboardState={this.setProjectDashboardState} />
 
-            
-
-                    <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} projectColor={this.state.project.projectColor} getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
+        
                     {/* <div id="taskDashContainer">
                     </div> */}
                     <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor}
@@ -669,7 +666,7 @@ class ProjectDashboard extends Component {
                     </svg>
                     <div id="taskDashScrollableContent">
 
-                        {tasks}
+                        {/* {tasks} */}
 
                         {/* {tasks} */}
                         {taskRender}

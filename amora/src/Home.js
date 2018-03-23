@@ -10,10 +10,8 @@ import CreateProjectForm from './CreateProjectForm.js';
 import ProjectDashboard from "./ProjectDashboardComps/ProjectDashboard.js"
 import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from './CreateTaskForm.js';
-import Notifications from "./Notifications.js";
 import MyDayTitleBar from "./MyDayComps/MyDayTitleBar.js"
 import { doubleToIEEE754String } from '@firebase/database/dist/esm/src/core/util/util';
-=======
 import Notifications from "./Notifications.js"
 import TodayView from "./TodayView.js"
 import ReactDOM from 'react-dom';
@@ -38,7 +36,7 @@ class Home extends Component {
         super(props)
         this.state = {
             displayName: "",
-            varHours:""
+            varHours:"",
             todayItems: getItems(10),
     
           }
@@ -277,9 +275,8 @@ class Home extends Component {
                     <Route render={() => <Redirect to="/dashboard" />} />
                 </Switch>
 
-                <div id="myDay">
-                    <MyDayTitleBar />
-=======
+                {/* <div id="myDay">
+                    <MyDayTitleBar /> */}
                 <div id="myDay">                
                      <TodayView getAppState={this.props.getAppState}/>
                 </div>
