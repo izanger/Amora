@@ -208,7 +208,7 @@ class CreateTaskForm extends Component {
                 descriptionLocked: false,
                 dateLocked: false,
                 priorityLocked: false,
-                hoursLocked: false
+                hoursLocked: false,
             }
         }).then((data) => {
             this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)

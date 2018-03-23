@@ -595,7 +595,17 @@ class ProjectDashboard extends Component {
             } else {
                 if(this.state.project.archivedTaskList){
                     const taskKeys = Object.keys(this.state.project.archivedTaskList)
-                    tasks = (
+                    // tasks = (
+                    //     taskKeys.map((key) => {
+                    //         return this.renderTask(key, true)
+                    //     return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid} 
+                    //     taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
+                    //     task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                    //     setProjectDashboardState={this.setProjectDashboardState}/>
+                    //     })
+                    // )
+
+                    taskRender = (
                         taskKeys.map((key) => {
                             return this.renderTask(key, true)
                         return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid} 
@@ -607,45 +617,6 @@ class ProjectDashboard extends Component {
                 }
             }
 
-            // taskRender = (
-            //       <Droppable droppableId="TaskContainer">
-            
-            //     {(provided, snapshot) => (
-            //     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-        
-        
-            //     {Object.keys(this.state.project.taskList).map((item, index) => (
-            //     <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
-            //         {(provided, snapshot) => (
-            //         <div>
-            //         <div
-            //             ref={provided.innerRef}
-            //             {...provided.draggableProps}
-            //             {...provided.dragHandleProps}
-            //             style={getItemStyle(
-            //              snapshot.isDragging,
-            //                 provided.draggableProps.style
-            //             )}
-            //             >
-            //             {/* put tasks here */}
-            //             {console.log(tasks[index].props.task.taskName)}
-            //             {console.log(count)}
-            //             {console.log(item)}
-            //             {/* {tasks} */}
-            //             {tasks[index]}
-            //             </div>
-            //             {provided.placeholder}
-            //         </div>
-            //         )}
-            //     </Draggable>
-            //     ))}
-            //     {provided.placeholder}
-            // </div>
-            // )}
-            //      </Droppable>
-
-
-            // )
 
             finalRender = (
                 

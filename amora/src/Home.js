@@ -59,6 +59,7 @@ class Home extends Component {
             let projectColors = [];
             let taskname;
             let estimatedTime;
+            let completedStatus;
             //const taskColor;
 
             //result.draggableId is the key for the task
@@ -86,6 +87,12 @@ class Home extends Component {
                         console.log(data.taskName)
                         taskname = data.taskName
                         estimatedTime = data.EstimatedTimeValue
+                        if (data.completed){
+                        completedStatus = data.completed
+                        }
+                        else {
+                            completedStatus = false;
+                        }
                         console.log("PUSHING")
 
 
@@ -99,6 +106,7 @@ class Home extends Component {
                                 //priorityLevel: selectedText,
                                 EstimatedTimeValue: estimatedTime,
                                 color: taskColor,
+                                completed: completedStatus,
                                 //deadline: deadlineFixed,
                                 //taskCreator: this.props.getAppState().user.uid,
                 
