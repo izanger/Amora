@@ -34,8 +34,8 @@
 
 #myDay {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     flex-grow: 1;
     min-width: 350px;
     max-width: 350px;

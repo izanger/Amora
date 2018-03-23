@@ -5,20 +5,66 @@ import ProjectTitleBar from "./ProjectTitleBar.js"
 import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 import "./ProjectDashboard.css"
 import NewProjectButton from "../ProjectSelectorComps/NewProjectButton.js"
+import TodayView from "../TodayView.js"
+import ReactDOM from 'react-dom';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+
+
+const getItems = count =>
+  Array.from({ length: count }, (v, k) => k).map(k => ({
+    id: `item-${k+9}`,
+    content: `item ${k+9}`,
+  }));
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
+const grid = 80;
+
+const getItemStyle = (isDragging, draggableStyle) => ({
+    // some basic styles to make the items look a bit nicer
+    // userSelect: 'none',
+    // padding: grid * 2,
+     //margin: `0 0 ${grid}px 0`,
+  
+    // // change background colour if dragging
+    // background: isDragging ? 'lightgreen' : 'grey',
+  
+    // // styles we need to apply on draggables
+     ...draggableStyle,
+  });
+  
+  const getListStyle = isDraggingOver => ({
+     //background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    // padding: grid,
+     //padding: 100,
+     width: 1000,
+  });
+
 
 
 class ProjectDashboard extends Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             projectSynced: false,
             showArchive: false,
+            items: getItems(10),
             project: {
 
             }
         }
     }
+
+
 
     /*
     This currently only is the box. It needs the following:
@@ -401,39 +447,219 @@ class ProjectDashboard extends Component {
     render = () => {
 
         let finalRender
+        let taskRender
+        let tasks
+        let count = 0
+        //<TodayView/> 
+                    
+        
+              
 
         if (this.state.projectSynced) {
 
             // let color = "#3CB4CB";
             // let taskKeys = Object.keys(this.state.project.taskList)
 
-            let tasks
+            //let tasks
             if(!this.state.showArchive){
+
+                // finalRender = (
+                
+                
+                //     <div id="taskDashboard">
+    
+                
+    
+                //         <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} projectColor={this.state.project.projectColor} getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
+                //         {/* <div id="taskDashContainer">
+                //         </div> */}
+                //         <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor} />
+                //         <svg height="13" width="100%">
+                //             <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
+                //         </svg>
+                //         <div id="taskDashScrollableContent">
+    
+    
+                //             {tasks}
+    
+                //             <div id="addTaskButton" ><NewProjectButton onClick={() => {
+                //                 this.props.goToUrl("/createtask");
+                //             }} /></div>
+                //         </div>
+                //         {/* <button className="unitTestButton" onClick={this.runUnitTests.bind(null,null)}>Run Unit Tests</button> */}
+                         
+    
+                //     </div>
+                // )
+
                 if(this.state.project.taskList){
                     const taskKeys = Object.keys(this.state.project.taskList)
+
+
                     tasks = (
                         taskKeys.map((key) => {
                             return this.renderTask(key, false)
+
+                            return <Task archived={false} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid}
+                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState} 
+                            key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                            setProjectDashboardState={this.setProjectDashboardState} />
+                            
                         })
                     )
-                }
+
+
+
+                    
+                //     return <Droppable droppableId="TaskContainer">
+            
+                //     {(provided, snapshot) => (
+                //     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+            
+                //     {Object.keys(this.state.project.taskList).map((item, index) => (
+                //     <Draggable key={item} draggableId={item} index={index}>
+                //         {(provided, snapshot) => (
+                //         <div>
+                //         <div
+                //             ref={provided.innerRef}
+                //             {...provided.draggableProps}
+                //             {...provided.dragHandleProps}
+                //             style={getItemStyle(
+                //              snapshot.isDragging,
+                //                 provided.draggableProps.style
+                //             )}
+                //             >
+                //             {/* put tasks here */}
+                //             {console.log(tasks)}
+                //             {console.log(count)}
+                //             {console.log(item)}
+                //             {/* {tasks} */}
+                //             {tasks[index]}
+                //             </div>
+                //             {provided.placeholder}
+                //         </div>
+                //         )}
+                //     </Draggable>
+                //     ))}
+                //     {provided.placeholder}
+                // </div>
+                // )}
+                //     </Droppable>
+
+
+                taskRender = (
+                    <Droppable droppableId="TaskContainer">
+              
+                  {(provided, snapshot) => (
+                  <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+          
+          
+                  {Object.keys(this.state.project.taskList).map((item, index) => (
+                  <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
+                      {(provided, snapshot) => (
+                      <div>
+                      <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                           snapshot.isDragging,
+                              provided.draggableProps.style
+                          )}
+                          >
+                          {/* put tasks here */}
+                          {/* {console.log(tasks[index].props.task.taskName)}
+                          {console.log(count)}
+                          {console.log(item)} */}
+                          {/* {tasks} */}
+                          {tasks[index]}
+                          </div>
+                          {provided.placeholder}
+                      </div>
+                      )}
+                  </Draggable>
+                  ))}
+                  {provided.placeholder}
+              </div>
+              )}
+                   </Droppable>
+  
+  
+              )
+
+
+                
+                    
+
+                 }
             } else {
                 if(this.state.project.archivedTaskList){
                     const taskKeys = Object.keys(this.state.project.archivedTaskList)
                     tasks = (
                         taskKeys.map((key) => {
                             return this.renderTask(key, true)
+                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid} 
+                        taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
+                        task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                        setProjectDashboardState={this.setProjectDashboardState}/>
+>>>>>>> Drag-and-Drop
                         })
                     )
                 }
             }
 
+            // taskRender = (
+            //       <Droppable droppableId="TaskContainer">
+            
+            //     {(provided, snapshot) => (
+            //     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+        
+        
+            //     {Object.keys(this.state.project.taskList).map((item, index) => (
+            //     <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
+            //         {(provided, snapshot) => (
+            //         <div>
+            //         <div
+            //             ref={provided.innerRef}
+            //             {...provided.draggableProps}
+            //             {...provided.dragHandleProps}
+            //             style={getItemStyle(
+            //              snapshot.isDragging,
+            //                 provided.draggableProps.style
+            //             )}
+            //             >
+            //             {/* put tasks here */}
+            //             {console.log(tasks[index].props.task.taskName)}
+            //             {console.log(count)}
+            //             {console.log(item)}
+            //             {/* {tasks} */}
+            //             {tasks[index]}
+            //             </div>
+            //             {provided.placeholder}
+            //         </div>
+            //         )}
+            //     </Draggable>
+            //     ))}
+            //     {provided.placeholder}
+            // </div>
+            // )}
+            //      </Droppable>
+
+
+            // )
+
             finalRender = (
+                
+                
                 <div id="taskDashboard">
                     <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} project={this.state.project} projectColor={this.state.project.projectColor} 
                         getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} 
                         projectDescription={this.state.project.projectDescription} getProjectDashboardState={this.getProjectDashboardState}
                         setProjectDashboardState={this.setProjectDashboardState} />
+
+            
+
+                    <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} projectColor={this.state.project.projectColor} getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
                     {/* <div id="taskDashContainer">
                     </div> */}
                     <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor}
@@ -444,23 +670,44 @@ class ProjectDashboard extends Component {
                     <div id="taskDashScrollableContent">
 
                         {tasks}
+
+                        {/* {tasks} */}
+                        {taskRender}
+
                         <div id="addTaskButton" ><NewProjectButton onClick={() => {
                             this.props.goToUrl("/createtask");
                         }} /></div>
                     </div>
                     {/* <button className="unitTestButton" onClick={this.runUnitTests.bind(null,null)}>Run Unit Tests</button> */}
+                     
 
                 </div>
             )
         } else {
             finalRender = (
-                <div></div>
+                
+                
+                <div>Oops</div>
+            )
+            taskRender = (
+                <div>UhOh</div>
+
             )
         }
-
+        //const taskKeys = Object.keys(this.state.project.taskList);
+        console.log(finalRender)
+        console.log(taskRender)
         return (
-            <div id="taskDashboard">{finalRender}</div>
+                    // 
+            <div>    
+                    <div id="taskDashboard">{finalRender}
+                    </div>
+                    
+            </div>
+            
+        
         )
+        
     }
 
 }

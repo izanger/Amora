@@ -15,6 +15,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Modal from 'react-responsive-modal/lib/css';
 import { validateDate } from "../apphelpers.js"
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { App } from "../App.js"
 
@@ -143,6 +144,71 @@ class Task extends Component {
                     }
                 });
             }
+
+
+
+
+        if(!this.props.archived){
+            // rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+            //     if(!err){
+            //         console.log("fiddlesticks")
+
+            //     }
+            //   });
+
+            console.log(this.props.userID)
+
+              rebase.fetch(`users/${this.props.userID}/todayView`, {
+                context: this,
+            }).then(data => {
+                console.log(data)   
+                let taskArray = Object.keys(data);
+                  console.log(taskArray)
+                for (var i = 0; i < taskArray.length;i++ ){
+                    let tid = taskArray[i];
+            
+    
+                    rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
+                        context: this,
+                    }).then(data => {
+                        console.log(data)
+                        console.log(this.props.taskKey)
+                        if (data.taskIDNumber === this.props.taskKey){
+                            console.log(taskArray[i])
+                            rebase.remove(`users/${this.props.userID}/todayView/${tid}`, function(err){
+                                if(!err){
+                                    console.log("fiddlesticks")
+                
+                                }
+                              });
+                        }
+
+                        rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+                            if(!err){
+                                console.log("fiddlesticks")
+            
+                            }
+                          });
+                           
+    
+    
+                    })
+
+                }
+            })
+            
+        
+
+
+
+
+
+        } else {
+            rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
+                if(!err){
+                    console.log("fiddlesticks")
+                }
+              });
         }
     }
 
@@ -611,6 +677,40 @@ class Task extends Component {
                                      <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                                 </svg>
                                 <h4 id="taskTitle"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
+        //console.log(this.props.task.priorityLevel)
+        return (
+
+            <div onClick={() => {
+                if (!this.state.open) {
+                    this.switch()
+                }
+            }} >
+                <div id="task" style={this.css()}>
+                    <div id="taskStats">
+                        <div id="taskCheckAndTitle">
+                            <svg height="40" width="40">
+
+                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
+                                 <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
+                                 <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
+                            </svg>
+                            <h4 id="taskTitle"><ContentEditable disabled={false} onChange={this.changeTaskName} html={this.props.task.taskName}/></h4>
+                        </div>
+                        <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {false} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {false} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={false} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
+                    </div>
+                    <div style={{visibility: this.state.visible}} id="taskInfo">
+                        <p id="taskDescription"><ContentEditable disabled={false} onChange={this.changeTaskDescription}
+                        html={this.props.task.taskDescription} /> </p>
+                        <div id="taskUsers">
+
+                            {/*Temporarily commented out. Uncomment when actual image of person is displayed
+                            <UserIcon getAppState={this.props.getAppState} />
+                            <UserIcon getAppState={this.props.getAppState} />*/}
+
+                             {/*Temporary image placeholder*/}
+                            <div id="userIconContainer" >
+                                <img src={funnytemp} className="projectPicture"/>
+                                <div id="projectIndicator" ></div>
                             </div>
                             <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.props.task.priorityLevel}/></b> | <ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.props.task.EstimatedTimeValue)}/> {" hrs"} | <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
                         </div>
@@ -740,6 +840,8 @@ class Task extends Component {
 
         return (
             <div>{finalRender}</div>
+            </div>
+
         )
 
     }
