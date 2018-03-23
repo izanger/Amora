@@ -23,14 +23,15 @@ const reorder = (list, startIndex, endIndex) => {
 
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle = (isDragging, draggableStyle, multiplier, color) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
+  padding: grid * multiplier,
+  margin: `0 0 ${15}px 0`,
 
   // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'grey',
+  //background: isDragging ? 'lightgreen' : 'grey',
+  background: color,
 
   // styles we need to apply on draggables
   ...draggableStyle,
@@ -194,12 +195,12 @@ class TodayView extends Component {
                           {...provided.dragHandleProps}
                           style={getItemStyle(
                            snapshot.isDragging,
-                              provided.draggableProps.style
+                              provided.draggableProps.style, tasks[index].EstimatedTimeValue, tasks[index].color
                           )}
                           >
                           {/* console.log("hi") */}
                           {/* put tasks here */}
-                          {/* {console.log(item)} */}
+                          { console.log(tasks[index].estimatedTimeValue) }
                           {/* {tasks} */}
                           {tasks[index].taskName}
                           </div>

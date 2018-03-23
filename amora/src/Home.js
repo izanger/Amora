@@ -53,7 +53,10 @@ class Home extends Component {
             //add to secondItems
             //add to todayItems and Database
             let projectArray = [];
+            let projectColors = [];
             let taskname;
+            let estimatedTime;
+            //const taskColor;
 
             //result.draggableId is the key for the task
             //fetch it, save some properties and then push it to today view.
@@ -64,8 +67,13 @@ class Home extends Component {
         }).then(data => {
             console.log(data)   
             projectArray = Object.keys(data);
-            for (var i = 0; i < projectArray.length;i++ ){
+            projectColors = Object.values(data);
+            var i = 0;
+            for (i; i < projectArray.length;i++ ){
                 let pid = projectArray[i];
+                console.log(projectColors[i].projectColor)
+                const taskColor = projectColors[i].projectColor
+                //return;
 
                 rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
                     context: this,
@@ -74,16 +82,20 @@ class Home extends Component {
                     if (data.taskName){
                         console.log(data.taskName)
                         taskname = data.taskName
+                        estimatedTime = data.EstimatedTimeValue
+                        console.log("PUSHING")
 
-                        //taskName is set, so we can push it to the todayView
 
-                        rebase.push(`users/${this.props.getAppState().user.uid}/todayView/`, {
+                        //taskName and time are set, so we can push it to the todayView
+
+                        rebase.push(`users/${this.props.getAppState().user.uid}/todayView`, {
                             data: {
                                 taskIDNumber: taskID,
                                 taskName: taskname,
                                 //taskDescription: this.state.descriptionValue,
                                 //priorityLevel: selectedText,
-                                //EstimatedTimeValue: this.state.estimatedTimeValue,
+                                EstimatedTimeValue: estimatedTime,
+                                color: taskColor,
                                 //deadline: deadlineFixed,
                                 //taskCreator: this.props.getAppState().user.uid,
                 
@@ -98,7 +110,7 @@ class Home extends Component {
                     
           })
 
-              return;
+
         }
         else {
             //remove from todayItems and database

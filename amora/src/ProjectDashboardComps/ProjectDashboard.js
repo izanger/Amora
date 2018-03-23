@@ -476,7 +476,7 @@ class ProjectDashboard extends Component {
                     tasks = (
                         taskKeys.map((key) => {
 
-                            return <Task archived={false} projectID = {this.props.getAppState().currentProject.key}
+                            return <Task archived={false} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid}
                             taskKey={key} deleteTaskMethod={this.setProjectDashboardState} 
                             key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
                             setProjectDashboardState={this.setProjectDashboardState} />
@@ -544,9 +544,9 @@ class ProjectDashboard extends Component {
                           )}
                           >
                           {/* put tasks here */}
-                          {console.log(tasks[index].props.task.taskName)}
+                          {/* {console.log(tasks[index].props.task.taskName)}
                           {console.log(count)}
-                          {console.log(item)}
+                          {console.log(item)} */}
                           {/* {tasks} */}
                           {tasks[index]}
                           </div>
@@ -573,7 +573,7 @@ class ProjectDashboard extends Component {
                     const taskKeys = Object.keys(this.state.project.archivedTaskList)
                     tasks = (
                         taskKeys.map((key) => {
-                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} 
+                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid} 
                         taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
                         task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
                         setProjectDashboardState={this.setProjectDashboardState}/>

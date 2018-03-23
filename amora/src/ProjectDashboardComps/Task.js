@@ -68,12 +68,60 @@ class Task extends Component {
 
 
         if(!this.props.archived){
-            rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
-                if(!err){
-                    console.log("fiddlesticks")
+            // rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+            //     if(!err){
+            //         console.log("fiddlesticks")
+
+            //     }
+            //   });
+
+            console.log(this.props.userID)
+
+              rebase.fetch(`users/${this.props.userID}/todayView`, {
+                context: this,
+            }).then(data => {
+                console.log(data)   
+                let taskArray = Object.keys(data);
+                  console.log(taskArray)
+                for (var i = 0; i < taskArray.length;i++ ){
+                    let tid = taskArray[i];
+            
+    
+                    rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
+                        context: this,
+                    }).then(data => {
+                        console.log(data)
+                        console.log(this.props.taskKey)
+                        if (data.taskIDNumber === this.props.taskKey){
+                            console.log(taskArray[i])
+                            rebase.remove(`users/${this.props.userID}/todayView/${tid}`, function(err){
+                                if(!err){
+                                    console.log("fiddlesticks")
+                
+                                }
+                              });
+                        }
+
+                        rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+                            if(!err){
+                                console.log("fiddlesticks")
+            
+                            }
+                          });
+                           
+    
+    
+                    })
 
                 }
-              });
+            })
+            
+        
+
+
+
+
+
         } else {
             rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
                 if(!err){
