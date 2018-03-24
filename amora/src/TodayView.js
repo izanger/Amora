@@ -38,9 +38,10 @@ const getItemStyle = (isDragging, draggableStyle, multiplier, color) => ({
 });
 
 const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
+  background: isDraggingOver ? 'lightblue' : 'white',
   padding: grid,
-  width: '100%',
+  width: '350px',
+  height: '100%',
 });
 
 class TodayView extends Component {
@@ -188,6 +189,11 @@ class TodayView extends Component {
           // }
 
           finalRender = (
+              <div>
+              <div id="myDayTitleContainer">
+                  <h1>My Day</h1>
+              </div>
+              <div style={{'overflow-y': 'scroll', height: '100%'}}>
         <Droppable droppableId="TodayView">
 
                   {(provided, snapshot) => (
@@ -223,6 +229,8 @@ class TodayView extends Component {
               </div>
               )}
                    </Droppable>
+                   </div>
+                   </div>
           )
         }
         else {

@@ -38,6 +38,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     // background: isDragging ? 'lightgreen' : 'grey',
 
     // // styles we need to apply on draggables
+    width: isDragging ? '350px' : '100%',
      ...draggableStyle,
   });
 
@@ -45,7 +46,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
      //background: isDraggingOver ? 'lightblue' : 'lightgrey',
     // padding: grid,
      //padding: 100,
-     width: '100%',
+     //width: '100%',
   });
 
 

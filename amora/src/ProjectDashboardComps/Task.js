@@ -133,17 +133,17 @@ class Task extends Component {
         if (response == true){
             if (!this.props.archived){
             console.log(this.props)
- 
+
                rebase.fetch(`users/${this.props.userID}/todayView`, {
                  context: this,
              }).then(data => {
-                 console.log(data)   
+                 console.log(data)
                  let taskArray = Object.keys(data);
                    console.log(taskArray)
                  for (var i = 0; i < taskArray.length;i++ ){
                      let tid = taskArray[i];
-             
-     
+
+
                      rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
                          context: this,
                      }).then(data => {
@@ -154,25 +154,25 @@ class Task extends Component {
                              rebase.remove(`users/${this.props.userID}/todayView/${tid}`, function(err){
                                  if(!err){
                                      console.log("fiddlesticks")
-                 
+
                                  }
                                });
                          }
- 
+
                          rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
                              if(!err){
                                  console.log("fiddlesticks")
-             
+
                              }
                            });
-                            
-     
-     
+
+
+
                      })
- 
+
                  }
              })
-                            
+
             } else {
                 rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
                     if(err){
@@ -183,7 +183,7 @@ class Task extends Component {
 
         }
     }
-    
+
 
     checkIsVisible = () => {
         if (this.props.archived){
@@ -272,13 +272,13 @@ class Task extends Component {
             rebase.fetch(`users/${this.props.userID}/todayView`, {
                 context: this,
             }).then(data => {
-                console.log(data)   
+                console.log(data)
                 let taskArray = Object.keys(data);
                   console.log(taskArray)
                 for (var i = 0; i < taskArray.length;i++ ){
                     let tid = taskArray[i];
-            
-    
+
+
                     rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
                         context: this,
                     }).then(data => {
@@ -287,7 +287,7 @@ class Task extends Component {
                         if (data.taskIDNumber === taskID){
                             console.log(taskArray[i])
                             console.log(taskID)
-                            
+
                             rebase.update(`users/${this.props.userID}/todayView/${tid}`, {
                                 data: {completed: true},
                                 then(err){
@@ -299,9 +299,9 @@ class Task extends Component {
 
 
                         }
-                           
-    
-    
+
+
+
                     })
 
                 }
@@ -312,13 +312,13 @@ class Task extends Component {
             rebase.fetch(`users/${this.props.userID}/todayView`, {
                 context: this,
             }).then(data => {
-                console.log(data)   
+                console.log(data)
                 let taskArray = Object.keys(data);
                   console.log(taskArray)
                 for (var i = 0; i < taskArray.length;i++ ){
                     let tid = taskArray[i];
-            
-    
+
+
                     rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
                         context: this,
                     }).then(data => {
@@ -327,7 +327,7 @@ class Task extends Component {
                         if (data.taskIDNumber === taskID){
                             console.log(taskArray[i])
                             console.log(taskID)
-                            
+
                             rebase.update(`users/${this.props.userID}/todayView/${tid}`, {
                                 data: {completed: false},
                                 then(err){
@@ -339,9 +339,9 @@ class Task extends Component {
 
 
                         }
-                           
-    
-    
+
+
+
                     })
 
                 }
@@ -380,13 +380,13 @@ class Task extends Component {
             rebase.fetch(`users/${this.props.userID}/todayView`, {
                 context: this,
             }).then(data => {
-                console.log(data)   
+                console.log(data)
                 let taskArray = Object.keys(data);
                   console.log(taskArray)
                 for (var i = 0; i < taskArray.length;i++ ){
                     let tid = taskArray[i];
-            
-    
+
+
                     rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
                         context: this,
                     }).then(data => {
@@ -395,7 +395,7 @@ class Task extends Component {
                         if (data.taskIDNumber === taskID){
                             console.log(taskArray[i])
                             console.log(taskID)
-                            
+
                             rebase.update(`users/${this.props.userID}/todayView/${tid}`, {
                                 data: {completed: true},
                                 then(err){
@@ -407,9 +407,9 @@ class Task extends Component {
 
 
                         }
-                           
-    
-    
+
+
+
                     })
 
                 }
@@ -757,7 +757,7 @@ class Task extends Component {
                             commentValue={this.state.taskComments[key].text} key={key} image={this.state.taskComments[key].image}
                             showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key} archived={this.props.archived}
                             user={this.props.users[userKey]} userID={userKey} project={this.props.getProjectDashboardState().project}
-                            getProjectDashboardState={this.props.getProjectDashboardState} setProjectDashboardState={this.props.setProjectDashboardState} 
+                            getProjectDashboardState={this.props.getProjectDashboardState} setProjectDashboardState={this.props.setProjectDashboardState}
                             getAppState={this.props.getAppStateFunc} timestamp={this.state.taskComments[key].timestamp}/>
                     })
                 )
@@ -823,12 +823,12 @@ class Task extends Component {
 
                                 {taskComments}
 
-                                
+
                                     <input type="text" name="Comment" id="CommentField" onChange={this.sendComment} value={this.state.commentValue} placeholder="Comment" className="commentInput" style={{width: '100%'}}/>
                                   <button className="addCommentButton" onClick={this.postComment}>Add Comment</button>
                                   <button className="addCommentButton" onClick={this.switch} style={{marginLeft:'10px'}} >Close Task</button>
                             </div>
-                            <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
+
                         </div>
                     </div>
 
@@ -898,17 +898,17 @@ class Task extends Component {
                                   <button className="addCommentButton" onClick={this.postComment}>Add Comment</button>
                                   <button className="addCommentButton" onClick={this.switch} style={{marginLeft:'10px'}} >Close Task</button>
                             </div>
-                          <div className="closeTaskButton" onClick={this.switch}>~Close~</div>
+                          
                         </div>
                     </div>
                 </div>
             )
-        
+
         }
     return (
             <div>{finalRender}</div>
 
-        ) 
+        )
 
     }
 }
