@@ -32,6 +32,11 @@ const getItemStyle = (isDragging, draggableStyle, multiplier, color) => ({
   // change background colour if dragging
   //background: isDragging ? 'lightgreen' : 'grey',
   background: color,
+  'border-radius': '5px',
+  'color': 'white',
+  'font-size': '11pt',
+  'text-align': 'left',
+
 
   // styles we need to apply on draggables
   ...draggableStyle,
@@ -42,6 +47,7 @@ const getListStyle = isDraggingOver => ({
   padding: grid,
   width: '350px',
   height: '100%',
+
 });
 
 class TodayView extends Component {
