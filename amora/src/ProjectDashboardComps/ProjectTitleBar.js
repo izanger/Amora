@@ -339,16 +339,19 @@ class ProjectTitleBar extends Component {
 
     renderProjectCreatorButton = () => {
         return (
-        <div>
-            <button onClick={() => {
+        <div style={{display: 'flex', 'flex-direction': 'row', 'margin-left': '0px', marginTop: '5px'}}>
+            <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
                 this.setState({addProjectCreatorOpen: true})
-            }}>Give other user project creator status</button>
-            <button onClick={() => {
+            }}>Change Creator</button>
+            <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
                 this.setState({demoteManagerOpen: true})
-            }}>Demote manager</button>
-            <button onClick={() => {
+            }}>Demote Manager</button>
+            <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
                 this.setState({createNewProjectOpen: true})
-            }}>Create new project with same team</button>
+            }}>Duplicate Team</button>
+            <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
+                this.setState({addManagerOpen: true})
+            }}>Promote User</button>
         </div>)
     }
 
@@ -399,9 +402,7 @@ class ProjectTitleBar extends Component {
         if(!this.props.getProjectDashboardState().project.managerList[this.props.getAppState().user.uid]){ //user is not a manager
             return (
                 <div>
-                    <h1>User Settings</h1>
-                    <h4>Project Description:</h4>
-                    <p>{this.props.project.projectDescription}</p>
+                    <h3>User Settings</h3>
                     <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
                     <select name="taskAlertDropdown" id="taskAlertDropdown">
                         <option value="1">None</option>
@@ -417,25 +418,30 @@ class ProjectTitleBar extends Component {
             )
         } else { //user is a manager
             return (
-                <div>
-                    <h1>Manager Settings</h1>
-                    <h4>Project Description:</h4>
-                    <p>{this.props.project.projectDescription}</p>
-                    <h4>Change Project Name:</h4>
-                    <input type="text" placeholder="Enter Project Name" style={{marginLeft:'0px', width:'100%', backgroundColor:'white'}} className="createProjectInput" onChange={this.changeTitleValue} value={this.state.titleValue} />
-                    <h4>Change Project Description:</h4>
-                    <input type="text" className="createProjectInput" style={{marginLeft:'0px', width:'100%', backgroundColor:'white'}} onChange={this.changeDescriptionValue} value={this.state.projectDescription}/>
-                    <h4 style={{marginRight: '5px'}}>Default Task Alert Time:</h4>
-                    <select name="taskAlertDropdown" id="taskAlertDropdown" >
-                        <option value="1">None</option>
-                        <option value="2">5 minutes</option>
-                        <option value="3">10 minutes</option>
-                        <option value="4">15 minutes</option>
-                        <option value="5">20 minutes</option>
-                        <option value="6">30 minutes</option>
-                        <option value="7">60 minutes</option>
-                    </select>
-                    <div id="colorPicker" style={{marginLeft:'0px'}}>
+                <div style={{marginTop: '-20px'}}>
+                    <h3>Manager Settings</h3>
+                    <div style={{display: 'flex', flexDirection: 'row', 'justify-content': 'space-between', width: '100%'}}>
+                        <h4>Update Name:</h4>
+                        <input type="text" placeholder="Enter Project Name" style={{marginLeft:'15px', width:'65%', backgroundColor:'white'}} className="createProjectInput" onChange={this.changeTitleValue} value={this.state.titleValue} />
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'row', 'justify-content': 'space-between', width: '100%'}}>
+                        <h4>Update Description:</h4>
+                        <input type="text" className="createProjectInput" style={{marginLeft:'0px', width:'65%', backgroundColor:'white'}} onChange={this.changeDescriptionValue} value={this.state.projectDescription}/>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
+                        <h4 style={{marginRight: '15px'}}>Default Task Alert Time:</h4>
+                        <select name="taskAlertDropdown" id="taskAlertDropdown" >
+                            <option value="1">None</option>
+                            <option value="2">5 minutes</option>
+                            <option value="3">10 minutes</option>
+                            <option value="4">15 minutes</option>
+                            <option value="5">20 minutes</option>
+                            <option value="6">30 minutes</option>
+                            <option value="7">60 minutes</option>
+                        </select>
+                    </div>
+
+                    <div id="colorPicker" style={{marginLeft:'0px', marginTop: '5px'}}>
                         <h4>Change Project Color:</h4>
                         {colorsArray.map((color) => {
                             return this.renderSwatch(color)
@@ -445,7 +451,7 @@ class ProjectTitleBar extends Component {
                     <Modal open={this.state.addProjectCreatorOpen} onClose={() => this.setState({addProjectCreatorOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'promoteToCreatorModal'}}>
                             <div>
                                 {/* <h1 className="taskAssignment">Task assignment</h1>*/}
-                                <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a user to promote to creator status</h4>
+                                <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Promote User to Creator</h4>
                                 <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                     {userKeys && userKeys.map((key) => {
                                         if (key != this.props.project.projectCreator) {
@@ -461,12 +467,10 @@ class ProjectTitleBar extends Component {
                                 </div>
                             </div>
                         </Modal>
-                    <button onClick={() => {
-                        this.setState({addManagerOpen: true})
-                    }}>Promote user to manager</button>
+
                     <Modal open={this.state.demoteManagerOpen} onClose={() => this.setState({demoteManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'demoteManagerModal'}}>
                         <div>
-                            <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a manager to demote</h4>
+                            <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a Manager to Demote</h4>
                             <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                 {userKeys && userKeys.map((key) => {
                                     if (Object.keys(this.props.project.managerList).includes(key) && key != this.props.getAppState().user.uid) {
@@ -483,7 +487,7 @@ class ProjectTitleBar extends Component {
                         </div>
                     </Modal>
                     <Modal open={this.state.createNewProjectOpen} onClose={() => this.setState({createNewProjectOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'copyProjectModal'}}>
-                            <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Create New Project with Same Team</h4>
+                            <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Create Project with Duplicate Team</h4>
                             <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                 <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changenewTitleValue}
                                 value={this.state.newtitleValue} />
@@ -501,7 +505,7 @@ class ProjectTitleBar extends Component {
                             </div>
                     </Modal>
                     <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
-                        <div id="addUserIconProjectContainer" title="Invite User" onClick={this.emailValidationProcess}>
+                        <div id="addUserIconProjectContainer" title="Invite User" style={{marginLeft: '0px'}} onClick={this.emailValidationProcess}>
                             <svg height="23" width="23">
                                 <line x1="4" y1="9" x2="15" y2="9" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
                                 <line x1="9.5" y1="4" x2="9.5" y2="15" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
@@ -512,7 +516,7 @@ class ProjectTitleBar extends Component {
                         <Modal open={this.state.addManagerOpen} onClose={() => this.setState({addManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'promoteUserToManagerModal'}}>
                             <div>
                                 {/* <h1 className="taskAssignment">Task assignment</h1>*/}
-                                <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select a user to promote to manager status</h4>
+                                <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Promote User to Manager</h4>
                                 <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
                                     {userKeys && userKeys.map((key) => {
                                         if (!Object.keys(this.props.project.managerList).includes(key)) {
