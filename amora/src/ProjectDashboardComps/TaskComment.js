@@ -13,7 +13,7 @@ class TaskComment extends Component {
         super()
         this.state = {
             uid: '',
-            commentValue: ''
+            commentValue: '',
         }
     }
 
@@ -23,7 +23,6 @@ class TaskComment extends Component {
 
         }else {
             rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
-
         }
     }
 
@@ -34,13 +33,16 @@ class TaskComment extends Component {
             //var date = new Date(this.props.timestamp)
             //let formattedDate =  date.toLocaleTimeString() + " on " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
             var today = new Date();
+            let e = "Edited at";
 
             if(this.props.archived){
                 newState.project.archivedTaskList[this.props.taskKey].taskComments[this.props.commentID].text = event.target.value
                 newState.project.archivedTaskList[this.props.taskKey].taskComments[this.props.commentID].timestamp = today.getTime()
+                newState.project.archivedTaskList[this.props.taskKey].taskComments[this.props.commentID].edited = e
             }else {
                 newState.project.taskList[this.props.taskKey].taskComments[this.props.commentID].text = event.target.value
                 newState.project.taskList[this.props.taskKey].taskComments[this.props.commentID].timestamp = today.getTime()
+                newState.project.taskList[this.props.taskKey].taskComments[this.props.commentID].edited = e
             }
             this.props.setProjectDashboardState(newState)
         }
@@ -49,6 +51,7 @@ class TaskComment extends Component {
     render = () => {
         var date = new Date(this.props.timestamp)
         let formattedDate =  date.toLocaleTimeString() + " on " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
+        let isEdited = this.props.edited
         // let color = "#3CB4CB";
         if(this.props.showDelete){
             return (
@@ -73,7 +76,7 @@ class TaskComment extends Component {
                         <div id="taskNameAndComment">
                             <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
                                 <p id="taskCommentName">{this.props.username}</p>
-                                <p id="taskCommentText" style={{marginBottom: '0px'}}>{formattedDate}</p>
+                                <p id="taskCommentText" style={{marginBottom: '0px'}}>{isEdited} {formattedDate}</p>
                             </div>
 
                             <p id="taskCommentText"><ContentEditable disabled={false} onChange={this.changeComment} html={this.props.commentValue}/></p>
