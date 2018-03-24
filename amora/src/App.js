@@ -106,7 +106,7 @@ class App extends Component {
         let newState = { ...this.state }
         newState.currentProject = projData
         this.setState(newState)
-        this.props.history.push(`/projects/${newLocation.key}`)
+        //this.props.history.push(`/projects/${newLocation.key}`)
 
         rebase.update(`users/${this.state.user.uid}/projects/${newLocation.key}`, { //Add the project we just created to user's list of projects
           data: {
@@ -120,7 +120,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.goToUrl("/dashboard")
+    this.goToUrl("/notifications")
     auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in
