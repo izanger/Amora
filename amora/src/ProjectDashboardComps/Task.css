@@ -6,6 +6,7 @@
     justify-content: left;
     border-radius: 10px;
     text-align: left;
+    font-size: 11pt;
 }
 
 #task:hover {
@@ -61,10 +62,11 @@
 #taskTitle {
     padding-left: 0px;
     margin-left: -10px;
+    font-size: 12pt;
 }
 
 #taskDescription {
-    font-size: 13pt;
+    font-size: 11pt;
     /* margin-top: 35px; */
     font-weight: lighter;
 }

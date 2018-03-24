@@ -898,7 +898,7 @@ class Task extends Component {
                                   <button className="addCommentButton" onClick={this.postComment}>Add Comment</button>
                                   <button className="addCommentButton" onClick={this.switch} style={{marginLeft:'10px'}} >Close Task</button>
                             </div>
-                          
+
                         </div>
                     </div>
                 </div>
