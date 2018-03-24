@@ -10,10 +10,9 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    flex-basis: 220px;
-    flex-shrink: 0;
-    min-width: 1px;
-    max-width: 90px;
+
+
+    width: 90px;
     height: 100%;
     background: lightgrey;
     z-index: 201;
@@ -25,8 +24,9 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    flex-grow: 10;
     min-width: 1px;
+    max-width: 10000px;
     height: 100%;
     top: 0px;
     background-color: whitesmoke;
@@ -36,9 +36,7 @@
     position: relative;
     /* display: flex;
     flex-direction: column; */
-    flex-grow: 1;
-    min-width: 350px;
-    max-width: 350px;
+    width: 350px;
     height: 100%;
     top: 0px;
     background-color: white;

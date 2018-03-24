@@ -33,19 +33,19 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     // userSelect: 'none',
     // padding: grid * 2,
      //margin: `0 0 ${grid}px 0`,
-  
+
     // // change background colour if dragging
     // background: isDragging ? 'lightgreen' : 'grey',
-  
+
     // // styles we need to apply on draggables
      ...draggableStyle,
   });
-  
+
   const getListStyle = isDraggingOver => ({
      //background: isDraggingOver ? 'lightblue' : 'lightgrey',
     // padding: grid,
      //padding: 100,
-     width: 1000,
+     width: '100%',
   });
 
 
@@ -178,7 +178,7 @@ class ProjectDashboard extends Component {
         }).then((data) => {
             this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)
             })
-            
+
             console.log("Success: Task created");
     }
 
@@ -226,7 +226,7 @@ class ProjectDashboard extends Component {
           }).then(data => {
             //console.log(data);
             let present = false;
-            
+
             const name = "Unit Test Task"
             for (let tasks of data) {
                 //console.log(tasks);
@@ -235,13 +235,13 @@ class ProjectDashboard extends Component {
                 }
             }
         })
-    
+
 
 
             rebase.remove(`projects/${this.props.getAppState().currentProject.key}/taskList/${taskKeyID}`, function(err){
                 if(!err){
                     console.log("Success: Task removed from Firebase")
-                    
+
                 }
                 else {
                     console.log("Error: Unit test 3 Failed!")
@@ -259,7 +259,7 @@ class ProjectDashboard extends Component {
           }).then(data => {
             //console.log(data);
             let present = false;
-            
+
             const name = "Unit Test Task"
             for (let tasks of data) {
                 //console.log(tasks);
@@ -296,7 +296,7 @@ class ProjectDashboard extends Component {
           }).then(data => {
             //console.log(data);
             let present = false;
-            
+
             const name = "Unit Test Task"
             for (let tasks of data) {
                 //console.log(tasks);
@@ -332,7 +332,7 @@ class ProjectDashboard extends Component {
           }).then(data => {
             //console.log(data);
             let present = false;
-            
+
             const name = "Unit Test Task"
             for (let tasks of data) {
                 //console.log(tasks);
@@ -355,7 +355,7 @@ class ProjectDashboard extends Component {
         // else {
         //     console.log("ERROR: Unit Test 6 Failed!")
         // }
-        
+
 
     }
 
@@ -384,7 +384,7 @@ class ProjectDashboard extends Component {
         //this.createTask()
         //this.removeTask()
         this.sleep(10000)
-       
+
 
         //UNIT TEST 4
         // console.log("Running test 4: Sync Estimated Time")
@@ -440,7 +440,7 @@ class ProjectDashboard extends Component {
         return <Task archived={archived} projectID={this.props.getAppState().currentProject.key}
             taskKey={key} deleteTaskMethod={this.setProjectDashboardState} getAppState = {this.props.getAppState()}
             key={key} task={taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList} 
+            setProjectDashboardState={this.setProjectDashboardState} users={this.state.project.userList}
             getAppStateFunc={this.props.getAppState} userID={this.props.getAppState().user.uid} />
     }
 
@@ -450,10 +450,10 @@ class ProjectDashboard extends Component {
         let taskRender
         let tasks
         let count = 0
-        //<TodayView/> 
-                    
-        
-              
+        //<TodayView/>
+
+
+
 
         if (this.state.projectSynced) {
 
@@ -464,12 +464,12 @@ class ProjectDashboard extends Component {
             if(!this.state.showArchive){
 
                 // finalRender = (
-                
-                
+
+
                 //     <div id="taskDashboard">
-    
-                
-    
+
+
+
                 //         <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} projectColor={this.state.project.projectColor} getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} />
                 //         {/* <div id="taskDashContainer">
                 //         </div> */}
@@ -478,17 +478,17 @@ class ProjectDashboard extends Component {
                 //             <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                 //         </svg>
                 //         <div id="taskDashScrollableContent">
-    
-    
+
+
                 //             {tasks}
-    
+
                 //             <div id="addTaskButton" ><NewProjectButton onClick={() => {
                 //                 this.props.goToUrl("/createtask");
                 //             }} /></div>
                 //         </div>
                 //         {/* <button className="unitTestButton" onClick={this.runUnitTests.bind(null,null)}>Run Unit Tests</button> */}
-                         
-    
+
+
                 //     </div>
                 // )
 
@@ -501,21 +501,21 @@ class ProjectDashboard extends Component {
                             return this.renderTask(key, false)
 
                             return <Task archived={false} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid}
-                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState} 
+                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState}
                             key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
                             setProjectDashboardState={this.setProjectDashboardState} />
-                            
+
                         })
                     )
 
 
 
-                    
+
                 //     return <Droppable droppableId="TaskContainer">
-            
+
                 //     {(provided, snapshot) => (
                 //     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-            
+
                 //     {Object.keys(this.state.project.taskList).map((item, index) => (
                 //     <Draggable key={item} draggableId={item} index={index}>
                 //         {(provided, snapshot) => (
@@ -549,11 +549,11 @@ class ProjectDashboard extends Component {
 
                 taskRender = (
                     <Droppable droppableId="TaskContainer">
-              
+
                   {(provided, snapshot) => (
                   <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-          
-          
+
+
                   {Object.keys(this.state.project.taskList).map((item, index) => (
                   <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
                       {(provided, snapshot) => (
@@ -583,13 +583,13 @@ class ProjectDashboard extends Component {
               </div>
               )}
                    </Droppable>
-  
-  
+
+
               )
 
 
-                
-                    
+
+
 
                  }
             } else {
@@ -598,8 +598,8 @@ class ProjectDashboard extends Component {
                     // tasks = (
                     //     taskKeys.map((key) => {
                     //         return this.renderTask(key, true)
-                    //     return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid} 
-                    //     taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
+                    //     return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid}
+                    //     taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key}
                     //     task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
                     //     setProjectDashboardState={this.setProjectDashboardState}/>
                     //     })
@@ -608,8 +608,8 @@ class ProjectDashboard extends Component {
                     taskRender = (
                         taskKeys.map((key) => {
                             return this.renderTask(key, true)
-                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid} 
-                        taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key} 
+                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid}
+                        taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key}
                         task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
                         setProjectDashboardState={this.setProjectDashboardState}/>
                         })
@@ -619,20 +619,20 @@ class ProjectDashboard extends Component {
 
 
             finalRender = (
-                
-                
+
+
                 <div id="taskDashboard">
-                    <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} project={this.state.project} projectColor={this.state.project.projectColor} 
-                        getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName} 
+                    <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} project={this.state.project} projectColor={this.state.project.projectColor}
+                        getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName}
                         projectDescription={this.state.project.projectDescription} getProjectDashboardState={this.getProjectDashboardState}
                         setProjectDashboardState={this.setProjectDashboardState} />
 
-        
+
                     {/* <div id="taskDashContainer">
                     </div> */}
                     <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor}
                     projectID={this.state.project.key} project={this.state.project}/>
-                    <svg height="13" width="1000">
+                <svg height="13" width="100%">
                         <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                     </svg>
                     <div id="taskDashScrollableContent">
@@ -647,14 +647,14 @@ class ProjectDashboard extends Component {
                         }} /></div>
                     </div>
                     {/* <button className="unitTestButton" onClick={this.runUnitTests.bind(null,null)}>Run Unit Tests</button> */}
-                     
+
 
                 </div>
             )
         } else {
             finalRender = (
-                
-                
+
+
                 <div>Oops</div>
             )
             taskRender = (
@@ -666,16 +666,16 @@ class ProjectDashboard extends Component {
         console.log(finalRender)
         console.log(taskRender)
         return (
-                    // 
-            <div>    
+                    //
+            <div>
                     <div id="taskDashboard">{finalRender}
                     </div>
-                    
+
             </div>
-            
-        
+
+
         )
-        
+
     }
 
 }

@@ -27,7 +27,7 @@ const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
-  
+
     return result;
   };
 
@@ -38,7 +38,7 @@ class Home extends Component {
             displayName: "",
             varHours:"",
             todayItems: getItems(10),
-    
+
           }
           this.onDragEnd = this.onDragEnd.bind(this);
           //this.handleChange = this.handleChange.bind(this);
@@ -64,12 +64,12 @@ class Home extends Component {
 
             //result.draggableId is the key for the task
             //fetch it, save some properties and then push it to today view.
-            const id = this.props.getAppState().user.uid   
+            const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
         rebase.fetch(`users/${id}/projects`, {
             context: this,
         }).then(data => {
-            console.log(data)   
+            console.log(data)
             projectArray = Object.keys(data);
             projectColors = Object.values(data);
             var i = 0;
@@ -109,29 +109,29 @@ class Home extends Component {
                                 completed: completedStatus,
                                 //deadline: deadlineFixed,
                                 //taskCreator: this.props.getAppState().user.uid,
-                
+
                             }
                         })
                     }
-                       
+
 
 
                 })
             }
-                    
+
           })
 
 
         }
         else {
             //remove from todayItems and database
-            const id = this.props.getAppState().user.uid   
+            const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
             console.log("hey")
             rebase.remove(`users/${id}/todayView/${taskID}`, function(err){
                 if(!err){
                     console.log("Success: Task removed from Firebase")
-                    
+
                 }
                 else {
                     console.log("Error: Unit test 3 Failed!")
@@ -145,14 +145,14 @@ class Home extends Component {
 
 
         }
-    
+
         // const todayItems = reorder(
         //   this.state.todayItems,
         //   result.source.index,
         //   result.destination.index,
         // );
-  
-    
+
+
         // this.setState({
         //   todayItems
         // });
@@ -182,11 +182,11 @@ class Home extends Component {
     }
 
     addTaskHours = () => {
-    this.state.varHours = document.getElementById("myText").value 
+    this.state.varHours = document.getElementById("myText").value
     document.getElementById("hours").innerHTML = this.state.varHours
    //var x = document.getElementById("myText").value
-  //document.getElementById("hours").innerHTML = x  
-       
+  //document.getElementById("hours").innerHTML = x
+
     }
 
 
@@ -252,47 +252,50 @@ class Home extends Component {
                                     <button type="button" onClick={this.addTaskHours} >Submit Hours</button>
                                     <p id="remainingHours">Remaining Hours</p>
                                     <p id="hours">{this.state.varHours}</p>
-        
-                                                                     
+
+
 
 
                 </div>
- 
-                <Switch>
-                    <Route path="/dashboard" render={() => {
-                        return (
-                            <div id="taskDashboard"></div>
 
-                        )
-                    }} />
-                    <Route path="/projects/:id" render={(props) => <ProjectDashboard {...props}
-                        goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.props.setAppState} 
-                        goBack={this.props.goBack}/> } />
-                    <Route path="/createproject" render={() => {
-                        return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
-                    }} />
-                    <Route path="/notifications" render={() => {
-                        return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState}/>
-                    }} />
-                    <Route path="/createtask" render={() => {
-                        return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
-                    }} />
-                    {/* <Route path="/deletetask" render={() => {
-                        return <DeleteTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
-                    }} /> */}
-                    <Route render={() => <Redirect to="/dashboard" />} />
-                </Switch>
+                <div style={{width: '100%', height: '100%', backgroundColor: 'whitesmoke'}}>
+                    <Switch>
+                        <Route path="/dashboard" render={() => {
+                            return (
+                                <div id="taskDashboard"></div>
+
+                            )
+                        }} />
+                        <Route path="/projects/:id" render={(props) => <ProjectDashboard {...props}
+                            goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.props.setAppState}
+                            goBack={this.props.goBack}/> } />
+                        <Route path="/createproject" render={() => {
+                            return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                        }} />
+                        <Route path="/notifications" render={() => {
+                            return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState}/>
+                        }} />
+                        <Route path="/createtask" render={() => {
+                            return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                        }} />
+                        {/* <Route path="/deletetask" render={() => {
+                            return <DeleteTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                        }} /> */}
+                        <Route render={() => <Redirect to="/dashboard" />} />
+                    </Switch>
+                </div>
+
 
                 {/* <div id="myDay">
                     <MyDayTitleBar /> */}
-                <div id="myDay">                
+                <div id="myDay">
                      <TodayView getAppState={this.props.getAppState}/>
                 </div>
             </div>
             </DragDropContext>
         )
     }
-    
+
 
 }
 

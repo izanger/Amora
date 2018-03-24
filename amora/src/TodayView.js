@@ -40,7 +40,7 @@ const getItemStyle = (isDragging, draggableStyle, multiplier, color) => ({
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? 'lightblue' : 'lightgrey',
   padding: grid,
-  width: 250,
+  width: '100%',
 });
 
 class TodayView extends Component {
@@ -108,7 +108,7 @@ class TodayView extends Component {
           viewSynced: false
       })
   }
-  
+
     onDragEnd(result) {
       //dropped outside the list
       if (!result.destination) {
@@ -134,26 +134,26 @@ class TodayView extends Component {
       //   //   autoFocusQuoteId: null,
       //   // };
       // }
-    
+
       // moving to different list
-    
+
       // remove from original
       // current.splice(source.index, 1);
       // // insert into next
       // next.splice(destination.index, 0, target);
-    
+
       // const result: QuoteMap = {
       //   ...quoteMap,
       //   [source.droppableId]: current,
       //   [destination.droppableId]: next,
       // };
-  
+
       const items = reorder(
         this.state.items,
         result.source.index,
         result.destination.index,
       );
-  
+
       this.setState({
         items
       });
@@ -171,7 +171,7 @@ class TodayView extends Component {
 
 
 
-  
+
     render = () => {
       let finalRender
       let taskArr = []
@@ -189,10 +189,10 @@ class TodayView extends Component {
 
           finalRender = (
         <Droppable droppableId="TodayView">
-              
+
                   {(provided, snapshot) => (
                   <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-          
+
                   {Object.keys(this.state.tasks).map((item, index) => (
                   <Draggable key={item} draggableId={item} index={index}>
                       {(provided, snapshot) => (
@@ -211,8 +211,8 @@ class TodayView extends Component {
                           { console.log(tasks[index].estimatedTimeValue) }
                           {/* {tasks} */}
                           {this.testfunction(tasks[index].completed, tasks[index].taskName)}
-                          
-                    
+
+
                           </div>
                           {provided.placeholder}
                       </div>
@@ -235,10 +235,10 @@ class TodayView extends Component {
 
       }
       return (
-        <div>  
+        <div>
                     <div>{finalRender}
           </div>
-                    
+
         </div>
 
 
@@ -271,12 +271,11 @@ class TodayView extends Component {
 //                 {provided.placeholder}
 //               </div>
 //             )}
-//           </Droppable> 
-          
+//           </Droppable>
+
           )
-          
+
     }
   }
-  
+
   export default TodayView;
-  
