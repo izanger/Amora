@@ -61,3 +61,14 @@
     border-radius: 5px;
     border: 1px solid grey;
 }
+
+.assignUserOverlay {
+    /* background-color: lightgrey !important; */
+    background: rgba(186, 191, 190, 0.6) !important;
+}
+
+.copyProjectModal {
+
+    border-radius: 5px;
+    border: 1px solid grey;
+}

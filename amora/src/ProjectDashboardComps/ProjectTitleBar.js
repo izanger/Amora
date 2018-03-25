@@ -32,9 +32,9 @@ class ProjectTitleBar extends Component {
             demoteManagerOpen: false,
             createNewProjectOpen: false,
             key: "",
-            newtitleValue: "Project name",
+            newtitleValue: "",
             newcolorValue: "#E74C3C",
-            newdescriptionValue: "Project description"
+            newdescriptionValue: ""
         }
     }
 
@@ -488,10 +488,10 @@ class ProjectTitleBar extends Component {
                     </Modal>
                     <Modal open={this.state.createNewProjectOpen} onClose={() => this.setState({createNewProjectOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'copyProjectModal'}}>
                             <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Create Project with Duplicate Team</h4>
-                            <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
-                                <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changenewTitleValue}
+                            <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "display": "flex", "flex-direction": "column"}}>
+                                <input type="text" placeholder="Enter Project Name" style={{marginLeft:'15px', width:'65%', backgroundColor:'white'}} className="createProjectInput" onChange={this.changenewTitleValue}
                                 value={this.state.newtitleValue} />
-                                <input type="text" placeholder="Enter Project Description" className="createProjectInput"
+                                <input type="text" placeholder="Enter Project Description" style={{marginLeft:'15px', width:'65%', backgroundColor:'white'}} className="createProjectInput"
                                 onChange={this.changenewDescriptionValue} value={this.state.newdescriptionValue} />
                                 <div id="colorPicker">
                                     <h4>Project Color:</h4>
@@ -499,7 +499,7 @@ class ProjectTitleBar extends Component {
                                         return this.rendernewSwatch(color)
                                     })}
                                 </div>
-                                <button onClick={() => {
+                                <button className="addCommentButton" style={{marginLeft: '15px', marginTop: '10px', marginBottom: '0px'}} onClick={() => {
                                     this.createVanillaProject()
                                 }}>Submit</button>
                             </div>
