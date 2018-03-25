@@ -26,7 +26,7 @@ class TaskComment extends Component {
         }
     }
 
-    changeComment = (event) => { 
+    changeComment = (event) => {
         if (event.target.value.length !== 0) {
             const newState = this.props.getProjectDashboardState()
 
@@ -105,9 +105,14 @@ class TaskComment extends Component {
                         getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
                         key={this.props.userKey} user={this.props.project.userList[this.props.userKey]} userID={this.props.userKey} project={this.props.project} />
 
+                        
                         <div id="taskNameAndComment">
-                            <p id="taskCommentName">{this.props.username} | {formattedDate}</p>
-                            <p id="taskCommentText">{formattedDate} | {this.props.commentValue}</p>
+                            <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
+                                <p id="taskCommentName">{this.props.username}</p>
+                                <p id="taskCommentText" style={{marginBottom: '0px'}}>{isEdited} {formattedDate}</p>
+                            </div>
+
+                            <p id="taskCommentText"><ContentEditable disabled={false} onChange={this.changeComment} html={this.props.commentValue}/></p>
                         </div>
 
                     </div>
