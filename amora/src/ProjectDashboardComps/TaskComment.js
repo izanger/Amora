@@ -71,7 +71,7 @@ class TaskComment extends Component {
                         {console.log(this.props)}
                         <CommentUserIcon color={this.props.getProjectDashboardState().project.projectColor}
                         getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
-                        key={this.props.userKey} user={this.props.project.userList[this.props.userID]} userID={this.props.userID} project={this.props.project} />
+                        key={this.props.userKey} user={this.props.project.userList[this.props.uid]} userID={this.props.userID} project={this.props.project} />
 
                         <div id="taskNameAndComment">
                             <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
@@ -103,7 +103,7 @@ class TaskComment extends Component {
                         </div>     */}
                         <CommentUserIcon color={this.props.getProjectDashboardState().project.projectColor}
                         getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
-                        key={this.props.userKey} user={this.props.project.userList[this.props.userKey]} userID={this.props.userKey} project={this.props.project} />
+                        key={this.props.userKey} user={this.props.project.userList[this.props.uid]} userID={this.props.userKey} project={this.props.project} />
 
                         
                         <div id="taskNameAndComment">
