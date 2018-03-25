@@ -49,6 +49,9 @@ class Home extends Component {
         if (!result.destination) {
           return;
         }
+        if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TodayView"){
+            return;
+        }
         console.log(result);
         // return;
          if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TaskContainer"){
