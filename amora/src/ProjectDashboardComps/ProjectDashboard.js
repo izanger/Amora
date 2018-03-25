@@ -47,6 +47,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     // padding: grid,
      //padding: 100,
      //width: '100%',
+     //height: '515px',
   });
 
 
@@ -643,7 +644,7 @@ class ProjectDashboard extends Component {
                         {/* {tasks} */}
                         {taskRender}
 
-                        <div id="addTaskButton" ><NewProjectButton onClick={() => {
+                        <div id="addTaskButton" style={{'position': 'fixed', bottom: '0px', width: '100%', paddingBottom: '15px'}}><NewProjectButton onClick={() => {
                             this.props.goToUrl("/createtask");
                         }} /></div>
                     </div>
@@ -656,10 +657,10 @@ class ProjectDashboard extends Component {
             finalRender = (
 
 
-                <div>Oops</div>
+                <div></div>
             )
             taskRender = (
-                <div>UhOh</div>
+                <div></div>
 
             )
         }
