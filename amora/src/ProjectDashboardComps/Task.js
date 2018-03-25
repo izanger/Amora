@@ -38,8 +38,9 @@ class Task extends Component {
            commentValue: "",
            addedComment: false,
            commentsSynced: false,
+           edited: "",
            taskComments: {
-
+            
            },
            isManager: false
        }
@@ -758,7 +759,7 @@ class Task extends Component {
                             showDelete={del} taskKey={this.props.taskKey} projectID={this.props.projectID} commentID={key} archived={this.props.archived}
                             user={this.props.users[userKey]} userID={userKey} project={this.props.getProjectDashboardState().project}
                             getProjectDashboardState={this.props.getProjectDashboardState} setProjectDashboardState={this.props.setProjectDashboardState}
-                            getAppState={this.props.getAppStateFunc} timestamp={this.state.taskComments[key].timestamp}/>
+                            getAppState={this.props.getAppStateFunc} timestamp={this.state.taskComments[key].timestamp} edited={this.state.taskComments[key].edited}/>
                     })
                 )
             }
