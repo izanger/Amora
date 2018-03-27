@@ -450,9 +450,11 @@ class Home extends Component {
 
     addTaskHours = () => {
     this.state.varHours = document.getElementById("myText").value
-    document.getElementById("hours").innerHTML = this.state.varHours
+    console.log(this.state.varHours)
+    document.getElementById("remainingHours1").innerHTML = this.state.varHours
    //var x = document.getElementById("myText").value
   //document.getElementById("hours").innerHTML = x
+    }
 
    subtractHours = () => {
    const newState = this.props.getAppState()
@@ -460,23 +462,25 @@ class Home extends Component {
    //var inputHours = parseInt(x)||0
    //this.state.sumbitHours=inputHours
    //this.state.totalHours = (parseInt(this.state.totalHours)+parseInt(this.state.taskHours)||0)
-   var newOutput = document.getElementById("hours").innerHTML
+   var newOutput = document.getElementById("remainingHours1").innerHTML
    var m = parseInt(newOutput)||0
    //var displayHours = inputHours-parseInt(this.state.totalHours)||0
    var displayHours = m - parseInt(this.state.taskHours)
    if(displayHours < 0)
    displayHours =0
    
-   document.getElementById("hours").innerHTML = displayHours
+   document.getElementById("remainingHours1").innerHTML = displayHours
    this.props.getAppState(newState)
     }
 
     addHours = () => {
     const newState = this.props.getAppState()
-    var outputHours = document.getElementById("hours").innerHTML
+    var outputHours = document.getElementById("remainingHours1").innerHTML
+    console.log(outputHours)
     var z = parseInt(outputHours)||0
     var displayAddition = z + parseInt(this.state.addMoreHours)||0
-    document.getElementById("hours").innerHTML = displayAddition
+    document.getElementById("remainingHours1").innerHTML = displayAddition
+    console.log(displayAddition)
     this.props.getAppState(newState)
 
     }
@@ -485,7 +489,7 @@ class Home extends Component {
     const newState = this.props.getAppState()
     var submittedButtonHours = document.getElementById("myText").value
     var q = parseInt(submittedButtonHours)||0
-    document.getElementById("hours").innerHTML = q
+    document.getElementById("remainingHours1").innerHTML = q
     this.props.getAppState(newState)
     }
     
@@ -550,7 +554,7 @@ class Home extends Component {
 
                 <div style={{"position":"fixed", "top": "4px", "right": "15px"}}>
                     <h4 id="remainingHours">Remaining Hours: </h4>
-                    <h4 id="remainingHours"><b>{this.state.varHours}</b></h4>
+                    <h4 id="remainingHours1"><b>{this.state.varHours}</b></h4>
                 </div>
                 <div style={{"position":"fixed", "bottom": "0px", "right": "0px", "display":"flex", "flex-direction": "row"}}>
                     <input id="myText" style={{marginTop: '5px', backgroundColor: 'white', width: '60px'}} placeholder="0" className="createProjectInput"></input>
@@ -559,7 +563,7 @@ class Home extends Component {
                 </div>
 
 
-
+                
 
                 </div>
 
@@ -598,7 +602,7 @@ class Home extends Component {
                 </div>
             </div>
             </DragDropContext>
-        )
+    )
     }
 
 
