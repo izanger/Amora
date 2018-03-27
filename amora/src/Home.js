@@ -37,6 +37,9 @@ class Home extends Component {
         this.state = {
             displayName: "",
             varHours:"",
+            sumbitHours:"",
+            taskHours:"",
+            totalHours:"",
             todayItems: getItems(10),
 
           }
@@ -90,6 +93,9 @@ class Home extends Component {
                         console.log(data.taskName)
                         taskname = data.taskName
                         estimatedTime = data.EstimatedTimeValue
+                        this.state.taskHours = estimatedTime
+                        this.state.sumbitHours = this.state.sumbitHours
+                        this.subtractHours()
                         if (data.completed){
                         completedStatus = data.completed
                         }
@@ -184,11 +190,15 @@ class Home extends Component {
           })
     }
 
-    addTaskHours = () => {
-    this.state.varHours = document.getElementById("myText").value
-    document.getElementById("hours").innerHTML = this.state.varHours
-   //var x = document.getElementById("myText").value
-  //document.getElementById("hours").innerHTML = x
+    subtractHours = () => {
+   const newState = this.props.getAppState()
+   var x = document.getElementById("myText").value
+   var inputHours = parseInt(x)||0
+   this.state.sumbitHours=inputHours
+   this.state.totalHours = (parseInt(this.state.totalHours)+parseInt(this.state.taskHours)/2||0)
+   var displayHours = inputHours-parseInt(this.state.totalHours)||0
+   document.getElementById("hours").innerHTML = displayHours
+   this.props.getAppState(newState)
 
     }
 
@@ -252,7 +262,7 @@ class Home extends Component {
                     }}>{notificationText}</i>
 
                                  <textarea id="myText" rows="1" cols="3"></textarea>
-                                    <button type="button" onClick={this.addTaskHours} >Submit Hours</button>
+                                    <button type="button" onClick={this.subtractHours} >Submit Hours</button>
                                     <p id="remainingHours">Remaining Hours</p>
                                     <p id="hours">{this.state.varHours}</p>
 
