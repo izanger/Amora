@@ -3,24 +3,6 @@ import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import rebase from "./rebase.js"
 
-
-// fake data generator
-const getItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k}`,
-    content: `item ${k}`,
-  }));
-
-
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle, multiplier, color) => ({
@@ -55,17 +37,14 @@ class TodayView extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        items: getItems(10),
         viewSynced: false,
         tasks: []
       };
-      this.onDragEnd = this.onDragEnd.bind(this);
     }
 
     componentDidMount = () => {
       const newState = { ...this.state }
       let userID = this.props.getAppState().user.uid
-      //console.log(userID)
       rebase.fetch(`users/${userID}/todayView`, {
           context: this,
           then: (data) => {
@@ -83,90 +62,11 @@ class TodayView extends Component {
       })
   }
 
-  // componentWillReceiveProps = (nextProps) => {
-  //     const nextId = nextProps.match.params.id
-  //     this.setState({projectSynced: false})
-  //     if (nextId !== this.props.match.params.id) {
-  //         this.setState({projectSynced: false})
-  //         if (this.bindingref) {
-  //             rebase.removeBinding(this.bindingref)
-  //         }
-  //         const newState = { ...this.state }
-  //         rebase.fetch(`projects/${nextId}`, {
-  //             context: this,
-  //             then: (data) => {
-  //                 newState.project = data
-  //             }
-  //         }).then(() => {
-  //             this.bindingref = rebase.syncState(`projects/${nextId}`, {
-  //                 context: this,
-  //                 state: 'project',
-  //                 then: () => {
-  //                     newState.projectSynced = true
-  //                     this.setState(newState)
-  //                 }
-  //             })
-  //         })
-  //     }
-  //     this.setState({projectSynced: true})
-  // }
-
   componentWillUnmount = () => {
       this.setState({
           viewSynced: false
       })
   }
-
-    onDragEnd(result) {
-      //dropped outside the list
-      if (!result.destination) {
-        return;
-      }
-      console.log(result);
-      console.log("hello")
-
-
-      // if (source.droppableId === destination.droppableId) {
-      //   const reordered = reorder(
-      //     current,
-      //     source.index,
-      //     destination.index,
-      //   );
-      //   // const result: QuoteMap = {
-      //   //   ...quoteMap,
-      //   //   [source.droppableId]: reordered,
-      //   // };
-      //   // return {
-      //   //   quoteMap: result,
-      //   //   // not auto focusing in own list
-      //   //   autoFocusQuoteId: null,
-      //   // };
-      // }
-
-      // moving to different list
-
-      // remove from original
-      // current.splice(source.index, 1);
-      // // insert into next
-      // next.splice(destination.index, 0, target);
-
-      // const result: QuoteMap = {
-      //   ...quoteMap,
-      //   [source.droppableId]: current,
-      //   [destination.droppableId]: next,
-      // };
-
-      const items = reorder(
-        this.state.items,
-        result.source.index,
-        result.destination.index,
-      );
-
-      this.setState({
-        items
-      });
-    }
-
 
     testfunction = (completed, name) => {
       if (completed){
@@ -177,38 +77,22 @@ class TodayView extends Component {
 
     }
 
-
-
-
     render = () => {
       let finalRender
       let taskArr = []
       let n = 0;
-      //console.log("Checkpoint1")
       if (this.state.viewSynced){
-        //console.log("Checkpoint2")
-        //console.log(this.state.tasks.length)
-        //console.log(this.state.tasks)
         if (this.state.tasks){
-
-          // for (var task in this.state.tasks){
              var tasks = (Object.values(this.state.tasks))
              var keys = (Object.keys(this.state.tasks))
-             //console.log(tasks)
               n = tasks.length
 
-             //console.log
              //bubblesort to get indices correct
               var i;
               var j;
-             // console.log("N: " + n)
              for (i = 0; i < n-1; i++){
                  for (j = 0; j < n-i-1; j++){
-                 //console.log("I: " + tasks[j].index)
-                 //console.log("J: " + tasks[j+1].index )
                    if (tasks[j].index > tasks[j+1].index){
-                      //swap
-                      //console.log("detected")
                       let temp = tasks[j];
                       tasks[j] = tasks[j+1];
                       tasks[j+1] = temp;
@@ -219,7 +103,6 @@ class TodayView extends Component {
                    }
                 }
              }
-             //console.log(tasks)
 
           finalRender = (
               <div>
@@ -245,14 +128,7 @@ class TodayView extends Component {
                               provided.draggableProps.style, tasks[index].EstimatedTimeValue, tasks[index].color
                           )}
                           >
-                          {/* console.log("hi") */}
-                          {/* put tasks here */}
-                          {/* { console.log(tasks[index].estimatedTimeValue) } */}
-                          {/* {tasks} */}
-                          {/* {console.log(keys[index])} */}
                           {this.testfunction(tasks[index].completed, tasks[index].taskName)}
-
-
                           </div>
                           {provided.placeholder}
                       </div>
@@ -268,13 +144,8 @@ class TodayView extends Component {
           )
         }
         else {
-          <div>Hello</div>
-
+          <div></div>
         }
-
-
-
-
       }
       return (
         <div>
@@ -282,41 +153,7 @@ class TodayView extends Component {
           </div>
 
         </div>
-
-
-//  <Droppable droppableId="TodayView">
-//             {(provided, snapshot) => (
-//               <div
-//                 ref={provided.innerRef}
-//                 style={getListStyle(snapshot.isDraggingOver)}
-//               >
-//                 {this.state.items.map((item, index) => (
-//                   <Draggable key={item.id} draggableId={item.id} index={index}>
-//                     {(provided, snapshot) => (
-//                       <div>
-//                         <div
-//                           ref={provided.innerRef}
-//                           {...provided.draggableProps}
-//                           {...provided.dragHandleProps}
-//                           style={getItemStyle(
-//                             snapshot.isDragging,
-//                             provided.draggableProps.style
-//                           )}
-//                         >
-//                           {item.content}
-//                         </div>
-//                         {provided.placeholder}
-//                       </div>
-//                     )}
-//                   </Draggable>
-//                 ))}
-//                 {provided.placeholder}
-//               </div>
-//             )}
-//           </Droppable>
-
           )
-
     }
   }
 

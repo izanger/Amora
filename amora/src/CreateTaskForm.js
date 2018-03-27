@@ -4,11 +4,8 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import leftArrow from "./images/Icons/LeftArrow.svg"
 import 'react-datepicker/dist/react-datepicker.css';
-// import PropTypes from 'prop-types';
-// import Moment from 'react-moment';
-
-
 import "./CreateTaskForm.css"
+
 
 class CreateTaskForm extends Component {
 
@@ -18,24 +15,6 @@ class CreateTaskForm extends Component {
         this.state = {
             titleValue: "",
             descriptionValue: "",
-            // Implement all other additions of tasks such as
-            // Priotity level
-            // Users assigned to tasks?
-            // Others
-            // You get the idea
-            // I'm
-            // making
-            // this
-            // longer
-            // so
-            // people
-            // see
-            // it
-            // incase
-            // i forget
-            // to tell
-            // you
-
             errorValue: "",
             estimatedTimeValue: "",
             priorityLevel: "",
@@ -57,64 +36,23 @@ class CreateTaskForm extends Component {
         })
     }
 
-    doMathToFixDateOk = () => {
-        //2018-02-21T18:28:59-05:00
-        const date = moment();
-        //2018  02   21T18:28:59  05:00
-
-        const firstSplit = date.split("-");
-
-        const month = firstSplit[1]; //02
-
-        const year = firstSplit[0];
-
-        //21     18:28:59
-        const secondSplit = firstSplit[2].split("T");
-
-        const day = secondSplit[0];
-
-        //time to assemble the pieces dudes
-
-        const finalOutput = "" + month + "/" + day + "/" + year;
-
-        return finalOutput;
-
-
-
-
-    }
     fixDeadline = (date) => {
         //2018-02-21T18:28:59-05:00
         //const date = date
         //2018  02   21T18:28:59  05:00
-
         const firstSplit = date.split("-");
-
         const month = firstSplit[1]; //02
-
         const year = firstSplit[0];
-
         //21     18:28:59
         const secondSplit = firstSplit[2].split("T");
-
         const day = secondSplit[0];
-
         //time to assemble the pieces dudes
-
         const finalOutput = "" + month + "/" + day + "/" + year;
-
         return finalOutput;
-
-
-
-
     }
 
     handleChange(date) {
         console.log(date)
-        //var deadlineFixed = this.fixDeadline(date.format());
-        //newState.deadline = deadlineFixed;
-        //console.log("NEWDATE: " + deadlineFixed)
         this.setState({
           deadline: date
         });
@@ -141,15 +79,6 @@ class CreateTaskForm extends Component {
         this.setState(newState)
     }
 
-    // Method for changing deadline value
-    changeDeadline = (event) => {
-        // const newState = { ...this.state }
-        // var deadlineFixed = this.fixDeadline(event.target.value.format());
-        // newState.deadline = deadlineFixed;
-        // console.log("NEWDATE: " + deadlineFixed)
-        // this.setState(newState)
-    }
-
     // Checks to see if task is valid or not
     isTaskValid = () => {
         const newState = { ...this.state }
@@ -164,19 +93,12 @@ class CreateTaskForm extends Component {
         if (this.state.estimatedTimeValue === ""){
             this.setState(newState)
             return false
-
         }
         return true
     }
 
     dateSelected = (selectedDate) => {
-
         return selectedDate.format()
-    }
-
-    myFunction = () => {
-        console.log("TESTING")
-        document.getElementById("myDropdown").classList.toggle("show");
     }
 
     // Let Firebase create a taskID and add all the relevant from the form
@@ -189,12 +111,9 @@ class CreateTaskForm extends Component {
         var selectedText = dropSelect.options[dropSelect.selectedIndex].text;
 
         var deadlineFixed = this.fixDeadline(this.state.deadline.format());
-        //console.log("NEWIISTSD: " +deadlineFixed)
 
         const newState = { ...this.state }
         newState.priorityLevel = selectedText
-        //newState.deadline = deadlineFixed
-
         this.setState(newState)
         rebase.push(`projects/${this.props.getAppState().currentProject.key}/taskList`, {
             data: {
@@ -212,8 +131,6 @@ class CreateTaskForm extends Component {
             }
         }).then((data) => {
             this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)
-
-
             })
     }
 
@@ -257,7 +174,5 @@ class CreateTaskForm extends Component {
         )
     }
 }
-
-
 
 export default CreateTaskForm;
