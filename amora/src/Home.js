@@ -24,6 +24,11 @@ class Home extends Component {
         this.state = {
             displayName: "",
             varHours:"",
+            sumbitHours:"",
+            taskHours:"",
+            totalHours:"",
+            addMoreHours:"",
+            todayItems: getItems(10),
 
           }
           this.onDragEnd = this.onDragEnd.bind(this);
@@ -262,6 +267,36 @@ class Home extends Component {
                             if (data[dataKeys[i]].index >= dropitHere){
                                 data[dataKeys[i]].index = data[dataKeys[i]].index + 1;
                             }
+        rebase.fetch(`users/${id}/projects`, {
+            context: this,
+        }).then(data => {
+            console.log(data)
+            projectArray = Object.keys(data);
+            projectColors = Object.values(data);
+            var i = 0;
+            for (i; i < projectArray.length;i++ ){
+                let pid = projectArray[i];
+                console.log(projectColors[i].projectColor)
+                const taskColor = projectColors[i].projectColor
+                //return;
+
+                rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
+                    context: this,
+                }).then(data => {
+                    console.log(data)
+                    if (data.taskName){
+                        console.log(data.taskName)
+                        taskname = data.taskName
+                        estimatedTime = data.EstimatedTimeValue
+                        this.state.taskHours = data.EstimatedTimeValue
+                        //this.state.taskHours = estimatedTime
+                        //this.state.sumbitHours = this.state.sumbitHours
+                        this.subtractHours()
+                        if (data.completed){
+                        completedStatus = data.completed
+                        }
+                        else {
+                            completedStatus = false;
                         }
                         rebase.update(`users/${id}/todayView`, {
                             data: data
@@ -392,6 +427,33 @@ class Home extends Component {
                   return;
             })             
               return;
+            console.log("hey")
+           // rebase.fetch()
+            rebase.fetch(`users/${id}/todayView/${taskID}`, {
+                context: this,
+            }).then(data => {
+                this.state.addMoreHours = data.EstimatedTimeValue
+                this.addHours()
+                rebase.remove(`users/${id}/todayView/${taskID}`, function(err){
+                    if(!err){
+                        console.log("Success: Task removed from Firebase")
+    
+                    }
+                    else {
+                        console.log("Error: Unit test 3 Failed!")
+                    }
+                  });
+            })
+
+
+            
+
+
+
+
+
+
+
         }
     }
 
@@ -417,14 +479,41 @@ class Home extends Component {
           })
     }
 
-    addTaskHours = () => {
-    this.state.varHours = document.getElementById("myText").value
-    document.getElementById("hours").innerHTML = this.state.varHours
-   //var x = document.getElementById("myText").value
-  //document.getElementById("hours").innerHTML = x
-
+   subtractHours = () => {
+   const newState = this.props.getAppState()
+  //var x = document.getElementById("myText").value
+   //var inputHours = parseInt(x)||0
+   //this.state.sumbitHours=inputHours
+   //this.state.totalHours = (parseInt(this.state.totalHours)+parseInt(this.state.taskHours)||0)
+   var newOutput = document.getElementById("hours").innerHTML
+   var m = parseInt(newOutput)||0
+   //var displayHours = inputHours-parseInt(this.state.totalHours)||0
+   var displayHours = m - parseInt(this.state.taskHours)
+   if(displayHours < 0)
+   displayHours =0
+   
+   document.getElementById("hours").innerHTML = displayHours
+   this.props.getAppState(newState)
     }
 
+    addHours = () => {
+    const newState = this.props.getAppState()
+    var outputHours = document.getElementById("hours").innerHTML
+    var z = parseInt(outputHours)||0
+    var displayAddition = z + parseInt(this.state.addMoreHours)||0
+    document.getElementById("hours").innerHTML = displayAddition
+    this.props.getAppState(newState)
+
+    }
+  
+    submitHoursFunction = () => {
+    const newState = this.props.getAppState()
+    var submittedButtonHours = document.getElementById("myText").value
+    var q = parseInt(submittedButtonHours)||0
+    document.getElementById("hours").innerHTML = q
+    this.props.getAppState(newState)
+    }
+    
 
     render = () => {
 
@@ -485,7 +574,7 @@ class Home extends Component {
                     }}>{notificationText}</i>
 
                                  <textarea id="myText" rows="1" cols="3"></textarea>
-                                    <button type="button" onClick={this.addTaskHours} >Submit Hours</button>
+                                    <button type="button" onClick={this.submitHoursFunction} >Submit Hours</button>
                                     <p id="remainingHours">Remaining Hours</p>
                                     <p id="hours">{this.state.varHours}</p>
 
