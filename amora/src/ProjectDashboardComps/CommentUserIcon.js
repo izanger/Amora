@@ -42,7 +42,7 @@ class CommentUserIcon extends Component {
     componentWillMount() {
         this.getInfo();
         this.getEmail();
-        console.log(this.props)
+        //console.log(this.props)
         // const promise = checkIfManager(this.props.userID, this.props.projectID)
         // promise.then((data) => {
         //     if (data.val()) {

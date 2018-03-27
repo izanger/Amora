@@ -65,7 +65,7 @@ class TodayView extends Component {
     componentDidMount = () => {
       const newState = { ...this.state }
       let userID = this.props.getAppState().user.uid
-      console.log(userID)
+      //console.log(userID)
       rebase.fetch(`users/${userID}/todayView`, {
           context: this,
           then: (data) => {
@@ -183,17 +183,43 @@ class TodayView extends Component {
     render = () => {
       let finalRender
       let taskArr = []
-      console.log("Checkpoint1")
+      let n = 0;
+      //console.log("Checkpoint1")
       if (this.state.viewSynced){
-        console.log("Checkpoint2")
-        console.log(this.state.tasks.length)
-        console.log(this.state.tasks)
+        //console.log("Checkpoint2")
+        //console.log(this.state.tasks.length)
+        //console.log(this.state.tasks)
         if (this.state.tasks){
 
           // for (var task in this.state.tasks){
-             let tasks = (Object.values(this.state.tasks))
-          //   taskArr.push(task)
-          // }
+             var tasks = (Object.values(this.state.tasks))
+             var keys = (Object.keys(this.state.tasks))
+             //console.log(tasks)
+              n = tasks.length
+
+             //console.log
+             //bubblesort to get indices correct
+              var i;
+              var j;
+             // console.log("N: " + n)
+             for (i = 0; i < n-1; i++){
+                 for (j = 0; j < n-i-1; j++){
+                 //console.log("I: " + tasks[j].index)
+                 //console.log("J: " + tasks[j+1].index )
+                   if (tasks[j].index > tasks[j+1].index){
+                      //swap
+                      //console.log("detected")
+                      let temp = tasks[j];
+                      tasks[j] = tasks[j+1];
+                      tasks[j+1] = temp;
+
+                      let temp1 = keys[j];
+                      keys[j] = keys[j+1];
+                      keys[j+1] = temp1
+                   }
+                }
+             }
+             //console.log(tasks)
 
           finalRender = (
               <div>
@@ -206,8 +232,8 @@ class TodayView extends Component {
                   {(provided, snapshot) => (
                   <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
 
-                  {Object.keys(this.state.tasks).map((item, index) => (
-                  <Draggable key={item} draggableId={item} index={index}>
+                  {Object.keys(keys).map((item, index) => (
+                  <Draggable key={item} draggableId={keys[index]} index={index}>
                       {(provided, snapshot) => (
                       <div>
                       <div
@@ -221,8 +247,9 @@ class TodayView extends Component {
                           >
                           {/* console.log("hi") */}
                           {/* put tasks here */}
-                          { console.log(tasks[index].estimatedTimeValue) }
+                          {/* { console.log(tasks[index].estimatedTimeValue) } */}
                           {/* {tasks} */}
+                          {/* {console.log(keys[index])} */}
                           {this.testfunction(tasks[index].completed, tasks[index].taskName)}
 
 

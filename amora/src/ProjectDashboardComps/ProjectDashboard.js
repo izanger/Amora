@@ -664,8 +664,8 @@ class ProjectDashboard extends Component {
             )
         }
         //const taskKeys = Object.keys(this.state.project.taskList);
-        console.log(finalRender)
-        console.log(taskRender)
+        //console.log(finalRender)
+        //console.log(taskRender)
         return (
                     //
             <div>
