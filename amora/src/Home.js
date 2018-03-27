@@ -41,68 +41,68 @@ class Home extends Component {
                 const id = this.props.getAppState().user.uid
                 const taskID = result.draggableId;
                 let todayCount = [];
-    
+
                 rebase.fetch(`users/${id}/count`, {
                     context: this,
-                
+
                   }).then(data => {
                     todayCount = Object.values(data);
                     if (!Number.isInteger(data)){
                         console.log("contact Alex. This should never happen")
                     }
                     else {
-                        //count is defined, so use it 
+                        //count is defined, so use it
                         //BUT we need to honor where they are dropping it which makes me so sad on the
                         //inside. Guys I REALLY don't want to do this. :(
                         //JK this is gonna be cool watch this.
-    
+
                         //first lets grab where they want to drop it
                         //var dropitHere = result.destination.index;
                         var droppedFrom = result.source.index;
-    
+
                         //everything before that index is EHHHHH OK
                         //but we need to bop everything after that index +1
                         //data stores an int that is the num of things in the todayview
                         //console.log("Drop At: " + dropitHere)
-                        
+
                         count = data
-                                 
+
                         rebase.fetch(`users/${id}/todayView`, {
                             context: this,
-                            
+
                           }).then(data => {
-                            
+
                             let dataKeys = Object.keys(data)
                             //cases
                             //if move down list
                             //item in desired spot moves up
                             //if move up list
                             //item in desired spot moves down
-         
+
                             for(var i = 0; i < count-1; i++){
-                                                            
+
                                if (droppedFrom < data[dataKeys[i]].index){
                                    //if index is lower on list than drop location\
                                    data[dataKeys[i]].index = data[dataKeys[i]].index - 1;
                                    continue;
-                               }                              
+                               }
                             }
-                            
+
                             rebase.update(`users/${id}/todayView`, {
                                 data: data,
-                                then(err){       
+                                then(err){
                                     rebase.update(`users/${id}`, {
                                         data: {count: count-1}
                                       }).then(() => {
                                         return;
                                       })
                                 }
-                              });        
+                              });
                             })
                     }
                   })
                   return;
-            })             
+            })
               return;
         }
         else if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TodayView"){
@@ -116,13 +116,13 @@ class Home extends Component {
             rebase.fetch(`users/${id}/count`, {
                 context: this,
               }).then(data => {
-                  
+
                 todayCount = Object.values(data);
                 if (!Number.isInteger(data)){
                     console.log("contact Alex. This should never happen")
                 }
                 else {
-                    //count is defined, so use it 
+                    //count is defined, so use it
                     //BUT we need to honor where they are dropping it which makes me so sad on the
                     //inside. Guys I REALLY don't want to do this. :(
                     //JK this is gonna be cool watch this.
@@ -135,7 +135,7 @@ class Home extends Component {
                     //but we need to bop everything after that index +1
                     //data stores an int that is the num of things in the todayview
                     count = data
-                  
+
                     rebase.fetch(`users/${id}/todayView`, {
                         context: this,
                       }).then(data => {
@@ -145,7 +145,7 @@ class Home extends Component {
                         //item in desired spot moves up
                         //if move up list
                         //item in desired spot moves down
- 
+
                         for(var i = 0; i < count; i++){
                            if (data[dataKeys[i]].index == droppedFrom){
                                 data[dataKeys[i]].index = dropitHere;
@@ -155,13 +155,13 @@ class Home extends Component {
                                //if index is lower on list than drop location
                                data[dataKeys[i]].index = data[dataKeys[i]].index - 1;
                                continue;
-                           }  
+                           }
                            else if (data[dataKeys[i]].index >= dropitHere && droppedFrom > data[dataKeys[i]].index){
                                 //if index is lower on list than drop location
                                 data[dataKeys[i]].index = data[dataKeys[i]].index + 1;
                                 continue;
-                            }      
-                        
+                            }
+
                         }
                         rebase.update(`users/${id}/todayView`, {
                             data: data,
@@ -210,7 +210,7 @@ class Home extends Component {
                             for (i; i < projectArray.length;i++ ){
                                 let pid = projectArray[i];
                                 const taskColor = projectColors[i].projectColor
-                
+
                                 rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
                                     context: this,
                                 }).then(data => {
@@ -224,7 +224,7 @@ class Home extends Component {
                                             completedStatus = false;
                                         }
                                         //taskName and time are set, so we can push it to the todayView
-                
+
                                         rebase.push(`users/${this.props.getAppState().user.uid}/todayView`, {
                                             data: {
                                                 taskIDNumber: taskID,
@@ -242,7 +242,7 @@ class Home extends Component {
                       })
                 }
                 else {
-                    //count is defined, so use it 
+                    //count is defined, so use it
                     //BUT we need to honor where they are dropping it which makes me so sad on the
                     //inside. Guys I REALLY don't want to do this. :(
                     //JK this is gonna be cool watch this.
@@ -295,7 +295,7 @@ class Home extends Component {
                                             completedStatus = false;
                                         }
                                         //taskName and time are set, so we can push it to the todayView
-                
+
                                         rebase.push(`users/${this.props.getAppState().user.uid}/todayView`, {
                                             data: {
                                                 taskIDNumber: taskID,
@@ -329,68 +329,68 @@ class Home extends Component {
                 const id = this.props.getAppState().user.uid
                 const taskID = result.draggableId;
                 let todayCount = [];
-    
+
                 rebase.fetch(`users/${id}/count`, {
                     context: this,
-                
+
                   }).then(data => {
                     todayCount = Object.values(data);
                     if (!Number.isInteger(data)){
                         console.log("contact Alex. This should never happen")
                     }
                     else {
-                        //count is defined, so use it 
+                        //count is defined, so use it
                         //BUT we need to honor where they are dropping it which makes me so sad on the
                         //inside. Guys I REALLY don't want to do this. :(
                         //JK this is gonna be cool watch this.
-    
+
                         //first lets grab where they want to drop it
                         //var dropitHere = result.destination.index;
                         var droppedFrom = result.source.index;
-    
+
                         //everything before that index is EHHHHH OK
                         //but we need to bop everything after that index +1
                         //data stores an int that is the num of things in the todayview
                         //console.log("Drop At: " + dropitHere)
-                        
+
                         count = data
-                                 
+
                         rebase.fetch(`users/${id}/todayView`, {
                             context: this,
-                            
+
                           }).then(data => {
-                            
+
                             let dataKeys = Object.keys(data)
                             //cases
                             //if move down list
                             //item in desired spot moves up
                             //if move up list
                             //item in desired spot moves down
-         
+
                             for(var i = 0; i < count-1; i++){
-                                                            
+
                                if (droppedFrom < data[dataKeys[i]].index){
                                    //if index is lower on list than drop location\
                                    data[dataKeys[i]].index = data[dataKeys[i]].index - 1;
                                    continue;
-                               }                              
+                               }
                             }
-                            
+
                             rebase.update(`users/${id}/todayView`, {
                                 data: data,
-                                then(err){       
+                                then(err){
                                     rebase.update(`users/${id}`, {
                                         data: {count: count-1}
                                       }).then(() => {
                                         return;
                                       })
                                 }
-                              });        
+                              });
                             })
                     }
                   })
                   return;
-            })             
+            })
               return;
         }
     }
@@ -484,10 +484,15 @@ class Home extends Component {
                         this.props.goToUrl("/notifications");
                     }}>{notificationText}</i>
 
-                                 <textarea id="myText" rows="1" cols="3"></textarea>
-                                    <button type="button" onClick={this.addTaskHours} >Submit Hours</button>
-                                    <p id="remainingHours">Remaining Hours</p>
-                                    <p id="hours">{this.state.varHours}</p>
+                <div style={{"position":"fixed", "top": "4px", "right": "15px"}}>
+                    <h4 id="remainingHours">Remaining Hours: </h4>
+                    <h4 id="remainingHours"><b>{this.state.varHours}</b></h4>
+                </div>
+                <div style={{"position":"fixed", "bottom": "0px", "right": "0px", "display":"flex", "flex-direction": "row"}}>
+                    <input id="myText" style={{marginTop: '5px', backgroundColor: 'white', width: '60px'}} placeholder="0" className="createProjectInput"></input>
+                    <button type="button" className="addCommentButton" onClick={this.addTaskHours} >Submit Hours of Work Today</button>
+
+                </div>
 
 
 
