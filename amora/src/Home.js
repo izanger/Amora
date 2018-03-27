@@ -17,19 +17,6 @@ import TodayView from "./TodayView.js"
 import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-  const getItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k+9}`,
-    content: `item ${k+9}`,
-  }));
-
-const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-  };
 
 class Home extends Component {
     constructor(props) {
@@ -37,25 +24,156 @@ class Home extends Component {
         this.state = {
             displayName: "",
             varHours:"",
-            todayItems: getItems(10),
 
           }
           this.onDragEnd = this.onDragEnd.bind(this);
-          //this.handleChange = this.handleChange.bind(this);
     }
 
     onDragEnd(result) {
         //dropped outside the list
         if (!result.destination) {
-          return;
+            const id = this.props.getAppState().user.uid
+            const taskID = result.draggableId;
+            rebase.remove(`users/${id}/todayView/${taskID}`).then(() => {
+
+                let count;
+                const id = this.props.getAppState().user.uid
+                const taskID = result.draggableId;
+                let todayCount = [];
+    
+                rebase.fetch(`users/${id}/count`, {
+                    context: this,
+                
+                  }).then(data => {
+                    todayCount = Object.values(data);
+                    if (!Number.isInteger(data)){
+                        console.log("contact Alex. This should never happen")
+                    }
+                    else {
+                        //count is defined, so use it 
+                        //BUT we need to honor where they are dropping it which makes me so sad on the
+                        //inside. Guys I REALLY don't want to do this. :(
+                        //JK this is gonna be cool watch this.
+    
+                        //first lets grab where they want to drop it
+                        //var dropitHere = result.destination.index;
+                        var droppedFrom = result.source.index;
+    
+                        //everything before that index is EHHHHH OK
+                        //but we need to bop everything after that index +1
+                        //data stores an int that is the num of things in the todayview
+                        //console.log("Drop At: " + dropitHere)
+                        
+                        count = data
+                                 
+                        rebase.fetch(`users/${id}/todayView`, {
+                            context: this,
+                            
+                          }).then(data => {
+                            
+                            let dataKeys = Object.keys(data)
+                            //cases
+                            //if move down list
+                            //item in desired spot moves up
+                            //if move up list
+                            //item in desired spot moves down
+         
+                            for(var i = 0; i < count-1; i++){
+                                                            
+                               if (droppedFrom < data[dataKeys[i]].index){
+                                   //if index is lower on list than drop location\
+                                   data[dataKeys[i]].index = data[dataKeys[i]].index - 1;
+                                   continue;
+                               }                              
+                            }
+                            
+                            rebase.update(`users/${id}/todayView`, {
+                                data: data,
+                                then(err){       
+                                    rebase.update(`users/${id}`, {
+                                        data: {count: count-1}
+                                      }).then(() => {
+                                        return;
+                                      })
+                                }
+                              });        
+                            })
+                    }
+                  })
+                  return;
+            })             
+              return;
         }
-        if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TodayView"){
-            return;
+        else if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TodayView"){
+            //reorder within todayView
+            //this should be easier. Just swap components around. Probably gonna be hard still lol
+            let count;
+            const id = this.props.getAppState().user.uid
+            const taskID = result.draggableId;
+            let todayCount = [];
+
+            rebase.fetch(`users/${id}/count`, {
+                context: this,
+              }).then(data => {
+                  
+                todayCount = Object.values(data);
+                if (!Number.isInteger(data)){
+                    console.log("contact Alex. This should never happen")
+                }
+                else {
+                    //count is defined, so use it 
+                    //BUT we need to honor where they are dropping it which makes me so sad on the
+                    //inside. Guys I REALLY don't want to do this. :(
+                    //JK this is gonna be cool watch this.
+
+                    //first lets grab where they want to drop it
+                    var dropitHere = result.destination.index;
+                    var droppedFrom = result.source.index;
+
+                    //everything before that index is EHHHHH OK
+                    //but we need to bop everything after that index +1
+                    //data stores an int that is the num of things in the todayview
+                    count = data
+                  
+                    rebase.fetch(`users/${id}/todayView`, {
+                        context: this,
+                      }).then(data => {
+                        let dataKeys = Object.keys(data)
+                        //cases
+                        //if move down list
+                        //item in desired spot moves up
+                        //if move up list
+                        //item in desired spot moves down
+ 
+                        for(var i = 0; i < count; i++){
+                           if (data[dataKeys[i]].index == droppedFrom){
+                                data[dataKeys[i]].index = dropitHere;
+                                continue;
+                           }
+                           else if (data[dataKeys[i]].index <= dropitHere && droppedFrom < data[dataKeys[i]].index){
+                               //if index is lower on list than drop location
+                               data[dataKeys[i]].index = data[dataKeys[i]].index - 1;
+                               continue;
+                           }  
+                           else if (data[dataKeys[i]].index >= dropitHere && droppedFrom > data[dataKeys[i]].index){
+                                //if index is lower on list than drop location
+                                data[dataKeys[i]].index = data[dataKeys[i]].index + 1;
+                                continue;
+                            }      
+                        
+                        }
+                        rebase.update(`users/${id}/todayView`, {
+                            data: data,
+                            then(err){
+                                    return;
+                            }
+                          });
+                        })
+                }
+              })
+              return;
         }
-        console.log(result);
-        // return;
-         if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TaskContainer"){
-            //if (result.source.droppableId === "TaskContainer"){
+         else if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TaskContainer"){
             //add to secondItems
             //add to todayItems and Database
             let projectArray = [];
@@ -64,103 +182,213 @@ class Home extends Component {
             let estimatedTime;
             let completedStatus;
             //const taskColor;
-
-            //result.draggableId is the key for the task
-            //fetch it, save some properties and then push it to today view.
+            let count;
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
-        rebase.fetch(`users/${id}/projects`, {
-            context: this,
-        }).then(data => {
-            console.log(data)
-            projectArray = Object.keys(data);
-            projectColors = Object.values(data);
-            var i = 0;
-            for (i; i < projectArray.length;i++ ){
-                let pid = projectArray[i];
-                console.log(projectColors[i].projectColor)
-                const taskColor = projectColors[i].projectColor
-                //return;
+            let todayCount = [];
 
-                rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
-                    context: this,
-                }).then(data => {
-                    console.log(data)
-                    if (data.taskName){
-                        console.log(data.taskName)
-                        taskname = data.taskName
-                        estimatedTime = data.EstimatedTimeValue
-                        if (data.completed){
-                        completedStatus = data.completed
-                        }
-                        else {
-                            completedStatus = false;
-                        }
-                        console.log("PUSHING")
+            rebase.fetch(`users/${id}/count`, {
+                context: this,
+              }).then(data => {
+                todayCount = Object.values(data);
+                if (!Number.isInteger(data)){
+                    //no count has been stored. So count = 0
+                    count = 1;
 
+                    rebase.update(`users/${id}`, {
+                        data: {count: 1}
+                      }).then(() => {
 
-                        //taskName and time are set, so we can push it to the todayView
-
-                        rebase.push(`users/${this.props.getAppState().user.uid}/todayView`, {
-                            data: {
-                                taskIDNumber: taskID,
-                                taskName: taskname,
-                                //taskDescription: this.state.descriptionValue,
-                                //priorityLevel: selectedText,
-                                EstimatedTimeValue: estimatedTime,
-                                color: taskColor,
-                                completed: completedStatus,
-                                //deadline: deadlineFixed,
-                                //taskCreator: this.props.getAppState().user.uid,
-
+                        //add the task to the todayView
+                        rebase.fetch(`users/${id}/projects`, {
+                            context: this,
+                        }).then(data => {
+                            projectArray = Object.keys(data);
+                            projectColors = Object.values(data);
+                            var i = 0;
+                            for (i; i < projectArray.length;i++ ){
+                                let pid = projectArray[i];
+                                const taskColor = projectColors[i].projectColor
+                
+                                rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
+                                    context: this,
+                                }).then(data => {
+                                    if (data.taskName){
+                                        taskname = data.taskName
+                                        estimatedTime = data.EstimatedTimeValue
+                                        if (data.completed){
+                                        completedStatus = data.completed
+                                        }
+                                        else {
+                                            completedStatus = false;
+                                        }
+                                        //taskName and time are set, so we can push it to the todayView
+                
+                                        rebase.push(`users/${this.props.getAppState().user.uid}/todayView`, {
+                                            data: {
+                                                taskIDNumber: taskID,
+                                                taskName: taskname,
+                                                EstimatedTimeValue: estimatedTime,
+                                                color: taskColor,
+                                                completed: completedStatus,
+                                                index: count-1,
+                                            }
+                                        })
+                                    }
+                                })
                             }
-                        })
-                    }
-
-
-
-                })
-            }
-
-          })
-
-
-        }
-        else {
-            //remove from todayItems and database
-            const id = this.props.getAppState().user.uid
-            const taskID = result.draggableId;
-            console.log("hey")
-            rebase.remove(`users/${id}/todayView/${taskID}`, function(err){
-                if(!err){
-                    console.log("Success: Task removed from Firebase")
-
+                          })
+                      })
                 }
                 else {
-                    console.log("Error: Unit test 3 Failed!")
+                    //count is defined, so use it 
+                    //BUT we need to honor where they are dropping it which makes me so sad on the
+                    //inside. Guys I REALLY don't want to do this. :(
+                    //JK this is gonna be cool watch this.
+
+                    //first lets grab where they want to drop it
+                    var dropitHere = result.destination.index;
+
+                    //everything before that index is EHHHHH OK
+                    //but we need to bop everything after that index +1
+                    //data stores an int that is the num of things in the todayview
+                    count = data
+                    rebase.fetch(`users/${id}/todayView`, {
+                        context: this,
+                      }).then(data => {
+                        let dataKeys = Object.keys(data)
+                        for(var i = 0; i < count; i++){
+                            if (data[dataKeys[i]].index >= dropitHere){
+                                data[dataKeys[i]].index = data[dataKeys[i]].index + 1;
+                            }
+                        }
+                        rebase.update(`users/${id}/todayView`, {
+                            data: data
+                          }).then(() => {
+                     count = count + 1;
+
+                    rebase.update(`users/${id}`, {
+                        data: {count: count}
+                      }).then(() => {
+
+                        //add the task to the todayView
+                        rebase.fetch(`users/${id}/projects`, {
+                            context: this,
+                        }).then(data => {
+                            projectArray = Object.keys(data);
+                            projectColors = Object.values(data);
+                            var i = 0;
+                            for (i; i < projectArray.length;i++ ){
+                                let pid = projectArray[i];
+                                const taskColor = projectColors[i].projectColor
+                                rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
+                                    context: this,
+                                }).then(data => {
+                                    if (data.taskName){
+                                        taskname = data.taskName
+                                        estimatedTime = data.EstimatedTimeValue
+                                        if (data.completed){
+                                        completedStatus = data.completed
+                                        }
+                                        else {
+                                            completedStatus = false;
+                                        }
+                                        //taskName and time are set, so we can push it to the todayView
+                
+                                        rebase.push(`users/${this.props.getAppState().user.uid}/todayView`, {
+                                            data: {
+                                                taskIDNumber: taskID,
+                                                taskName: taskname,
+                                                EstimatedTimeValue: estimatedTime,
+                                                color: taskColor,
+                                                completed: completedStatus,
+                                                index: dropitHere,
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                          })
+                      })
+                          })
+                      })
                 }
-              });
-
-
-
-
-
-
-
+              })
         }
+        else {
+            const id = this.props.getAppState().user.uid
+            const taskID = result.draggableId;
+            rebase.remove(`users/${id}/todayView/${taskID}`).then(() => {
 
-        // const todayItems = reorder(
-        //   this.state.todayItems,
-        //   result.source.index,
-        //   result.destination.index,
-        // );
-
-
-        // this.setState({
-        //   todayItems
-        // });
+                let count;
+                const id = this.props.getAppState().user.uid
+                const taskID = result.draggableId;
+                let todayCount = [];
+    
+                rebase.fetch(`users/${id}/count`, {
+                    context: this,
+                
+                  }).then(data => {
+                    todayCount = Object.values(data);
+                    if (!Number.isInteger(data)){
+                        console.log("contact Alex. This should never happen")
+                    }
+                    else {
+                        //count is defined, so use it 
+                        //BUT we need to honor where they are dropping it which makes me so sad on the
+                        //inside. Guys I REALLY don't want to do this. :(
+                        //JK this is gonna be cool watch this.
+    
+                        //first lets grab where they want to drop it
+                        //var dropitHere = result.destination.index;
+                        var droppedFrom = result.source.index;
+    
+                        //everything before that index is EHHHHH OK
+                        //but we need to bop everything after that index +1
+                        //data stores an int that is the num of things in the todayview
+                        //console.log("Drop At: " + dropitHere)
+                        
+                        count = data
+                                 
+                        rebase.fetch(`users/${id}/todayView`, {
+                            context: this,
+                            
+                          }).then(data => {
+                            
+                            let dataKeys = Object.keys(data)
+                            //cases
+                            //if move down list
+                            //item in desired spot moves up
+                            //if move up list
+                            //item in desired spot moves down
+         
+                            for(var i = 0; i < count-1; i++){
+                                                            
+                               if (droppedFrom < data[dataKeys[i]].index){
+                                   //if index is lower on list than drop location\
+                                   data[dataKeys[i]].index = data[dataKeys[i]].index - 1;
+                                   continue;
+                               }                              
+                            }
+                            
+                            rebase.update(`users/${id}/todayView`, {
+                                data: data,
+                                then(err){       
+                                    rebase.update(`users/${id}`, {
+                                        data: {count: count-1}
+                                      }).then(() => {
+                                        return;
+                                      })
+                                }
+                              });        
+                            })
+                    }
+                  })
+                  return;
+            })             
+              return;
+        }
     }
-
 
     componentWillMount() {
        this.getName();

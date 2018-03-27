@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import rebase from "../rebase.js"
 import ContentEditable from 'react-contenteditable'
-
 import "./Task.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import UserIcon from "./UserIcon.js"
@@ -9,14 +8,11 @@ import AddUserButton from "./AddUserButton.js"
 import TaskComment from "./TaskComment.js"
 import funnytemp from "../images/temp.jpg"
 import "./TaskComment.css"
-
-
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Modal from 'react-responsive-modal/lib/css';
 import { validateDate } from "../apphelpers.js"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
 import { App } from "../App.js"
 
 
