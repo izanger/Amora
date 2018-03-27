@@ -224,6 +224,18 @@ class Task extends Component {
 
                                  }
                                });
+
+                               rebase.fetch(`users/${this.props.userID}/count`, {
+                                context: this,
+                            
+                              }).then(data1 => {
+                                    
+                                rebase.update(`users/${this.props.userID}`, {
+                                    data: {count: data1-1}
+                                  })
+
+                              })
+
                          }
 
                          rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
@@ -239,6 +251,13 @@ class Task extends Component {
 
                  }
              })
+
+             rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+                if(!err){
+                    console.log("fiddlesticks")
+
+                }
+              });
 
             } else {
                 rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
