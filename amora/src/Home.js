@@ -316,12 +316,77 @@ class Home extends Component {
               })
         }
         else {
-            //remove from todayItems and database
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
-            console.log(taskID)
-            rebase.remove(`users/${id}/todayView/${taskID}`, function(err){
-              });
+            rebase.remove(`users/${id}/todayView/${taskID}`).then(() => {
+
+                let count;
+                const id = this.props.getAppState().user.uid
+                const taskID = result.draggableId;
+                let todayCount = [];
+    
+                rebase.fetch(`users/${id}/count`, {
+                    context: this,
+                
+                  }).then(data => {
+                    todayCount = Object.values(data);
+                    if (!Number.isInteger(data)){
+                        console.log("contact Alex. This should never happen")
+                    }
+                    else {
+                        //count is defined, so use it 
+                        //BUT we need to honor where they are dropping it which makes me so sad on the
+                        //inside. Guys I REALLY don't want to do this. :(
+                        //JK this is gonna be cool watch this.
+    
+                        //first lets grab where they want to drop it
+                        //var dropitHere = result.destination.index;
+                        var droppedFrom = result.source.index;
+    
+                        //everything before that index is EHHHHH OK
+                        //but we need to bop everything after that index +1
+                        //data stores an int that is the num of things in the todayview
+                        //console.log("Drop At: " + dropitHere)
+                        
+                        count = data
+                                 
+                        rebase.fetch(`users/${id}/todayView`, {
+                            context: this,
+                            
+                          }).then(data => {
+                            
+                            let dataKeys = Object.keys(data)
+                            //cases
+                            //if move down list
+                            //item in desired spot moves up
+                            //if move up list
+                            //item in desired spot moves down
+         
+                            for(var i = 0; i < count-1; i++){
+                                                            
+                               if (droppedFrom < data[dataKeys[i]].index){
+                                   //if index is lower on list than drop location\
+                                   data[dataKeys[i]].index = data[dataKeys[i]].index - 1;
+                                   continue;
+                               }                              
+                            }
+                            
+                            rebase.update(`users/${id}/todayView`, {
+                                data: data,
+                                then(err){       
+                                    rebase.update(`users/${id}`, {
+                                        data: {count: count-1}
+                                      }).then(() => {
+                                        return;
+                                      })
+                                }
+                              });        
+                            })
+                    }
+                  })
+                  return;
+            })             
+              return;
         }
     }
 
