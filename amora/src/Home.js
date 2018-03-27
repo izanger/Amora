@@ -136,16 +136,27 @@ class Home extends Component {
             //remove from todayItems and database
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
+            let pid = 
             console.log("hey")
-            rebase.remove(`users/${id}/todayView/${taskID}`, function(err){
-                if(!err){
-                    console.log("Success: Task removed from Firebase")
+            rebase.fetch()
+            rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
+                context: this,
+            }).then(data => {
+                let time = data.EstimatedTimeValue
 
-                }
-                else {
-                    console.log("Error: Unit test 3 Failed!")
-                }
-              });
+                rebase.remove(`users/${id}/todayView/${taskID}`, function(err){
+                    if(!err){
+                        console.log("Success: Task removed from Firebase")
+    
+                    }
+                    else {
+                        console.log("Error: Unit test 3 Failed!")
+                    }
+                  });
+            })
+
+
+            
 
 
 
@@ -203,7 +214,10 @@ class Home extends Component {
 
    document.getElementById("hours").innerHTML = displayHours
    this.props.getAppState(newState)
+    }
 
+    addHours = () => {
+      
     }
 
 
