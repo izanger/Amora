@@ -40,6 +40,7 @@ class Home extends Component {
             sumbitHours:"",
             taskHours:"",
             totalHours:"",
+            addMoreHours:"",
             todayItems: getItems(10),
 
           }
@@ -93,8 +94,9 @@ class Home extends Component {
                         console.log(data.taskName)
                         taskname = data.taskName
                         estimatedTime = data.EstimatedTimeValue
-                        this.state.taskHours = estimatedTime
-                        this.state.sumbitHours = this.state.sumbitHours
+                        this.state.taskHours = data.EstimatedTimeValue
+                        //this.state.taskHours = estimatedTime
+                        //this.state.sumbitHours = this.state.sumbitHours
                         this.subtractHours()
                         if (data.completed){
                         completedStatus = data.completed
@@ -136,14 +138,13 @@ class Home extends Component {
             //remove from todayItems and database
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
-            let pid = 
             console.log("hey")
-            rebase.fetch()
-            rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
+           // rebase.fetch()
+            rebase.fetch(`users/${id}/todayView/${taskID}`, {
                 context: this,
             }).then(data => {
-                let time = data.EstimatedTimeValue
-
+                this.state.addMoreHours = data.EstimatedTimeValue
+                this.addHours()
                 rebase.remove(`users/${id}/todayView/${taskID}`, function(err){
                     if(!err){
                         console.log("Success: Task removed from Firebase")
@@ -201,25 +202,41 @@ class Home extends Component {
           })
     }
 
-    subtractHours = () => {
+   subtractHours = () => {
    const newState = this.props.getAppState()
-   var x = document.getElementById("myText").value
-   var inputHours = parseInt(x)||0
-   this.state.sumbitHours=inputHours
-   this.state.totalHours = (parseInt(this.state.totalHours)+parseInt(this.state.taskHours)||0)
-   var displayHours = inputHours-parseInt(this.state.totalHours)||0
-   
+  //var x = document.getElementById("myText").value
+   //var inputHours = parseInt(x)||0
+   //this.state.sumbitHours=inputHours
+   //this.state.totalHours = (parseInt(this.state.totalHours)+parseInt(this.state.taskHours)||0)
+   var newOutput = document.getElementById("hours").innerHTML
+   var m = parseInt(newOutput)||0
+   //var displayHours = inputHours-parseInt(this.state.totalHours)||0
+   var displayHours = m - parseInt(this.state.taskHours)
    if(displayHours < 0)
    displayHours =0
-
+   
    document.getElementById("hours").innerHTML = displayHours
    this.props.getAppState(newState)
     }
 
     addHours = () => {
-      
-    }
+    const newState = this.props.getAppState()
+    var outputHours = document.getElementById("hours").innerHTML
+    var z = parseInt(outputHours)||0
+    var displayAddition = z + parseInt(this.state.addMoreHours)||0
+    document.getElementById("hours").innerHTML = displayAddition
+    this.props.getAppState(newState)
 
+    }
+  
+    submitHoursFunction = () => {
+    const newState = this.props.getAppState()
+    var submittedButtonHours = document.getElementById("myText").value
+    var q = parseInt(submittedButtonHours)||0
+    document.getElementById("hours").innerHTML = q
+    this.props.getAppState(newState)
+    }
+    
 
     render = () => {
 
@@ -280,7 +297,7 @@ class Home extends Component {
                     }}>{notificationText}</i>
 
                                  <textarea id="myText" rows="1" cols="3"></textarea>
-                                    <button type="button" onClick={this.subtractHours} >Submit Hours</button>
+                                    <button type="button" onClick={this.submitHoursFunction} >Submit Hours</button>
                                     <p id="remainingHours">Remaining Hours</p>
                                     <p id="hours">{this.state.varHours}</p>
 
