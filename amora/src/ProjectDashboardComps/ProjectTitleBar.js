@@ -346,12 +346,6 @@ class ProjectTitleBar extends Component {
             <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
                 this.setState({demoteManagerOpen: true})
             }}>Demote Manager</button>
-            <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
-                this.setState({createNewProjectOpen: true})
-            }}>Duplicate Team</button>
-            <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
-                this.setState({addManagerOpen: true})
-            }}>Promote User</button>
         </div>)
     }
 
@@ -448,6 +442,12 @@ class ProjectTitleBar extends Component {
                         })}
                     </div>
                     {creatorButtons}
+                    <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
+                        this.setState({createNewProjectOpen: true})
+                    }}>Duplicate Team</button>
+                    <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
+                        this.setState({addManagerOpen: true})
+                    }}>Promote User</button>
                     <Modal open={this.state.addProjectCreatorOpen} onClose={() => this.setState({addProjectCreatorOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'promoteToCreatorModal'}}>
                             <div>
                                 {/* <h1 className="taskAssignment">Task assignment</h1>*/}
