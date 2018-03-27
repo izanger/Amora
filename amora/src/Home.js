@@ -195,10 +195,12 @@ class Home extends Component {
    var x = document.getElementById("myText").value
    var inputHours = parseInt(x)||0
    this.state.sumbitHours=inputHours
-   this.state.totalHours = (parseInt(this.state.totalHours)+parseInt(this.state.taskHours)/2||0)
+   this.state.totalHours = (parseInt(this.state.totalHours)+parseInt(this.state.taskHours)||0)
    var displayHours = inputHours-parseInt(this.state.totalHours)||0
+   
    if(displayHours < 0)
    displayHours =0
+
    document.getElementById("hours").innerHTML = displayHours
    this.props.getAppState(newState)
 
