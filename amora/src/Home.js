@@ -32,7 +32,6 @@ class Home extends Component {
     onDragEnd(result) {
         //dropped outside the list
         if (!result.destination) {
-            console.log("banana")
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
             rebase.remove(`users/${id}/todayView/${taskID}`).then(() => {
@@ -316,11 +315,7 @@ class Home extends Component {
                 }
               })
         }
-        else if (result.source.droppableId === "TaskContainer" && result.source.droppableId === "TaskContainer"){
-            console.log("no no")
-        }
         else {
-            console.log(result)
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
             rebase.remove(`users/${id}/todayView/${taskID}`).then(() => {
