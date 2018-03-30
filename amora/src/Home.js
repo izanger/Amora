@@ -24,6 +24,10 @@ class Home extends Component {
         this.state = {
             displayName: "",
             varHours:"",
+            sumbitHours:"",
+            taskHours:"",
+            totalHours:"",
+            addMoreHours:"",
 
           }
           this.onDragEnd = this.onDragEnd.bind(this);
@@ -34,6 +38,14 @@ class Home extends Component {
         if (!result.destination) {
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
+            rebase.fetch(`users/${id}/todayView/${taskID}`, {
+                context: this,
+            }).then(data => {
+                this.state.addMoreHours = data.EstimatedTimeValue
+                this.addHours()
+            })
+
+
             rebase.remove(`users/${id}/todayView/${taskID}`).then(() => {
 
                 let count;
@@ -186,6 +198,7 @@ class Home extends Component {
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
             let todayCount = [];
+            console.log("ererer")
 
             rebase.fetch(`users/${id}/count`, {
                 context: this,
@@ -216,6 +229,9 @@ class Home extends Component {
                                     if (data.taskName){
                                         taskname = data.taskName
                                         estimatedTime = data.EstimatedTimeValue
+                                        console.log("hit")
+                                        this.subtractHours()
+                                        
                                         if (data.completed){
                                         completedStatus = data.completed
                                         }
@@ -223,7 +239,7 @@ class Home extends Component {
                                             completedStatus = false;
                                         }
                                         //taskName and time are set, so we can push it to the todayView
-                
+                                        this.state.taskHours = data.EstimatedTimeValue,
                                         rebase.push(`users/${this.props.getAppState().user.uid}/todayView`, {
                                             data: {
                                                 taskIDNumber: taskID,
@@ -286,7 +302,10 @@ class Home extends Component {
                                 }).then(data => {
                                     if (data.taskName){
                                         taskname = data.taskName
+                                        this.state.taskHours = data.EstimatedTimeValue
                                         estimatedTime = data.EstimatedTimeValue
+                                        console.log("hit")
+                                        this.subtractHours()
                                         if (data.completed){
                                         completedStatus = data.completed
                                         }
@@ -318,6 +337,18 @@ class Home extends Component {
         else {
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
+
+            console.log("hey")
+           // rebase.fetch()
+            rebase.fetch(`users/${id}/todayView/${taskID}`, {
+                context: this,
+            }).then(data => {
+                this.state.addMoreHours = data.EstimatedTimeValue
+                this.addHours()
+            })
+
+
+
             rebase.remove(`users/${id}/todayView/${taskID}`).then(() => {
 
                 let count;
@@ -414,12 +445,49 @@ class Home extends Component {
 
     addTaskHours = () => {
     this.state.varHours = document.getElementById("myText").value
-    document.getElementById("hours").innerHTML = this.state.varHours
+    console.log(this.state.varHours)
+    document.getElementById("remainingHours1").innerHTML = this.state.varHours
    //var x = document.getElementById("myText").value
   //document.getElementById("hours").innerHTML = x
-
     }
 
+   subtractHours = () => {
+   const newState = this.props.getAppState()
+  //var x = document.getElementById("myText").value
+   //var inputHours = parseInt(x)||0
+   //this.state.sumbitHours=inputHours
+   //this.state.totalHours = (parseInt(this.state.totalHours)+parseInt(this.state.taskHours)||0)
+   var newOutput = document.getElementById("remainingHours1").innerHTML
+   var m = parseInt(newOutput)||0
+   //var displayHours = inputHours-parseInt(this.state.totalHours)||0
+   var displayHours = m - parseInt(this.state.taskHours)
+   if(displayHours < 0)
+   displayHours =0
+   
+   document.getElementById("remainingHours1").innerHTML = displayHours
+   this.props.getAppState(newState)
+    }
+
+    addHours = () => {
+    const newState = this.props.getAppState()
+    var outputHours = document.getElementById("remainingHours1").innerHTML
+    console.log(outputHours)
+    var z = parseInt(outputHours)||0
+    var displayAddition = z + parseInt(this.state.addMoreHours)||0
+    document.getElementById("remainingHours1").innerHTML = displayAddition
+    console.log(displayAddition)
+    this.props.getAppState(newState)
+
+    }
+  
+    submitHoursFunction = () => {
+    const newState = this.props.getAppState()
+    var submittedButtonHours = document.getElementById("myText").value
+    var q = parseInt(submittedButtonHours)||0
+    document.getElementById("remainingHours1").innerHTML = q
+    this.props.getAppState(newState)
+    }
+    
 
     render = () => {
 
@@ -479,13 +547,18 @@ class Home extends Component {
                         this.props.goToUrl("/notifications");
                     }}>{notificationText}</i>
 
-                                 <textarea id="myText" rows="1" cols="3"></textarea>
-                                    <button type="button" onClick={this.addTaskHours} >Submit Hours</button>
-                                    <p id="remainingHours">Remaining Hours</p>
-                                    <p id="hours">{this.state.varHours}</p>
+                <div style={{"position":"fixed", "top": "4px", "right": "15px"}}>
+                    <h4 id="remainingHours">Remaining Hours: </h4>
+                    <h4 id="remainingHours1"><b>{this.state.varHours}</b></h4>
+                </div>
+                <div style={{"position":"fixed", "bottom": "0px", "right": "0px", "display":"flex", "flex-direction": "row"}}>
+                    <input id="myText" style={{marginTop: '5px', backgroundColor: 'white', width: '60px'}} placeholder="0" className="createProjectInput"></input>
+                    <button type="button" className="addCommentButton" onClick={this.addTaskHours} >Submit Hours of Work Today</button>
+
+                </div>
 
 
-
+                
 
                 </div>
 
@@ -524,7 +597,7 @@ class Home extends Component {
                 </div>
             </div>
             </DragDropContext>
-        )
+    )
     }
 
 

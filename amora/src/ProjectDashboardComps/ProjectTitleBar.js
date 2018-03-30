@@ -339,14 +339,15 @@ class ProjectTitleBar extends Component {
 
     renderProjectCreatorButton = () => {
         return (
-        <div style={{display: 'flex', 'flex-direction': 'row', 'margin-left': '0px', marginTop: '5px'}}>
+            <div>
             <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
                 this.setState({addProjectCreatorOpen: true})
             }}>Change Creator</button>
             <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
                 this.setState({demoteManagerOpen: true})
             }}>Demote Manager</button>
-        </div>)
+            </div>
+        )
     }
 
     renderSwatch = (color) => {
@@ -441,13 +442,14 @@ class ProjectTitleBar extends Component {
                             return this.renderSwatch(color)
                         })}
                     </div>
+                    <div style={{display: 'flex', 'flex-direction': 'row', 'margin-left': '0px', marginTop: '5px'}}>
                     {creatorButtons}
                     <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
                         this.setState({createNewProjectOpen: true})
                     }}>Duplicate Team</button>
                     <button class="addCommentButton" style={{marginRight: '5px'}} onClick={() => {
                         this.setState({addManagerOpen: true})
-                    }}>Promote User</button>
+                    }}>Promote User</button></div>
                     <Modal open={this.state.addProjectCreatorOpen} onClose={() => this.setState({addProjectCreatorOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'promoteToCreatorModal'}}>
                             <div>
                                 {/* <h1 className="taskAssignment">Task assignment</h1>*/}
@@ -488,13 +490,13 @@ class ProjectTitleBar extends Component {
                     </Modal>
                     <Modal open={this.state.createNewProjectOpen} onClose={() => this.setState({createNewProjectOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'copyProjectModal'}}>
                             <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Create Project with Duplicate Team</h4>
-                            <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "display": "flex", "flex-direction": "column"}}>
+                            <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '400px', "display": "flex", "flex-direction": "column"}}>
                                 <input type="text" placeholder="Enter Project Name" style={{marginLeft:'15px', width:'65%', backgroundColor:'white'}} className="createProjectInput" onChange={this.changenewTitleValue}
                                 value={this.state.newtitleValue} />
                                 <input type="text" placeholder="Enter Project Description" style={{marginLeft:'15px', width:'65%', backgroundColor:'white'}} className="createProjectInput"
                                 onChange={this.changenewDescriptionValue} value={this.state.newdescriptionValue} />
-                                <div id="colorPicker">
-                                    <h4>Project Color:</h4>
+                            <div id="colorPicker" style={{width: '400px'}}>
+                                    <div><h4>Project Color:</h4></div>
                                     {colors.map((color) => {
                                         return this.rendernewSwatch(color)
                                     })}
