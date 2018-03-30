@@ -118,7 +118,7 @@
 .addCommentButton {
     border-color: #4A4A4A;
     background-color: transparent;
-    /* width: 130px; */
+    width: 130px;
     border-radius: 20px;
     color: #4A4A4A;
     margin-bottom: 10px;

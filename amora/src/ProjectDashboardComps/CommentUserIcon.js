@@ -8,7 +8,6 @@ import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
 
 import { App } from "../App.js"
-import TodayViewUser from '../TodayViewUser.js';
 
 
 
@@ -149,8 +148,7 @@ class CommentUserIcon extends Component {
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
                           <h2>{this.state.displayName}<br/><br/>{this.state.email}</h2>
-                          <button onClick={this.removeUser}>Remove User from Project</button><br></br>
-                          <TodayViewUser uid={this.props.userID} getAppState={this.props.getAppState}/>
+                          <button onClick={this.removeUser}>Remove User from Project</button>
                         </Modal>
                 </div>
             )
@@ -167,8 +165,7 @@ class CommentUserIcon extends Component {
                     {/*This should only appear if it is selected as the project*/}
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
-                          <h2>{this.state.displayName}<br/><br/>{this.state.email}</h2><br></br>
-                          <TodayViewUser uid={this.props.userID} getAppState={this.props.getAppState}/>
+                          <h2>{this.state.displayName}<br/><br/>{this.state.email}</h2>
                         </Modal>
                 </div>
             )
