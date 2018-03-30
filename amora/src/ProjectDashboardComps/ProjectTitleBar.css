@@ -68,7 +68,7 @@
 }
 
 .copyProjectModal {
-
+    width: 500px;
     border-radius: 5px;
     border: 1px solid grey;
 }

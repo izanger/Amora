@@ -79,10 +79,12 @@ class TaskComment extends Component {
                                 <p id="taskCommentText" style={{marginBottom: '0px'}}>{isEdited} {formattedDate}</p>
                             </div>
 
-                            <p id="taskCommentText"><ContentEditable disabled={false} onChange={this.changeComment} html={this.props.commentValue}/></p>
+                            <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
+                                    <p id="taskCommentText"><ContentEditable disabled={false} onChange={this.changeComment} html={this.props.commentValue}/></p>
+                                    <button className="addCommentButton" onClick={this.deleteComment}>Delete Comment</button>
+                            </div>
                         </div>
                     </div>
-                    <button onClick={this.deleteComment}>Delete Comment</button>
 
                 </div>
             )
@@ -105,7 +107,7 @@ class TaskComment extends Component {
                         getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
                         key={this.props.userKey} user={this.props.project.userList[this.props.uid]} userID={this.props.userKey} project={this.props.project} />
 
-                        
+
                         <div id="taskNameAndComment">
                             <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
                                 <p id="taskCommentName">{this.props.username}</p>
