@@ -311,10 +311,11 @@ class Task extends Component {
             //Unarchive
             const projID = this.props.projectID;
             const taskID = this.props.taskKey;
-            console.log(this.state.taskCompleted);
-            rebase.update(`users/${this.props.userID}`, {
-                data: {
-                    taskCompleted: 1
+            rebase.fetch(`users/${this.props.userID}`, {
+                then: (data) => {
+                    rebase.update(`users/${this.props.userID}`, {
+                        data: { taskCompleted: data.taskCompleted-1 }
+                    })
                 }
             })
             rebase.fetch(`projects/${projID}/archivedTaskList/${taskID}`, {
@@ -427,10 +428,11 @@ class Task extends Component {
             // Archive
             const projID = this.props.projectID;
             const taskID = this.props.taskKey;
-            console.log(this.state.taskCompleted)
-            rebase.update(`users/${this.props.userID}`, {
-                data: {
-                    taskCompleted: 1
+            rebase.fetch(`users/${this.props.userID}`, {
+                then: (data) => {
+                    rebase.update(`users/${this.props.userID}`, {
+                        data: { taskCompleted: data.taskCompleted+1 }
+                    })
                 }
             })
             rebase.fetch(`projects/${projID}/taskList/${taskID}`, {

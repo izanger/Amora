@@ -227,7 +227,7 @@ class ProjectDashboard extends Component {
                     taskRender = (
                         taskKeys.map((key) => {
                             return this.renderTask(key, true)
-                        return <Task archived={true} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid}
+                        return <Task archived={true} tasksCompleted={this.props.getAppState().user.uid.tasksCompleted} projectID = {this.props.getAppState().currentProject.key} userID={this.props.getAppState().user.uid}
                         taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key}
                         task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
                         setProjectDashboardState={this.setProjectDashboardState}/>
