@@ -52,68 +52,68 @@ class Home extends Component {
                 const id = this.props.getAppState().user.uid
                 const taskID = result.draggableId;
                 let todayCount = [];
-    
+
                 rebase.fetch(`users/${id}/count`, {
                     context: this,
-                
+
                   }).then(data => {
                     todayCount = Object.values(data);
                     if (!Number.isInteger(data)){
                         console.log("contact Alex. This should never happen")
                     }
                     else {
-                        //count is defined, so use it 
+                        //count is defined, so use it
                         //BUT we need to honor where they are dropping it which makes me so sad on the
                         //inside. Guys I REALLY don't want to do this. :(
                         //JK this is gonna be cool watch this.
-    
+
                         //first lets grab where they want to drop it
                         //var dropitHere = result.destination.index;
                         var droppedFrom = result.source.index;
-    
+
                         //everything before that index is EHHHHH OK
                         //but we need to bop everything after that index +1
                         //data stores an int that is the num of things in the todayview
                         //console.log("Drop At: " + dropitHere)
-                        
+
                         count = data
-                                 
+
                         rebase.fetch(`users/${id}/todayView`, {
                             context: this,
-                            
+
                           }).then(data => {
-                            
+
                             let dataKeys = Object.keys(data)
                             //cases
                             //if move down list
                             //item in desired spot moves up
                             //if move up list
                             //item in desired spot moves down
-         
+
                             for(var i = 0; i < count-1; i++){
-                                                            
+
                                if (droppedFrom < data[dataKeys[i]].index){
                                    //if index is lower on list than drop location\
                                    data[dataKeys[i]].index = data[dataKeys[i]].index - 1;
                                    continue;
-                               }                              
+                               }
                             }
-                            
+
                             rebase.update(`users/${id}/todayView`, {
                                 data: data,
-                                then(err){       
+                                then(err){
                                     rebase.update(`users/${id}`, {
                                         data: {count: count-1}
                                       }).then(() => {
                                         return;
                                       })
                                 }
-                              });        
+                              });
                             })
                     }
                   })
                   return;
-            })             
+            })
               return;
         }
         else if (result.destination.droppableId === "TodayView" && result.source.droppableId === "TodayView"){
@@ -127,13 +127,13 @@ class Home extends Component {
             rebase.fetch(`users/${id}/count`, {
                 context: this,
               }).then(data => {
-                  
+
                 todayCount = Object.values(data);
                 if (!Number.isInteger(data)){
                     console.log("contact Alex. This should never happen")
                 }
                 else {
-                    //count is defined, so use it 
+                    //count is defined, so use it
                     //BUT we need to honor where they are dropping it which makes me so sad on the
                     //inside. Guys I REALLY don't want to do this. :(
                     //JK this is gonna be cool watch this.
@@ -146,7 +146,7 @@ class Home extends Component {
                     //but we need to bop everything after that index +1
                     //data stores an int that is the num of things in the todayview
                     count = data
-                  
+
                     rebase.fetch(`users/${id}/todayView`, {
                         context: this,
                       }).then(data => {
@@ -156,7 +156,7 @@ class Home extends Component {
                         //item in desired spot moves up
                         //if move up list
                         //item in desired spot moves down
- 
+
                         for(var i = 0; i < count; i++){
                            if (data[dataKeys[i]].index == droppedFrom){
                                 data[dataKeys[i]].index = dropitHere;
@@ -166,13 +166,13 @@ class Home extends Component {
                                //if index is lower on list than drop location
                                data[dataKeys[i]].index = data[dataKeys[i]].index - 1;
                                continue;
-                           }  
+                           }
                            else if (data[dataKeys[i]].index >= dropitHere && droppedFrom > data[dataKeys[i]].index){
                                 //if index is lower on list than drop location
                                 data[dataKeys[i]].index = data[dataKeys[i]].index + 1;
                                 continue;
-                            }      
-                        
+                            }
+
                         }
                         rebase.update(`users/${id}/todayView`, {
                             data: data,
@@ -222,7 +222,7 @@ class Home extends Component {
                             for (i; i < projectArray.length;i++ ){
                                 let pid = projectArray[i];
                                 const taskColor = projectColors[i].projectColor
-                
+
                                 rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
                                     context: this,
                                 }).then(data => {
@@ -231,7 +231,7 @@ class Home extends Component {
                                         estimatedTime = data.EstimatedTimeValue
                                         console.log("hit")
                                         this.subtractHours()
-                                        
+
                                         if (data.completed){
                                         completedStatus = data.completed
                                         }
@@ -257,7 +257,7 @@ class Home extends Component {
                       })
                 }
                 else {
-                    //count is defined, so use it 
+                    //count is defined, so use it
                     //BUT we need to honor where they are dropping it which makes me so sad on the
                     //inside. Guys I REALLY don't want to do this. :(
                     //JK this is gonna be cool watch this.
@@ -313,7 +313,7 @@ class Home extends Component {
                                             completedStatus = false;
                                         }
                                         //taskName and time are set, so we can push it to the todayView
-                
+
                                         rebase.push(`users/${this.props.getAppState().user.uid}/todayView`, {
                                             data: {
                                                 taskIDNumber: taskID,
@@ -355,68 +355,68 @@ class Home extends Component {
                 const id = this.props.getAppState().user.uid
                 const taskID = result.draggableId;
                 let todayCount = [];
-    
+
                 rebase.fetch(`users/${id}/count`, {
                     context: this,
-                
+
                   }).then(data => {
                     todayCount = Object.values(data);
                     if (!Number.isInteger(data)){
                         console.log("contact Alex. This should never happen")
                     }
                     else {
-                        //count is defined, so use it 
+                        //count is defined, so use it
                         //BUT we need to honor where they are dropping it which makes me so sad on the
                         //inside. Guys I REALLY don't want to do this. :(
                         //JK this is gonna be cool watch this.
-    
+
                         //first lets grab where they want to drop it
                         //var dropitHere = result.destination.index;
                         var droppedFrom = result.source.index;
-    
+
                         //everything before that index is EHHHHH OK
                         //but we need to bop everything after that index +1
                         //data stores an int that is the num of things in the todayview
                         //console.log("Drop At: " + dropitHere)
-                        
+
                         count = data
-                                 
+
                         rebase.fetch(`users/${id}/todayView`, {
                             context: this,
-                            
+
                           }).then(data => {
-                            
+
                             let dataKeys = Object.keys(data)
                             //cases
                             //if move down list
                             //item in desired spot moves up
                             //if move up list
                             //item in desired spot moves down
-         
+
                             for(var i = 0; i < count-1; i++){
-                                                            
+
                                if (droppedFrom < data[dataKeys[i]].index){
                                    //if index is lower on list than drop location\
                                    data[dataKeys[i]].index = data[dataKeys[i]].index - 1;
                                    continue;
-                               }                              
+                               }
                             }
-                            
+
                             rebase.update(`users/${id}/todayView`, {
                                 data: data,
-                                then(err){       
+                                then(err){
                                     rebase.update(`users/${id}`, {
                                         data: {count: count-1}
                                       }).then(() => {
                                         return;
                                       })
                                 }
-                              });        
+                              });
                             })
                     }
                   })
                   return;
-            })             
+            })
               return;
         }
     }
@@ -438,7 +438,8 @@ class Home extends Component {
             context: this,
         }).then(data => {
             let newState = { ...this.state}
-            newState.displayName = data
+            var split = data.split(" ")
+            newState.displayName = split[0]
             this.setState(newState);
           })
     }
@@ -463,7 +464,7 @@ class Home extends Component {
    var displayHours = m - parseInt(this.state.taskHours)
    if(displayHours < 0)
    displayHours =0
-   
+
    document.getElementById("remainingHours1").innerHTML = displayHours
    this.props.getAppState(newState)
     }
@@ -479,7 +480,7 @@ class Home extends Component {
     this.props.getAppState(newState)
 
     }
-  
+
     submitHoursFunction = () => {
     const newState = this.props.getAppState()
     var submittedButtonHours = document.getElementById("myText").value
@@ -487,7 +488,7 @@ class Home extends Component {
     document.getElementById("remainingHours1").innerHTML = q
     this.props.getAppState(newState)
     }
-    
+
 
     render = () => {
 
@@ -534,7 +535,7 @@ class Home extends Component {
 
                     }}><ProjectIcon personalIcon={true} projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
 
-                    <h5 id="projectProfileName">{this.state.displayName}</h5>
+                <h5 id="projectProfileName" className="text_description">{this.state.displayName}</h5>
                     <img alt={"Seperator"} src={line} id="projectSeparatorLine"/>
 
                     {projectIcons}
@@ -558,7 +559,7 @@ class Home extends Component {
                 </div>
 
 
-                
+
 
                 </div>
 

@@ -14,7 +14,7 @@
 
     width: 90px;
     height: 100%;
-    background: lightgrey;
+    background: #ECEEEF;
     z-index: 201;
     box-sizing: content-box;
     visibility: visible;
@@ -29,7 +29,7 @@
     max-width: 10000px;
     height: 100%;
     top: 0px;
-    background-color: whitesmoke;
+    background-color: #F8F8F8;
 }
 
 #myDay {
@@ -45,13 +45,13 @@
 #projectProfileName {
     color: #4A4A4A;
     font-weight: lighter;
-    margin-top: 2px;
+    margin-top: 7px;
 }
 
 #projectSeparatorLine {
-    width: 60px;
+    width: 32px;
     height: 2px;
-    margin-left: 15px;
+    margin-left: 29px;
 }
 
 #taskDashContainer {
