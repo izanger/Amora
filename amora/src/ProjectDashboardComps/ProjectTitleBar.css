@@ -1,6 +1,6 @@
 #projectTitleContainer {
     width: 100%;
-    height: 60px;
+    height: 41px;
     margin: 0px;
     margin-bottom: 0px;
     display: flex;
@@ -29,7 +29,7 @@
      right: 10px;
      top: 13px;
      position:absolute;
-     height: 30px;
+     height: 20px;
 }
 
  #projectSettingsIcon:hover {

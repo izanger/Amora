@@ -9,6 +9,7 @@ import { emailRegistered, validateEmail } from "../apphelpers.js"
 import InviteList from "../InviteList.js"
 
 import "./ProjectTitleBar.css"
+import "../textStyle.css"
 
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
@@ -565,8 +566,11 @@ class ProjectTitleBar extends Component {
         let settings = this.renderSettings(color, colors)
         return (
             <div id="projectTitleContainer" style={{backgroundColor: color}}>
-                <h3 id="projectTitle">{this.props.title}</h3>
-                <h5 id="projectDescription"><i>{this.props.getProjectDashboardState().project.projectDescription}</i></h5>
+                <div style={{display: 'flex', 'flex-direction': 'row', marginLeft: '14px', marginTop: '6px', color: 'white'}}>
+                    <p className="text_header">{this.props.title}</p>
+                    <p style={{marginLeft: '10px', marginRight: '10px', marginTop: '-1px', fontSize: '15pt'}}>|</p>
+                    <p className="text_description" style={{marginTop: '7px'}}>{this.props.getProjectDashboardState().project.projectDescription}</p>
+                </div>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
 

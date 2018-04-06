@@ -1,0 +1,11 @@
+.text_header {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15pt;
+    font-weight: 900;
+}
+
+.text_description {
+    font-family: 'Roboto', sans-serif;
+    font-size: 10pt;
+    font-weight: lighter;
+}
