@@ -311,10 +311,18 @@ class Task extends Component {
             //Unarchive
             const projID = this.props.projectID;
             const taskID = this.props.taskKey;
+            var totalHours = this.props.getProjectDashboardState().project.archivedTaskList[taskID].EstimatedTimeValue
             rebase.fetch(`users/${this.props.userID}`, {
                 then: (data) => {
                     rebase.update(`users/${this.props.userID}`, {
                         data: { taskCompleted: data.taskCompleted-1 }
+                    })
+                }
+            })
+            rebase.fetch(`users/${this.props.userID}`, {
+                then: (data) => {
+                    rebase.update(`users/${this.props.userID}`, {
+                        data: { allTimeHours: data.allTimeHours - +totalHours }
                     })
                 }
             })
@@ -428,10 +436,19 @@ class Task extends Component {
             // Archive
             const projID = this.props.projectID;
             const taskID = this.props.taskKey;
+            var totalHours = this.props.getProjectDashboardState().project.taskList[taskID].EstimatedTimeValue
+            console.log(taskID);
             rebase.fetch(`users/${this.props.userID}`, {
                 then: (data) => {
                     rebase.update(`users/${this.props.userID}`, {
                         data: { taskCompleted: data.taskCompleted+1 }
+                    })
+                }
+            })
+            rebase.fetch(`users/${this.props.userID}`, {
+                then: (data) => {
+                    rebase.update(`users/${this.props.userID}`, {
+                        data: { allTimeHours: data.allTimeHours + +totalHours }
                     })
                 }
             })

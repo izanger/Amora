@@ -46,6 +46,7 @@ class UserIcon extends Component {
         this.getEmail();
         this.getDateJoinedAmora();
         this.getTasksCompleted();
+        this.getAllTimeHours();
         //console.log(this.props)
         // const promise = checkIfManager(this.props.userID, this.props.projectID)
         // promise.then((data) => {
@@ -136,6 +137,26 @@ class UserIcon extends Component {
         })
     }
 
+    getAllTimeHours() {
+        const id = this.props.userID  
+        let newState = { ...this.state}
+        rebase.fetch(`users/${id}/allTimeHours`, {
+            context: this,
+        }).then(data => {
+            newState.allTimeHours = data
+            this.setState(newState);        
+          }).then(() => {
+            this.bindingref = rebase.syncState(`users/${id}/allTimeHours`, {
+                context: this,
+                state: 'allTimeHours',
+                then: () => {
+                  newState.viewSynced = true
+                  this.setState(newState)
+                }
+            })
+        })
+    }   
+
     removeUser = () => {
         var response = window.confirm("Are you sure you want to remove this user?")
         if (response == true){
@@ -184,7 +205,7 @@ class UserIcon extends Component {
                         <Modal open={open} onClose={this.onCloseModal} little>
                           <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
                             Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
-                            Tasks Completed: {this.state.taskCompleted}</h2>
+                            Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours: {this.state.allTimeHours}</h2>
                           <button onClick={this.removeUser}>Remove User from Project</button><br></br>
                           <TodayViewUser uid={this.props.userID} getAppState={this.props.getAppState}/>
                         </Modal>
@@ -205,7 +226,7 @@ class UserIcon extends Component {
                         <Modal open={open} onClose={this.onCloseModal} little>
                           <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
                             Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
-                            Tasks Completed: {this.state.taskCompleted}</h2><br></br>
+                            Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours: {this.state.allTimeHours}</h2><br></br>
                           <TodayViewUser uid={this.props.userID} getAppState={this.props.getAppState}/>
                         </Modal>
                 </div>
