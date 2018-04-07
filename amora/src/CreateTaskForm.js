@@ -18,6 +18,7 @@ class CreateTaskForm extends Component {
             errorValue: "",
             estimatedTimeValue: "",
             priorityLevel: "",
+            categories: [],
             deadline: moment()
         }
         this.handleChange = this.handleChange.bind(this);
@@ -32,6 +33,15 @@ class CreateTaskForm extends Component {
                 if(data.key !== this.props.getAppState().currentProject.key){
                   this.props.goToUrl("/dashboard")
                 }
+            }
+        })
+        rebase.fetch(`projects/${this.props.getAppState().currentProject.key}/taskCategories`, {
+            context: this,
+            then(data){
+                const newState = { ...this.state }
+                newState.categories = Object.keys(data)
+                this.setState(newState)
+                console.log(newState)
             }
         })
     }
@@ -101,6 +111,15 @@ class CreateTaskForm extends Component {
         return selectedDate.format()
     }
 
+    getCategoryOptions() {
+        var options = []
+        for(var i = 0; i < this.state.categories.length; i++){
+            options.push(<option value={i.toString()}>{this.state.categories[i]}</option>)
+            console.log("Yo: " + this.state.categories[i])
+        }
+        return options;
+    }
+
     // Let Firebase create a taskID and add all the relevant from the form
     createTask = () => {
         if (!this.isTaskValid()) {
@@ -138,6 +157,7 @@ class CreateTaskForm extends Component {
     // Mandatory render method
     render = () => {
         let color = "#3498DB";
+        let categoryOptions = this.getCategoryOptions();
         return (
             <div id="taskDashboard">
                 <div id="projectTitleContainer" style={{backgroundColor: this.props.getAppState().currentProject.projectColor}}>
@@ -165,6 +185,11 @@ class CreateTaskForm extends Component {
                         <option value="1">Low</option>
                         <option value="2">Medium</option>
                         <option value="3">High</option>
+                    </select>
+
+                    <h4 style={{marginRight: '5px'}}>Task Category:</h4>
+                    <select name="dropdown" id="dropdown">
+                        {categoryOptions}
                     </select>
                 </div>
 
