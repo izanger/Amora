@@ -26,8 +26,11 @@ class ProjectTitleBar extends Component {
             projectDescription:"",
             taskAlertTime: "",
             inviteValue: "",
+            categoryValue: "",
+            categoryErrorValue: "",
             userList: [ ],
             userEmails: [ ],
+            //categoryList: {},
             addManagerOpen: false,
             addProjectCreatorOpen: false,
             demoteManagerOpen: false,
@@ -57,6 +60,12 @@ class ProjectTitleBar extends Component {
     changenewDescriptionValue = (event) => {
         const newState = { ...this.state }
         newState.newdescriptionValue = event.target.value
+        this.setState(newState)
+    }
+
+    changeCategoryValue = (event) => {
+        const newState = { ...this.state }
+        newState.categoryValue = event.target.value;
         this.setState(newState)
     }
 
@@ -101,6 +110,33 @@ class ProjectTitleBar extends Component {
     changeDescriptionValue = (event) => {
         const newState = { ...this.state }
         newState.projectDescription = event.target.value
+        this.setState(newState)
+    }
+
+    validCategory = (category) => {
+        if(this.props.getProjectDashboardState().project.taskCategories[category] !== true){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    addCategory = () => {
+        if (this.state.categoryValue === ""){
+            return;
+        }
+
+        const newDashBoardState = this.props.getProjectDashboardState();
+        const newState = { ...this.state }
+        if (!this.validCategory(this.state.categoryValue)){
+             newState.categoryErrorValue = "You already added that category"
+             this.setState(newState)
+             return;
+        }
+        newDashBoardState.project.taskCategories[this.state.categoryValue] = true;
+        this.props.setProjectDashboardState(newDashBoardState)
+        newState.categoryErrorValue = "";
+        newState.categoryValue = "";
         this.setState(newState)
     }
 
@@ -516,6 +552,7 @@ class ProjectTitleBar extends Component {
                             {/*This should only appear if it is selected as the project*/}
 
                         </div>
+                        
                         <Modal open={this.state.addManagerOpen} onClose={() => this.setState({addManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'promoteUserToManagerModal'}}>
                             <div>
                                 {/* <h1 className="taskAssignment">Task assignment</h1>*/}
@@ -536,12 +573,29 @@ class ProjectTitleBar extends Component {
                             </div>
                         </Modal>
                         <input type="text" placeholder="Email of person you'd like to invite" style={{marginLeft:'0px', width:'200%', backgroundColor:'white'}} className="createProjectInput"
-                        value={this.state.inviteValue} onChange={this.changeInviteValue} />
+                            value={this.state.inviteValue} onChange={this.changeInviteValue} />
+
                         <div>
                             <p className="errorBox">{this.state.errorValue}</p>
                         </div>
                         <InviteList uid={this.props.getAppState().user.uid} users={this.state.userList} />
                     </div>
+
+                    <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
+                            <div id="addUserIconProjectContainer" title="Invite User" onClick={this.addCategory}>
+                                <svg height="23" width="23">
+                                    <line x1="4" y1="9" x2="15" y2="9" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                                    <line x1="9.5" y1="4" x2="9.5" y2="15" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                                </svg>
+                            </div>
+                            <input type="text" placeholder="Name of task category you'd like to add" className="createProjectInput"
+                                value={this.state.categoryValue} onChange={this.changeCategoryValue} style={{width: '100%'}}/>  
+
+                        <div >
+                            <p className="errorBox">{this.state.categoryErrorValue}</p>
+                        </div> 
+                    </div>
+
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
                 </div>
             )

@@ -21,7 +21,9 @@ class CreateProjectForm extends Component {
             inviteErrorValue: "",
             categoryErrorValue: "",
             colorValue: "#E74C3C",
-            categoryList: [ ],
+            categoryList: { 
+                General: true,
+            },
             userList: [ ],
             userEmails: [ ]
         }
@@ -70,7 +72,7 @@ class CreateProjectForm extends Component {
  
     //Make sure they're not trying to add the same category twice
     validCategory = (category) => {
-        if(this.state.categoryList.indexOf(category) === -1){
+        if(this.state.categoryList[category] !== true){
             return true;
         } else {
             return false;
@@ -89,7 +91,7 @@ class CreateProjectForm extends Component {
             return;
         }
 
-        newState.categoryList.push(this.state.categoryValue)
+        newState.categoryList[this.state.categoryValue] = true;
         newState.categoryErrorValue = "";
         newState.categoryValue = "";
         this.setState(newState)
