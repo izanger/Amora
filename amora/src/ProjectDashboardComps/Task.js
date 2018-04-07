@@ -772,7 +772,8 @@ class Task extends Component {
         //console.log(dueDate[0])
         const year = dueDate[2];
         let month = dueDate[0];
-        const day = dueDate[1]
+        let day = dueDate[1]
+        day = parseInt(day) + 1
         month = month - 1
 
         moment.updateLocale('en', {
@@ -793,7 +794,8 @@ class Task extends Component {
                 yy: "%d years"
             }
         });
-
+        
+        //console.log("DAyY: " + day)
         // const banana = moment([dueDate[2], dueDate[1], dueDate[0]]).fromNow();
         //console.log("Year: " + year)
         //console.log("Month: " + month)
