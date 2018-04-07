@@ -114,8 +114,7 @@ class CreateTaskForm extends Component {
     getCategoryOptions() {
         var options = []
         for(var i = 0; i < this.state.categories.length; i++){
-            options.push(<option value={i.toString()}>{this.state.categories[i]}</option>)
-            console.log("Yo: " + this.state.categories[i])
+            options.push(<option key={i} value={i.toString()}>{this.state.categories[i]}</option>)
         }
         return options;
     }
@@ -129,6 +128,9 @@ class CreateTaskForm extends Component {
         var dropSelect = document.getElementById("dropdown");
         var selectedText = dropSelect.options[dropSelect.selectedIndex].text;
 
+        var categoryDropdown = document.getElementById("categoryDropdown"); //get selected category
+        var selectedCategory = categoryDropdown.options[categoryDropdown.selectedIndex].text;
+
         var deadlineFixed = this.fixDeadline(this.state.deadline.format());
 
         const newState = { ...this.state }
@@ -139,6 +141,7 @@ class CreateTaskForm extends Component {
                 taskName: this.state.titleValue,
                 taskDescription: this.state.descriptionValue,
                 priorityLevel: selectedText,
+                taskCategory: selectedCategory,
                 EstimatedTimeValue: this.state.estimatedTimeValue,
                 deadline: deadlineFixed,
                 taskCreator: this.props.getAppState().user.uid,
@@ -188,7 +191,7 @@ class CreateTaskForm extends Component {
                     </select>
 
                     <h4 style={{marginRight: '5px'}}>Task Category:</h4>
-                    <select name="dropdown" id="dropdown">
+                    <select name="dropdown" id="categoryDropdown">
                         {categoryOptions}
                     </select>
                 </div>
