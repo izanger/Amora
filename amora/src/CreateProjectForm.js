@@ -17,8 +17,11 @@ class CreateProjectForm extends Component {
             titleValue: "",
             descriptionValue: "",
             inviteValue: "",
-            errorValue: "",
+            categoryValue: "",
+            inviteErrorValue: "",
+            categoryErrorValue: "",
             colorValue: "#E74C3C",
+            categoryList: [ ],
             userList: [ ],
             userEmails: [ ]
         }
@@ -52,12 +55,47 @@ class CreateProjectForm extends Component {
         this.setState(newState)
     }
 
+    changeCategoryValue = (event) => {
+        const newState = { ...this.state }
+        newState.categoryValue = event.target.value;
+        this.setState(newState)
+    }
+
     // Check to see if user has pressed enter key
     // enterInviteValue = (event) => {
     //     if (event.keyCode === 13) {
     //         this.inviteUser()
     //     }
     // }
+ 
+    //Make sure they're not trying to add the same category twice
+    validCategory = (category) => {
+        if(this.state.categoryList.indexOf(category) === -1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    addCategory = () => {
+        if (this.state.categoryValue === ""){
+            return;
+        }
+
+        const newState = { ...this.state }
+        if (!this.validCategory(this.state.categoryValue)){
+            newState.categoryErrorValue = "You already added that category"
+            this.setState(newState)
+            return;
+        }
+
+        newState.categoryList.push(this.state.categoryValue)
+        newState.categoryErrorValue = "";
+        newState.categoryValue = "";
+        this.setState(newState)
+        console.log(newState);
+        return;
+    }
 
     // Checks to see is this.state.emailValue is valid
     emailValidationProcess = () => {
@@ -67,13 +105,13 @@ class CreateProjectForm extends Component {
 
         const newState = { ...this.state }
         if (!validateEmail(this.state.inviteValue)) {
-            newState.errorValue = "Please enter a valid email address..."
+            newState.inviteErrorValue = "Please enter a valid email address..."
             this.setState(newState)
             return false
         }
 
         if (this.state.inviteValue === this.props.getAppState().user.email) {
-            newState.errorValue = "You will be inherently added to the project..."
+            newState.inviteErrorValue = "You will be inherently added to the project..."
             this.setState(newState)
             return false
         }
@@ -81,17 +119,17 @@ class CreateProjectForm extends Component {
         const promise = emailRegistered(this.state.inviteValue)
         promise.then((data) => {
             if (!data.val()) {
-                newState.errorValue = "That email address has not been registered with Amora..."
+                newState.inviteErrorValue = "That email address has not been registered with Amora..."
                 this.setState(newState)
                 return false
             }
             if (this.state.userEmails.includes(this.state.inviteValue)) {
-                newState.errorValue = "You've already added that user to this project..."
+                newState.inviteErrorValue = "You've already added that user to this project..."
                 this.setState(newState)
                 return false
             }
             const newKey = Object.keys(data.val())
-            newState.errorValue = ""
+            newState.inviteErrorValue = ""
             newState.inviteValue = "";
             newState.userList.push(data.val()[newKey])
             newState.userEmails.push(this.state.inviteValue)
@@ -110,7 +148,7 @@ class CreateProjectForm extends Component {
     isProjectValid = () => {
         const newState = { ...this.state }
         if (this.state.titleValue === "") {
-            newState.errorValue = "Please enter a project title..."
+            newState.inviteErrorValue = "Please enter a project title..."
             this.setState(newState)
             return false
         }
@@ -137,6 +175,7 @@ class CreateProjectForm extends Component {
                 projectPhotoURL: this.props.getAppState().user.photoURL,
                 projectDescription: this.state.descriptionValue,
                 isPersonalDashboardProject: false,
+                taskCategories: this.state.categoryList,
             }
         }).then((newLocation) => {
             let newState = { ...this.state }
@@ -269,12 +308,27 @@ class CreateProjectForm extends Component {
 
                     </div>
                     <input type="text" placeholder="Email of person you'd like to invite" className="createProjectInput"
-                    value={this.state.inviteValue} onChange={this.changeInviteValue} style={{width: '100%'}}/>
-                </div>
-                <div >
-                    <p className="errorBox">{this.state.errorValue}</p>
+                    value={this.state.inviteValue} onChange={this.changeInviteValue} style={{width: '100%'}}/>   
                 </div>
 
+                <div >
+                    <p className="errorBox">{this.state.inviteErrorValue}</p>
+                </div>
+
+                <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
+                    <div id="addUserIconProjectContainer" title="Invite User" onClick={this.addCategory}>
+                        <svg height="23" width="23">
+                            <line x1="4" y1="9" x2="15" y2="9" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                            <line x1="9.5" y1="4" x2="9.5" y2="15" style={{strokeWidth: '2px'}} className="newProjectUserPlus" />
+                        </svg>
+                    </div>
+                    <input type="text" placeholder="Name of task category you'd like to add" className="createProjectInput"
+                    value={this.state.categoryValue} onChange={this.changeCategoryValue} style={{width: '100%'}}/>   
+                </div>
+
+                <div >
+                    <p className="errorBox">{this.state.categoryErrorValue}</p>
+                </div>
                 {/*}<button className="createProjectInput" onClick={this.emailValidationProcess}>Invite user</button>*/}
                 <InviteList uid={this.props.getAppState().user.uid} users={this.state.userList} />
                 <button className="createProjectFinalButton" onClick={this.createProject}>Create project</button>
