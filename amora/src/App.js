@@ -75,6 +75,9 @@ class App extends Component {
           projectPhotoURL: this.state.user.photoURL,
           isPersonalDashboardProject: true,
           projectDescription: `${user.displayName}'s Personal Dashboard`,
+          taskCategories: {
+            General: true,
+          },
       }
     }).then((newLocation) => {
       rebase.post(`projects/${newLocation.key}/managerList`, { //create list of managers within project, and add the user to it
