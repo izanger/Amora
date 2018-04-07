@@ -56,6 +56,7 @@ class Task extends Component {
         newState.tempPriority = this.props.task.priorityLevel
         newState.tempHours = this.props.task.EstimatedTimeValue
         newState.tempDate = this.props.task.deadline
+        newState.taskCategory = this.props.task.taskCategory
         let arch = this.props.archived
         if(arch){
             rebase.fetch(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
@@ -210,7 +211,6 @@ class Task extends Component {
                  for (var i = 0; i < taskArray.length;i++ ){
                      let tid = taskArray[i];
 
-
                      rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
                          context: this,
                      }).then(data => {
@@ -221,7 +221,6 @@ class Task extends Component {
                              rebase.remove(`users/${this.props.userID}/todayView/${tid}`, function(err){
                                  if(!err){
                                      console.log("fiddlesticks")
-
                                  }
                                });
                          }
@@ -232,11 +231,7 @@ class Task extends Component {
 
                              }
                            });
-
-
-
                      })
-
                  }
              })
 
@@ -251,7 +246,6 @@ class Task extends Component {
         }
     }
 
-
     checkIsVisible = () => {
         if (this.props.archived){
             return ({
@@ -264,8 +258,6 @@ class Task extends Component {
             })
         }
     }
-
-
 
     checkRectIsArchived = () => {
         if (this.props.archived){
@@ -292,8 +284,7 @@ class Task extends Component {
                 state: 'taskComments',
 
             })
-
-        }else {
+        } else {
             if(this.bindingref){
                 rebase.removeBinding(this.bindingref)
             }
@@ -333,8 +324,6 @@ class Task extends Component {
                 }
             })
 
-
-
 //complete the task in the todayView component
             rebase.fetch(`users/${this.props.userID}/todayView`, {
                 context: this,
@@ -363,17 +352,10 @@ class Task extends Component {
                                   }
                                 }
                               });
-
-
                         }
-
-
-
                     })
-
                 }
             })
-
 
                 //uncomplete the task in the todayView component
             rebase.fetch(`users/${this.props.userID}/todayView`, {
@@ -403,20 +385,10 @@ class Task extends Component {
                                   }
                                 }
                               });
-
-
                         }
-
-
-
                     })
-
                 }
             })
-
-
-
-
         } else {
             // Archive
             const projID = this.props.projectID;
@@ -471,21 +443,10 @@ class Task extends Component {
                                   }
                                 }
                               });
-
-
                         }
-
-
-
                     })
-
                 }
             })
-
-
-
-
-
         }
     }
 
@@ -897,6 +858,8 @@ class Task extends Component {
                             </svg>
                             <h4 id="taskTitle"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.state.tempTitle}/></h4>
                         </div>
+                        {/* @Zach pls halp */}
+                        <h5>{this.state.taskCategory}</h5> 
                         <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b> | <ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.state.tempHours)}/> {" hrs"} | <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
