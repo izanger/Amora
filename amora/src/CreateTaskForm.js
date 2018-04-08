@@ -75,7 +75,12 @@ class CreateTaskForm extends Component {
     // Method for changing estimated time value
     changeEstimatedTimeValue = (event) => {
         const newState = { ...this.state }
-        newState.estimatedTimeValue = event.target.value;
+        if (event.target.value > 9){
+            newState.estimatedTimeValue = 9;
+        }
+        else {
+            newState.estimatedTimeValue = Math.round(event.target.value);
+        }
         this.setState(newState)
     }
 
