@@ -302,6 +302,48 @@ class Task extends Component {
             //Unarchive
             const projID = this.props.projectID;
             const taskID = this.props.taskKey;
+            var totalHours = this.props.getProjectDashboardState().project.archivedTaskList[taskID].EstimatedTimeValue
+            rebase.fetch(`users/${this.props.userID}`, {
+                then: (data) => {
+                    rebase.update(`users/${this.props.userID}`, {
+                        data: { taskCompleted: data.taskCompleted-1 }
+                    })
+                }
+            })
+            rebase.fetch(`users/${this.props.userID}`, {
+                then: (data) => {
+                    rebase.update(`users/${this.props.userID}`, {
+                        data: { allTimeHours: data.allTimeHours - +totalHours }
+                    })
+                }
+            })
+            
+            var now = new Date()
+            var split = this.props.task.deadline.split("/")
+            var onTime = false
+            if (split[2] == now.getFullYear()){
+                if (split[0] > now.getMonth()+1) {
+                    onTime = true;
+                }
+                else if (split[0] == now.getMonth()+1) {
+                    if (split[1] > now.getDay()+1){
+                        onTime = true;
+                    }
+                }
+            }
+            else if (split[2] > now.getFullYear()) {
+                onTime = true;
+            }
+            if (onTime) {
+                rebase.fetch(`users/${this.props.userID}`, {
+                    then: (data) => {
+                        rebase.update(`users/${this.props.userID}`, {
+                            data: { onTimeTasks: data.onTimeTasks-1 }
+                        })
+                    }
+                })
+            }
+            
             rebase.fetch(`projects/${projID}/archivedTaskList/${taskID}`, {
                 context: this,
                 then(taskData){
@@ -393,6 +435,55 @@ class Task extends Component {
             // Archive
             const projID = this.props.projectID;
             const taskID = this.props.taskKey;
+            var totalHours = this.props.getProjectDashboardState().project.taskList[taskID].EstimatedTimeValue
+            console.log(taskID);
+            rebase.fetch(`users/${this.props.userID}`, {
+                then: (data) => {
+                    rebase.update(`users/${this.props.userID}`, {
+                        data: { taskCompleted: data.taskCompleted+1 }
+                    })
+                }
+            })
+            rebase.fetch(`users/${this.props.userID}`, {
+                then: (data) => {
+                    rebase.update(`users/${this.props.userID}`, {
+                        data: { allTimeHours: data.allTimeHours + +totalHours }
+                    })
+                }
+            })
+
+            var now = new Date()
+            var split = this.props.task.deadline.split("/")
+            var onTime = false
+            // console.log(split[2])
+            // console.log(split[0])
+            // console.log(split[1])
+            // console.log(now.getFullYear())
+            // console.log(now.getMonth()+1)
+            // console.log(now.getDay()+1)
+            if (split[2] == now.getFullYear()){
+                if (split[0] > now.getMonth()+1) {
+                    onTime = true;
+                }
+                else if (split[0] == now.getMonth()+1) {
+                    if (split[1] > now.getDay()+1){
+                        onTime = true;
+                    }
+                }
+            }
+            else if (split[2] > now.getFullYear()) {
+                onTime = true;
+            }
+            if (onTime) {
+                rebase.fetch(`users/${this.props.userID}`, {
+                    then: (data) => {
+                        rebase.update(`users/${this.props.userID}`, {
+                            data: { onTimeTasks: data.onTimeTasks+1 }
+                        })
+                    }
+                })
+            }
+
             rebase.fetch(`projects/${projID}/taskList/${taskID}`, {
                 context: this,
                 then(taskData){
@@ -612,7 +703,7 @@ class Task extends Component {
                     text: comment,
                     username: uname,
                     image: img,
-                    timestamp: today.getTime()
+                    timestamp: today.getDate()
                 }
             });
         }else {

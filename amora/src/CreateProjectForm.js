@@ -188,9 +188,15 @@ class CreateProjectForm extends Component {
                     [this.props.getAppState().user.uid]: true
                 }
             })
+            var today = new Date();
             rebase.post(`projects/${newLocation.key}/userList`, { //create list users on project, and add user to it
                 data: {
                     [this.props.getAppState().user.uid]: this.props.getAppState().user.photoURL
+                }
+            })
+            rebase.update(`projects/${newLocation.key}/whenJoined`, { 
+                data: {
+                    [this.props.getAppState().user.uid]: today.getTime()
                 }
             })
             rebase.update(`projects/${newLocation.key}`, {
