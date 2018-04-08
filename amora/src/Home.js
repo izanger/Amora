@@ -447,23 +447,15 @@ class Home extends Component {
     this.state.varHours = document.getElementById("myText").value
     console.log(this.state.varHours)
     document.getElementById("remainingHours1").innerHTML = this.state.varHours
-   //var x = document.getElementById("myText").value
-  //document.getElementById("hours").innerHTML = x
     }
 
    subtractHours = () => {
    const newState = this.props.getAppState()
-  //var x = document.getElementById("myText").value
-   //var inputHours = parseInt(x)||0
-   //this.state.sumbitHours=inputHours
-   //this.state.totalHours = (parseInt(this.state.totalHours)+parseInt(this.state.taskHours)||0)
    var newOutput = document.getElementById("remainingHours1").innerHTML
    var m = parseInt(newOutput)||0
-   //var displayHours = inputHours-parseInt(this.state.totalHours)||0
    var displayHours = m - parseInt(this.state.taskHours)
    if(displayHours < 0)
    displayHours =0
-   
    document.getElementById("remainingHours1").innerHTML = displayHours
    this.props.getAppState(newState)
     }
@@ -477,7 +469,6 @@ class Home extends Component {
     document.getElementById("remainingHours1").innerHTML = displayAddition
     console.log(displayAddition)
     this.props.getAppState(newState)
-
     }
   
     submitHoursFunction = () => {
@@ -536,7 +527,6 @@ class Home extends Component {
 
                     <h5 id="projectProfileName">{this.state.displayName}</h5>
                     <img alt={"Seperator"} src={line} id="projectSeparatorLine"/>
-
                     {projectIcons}
 
                     <NewProjectButton onClick={() => {

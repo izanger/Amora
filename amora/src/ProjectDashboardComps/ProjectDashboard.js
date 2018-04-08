@@ -247,6 +247,8 @@ class ProjectDashboard extends Component {
                         setProjectDashboardState={this.setProjectDashboardState} />
 
 
+                        
+
                     {/* <div id="taskDashContainer">
                     </div> */}
                     <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor}
@@ -255,14 +257,15 @@ class ProjectDashboard extends Component {
                         <line x1="12" y1="12" x2="98.5%" y2="12" className="projectDivider" style={{stroke:'#C6C6C6',strokeWidth:'1'}} />
                     </svg>
                     <div id="taskDashScrollableContent">
-
+                    
                         {taskRender}
-
+                        
                         <div id="addTaskButton" style={{'position': 'fixed', bottom: '0px', width: '100%', paddingBottom: '15px'}}><NewProjectButton onClick={() => {
                             this.props.goToUrl("/createtask");
                         }} /></div>
                     </div>
                 </div>
+                
             )
         } else {
             finalRender = (

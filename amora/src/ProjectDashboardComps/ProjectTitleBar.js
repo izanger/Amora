@@ -376,6 +376,7 @@ class ProjectTitleBar extends Component {
     }
 
 
+
     //Returns what should be rendered in the settings pane
     renderSettings = (color, colors) => {
 
@@ -548,6 +549,13 @@ class ProjectTitleBar extends Component {
 
     }
 
+    deleteProject = () => {
+     
+      
+
+
+    }
+
     /*
     This currently only is the box. It needs the following:
     1) Get the color for the project from Firebase
@@ -574,9 +582,10 @@ class ProjectTitleBar extends Component {
                    <Modal open={open} onClose={this.onCloseModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
                          {settings}
                    </Modal>
-
+                    
                    <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} id="projectSettingsIcon"/>
                    <img alt={"Archive"} src={archiveIcon} title={this.props.getButtonText()} style={{right: '100px'}} onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
+                   <button type="button" onClick={this.deleteProject} >Delete Project</button>
                </div>
             </div>
         )
