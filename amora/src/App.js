@@ -19,6 +19,7 @@ class App extends Component {
       notified: false,
       taskCompleted: 0,
       allTimeHours: 0,
+      onTimeTasks: 0,
     }
   }
 
@@ -117,6 +118,11 @@ class App extends Component {
       rebase.update(`users/${this.state.user.uid}`, {
         data: {
           allTimeHours: this.state.allTimeHours
+        }
+      })
+      rebase.update(`users/${this.state.user.uid}`, {
+        data: {
+          onTimeTasks: this.state.onTimeTasks
         }
       })
       rebase.fetch(`projects/${newLocation.key}`, {//get the project data we just added to ~/projects
