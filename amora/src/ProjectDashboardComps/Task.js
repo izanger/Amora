@@ -176,6 +176,67 @@ class Task extends Component {
             taskList[this.props.taskKey].deadline = this.state.tempDate
             this.props.setProjectDashboardState(newState);
             this.setState({ open: false, visible: 'hidden', changeErrorMessage: "" });
+
+            //delete comment
+
+
+
+            if(this.props.archived){
+
+                rebase.fetch(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments/`, {
+                    context: this,
+                    asArray: true,
+                    then(data){
+                      console.log(data);
+                      data.map((tasks,i) => {
+                        console.log(tasks)
+                         if (tasks.text.length <= 1){
+                       //     console.log(tasks)
+                           //remove comment
+                           const key = tasks.key
+
+                           rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments/${key}`, function(err){
+               
+                             });
+
+                         }
+                       }
+                    
+                    )
+                    //   )}
+                    }   
+                  })
+
+                //rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
+    
+            }else {
+                //rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
+                rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/`, {
+                    context: this,
+                    asArray: true,
+                    then(data){
+                      console.log(data);
+                        data.map((tasks,i) => {
+                             console.log(tasks)
+                              if (tasks.text.length <= 1){
+                            //     console.log(tasks)
+                                //remove comment
+                                const key = tasks.key
+
+                                rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/${key}`, function(err){
+                    
+                                  });
+
+                              }
+                            }
+                    
+                    )
+                    //   )}
+                    }   
+                  })
+        }
+
+
         } else {
             this.setState({ open: true, visible: 'visible' });
         }
@@ -673,13 +734,75 @@ class Task extends Component {
         //     }
         //     this.props.setProjectDashboardState(newState)
         // }
-        const myNewState = { ...this.state }
-        let thing = event.target.value
-        if (thing === "") {
-            thing = " "
+        let hours;
+        if (event.target.value > 9){
+            const myNewState = { ...this.state }
+            let thing = 9
+            if (thing === "") {
+                thing = " "
+            }
+            myNewState.tempHours = thing
+            this.setState(myNewState)
+            hours = thing
+        
         }
-        myNewState.tempHours = thing
-        this.setState(myNewState)
+        else {
+            const myNewState = { ...this.state }
+            let thing = Math.round(event.target.value)
+            if (thing === "") {
+                thing = " "
+            }
+            myNewState.tempHours = thing
+            this.setState(myNewState)
+            hours = thing
+        }
+
+        console.log(this.props.taskKey)
+        //check everything in the todayView to see if sizes are correct still
+        const ID = this.props.getAppState.user.uid
+        rebase.fetch(`users/${ID}/todayView/`, {
+            context: this,
+            asArray: true,
+            then(data){
+              console.log(data);
+              var tasks = (Object.values(data))
+              var taskArray = (Object.keys(data))
+              console.log(tasks)
+              for (var i = 0; i < tasks.length;i++ ){
+                let tid = tasks[i].key;
+                console.log(tasks)
+                console.log(tid)
+
+                rebase.fetch(`users/${ID}/todayView/${tid}`, {
+                    context: this,
+                }).then(data1 => {
+                    console.log(data1)
+                    console.log(this.props.taskKey)
+                    console.log(data1.taskIDNumber)
+                    if (data1.taskIDNumber === this.props.taskKey){
+                        console.log(tid)
+                        //update the estimated time field
+                        console.log(hours)
+                        rebase.update(`users/${ID}/todayView/${tid}/`, {
+                            data: {EstimatedTimeValue: hours}
+                          });
+
+
+                    }
+
+                })
+
+
+
+
+              }
+
+              
+            }
+          });
+
+
+
     }
 
     getPriorityLevel = () => {
@@ -824,7 +947,8 @@ class Task extends Component {
         //console.log(dueDate[0])
         const year = dueDate[2];
         let month = dueDate[0];
-        const day = dueDate[1]
+        let day = dueDate[1]
+        day = parseInt(day) + 1
         month = month - 1
 
         moment.updateLocale('en', {
@@ -845,7 +969,8 @@ class Task extends Component {
                 yy: "%d years"
             }
         });
-
+        
+        //console.log("DAyY: " + day)
         // const banana = moment([dueDate[2], dueDate[1], dueDate[0]]).fromNow();
         //console.log("Year: " + year)
         //console.log("Month: " + month)

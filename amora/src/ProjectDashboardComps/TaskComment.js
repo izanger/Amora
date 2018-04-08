@@ -27,6 +27,10 @@ class TaskComment extends Component {
     }
 
     changeComment = (event) => {
+        // console.log(this.props)
+        if (this.props.uid !== this.props.userID){
+                return;
+        }
         if (event.target.value.length !== 0) {
             const newState = this.props.getProjectDashboardState()
 
@@ -46,6 +50,7 @@ class TaskComment extends Component {
             }
             this.props.setProjectDashboardState(newState)
         }
+        
     }
 
     render = () => {
