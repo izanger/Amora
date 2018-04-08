@@ -552,6 +552,7 @@ class ProjectTitleBar extends Component {
     deleteProject = () => {
      
       
+        rebase.remove(`projects/${this.props.getProjectDashboardState().project.key}`)
 
 
     }
