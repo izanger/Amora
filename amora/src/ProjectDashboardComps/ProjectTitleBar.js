@@ -551,14 +551,26 @@ class ProjectTitleBar extends Component {
     }
 
     deleteProject = () => {
-     
+
+        //if(! ${this.props.getProjectDashboardState().project.isPersonalDashboardProject} )
+        let projectUserList = [];
+        let usersList = [];
+        rebase.fetch(`projects/${this.props.getProjectDashboardState().project.key}/userList`, {
+            context: this,
+        }).then(data => {
+            usersList = Object.keys(data);
+            //usersList = Object.values(data);
+            var i = 0;
+            for (i; i < usersList.length;i++ ){
+                let uid = usersList[i];
+                rebase.remove(`users/${uid}/projects/${this.props.getProjectDashboardState().project.key}`)
+            }
+         }) 
+         
         rebase.remove(`projects/${this.props.getProjectDashboardState().project.key}`)
-        //rebase.remove(`users`)
         rebase.remove(`users/${this.props.getAppState().user.uid}/projects/${this.props.getProjectDashboardState().project.key}`)
-
-        return <Redirect to="/notifications" />
-
-
+        
+    
     }
 
     /*
