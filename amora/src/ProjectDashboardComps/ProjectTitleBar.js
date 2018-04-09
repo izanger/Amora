@@ -7,6 +7,7 @@ import UserIcon from "./UserIcon.js"
 import { checkIfManager, checkIfUserOnProject } from "../apphelpers.js"
 import { emailRegistered, validateEmail } from "../apphelpers.js"
 import InviteList from "../InviteList.js"
+import { Route, Switch, Redirect } from "react-router-dom"
 
 import "./ProjectTitleBar.css"
 
@@ -551,8 +552,11 @@ class ProjectTitleBar extends Component {
 
     deleteProject = () => {
      
-      
         rebase.remove(`projects/${this.props.getProjectDashboardState().project.key}`)
+        //rebase.remove(`users`)
+        rebase.remove(`users/${this.props.getAppState().user.uid}/projects/${this.props.getProjectDashboardState().project.key}`)
+
+        return <Redirect to="/notifications" />
 
 
     }
