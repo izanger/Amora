@@ -387,7 +387,7 @@ class Task extends Component {
                     onTime = true;
                 }
                 else if (split[0] == now.getMonth()+1) {
-                    if (split[1] > now.getDay()+1){
+                    if (split[1] > now.getDate()){
                         onTime = true;
                     }
                 }
@@ -521,13 +521,13 @@ class Task extends Component {
             // console.log(split[1])
             // console.log(now.getFullYear())
             // console.log(now.getMonth()+1)
-            // console.log(now.getDay()+1)
+            // console.log(now.getDate())
             if (split[2] == now.getFullYear()){
                 if (split[0] > now.getMonth()+1) {
                     onTime = true;
                 }
                 else if (split[0] == now.getMonth()+1) {
-                    if (split[1] > now.getDay()+1){
+                    if (split[1] > now.getDate()){
                         onTime = true;
                     }
                 }
