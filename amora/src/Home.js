@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import rebase, { auth } from "./rebase.js"
 import { Route, Switch, Redirect } from "react-router-dom"
-import windowDimensions from 'react-window-dimensions';
 
 import line from "./images/Line/Line.png"
 import "./Home.css"
