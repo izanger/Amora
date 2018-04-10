@@ -20,9 +20,9 @@ class CommentUserIcon extends Component {
       this.state = {
            open: false,
            iconIsManager: false, //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
-           displayName: "",
-           email: "",
            viewingAsManager: false,
+           viewSynced: false,
+           projects: [],
         };
        this.color = "#3498DB";
     }
@@ -43,6 +43,10 @@ class CommentUserIcon extends Component {
     componentWillMount() {
         this.getInfo();
         this.getEmail();
+        this.getDateJoinedAmora();
+        this.getTasksCompleted();
+        this.getAllTimeHours();
+        this.getOnTimeTasks();
         //console.log(this.props)
         // const promise = checkIfManager(this.props.userID, this.props.projectID)
         // promise.then((data) => {
@@ -102,6 +106,77 @@ class CommentUserIcon extends Component {
           })
     }
 
+    getDateJoinedAmora() {
+        const id = this.props.userID  
+        rebase.fetch(`users/${id}/dateJoined`, {
+            context: this,
+        }).then(data => {
+            let newState = { ...this.state}
+            newState.dateJoined = data
+            this.setState(newState);        
+          })
+    }
+
+    getTasksCompleted() {
+        const id = this.props.userID  
+        let newState = { ...this.state}
+        rebase.fetch(`users/${id}/taskCompleted`, {
+            context: this,
+        }).then(data => {
+            newState.taskCompleted = data
+            this.setState(newState);        
+          }).then(() => {
+            this.bindingref = rebase.syncState(`users/${id}/taskCompleted`, {
+                context: this,
+                state: 'taskCompleted',
+                then: () => {
+                  newState.viewSynced = true
+                  this.setState(newState)
+                }
+            })
+        })
+    }
+
+    getAllTimeHours() {
+        const id = this.props.userID  
+        let newState = { ...this.state}
+        rebase.fetch(`users/${id}/allTimeHours`, {
+            context: this,
+        }).then(data => {
+            newState.allTimeHours = data
+            this.setState(newState);        
+          }).then(() => {
+            this.bindingref = rebase.syncState(`users/${id}/allTimeHours`, {
+                context: this,
+                state: 'allTimeHours',
+                then: () => {
+                  newState.viewSynced = true
+                  this.setState(newState)
+                }
+            })
+        })
+    }  
+    
+    getOnTimeTasks() {
+        const id = this.props.userID  
+        let newState = { ...this.state}
+        rebase.fetch(`users/${id}/onTimeTasks`, {
+            context: this,
+        }).then(data => {
+            newState.onTimeTasks = data
+            this.setState(newState);        
+          }).then(() => {
+            this.bindingref = rebase.syncState(`users/${id}/onTimeTasks`, {
+                context: this,
+                state: 'onTimeTasks',
+                then: () => {
+                  newState.viewSynced = true
+                  this.setState(newState)
+                }
+            })
+        })
+    }
+
     removeUser = () => {
         var response = window.confirm("Are you sure you want to remove this user?")
         if (response == true){
@@ -148,7 +223,10 @@ class CommentUserIcon extends Component {
                     {/*This should only appear if it is selected as the project*/}
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
-                          <h2>{this.state.displayName}<br/><br/>{this.state.email}</h2>
+                        <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
+                            Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
+                            All Time Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours Completed: {this.state.allTimeHours}<br/>
+                            On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%</h2>
                           <button onClick={this.removeUser}>Remove User from Project</button><br></br>
                           <TodayViewUser uid={this.props.userID} getAppState={this.props.getAppState}/>
                         </Modal>
@@ -167,7 +245,10 @@ class CommentUserIcon extends Component {
                     {/*This should only appear if it is selected as the project*/}
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
-                          <h2>{this.state.displayName}<br/><br/>{this.state.email}</h2><br></br>
+                        <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
+                            Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
+                            All Time Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours Completed: {this.state.allTimeHours}<br/>
+                            On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%</h2><br></br>
                           <TodayViewUser uid={this.props.userID} getAppState={this.props.getAppState}/>
                         </Modal>
                 </div>

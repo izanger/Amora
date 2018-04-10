@@ -16,7 +16,10 @@ class App extends Component {
       user: { },
       userSynced: false,
       currentProject: { },
-      notified: false
+      notified: false,
+      taskCompleted: 0,
+      allTimeHours: 0,
+      onTimeTasks: 0,
     }
   }
 
@@ -62,10 +65,10 @@ class App extends Component {
   }
 
   postUser(user) {
+    var today = new Date();
     rebase.post(`users/${user.uid}`, {
       data: user
     });
-
     //add personal project
     rebase.push("projects", {
       data: {
@@ -90,6 +93,11 @@ class App extends Component {
               [this.state.user.uid]: this.state.user.photoURL
           }
       })
+      rebase.post(`projects/${newLocation.key}/whenJoined`, { //create list of users on project, and add user to it
+        data: {
+            [this.state.user.uid]: today.getTime()
+        }
+    })
       rebase.update(`projects/${newLocation.key}`, {
           data: {
               key: newLocation.key
@@ -98,6 +106,26 @@ class App extends Component {
       rebase.update(`users/${this.state.user.uid}`, {
         data: {
           personalProjectID: newLocation.key
+        }
+      })
+      rebase.update(`users/${this.state.user.uid}`, {
+        data: {
+          dateJoined: today.getTime()
+        }
+      })
+      rebase.update(`users/${this.state.user.uid}`, {
+        data: {
+          taskCompleted: this.state.taskCompleted
+        }
+      })
+      rebase.update(`users/${this.state.user.uid}`, {
+        data: {
+          allTimeHours: this.state.allTimeHours
+        }
+      })
+      rebase.update(`users/${this.state.user.uid}`, {
+        data: {
+          onTimeTasks: this.state.onTimeTasks
         }
       })
       rebase.fetch(`projects/${newLocation.key}`, {//get the project data we just added to ~/projects
@@ -119,7 +147,6 @@ class App extends Component {
       })
       
     })
-
   }
 
   componentWillMount() {

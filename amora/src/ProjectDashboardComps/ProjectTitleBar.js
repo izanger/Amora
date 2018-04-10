@@ -7,6 +7,7 @@ import UserIcon from "./UserIcon.js"
 import { checkIfManager, checkIfUserOnProject } from "../apphelpers.js"
 import { emailRegistered, validateEmail } from "../apphelpers.js"
 import InviteList from "../InviteList.js"
+// import ImageFileSelector from "react-image-select-component";
 
 import "./ProjectTitleBar.css"
 import "../textStyle.css"
@@ -412,6 +413,19 @@ class ProjectTitleBar extends Component {
         }
     }
 
+    previewFile = () => {
+        console.log("")
+    }
+
+    renderUserSettings = () => {
+        return (
+            <div>
+                <input type="text" placeholder="Profile description"></input>
+                <input type="file" onchange={this.previewFile}></input>
+            </div>
+        )
+    }
+
 
     //Returns what should be rendered in the settings pane
     renderSettings = (color, colors) => {
@@ -429,6 +443,7 @@ class ProjectTitleBar extends Component {
             creatorButtons = this.renderProjectCreatorButton()
         }
         let colorsArray = ['#E74C3C', '#E67E22', '#F1C40F', '#E91E63', '#9B59B6', '#3498DB', '#2ECB71', '#18AE90']
+        let userSettings = this.renderUserSettings()
 
 
         if(!this.props.getProjectDashboardState().project.managerList[this.props.getAppState().user.uid]){ //user is not a manager
@@ -446,6 +461,7 @@ class ProjectTitleBar extends Component {
                         <option value="7">60 minutes</option>
                     </select>
                     <button className="submitFinalButton" onClick={this.submitChanges}>Submit</button>
+                    {userSettings}
                 </div>
             )
         } else { //user is a manager
@@ -595,6 +611,8 @@ class ProjectTitleBar extends Component {
                             <p className="errorBox">{this.state.categoryErrorValue}</p>
                         </div> 
                     </div>
+
+                    {userSettings}
 
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
                 </div>
