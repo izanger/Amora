@@ -9,7 +9,7 @@
     "prop-types": "^15.6.0",
     "re-base": "^3.2.2",
     "react": "^16.2.0",
-    "react-beautiful-dnd": "^6.0.1",
+    "react-beautiful-dnd": "^6.0.2",
     "react-bootstrap": "^0.32.1",
     "react-contenteditable": "^2.0.7",
     "react-datepicker": "^1.2.1",
@@ -19,7 +19,9 @@
     "react-popup": "^0.9.2",
     "react-responsive-modal": "^2.0.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.0"
+    "react-scripts": "1.1.0",
+    "react-window-dimensions": "^1.0.2",
+    "react-window-size": "^1.0.1"
   },
   "scripts": {
     "predeploy": "npm run build",

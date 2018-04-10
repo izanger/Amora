@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import rebase, { auth } from "./rebase.js"
 import { Route, Switch, Redirect } from "react-router-dom"
+import windowDimensions from 'react-window-dimensions';
 
 import line from "./images/Line/Line.png"
 import "./Home.css"
@@ -17,7 +18,6 @@ import TodayView from "./TodayView.js"
 import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-
 class Home extends Component {
     constructor(props) {
         super(props)
@@ -28,8 +28,10 @@ class Home extends Component {
             taskHours:"",
             totalHours:"",
             addMoreHours:"",
-
+            width: 0,
+            height: 0
           }
+          this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
           this.onDragEnd = this.onDragEnd.bind(this);
     }
 
@@ -421,6 +423,19 @@ class Home extends Component {
         }
     }
 
+    componentDidMount(){
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions() {
+        this.setState({width: window.innerWidth, height: window.innerHeight});
+    }
+
     componentWillMount() {
        this.getName();
     }
@@ -520,85 +535,95 @@ class Home extends Component {
             notificationText = "notifications_none"
         }
 
-        return (
-            <DragDropContext onDragEnd={this.onDragEnd}>
-            <div id="mainContainer">
+        if (this.state.width < 500){
+            return (
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                    <div id="myDay">
+                        <TodayView getAppState={this.props.getAppState}/>
+                    </div>
+                </DragDropContext>
+            )
+        } else {
+            return (
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                <div id="mainContainer">
+                    <div id="projectsSelector">
+                        <div onClick={() => {
+                            const newState = { ...this.props.getAppState() }
+                            newState.currentProject = newState.user.projects[newState.user.personalProjectID]
+                            this.props.setAppState(newState)
+                            this.props.goToUrl(`/projects/${newState.user.personalProjectID}`)
 
-                <div id="projectsSelector">
-                    <div onClick={() => {
-                        const newState = { ...this.props.getAppState() }
-                        newState.currentProject = newState.user.projects[newState.user.personalProjectID]
-                        this.props.setAppState(newState)
-                        this.props.goToUrl(`/projects/${newState.user.personalProjectID}`)
+                            //this.props.goToUrl("/dashboard")
 
-                        //this.props.goToUrl("/dashboard")
+                        }}><ProjectIcon personalIcon={true} projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
 
-                    }}><ProjectIcon personalIcon={true} projectPhotoURL={this.props.getAppState().user.photoURL}/></div>
+                    <h5 id="projectProfileName" className="text_description">{this.state.displayName}</h5>
+                        <img alt={"Seperator"} src={line} id="projectSeparatorLine"/>
 
-                <h5 id="projectProfileName" className="text_description">{this.state.displayName}</h5>
-                    <img alt={"Seperator"} src={line} id="projectSeparatorLine"/>
+                        {projectIcons}
 
-                    {projectIcons}
+                        <NewProjectButton onClick={() => {
+                            this.props.goToUrl("/createproject");
+                        }}/>
+                        <i onClick={this.signOut} style={{position: 'fixed', bottom: '0'}} className="material-icons">&#xE31B;</i>
+                        <i className="material-icons notificationButton" onClick={() => {
+                            this.props.goToUrl("/notifications");
+                        }}>{notificationText}</i>
 
-                    <NewProjectButton onClick={() => {
-                        this.props.goToUrl("/createproject");
-                    }}/>
-                    <i onClick={this.signOut} style={{position: 'fixed', bottom: '0'}} className="material-icons">&#xE31B;</i>
-                    <i className="material-icons notificationButton" onClick={() => {
-                        this.props.goToUrl("/notifications");
-                    }}>{notificationText}</i>
+                    <div style={{"position":"fixed", "top": "4px", "right": "15px"}}>
+                        <h4 id="remainingHours">Remaining Hours: </h4>
+                        <h4 id="remainingHours1"><b>{this.state.varHours}</b></h4>
+                    </div>
+                    <div style={{"position":"fixed", "bottom": "0px", "right": "0px", "display":"flex", "flex-direction": "row"}}>
+                        <input id="myText" style={{marginTop: '5px', backgroundColor: 'white', width: '60px'}} placeholder="0" className="createProjectInput"></input>
+                        <button type="button" className="addCommentButton" onClick={this.addTaskHours} >Submit Hours of Work Today</button>
 
-                <div style={{"position":"fixed", "top": "4px", "right": "15px"}}>
-                    <h4 id="remainingHours">Remaining Hours: </h4>
-                    <h4 id="remainingHours1"><b>{this.state.varHours}</b></h4>
+                    </div>
+
+
+
+
+                    </div>
+
+                    <div style={{width: '100%', height: '100%', backgroundColor: 'whitesmoke'}}>
+                        <Switch>
+                            <Route path="/dashboard" render={() => {
+                                return (
+                                    <div id="taskDashboard"></div>
+
+                                )
+                            }} />
+                            <Route path="/projects/:id" render={(props) => <ProjectDashboard {...props}
+                                goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.props.setAppState}
+                                goBack={this.props.goBack}/> } />
+                            <Route path="/createproject" render={() => {
+                                return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                            }} />
+                            <Route path="/notifications" render={() => {
+                                return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState}/>
+                            }} />
+                            <Route path="/createtask" render={() => {
+                                return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                            }} />
+                            {/* <Route path="/deletetask" render={() => {
+                                return <DeleteTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                            }} /> */}
+                            <Route render={() => <Redirect to="/dashboard" />} />
+                        </Switch>
+                    </div>
+
+
+                    {/* <div id="myDay">
+                        <MyDayTitleBar /> */}
+                    <div id="myDay">
+                         <TodayView getAppState={this.props.getAppState}/>
+                    </div>
                 </div>
-                <div style={{"position":"fixed", "bottom": "0px", "right": "0px", "display":"flex", "flex-direction": "row"}}>
-                    <input id="myText" style={{marginTop: '5px', backgroundColor: 'white', width: '60px'}} placeholder="0" className="createProjectInput"></input>
-                    <button type="button" className="addCommentButton" onClick={this.addTaskHours} >Submit Hours of Work Today</button>
+                </DragDropContext>
+            )
+        }
 
-                </div>
-
-
-
-
-                </div>
-
-                <div style={{width: '100%', height: '100%', backgroundColor: 'whitesmoke'}}>
-                    <Switch>
-                        <Route path="/dashboard" render={() => {
-                            return (
-                                <div id="taskDashboard"></div>
-
-                            )
-                        }} />
-                        <Route path="/projects/:id" render={(props) => <ProjectDashboard {...props}
-                            goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.props.setAppState}
-                            goBack={this.props.goBack}/> } />
-                        <Route path="/createproject" render={() => {
-                            return <CreateProjectForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
-                        }} />
-                        <Route path="/notifications" render={() => {
-                            return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState}/>
-                        }} />
-                        <Route path="/createtask" render={() => {
-                            return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
-                        }} />
-                        {/* <Route path="/deletetask" render={() => {
-                            return <DeleteTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
-                        }} /> */}
-                        <Route render={() => <Redirect to="/dashboard" />} />
-                    </Switch>
-                </div>
-
-
-                {/* <div id="myDay">
-                    <MyDayTitleBar /> */}
-                <div id="myDay">
-                     <TodayView getAppState={this.props.getAppState}/>
-                </div>
-            </div>
-            </DragDropContext>
-    )
     }
 
 
