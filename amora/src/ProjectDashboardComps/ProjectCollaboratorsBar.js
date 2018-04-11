@@ -4,6 +4,7 @@ import UserIcon from "./UserIcon.js"
 import "./ProjectCollaboratorsBar.css"
 import Modal from 'react-responsive-modal/lib/css';
 import logIcon from "../images/Icons/log.png"
+import rebase from "../rebase.js"
 
 
 
@@ -58,6 +59,11 @@ class ProjectCollaboratorsBar extends Component {
         if (this.props.users) {
             userKeys = Object.keys(this.props.users)
         }
+        
+        let eventKeys
+        if (this.props.eventKeys) {
+            eventKeys = Object.keys(this.props.events)
+        }
 
         const { open } = this.state;
         const hasOnClick = this.props.onClick
@@ -79,9 +85,10 @@ class ProjectCollaboratorsBar extends Component {
                         <img alt={"Project"} src={logIcon} className="projectPicture"/>
                         {/*This should only appear if it is selected as the project*/}
                         <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
+                            {console.log(eventKeys)}
                             <Modal open={open} onClose={this.onCloseModal} little>
                                 <h2>System log for {this.props.title}</h2>
-                                <p>Here's the log of changes for the project</p>
+                                <p>{this.props.events[eventKeys] + this.props.events[eventKeys] + "on " + this.props.events[eventKeys]}</p><n/>
                             </Modal>
                     </div>
                 </div>

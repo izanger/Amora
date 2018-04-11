@@ -572,8 +572,9 @@ class Task extends Component {
                 then(taskData){
                     rebase.push(`projects/${projID}/events`, {
                         data: {
-                            [this.props.userID]: " completed task " + taskData.taskName,
-                            timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear()
+                            event: " completed task " + taskData.taskName,
+                            timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear(),
+                            useid: this.props.userID
                         }
                     })
                 }
