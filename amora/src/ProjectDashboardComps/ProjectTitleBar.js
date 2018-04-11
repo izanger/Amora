@@ -8,7 +8,7 @@ import { checkIfManager, checkIfUserOnProject } from "../apphelpers.js"
 import { emailRegistered, validateEmail } from "../apphelpers.js"
 import InviteList from "../InviteList.js"
 import { Route, Switch, Redirect } from "react-router-dom"
-
+import ProjectDashBoard from "./ProjectDashboard.js"
 import "./ProjectTitleBar.css"
 
 import "./UserIcon.css"
@@ -552,21 +552,21 @@ class ProjectTitleBar extends Component {
 
     deleteProject = () => {
 
-        //if(! ${this.props.getProjectDashboardState().project.isPersonalDashboardProject} )
         let projectUserList = [];
         let usersList = [];
         rebase.fetch(`projects/${this.props.getProjectDashboardState().project.key}/userList`, {
             context: this,
         }).then(data => {
             usersList = Object.keys(data);
-            //usersList = Object.values(data);
             var i = 0;
             for (i; i < usersList.length;i++ ){
                 let uid = usersList[i];
                 rebase.remove(`users/${uid}/projects/${this.props.getProjectDashboardState().project.key}`)
             }
          }) 
-         
+        
+       // this.props.goToUrl("dashboard")
+
         rebase.remove(`projects/${this.props.getProjectDashboardState().project.key}`)
         rebase.remove(`users/${this.props.getAppState().user.uid}/projects/${this.props.getProjectDashboardState().project.key}`)
         
@@ -589,6 +589,7 @@ class ProjectTitleBar extends Component {
 
         let settings = this.renderSettings(color, colors)
         return (
+            
             <div id="projectTitleContainer" style={{backgroundColor: color}}>
                 <h3 id="projectTitle">{this.props.title}</h3>
                 <h5 id="projectDescription"><i>{this.props.getProjectDashboardState().project.projectDescription}</i></h5>
