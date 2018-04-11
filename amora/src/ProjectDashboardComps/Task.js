@@ -563,9 +563,23 @@ class Task extends Component {
 
                         }
                     })
-
                 }
             })
+
+            var now = new Date()
+            rebase.fetch(`projects/${projID}/taskList/${taskID}`, {
+                context: this,
+                then(taskData){
+                    rebase.push(`projects/${projID}/events`, {
+                        data: {
+                            [this.props.userID]: " completed task " + taskData.taskName,
+                            timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear()
+                        }
+                    })
+                }
+            })
+            
+
 
             //complete the task in the todayView component
             rebase.fetch(`users/${this.props.userID}/todayView`, {

@@ -250,7 +250,7 @@ class ProjectDashboard extends Component {
                     {/* <div id="taskDashContainer">
                     </div> */}
                     <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor}
-                    projectID={this.state.project.key} project={this.state.project}/>
+                    projectID={this.state.project.key} project={this.state.project} title={this.state.project.projectName}/>
                 
                     <div id="taskDashScrollableContent">
 

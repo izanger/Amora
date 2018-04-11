@@ -199,6 +199,13 @@ class CreateProjectForm extends Component {
                     [this.props.getAppState().user.uid]: today.getTime()
                 }
             })
+            var now = new Date()
+            rebase.post(`projects/${newLocation.key}/events/-L8mjk1OjJol4y34AIPh`, { 
+                data: {
+                    [this.props.getAppState().user.uid]: " created the project",
+                    timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear()
+                }
+            })
             rebase.update(`projects/${newLocation.key}`, {
                 data: {
                     key: newLocation.key

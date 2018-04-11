@@ -39,7 +39,9 @@ class ProjectTitleBar extends Component {
             key: "",
             newtitleValue: "",
             newcolorValue: "#E74C3C",
-            newdescriptionValue: ""
+            newdescriptionValue: "",
+            isChangedTitle: false,
+            isChangedDescription: false
         }
     }
 
@@ -106,12 +108,14 @@ class ProjectTitleBar extends Component {
         const newState = { ...this.state }
         newState.titleValue = event.target.value
         this.setState(newState)
+        this.setState({isChangedTitle: true})
     }
 
     changeDescriptionValue = (event) => {
         const newState = { ...this.state }
         newState.projectDescription = event.target.value
         this.setState(newState)
+        this.setState({isChangedDescription: true})
     }
 
     validCategory = (category) => {
@@ -186,6 +190,36 @@ class ProjectTitleBar extends Component {
                     })
                 }
             })
+            if (this.state.isChangedTitle) {
+                var now = new Date()
+                rebase.fetch(`projects/${this.props.getAppState().currentProject.key}`, {
+                    context: this,
+                    then(projData){
+                        rebase.push(`projects/${this.props.getAppState().currentProject.key}/events`, {
+                            data: {
+                                [this.props.getAppState().user.uid]: " changed project name to " + this.state.titleValue,
+                                timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear()
+                            }
+                        })
+                    }
+                })
+                this.setState({isChangedTitle: false})
+            }
+            if (this.state.isChangedDescription) {
+                var now = new Date()
+                rebase.fetch(`projects/${this.props.getAppState().currentProject.key}`, {
+                    context: this,
+                    then(projData){
+                        rebase.push(`projects/${this.props.getAppState().currentProject.key}/events`, {
+                            data: {
+                                [this.props.getAppState().user.uid]: " changed project description to " + this.state.projectDescription,
+                                timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear()
+                            }
+                        })
+                    }
+                })
+                this.setState({isChangedDescription: false})
+            }
 
         } else {
             newState.currentProject.taskAlertTime = taskAlertText
