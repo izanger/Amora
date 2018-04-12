@@ -29,7 +29,8 @@ class Home extends Component {
             totalHours:"",
             addMoreHours:"",
             width: 0,
-            height: 0
+            height: 0,
+            todayViewHours: 0,
           }
           this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
           this.onDragEnd = this.onDragEnd.bind(this);
@@ -44,7 +45,10 @@ class Home extends Component {
                 context: this,
             }).then(data => {
                 this.state.addMoreHours = data.EstimatedTimeValue
-                this.addHours()
+                //this.addHours()
+                let newState = { ...this.state}
+                newState.todayViewHours = newState.todayViewHours + data.EstimatedTimeValue
+                this.setState(newState)
             })
 
 
@@ -232,7 +236,11 @@ class Home extends Component {
                                         taskname = data.taskName
                                         estimatedTime = data.EstimatedTimeValue
                                         console.log("hit")
-                                        this.subtractHours()
+                                        //this.subtractHours()
+                                        let newState = { ...this.state}
+                                        newState.todayViewHours = newState.todayViewHours - data.EstimatedTimeValue
+                                        this.setState(newState)
+                                        
 
                                         if (data.completed){
                                         completedStatus = data.completed
@@ -307,7 +315,10 @@ class Home extends Component {
                                         this.state.taskHours = data.EstimatedTimeValue
                                         estimatedTime = data.EstimatedTimeValue
                                         console.log("hit")
-                                        this.subtractHours()
+                                        //this.subtractHours()
+                                        let newState = { ...this.state}
+                                        newState.todayViewHours = newState.todayViewHours - data.EstimatedTimeValue
+                                        this.setState(newState)
                                         if (data.completed){
                                         completedStatus = data.completed
                                         }
@@ -346,7 +357,10 @@ class Home extends Component {
                 context: this,
             }).then(data => {
                 this.state.addMoreHours = data.EstimatedTimeValue
-                this.addHours()
+                let newState = { ...this.state}
+                newState.todayViewHours = newState.todayViewHours + data.EstimatedTimeValue
+                this.setState(newState)
+                //this.addHours()
             })
 
 
@@ -437,7 +451,34 @@ class Home extends Component {
     }
 
     componentWillMount() {
+       this.getTodayHours();
        this.getName();
+    }
+
+    getTodayHours() {
+        const id = this.props.getAppState().user.uid
+        rebase.fetch(`users/${id}/todayView`, {
+            context: this,
+            asArray: true,
+        }).then(data => {
+            let newState = { ...this.state}
+            let sum = 0;
+
+            let taskArray = Object.values(data);
+                   console.log(taskArray)
+                 for (var i = 0; i < taskArray.length;i++ ){
+                     sum = sum + taskArray[i].EstimatedTimeValue;
+                 }
+            
+            if (Number.isInteger(sum)) {
+                console.log(8-sum)
+                newState.todayViewHours = (8-sum);
+                this.setState(newState);
+            }
+            
+          })
+
+
     }
 
     signOut = () => {
@@ -497,6 +538,22 @@ class Home extends Component {
     document.getElementById("remainingHours1").innerHTML = displayAddition
     console.log(displayAddition)
     this.props.getAppState(newState)
+
+    }
+
+    test = () => {
+        return 7
+    }
+
+    calculateHoursRemaining = (input, multiplier) => {
+        let sum = 0
+        let dayHours = 8;
+        //multiplier is -1 if adding a task to todayView, 1 if deleting a task
+        return dayHours + (multiplier * input)
+
+          //return dayHours - sum;
+
+
 
     }
 
@@ -577,11 +634,11 @@ class Home extends Component {
 
                     <div style={{"position":"fixed", "top": "4px", "right": "15px"}}>
                         <h4 id="remainingHours">Remaining Hours: </h4>
-                        <h4 id="remainingHours1"><b>{this.state.varHours}</b></h4>
+                        <h4 id="remainingHours1"><b>{this.state.todayViewHours}</b></h4>
                     </div>
                     <div style={{"position":"fixed", "bottom": "0px", "right": "0px", "display":"flex", "flex-direction": "row"}}>
-                        <input id="myText" style={{marginTop: '5px', backgroundColor: 'white', width: '60px'}} placeholder="0" className="createProjectInput"></input>
-                        <button type="button" className="addCommentButton" onClick={this.addTaskHours} >Submit Hours of Work Today</button>
+                        {/* <input id="myText" style={{marginTop: '5px', backgroundColor: 'white', width: '60px'}} placeholder="0" className="createProjectInput"></input> */}
+                        {/* <button type="button" className="addCommentButton" onClick={this.addTaskHours} >Submit Hours of Work Today</button> */}
 
                     </div>
 

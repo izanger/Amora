@@ -232,7 +232,7 @@ class UserIcon extends Component {
         const { open } = this.state;
         const hasOnClick = this.props.onClick
 
-        console.log(this.props)
+        //console.log(this.props)
 
         //Render "remove" button if the user is a manager and isn't viewing themselves
         if(this.state.viewingAsManager && (this.props.userID !== this.props.getAppState().user.uid)){ 
