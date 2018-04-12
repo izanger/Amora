@@ -296,6 +296,14 @@ class Task extends Component {
                  }
              })
 
+             rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
+                if(!err){
+                    console.log("fiddlesticks")
+
+                }
+              });
+
+
             } else {
                 rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
                     if(err){
