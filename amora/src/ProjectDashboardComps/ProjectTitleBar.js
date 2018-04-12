@@ -197,7 +197,7 @@ class ProjectTitleBar extends Component {
                     then(projData){
                         rebase.push(`projects/${this.props.getAppState().currentProject.key}/events`, {
                             data: {
-                                event: " changed project name to " + this.state.titleValue,
+                                event: " changed project name to " + "\"" + this.state.titleValue + "\"",
                                 timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear(),
                                 useid: this.props.getAppState().user.displayName
                             }
@@ -213,7 +213,7 @@ class ProjectTitleBar extends Component {
                     then(projData){
                         rebase.push(`projects/${this.props.getAppState().currentProject.key}/events`, {
                             data: {
-                                event: " changed project description to " + this.state.projectDescription,
+                                event: " changed project description to " + "\"" + this.state.projectDescription + "\"",
                                 timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear(),
                                 useid: this.props.getAppState().user.displayName
                             }
