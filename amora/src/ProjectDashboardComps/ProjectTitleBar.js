@@ -7,6 +7,7 @@ import UserIcon from "./UserIcon.js"
 import { checkIfManager, checkIfUserOnProject } from "../apphelpers.js"
 import { emailRegistered, validateEmail } from "../apphelpers.js"
 import InviteList from "../InviteList.js"
+import FilterSelection from './FilterSelection.js';
 // import ImageFileSelector from "react-image-select-component";
 
 import "./ProjectTitleBar.css"
@@ -23,6 +24,7 @@ class ProjectTitleBar extends Component {
 
         this.state = {
             open: false,
+            filterModalOpen: false,
             titleValue: "",
             projectDescription:"",
             taskAlertTime: "",
@@ -103,6 +105,14 @@ class ProjectTitleBar extends Component {
     onCloseModal = () => {
         this.setState({ open: false });
         this.setState({ colorValue: this.props.getProjectDashboardState().project.projectColor })
+    };
+
+    onOpenFiltersModal = () => {
+        this.setState({ filterModalOpen: true });
+      };
+
+    onCloseFiltersModal = () => {
+        this.setState({ filterModalOpen: false });
     };
 
     changeTitleValue = (event) => {
@@ -699,6 +709,7 @@ class ProjectTitleBar extends Component {
         let color = this.props.projectColor;
         let colors = ['#E74C3C', '#E67E22', '#F1C40F', '#E91E63', '#9B59B6', '#3498DB', '#2ECB71', '#18AE90']
         const { open } = this.state;
+        const { filterModalOpen } = this.state;
 
         let settings = this.renderSettings(color, colors)
         return (
@@ -716,7 +727,10 @@ class ProjectTitleBar extends Component {
                          {settings}
                    </Modal>
 
-                   <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} id="projectSettingsIcon"/>
+                   <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} onClick={this.onOpenFiltersModal} id="projectSettingsIcon"/>
+                   <Modal open={filterModalOpen} onClose={this.onCloseFiltersModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
+                        <FilterSelection project={this.props.project} getAppState={this.props.getAppState}/>
+                    </Modal>
                    <img alt={"Archive"} src={archiveIcon} title={this.props.getButtonText()} style={{right: '100px'}} onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
                    <p onClick={this.groupChat}>Group chat</p>
                </div>
