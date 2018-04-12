@@ -574,7 +574,7 @@ class Task extends Component {
                         data: {
                             event: " completed task " + taskData.taskName,
                             timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear(),
-                            useid: this.props.userID
+                            useid: this.props.displayName
                         }
                     })
                 }

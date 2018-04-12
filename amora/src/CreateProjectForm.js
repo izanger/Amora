@@ -204,7 +204,7 @@ class CreateProjectForm extends Component {
                 data: {
                     event: " created the project",
                     timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear(),
-                    useid: this.props.getAppState().user.uid
+                    useid: this.props.getAppState().user.displayName
                 }
             })
             rebase.update(`projects/${newLocation.key}`, {

@@ -133,7 +133,7 @@ class App extends Component {
           data: {
             event: " created the project",
             timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear(),
-            useid: this.state.user.uid
+            useid: this.state.user.displayName
           }
       })
       rebase.fetch(`projects/${newLocation.key}`, {//get the project data we just added to ~/projects

@@ -61,7 +61,7 @@ class ProjectCollaboratorsBar extends Component {
         }
         
         let eventKeys
-        if (this.props.eventKeys) {
+        if (this.props.events) {
             eventKeys = Object.keys(this.props.events)
         }
 
@@ -85,10 +85,11 @@ class ProjectCollaboratorsBar extends Component {
                         <img alt={"Project"} src={logIcon} className="projectPicture"/>
                         {/*This should only appear if it is selected as the project*/}
                         <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
-                            {console.log(eventKeys)}
                             <Modal open={open} onClose={this.onCloseModal} little>
                                 <h2>System log for {this.props.title}</h2>
-                                <p>{this.props.events[eventKeys] + this.props.events[eventKeys] + "on " + this.props.events[eventKeys]}</p><n/>
+                                {eventKeys && eventKeys.map((key) => {
+                                    return (<p>{this.props.events[key].useid + this.props.events[key].event + " on " + this.props.events[key].timestamp}</p>)
+                                })}
                             </Modal>
                     </div>
                 </div>
