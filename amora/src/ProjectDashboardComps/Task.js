@@ -387,7 +387,7 @@ class Task extends Component {
                     onTime = true;
                 }
                 else if (split[0] == now.getMonth()+1) {
-                    if (split[1] > now.getDate()){
+                    if (split[1] >= now.getDate()){
                         onTime = true;
                     }
                 }
@@ -527,7 +527,7 @@ class Task extends Component {
                     onTime = true;
                 }
                 else if (split[0] == now.getMonth()+1) {
-                    if (split[1] > now.getDate()){
+                    if (split[1] >= now.getDate()){
                         onTime = true;
                     }
                 }
