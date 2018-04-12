@@ -115,6 +115,11 @@ class App extends Component {
       })
       rebase.update(`users/${this.state.user.uid}`, {
         data: {
+          profileDescription: ""
+        }
+      })
+      rebase.update(`users/${this.state.user.uid}`, {
+        data: {
           taskCompleted: this.state.taskCompleted
         }
       })

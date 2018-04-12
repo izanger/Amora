@@ -16,6 +16,7 @@ import Notifications from "./Notifications.js"
 import TodayView from "./TodayView.js"
 import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import GroupChat from './ProjectDashboardComps/GroupChat.js';
 
 class Home extends Component {
     constructor(props) {
@@ -598,6 +599,9 @@ class Home extends Component {
                                 )
                             }} />
                             <Route path="/projects/:id" render={(props) => <ProjectDashboard {...props}
+                                goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.props.setAppState}
+                                goBack={this.props.goBack}/> } />
+                            <Route path="/chats/:id" render={(props) => <GroupChat {...props}
                                 goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.props.setAppState}
                                 goBack={this.props.goBack}/> } />
                             <Route path="/createproject" render={() => {

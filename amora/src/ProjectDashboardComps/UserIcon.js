@@ -24,6 +24,7 @@ class UserIcon extends Component {
            viewingAsManager: false,
            viewSynced: false,
            projects: [],
+           profileDescription: ""
         };
        this.color = "#3498DB";
     }
@@ -48,6 +49,7 @@ class UserIcon extends Component {
         this.getTasksCompleted();
         this.getAllTimeHours();
         this.getOnTimeTasks();
+        this.getProfileDesc()
         //console.log(this.props)
         // const promise = checkIfManager(this.props.userID, this.props.projectID)
         // promise.then((data) => {
@@ -178,6 +180,26 @@ class UserIcon extends Component {
         })
     }
 
+    getProfileDesc = () => {
+        const id = this.props.userID  
+        let newState = { ...this.state }
+        rebase.fetch(`users/${id}/profileDescription`, {
+            context: this,
+        }).then(data => {
+            newState.profileDescription = data
+            this.setState(newState);        
+          }).then(() => {
+            this.bindingref = rebase.syncState(`users/${id}/profileDescription`, {
+                context: this,
+                state: 'profileDescription',
+                then: () => {
+                  newState.viewSynced = true
+                  this.setState(newState)
+                }
+            })
+        })
+    }
+
     removeUser = () => {
         var response = window.confirm("Are you sure you want to remove this user?")
         if (response == true){
@@ -210,6 +232,8 @@ class UserIcon extends Component {
         const { open } = this.state;
         const hasOnClick = this.props.onClick
 
+        console.log(this.props)
+
         //Render "remove" button if the user is a manager and isn't viewing themselves
         if(this.state.viewingAsManager && (this.props.userID !== this.props.getAppState().user.uid)){ 
             return (
@@ -225,6 +249,7 @@ class UserIcon extends Component {
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
                           <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
+                          Description: {this.state.profileDescription}<br/>
                             Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
                             All Time Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours Completed: {this.state.allTimeHours}<br/>
                             On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%</h2>
@@ -247,6 +272,7 @@ class UserIcon extends Component {
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
                           <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
+                          Description: {this.state.profileDescription}<br/>
                             Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
                             All Time Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours Completed: {this.state.allTimeHours}<br/>
                             On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%</h2><br></br>

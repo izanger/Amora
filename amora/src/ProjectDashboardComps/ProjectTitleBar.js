@@ -41,7 +41,8 @@ class ProjectTitleBar extends Component {
             newcolorValue: "#E74C3C",
             newdescriptionValue: "",
             isChangedTitle: false,
-            isChangedDescription: false
+            isChangedDescription: false,
+            profileDesc: ""
         }
     }
 
@@ -288,11 +289,6 @@ class ProjectTitleBar extends Component {
             //console.log(data.val()[newKey])
             return true
         })
-        // TODO:
-        // DONE: ////// MAKE USER LIST HOLD USER OBJECTS //////
-        // MAKE IT SO USERS GET AN INVITE IN DATABASE
-        // WORK ON SYCINGSTATE WITH USERS SO THEIR INVITES WILL BE UPDATED ON THEIR CLIENTS AUTOMATICALLY
-        // MAKE INVITE PAGE / ACCEPTING INVTITE LOGIC
     }
 
     // Method for changins invite value in state
@@ -449,15 +445,42 @@ class ProjectTitleBar extends Component {
         }
     }
 
+    changeProfilePicture = (uri) => {
+        
+    }
+
     previewFile = () => {
-        console.log("")
+        const reader  = new FileReader()
+        const file = document.querySelector('input[type=file]').files[0]
+        console.log(file)
+        reader.onloadend = () => {
+           this.changeProfilePicture(reader.result)
+        }
+        reader.readAsDataURL(file)
+    }
+
+    submitProfileChanges = () => {
+        console.log(this.state.profileDesc)
+        rebase.update(`users/${this.props.getAppState().user.uid}`, {
+            data: {
+                profileDescription: this.state.profileDesc
+            }
+        })
+    }
+
+    changeProfileDesc = (event) => {
+        const newState = { ...this.state }
+        newState.profileDesc = event.target.value
+        this.setState(newState)
     }
 
     renderUserSettings = () => {
         return (
             <div>
-                <input type="text" placeholder="Profile description"></input>
-                <input type="file" onchange={this.previewFile}></input>
+                <input type="text" placeholder="Profile description" 
+                onChange={this.changeProfileDesc} value={this.state.profileDesc}></input>
+                <input type="file" onChange={this.previewFile}></input>
+                <button onClick={this.submitProfileChanges}>Submit profile changes</button>
             </div>
         )
     }
@@ -481,6 +504,7 @@ class ProjectTitleBar extends Component {
         let colorsArray = ['#E74C3C', '#E67E22', '#F1C40F', '#E91E63', '#9B59B6', '#3498DB', '#2ECB71', '#18AE90']
         let userSettings = this.renderUserSettings()
 
+        console.log(this.props.getProjectDashboardState())
 
         if(!this.props.getProjectDashboardState().project.managerList[this.props.getAppState().user.uid]){ //user is not a manager
             return (
@@ -665,6 +689,11 @@ class ProjectTitleBar extends Component {
     4) If it's selected, have the box show on the side
     */
 
+    groupChat = () => {
+        console.log(this.props)
+        this.props.goToUrl(`/chats/${this.props.getProjectDashboardState().project.key}`)
+    }
+
     render = () => {
         //let color = "#3CB4CB";
         let color = this.props.projectColor;
@@ -689,6 +718,7 @@ class ProjectTitleBar extends Component {
 
                    <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} id="projectSettingsIcon"/>
                    <img alt={"Archive"} src={archiveIcon} title={this.props.getButtonText()} style={{right: '100px'}} onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
+                   <p onClick={this.groupChat}>Group chat</p>
                </div>
             </div>
         )

@@ -244,7 +244,7 @@ class ProjectDashboard extends Component {
                     <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} project={this.state.project} projectColor={this.state.project.projectColor}
                         getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName}
                         projectDescription={this.state.project.projectDescription} getProjectDashboardState={this.getProjectDashboardState}
-                        setProjectDashboardState={this.setProjectDashboardState} />
+                        setProjectDashboardState={this.setProjectDashboardState} goToUrl={this.props.goToUrl}/>
 
 
                     {/* <div id="taskDashContainer">
