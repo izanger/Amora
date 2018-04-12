@@ -387,7 +387,7 @@ class Task extends Component {
                     onTime = true;
                 }
                 else if (split[0] == now.getMonth()+1) {
-                    if (split[1] > now.getDate()){
+                    if (split[1] >= now.getDate()){
                         onTime = true;
                     }
                 }
@@ -527,7 +527,7 @@ class Task extends Component {
                     onTime = true;
                 }
                 else if (split[0] == now.getMonth()+1) {
-                    if (split[1] > now.getDate()){
+                    if (split[1] >= now.getDate()){
                         onTime = true;
                     }
                 }
@@ -563,9 +563,24 @@ class Task extends Component {
 
                         }
                     })
-
                 }
             })
+
+            var now = new Date()
+            rebase.fetch(`projects/${projID}/taskList/${taskID}`, {
+                context: this,
+                then(taskData){
+                    rebase.push(`projects/${projID}/events`, {
+                        data: {
+                            event: " completed task " + "\"" + taskData.taskName + "\"",
+                            timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear(),
+                            useid: this.props.displayName
+                        }
+                    })
+                }
+            })
+            
+
 
             //complete the task in the todayView component
             rebase.fetch(`users/${this.props.userID}/todayView`, {

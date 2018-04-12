@@ -128,6 +128,14 @@ class App extends Component {
           onTimeTasks: this.state.onTimeTasks
         }
       })
+      var now = new Date()
+      rebase.post(`projects/${newLocation.key}/events/-L8mjk1OjJol4y34AIPh`, { 
+          data: {
+            event: " created the project",
+            timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear(),
+            useid: this.state.user.displayName
+          }
+      })
       rebase.fetch(`projects/${newLocation.key}`, {//get the project data we just added to ~/projects
         context: this
       }).then(projData => {
@@ -145,7 +153,6 @@ class App extends Component {
           }
         })
       })
-      
     })
   }
 
