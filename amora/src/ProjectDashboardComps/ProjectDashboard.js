@@ -170,19 +170,50 @@ class ProjectDashboard extends Component {
             if(!this.state.showArchive){
 
                 if(this.state.project.taskList){
-                    const taskKeys = Object.keys(this.state.project.taskList)
 
-                    tasks = (
-                        taskKeys.map((key) => {
-                            return this.renderTask(key, false)
+                    let copyTasks = this.state.project.taskList;
+                    let copyTasksArray = Object.keys(copyTasks).map(i => copyTasks[i])
 
-                            return <Task archived={false} tasksCompleted={this.props.getAppState().user.uid.tasksCompleted} projectID = {this.props.getAppState().currentProject.key} displayName={this.props.getAppState().user.displayName} userID={this.props.getAppState().user.uid}
-                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState}
-                            key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                            setProjectDashboardState={this.setProjectDashboardState} />
-
-                        })
-                    )
+                    let filter = this.props.getAppState().user.projects[this.state.project.key].filter
+                    if(filter === "Default"){
+                        const taskKeys = Object.keys(this.state.project.taskList)
+                        tasks = (
+                            taskKeys.map((key) => {
+                                return this.renderTask(key, false)
+                            })
+                        )
+                    } else if (filter === "Priority") {
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.priorityLevel === y.priorityLevel){
+                                    return 0;
+                                }
+                                switch (x.priorityLevel){
+                                    case "Low":
+                                        return 1
+                                    case "High":
+                                        return -1
+                                    case "Medium":
+                                        if(y.priorityLevel === "High"){
+                                            return 1
+                                        } else {
+                                            return -1
+                                        }
+                                }
+                            }
+                        )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                        }
+                    } else {
+                        const taskKeys = Object.keys(this.state.project.taskList)
+                        tasks = (
+                            taskKeys.map((key) => {
+                                return this.renderTask(key, false)
+                            })
+                        )
+                    }
 
                 taskRender = (
                     <Droppable droppableId="TaskContainer">
@@ -227,10 +258,10 @@ class ProjectDashboard extends Component {
                     taskRender = (
                         taskKeys.map((key) => {
                             return this.renderTask(key, true)
-                        return <Task archived={true} tasksCompleted={this.props.getAppState().user.uid.tasksCompleted} projectID = {this.props.getAppState().currentProject.key} displayName={this.props.getAppState().user.displayName} userID={this.props.getAppState().user.uid}
-                        taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key}
-                        task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                        setProjectDashboardState={this.setProjectDashboardState}/>
+                        // return <Task archived={true} tasksCompleted={this.props.getAppState().user.uid.tasksCompleted} projectID = {this.props.getAppState().currentProject.key} displayName={this.props.getAppState().user.displayName} userID={this.props.getAppState().user.uid}
+                        // taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key}
+                        // task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                        // setProjectDashboardState={this.setProjectDashboardState}/>
                         })
                     )
                 }
