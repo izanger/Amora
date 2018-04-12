@@ -504,68 +504,6 @@ class Home extends Component {
           })
     }
 
-    addTaskHours = () => {
-    this.state.varHours = document.getElementById("myText").value
-    console.log(this.state.varHours)
-    document.getElementById("remainingHours1").innerHTML = this.state.varHours
-   //var x = document.getElementById("myText").value
-  //document.getElementById("hours").innerHTML = x
-    }
-
-   subtractHours = () => {
-   const newState = this.props.getAppState()
-  //var x = document.getElementById("myText").value
-   //var inputHours = parseInt(x)||0
-   //this.state.sumbitHours=inputHours
-   //this.state.totalHours = (parseInt(this.state.totalHours)+parseInt(this.state.taskHours)||0)
-   var newOutput = document.getElementById("remainingHours1").innerHTML
-   var m = parseInt(newOutput)||0
-   //var displayHours = inputHours-parseInt(this.state.totalHours)||0
-   var displayHours = m - parseInt(this.state.taskHours)
-   if(displayHours < 0)
-   displayHours =0
-
-   document.getElementById("remainingHours1").innerHTML = displayHours
-   this.props.getAppState(newState)
-    }
-
-    addHours = () => {
-    const newState = this.props.getAppState()
-    var outputHours = document.getElementById("remainingHours1").innerHTML
-    console.log(outputHours)
-    var z = parseInt(outputHours)||0
-    var displayAddition = z + parseInt(this.state.addMoreHours)||0
-    document.getElementById("remainingHours1").innerHTML = displayAddition
-    console.log(displayAddition)
-    this.props.getAppState(newState)
-
-    }
-
-    test = () => {
-        return 7
-    }
-
-    calculateHoursRemaining = (input, multiplier) => {
-        let sum = 0
-        let dayHours = 8;
-        //multiplier is -1 if adding a task to todayView, 1 if deleting a task
-        return dayHours + (multiplier * input)
-
-          //return dayHours - sum;
-
-
-
-    }
-
-    submitHoursFunction = () => {
-    const newState = this.props.getAppState()
-    var submittedButtonHours = document.getElementById("myText").value
-    var q = parseInt(submittedButtonHours)||0
-    document.getElementById("remainingHours1").innerHTML = q
-    this.props.getAppState(newState)
-    }
-
-
     render = () => {
 
         const projectsList = this.props.getAppState().user.projects
