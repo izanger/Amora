@@ -452,9 +452,13 @@ class Home extends Component {
             context: this,
         }).then(data => {
             let newState = { ...this.state}
-            var split = data.split(" ")
-            newState.displayName = split[0]
-            this.setState(newState);
+            
+            if (Number.isInteger(data.length)) {
+                var split = data.split(" ")
+                newState.displayName = split[0]
+                this.setState(newState);
+            }
+            
           })
     }
 
