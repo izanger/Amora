@@ -30,7 +30,6 @@ class Task extends Component {
            color: '#3CB4CB',
            editedDate: false,
            addUserOpen: false,
-           addUserId: "",
            commentValue: "",
            addedComment: false,
            commentsSynced: false,
@@ -91,21 +90,6 @@ class Task extends Component {
                 })
             })
         }
-        // rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
-        //     context: this,
-        //     then: (data) => {
-        //         newState.taskComments = data
-        //     }
-        // }).then(() => {
-        //     this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
-        //         context: this,
-        //         state: 'taskComments',
-        //         then: () => {
-        //             newState.commentsSynced = true
-        //             this.setState(newState)
-        //         }
-        //     })
-        // })
     }
 
     componentWillUnmount = () => {
@@ -343,28 +327,6 @@ class Task extends Component {
         }
     }
 
-    toggleSync = (archive) => {
-        if(archive){
-            if(this.bindingref){
-                rebase.removeBinding(this.bindingref)
-            }
-            this.bindingref = rebase.syncState(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
-                context: this,
-                state: 'taskComments',
-
-            })
-        } else {
-            if(this.bindingref){
-                rebase.removeBinding(this.bindingref)
-            }
-            this.bindingref = rebase.syncState(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments`, {
-                context: this,
-                state: 'taskComments',
-
-            })
-        }
-    }
-
     //Ian: Archive the task if it's archived. Unarchive it if it's not.
     toggleArchived = () => {
         if (this.props.archived){
@@ -426,8 +388,6 @@ class Task extends Component {
                                     console.log("fickstiddles")
                                 }
                             });
-
-                            //this.toggleSync(false)
 
                         }
                     })
@@ -566,9 +526,6 @@ class Task extends Component {
                                     console.log("stickfiddles")
                                 }
                             });
-
-                            //this.toggleSync(true)
-
                         }
                     })
                 }
@@ -637,19 +594,7 @@ class Task extends Component {
 
 
     changeTaskName = (event) => {
-        // if (event.target.value.length !== 0) {
-            // const newState = this.props.getProjectDashboardState()
-            // if(this.props.archived){
-            //     newState.project.archivedTaskList[this.props.taskKey].taskName = event.target.value
-            // }else {
-            //     newState.project.taskList[this.props.taskKey].taskName = event.target.value
-            // }
-            // if (!newState.project.taskList[this.props.taskKey].titleLocked && this.state.isManager) {
-            //     this.postCommentForManagerEdit("Title value has been locked by a manager")
-            // }
-            // if (this.state.isManager) {
-            //     newState.project.taskList[this.props.taskKey].titleLocked = true;
-            // }
+        
             const myNewState = { ...this.state }
             let thing = event.target.value
             if (thing === "") {
@@ -657,31 +602,10 @@ class Task extends Component {
             }
             myNewState.tempTitle = thing
             this.setState(myNewState)
-            // MINE let taskList = newState.project.taskList
-            // if (this.props.archived) {
-            //     taskList = newState.project.archivedTaskList
-            // END MINE }
-            // this.props.setProjectDashboardState(newState)
-        // }
     }
 
     changeDeadline = (event) => {
-        // if (validateDate(event.target.value)){
-        //     console.log("SUCCESS")
-        //     const newState = this.props.getProjectDashboardState()
-        //     if(this.props.archived){
-        //         newState.project.archivedTaskList[this.props.taskKey].deadline = event.target.value;
-        //     }else {
-        //         newState.project.taskList[this.props.taskKey].deadline = event.target.value;
-        //     }
-        //     if (!newState.project.taskList[this.props.taskKey].dateLocked && this.state.isManager) {
-        //         this.postCommentForManagerEdit("Date value has been locked by a manager")
-        //     }
-        //     if (this.state.isManager) {
-        //         newState.project.taskList[this.props.taskKey].dateLocked = true;
-        //     }
-        //     this.props.setProjectDashboardState(newState);
-        // }
+
         const myNewState = { ...this.state }
         let thing = event.target.value
         if (thing === "") {
@@ -693,21 +617,6 @@ class Task extends Component {
     }
 
     changeTaskDescription = (event) => {
-        // if (event.target.value !== "") {
-        //     const newState = this.props.getProjectDashboardState()
-        //     if(this.props.archived){
-        //         newState.project.archivedTaskList[this.props.taskKey].taskDescription = event.target.value
-        //     }else {
-        //         newState.project.taskList[this.props.taskKey].taskDescription = event.target.value
-        //     }
-        //     if (!newState.project.taskList[this.props.taskKey].descriptionLocked && this.state.isManager) {
-        //         this.postCommentForManagerEdit("Description value has been locked by a manager")
-        //     }
-        //     if (this.state.isManager) {
-        //         newState.project.taskList[this.props.taskKey].descriptionLocked = true;
-        //     }
-        //     this.props.setProjectDashboardState(newState)
-        // }
         const myNewState = { ...this.state }
         let thing = event.target.value
         if (thing === "") {
@@ -717,21 +626,6 @@ class Task extends Component {
         this.setState(myNewState)
     }
     changePriorityLevel = (event) => {
-        // if (event.target.value !== "") {
-        //     const newState = this.props.getProjectDashboardState()
-        //     if(this.props.archived){
-        //         newState.project.archivedTaskList[this.props.taskKey].priorityLevel = event.target.value
-        //     }else {
-        //         newState.project.taskList[this.props.taskKey].priorityLevel = event.target.value
-        //     }
-        //     if (!newState.project.taskList[this.props.taskKey].priorityLocked && this.state.isManager) {
-        //         this.postCommentForManagerEdit("Priority value has been locked by a manager")
-        //     }
-        //     if (this.state.isManager) {
-        //         newState.project.taskList[this.props.taskKey].priorityLocked = true;
-        //     }
-        //     this.props.setProjectDashboardState(newState)
-        // }
         const myNewState = { ...this.state }
         let thing = event.target.value
         if (thing === "") {
@@ -742,21 +636,6 @@ class Task extends Component {
     }
 
     changeEstimatedTimeValue = (event) => {
-        // if (event.target.value !== "") {
-        //     const newState = this.props.getProjectDashboardState()
-        //     if(this.props.archived){
-        //         newState.project.archivedTaskList[this.props.taskKey].EstimatedTimeValue = event.target.value
-        //     }else {
-        //         newState.project.taskList[this.props.taskKey].EstimatedTimeValue = event.target.value
-        //     }
-        //     if (!newState.project.taskList[this.props.taskKey].hoursLocked && this.state.isManager) {
-        //         this.postCommentForManagerEdit("Estimated time value has been locked by a manager")
-        //     }
-        //     if (this.state.isManager) {
-        //         newState.project.taskList[this.props.taskKey].hoursLocked = true;
-        //     }
-        //     this.props.setProjectDashboardState(newState)
-        // }
         let hours;
         if (event.target.value > 9){
             const myNewState = { ...this.state }
@@ -809,28 +688,11 @@ class Task extends Component {
                         rebase.update(`users/${ID}/todayView/${tid}/`, {
                             data: {EstimatedTimeValue: hours}
                           });
-
-
                     }
-
                 })
-
-
-
-
-              }
-
-              
+              }    
             }
           });
-
-
-
-    }
-
-    getPriorityLevel = () => {
-        console.log(this.props.task.priorityLevel)
-        return "!!"
     }
 
     //push comment to fireBase
@@ -915,59 +777,15 @@ class Task extends Component {
         this.setState(newState)
     }
 
-
-
-    // fixDeadline = () => {
-    //     //2018-02-21T18:28:59-05:00
-    //     const date = this.props.task.deadline
-    //     //2018  02   21T18:28:59  05:00
-
-    //     const boolContinue = date.includes("-");
-    //     if (!boolContinue){
-    //         const newState = { ...this.state }
-    //     newState.editedDate = true
-    //     this.setState(newState)
-    //         return date;
-    //     }
-    //     const firstSplit = date.split("-");
-
-    //     const month = firstSplit[1]; //02
-
-    //     const year = firstSplit[0];
-
-    //     //21     18:28:59
-    //     const secondSplit = firstSplit[2].split("T");
-
-    //     const day = secondSplit[0];
-
-    //     //time to assemble the pieces dudes
-
-    //     const finalOutput = "" + month + "/" + day + "/" + year;
-
-    //     return finalOutput;
-
-
-
-
-    // }
-
-
     getDaysLeft = () => {
-        //const thing = this.props.task.deadline
         let fixedDeadline = this.props.task.deadline
         fixedDeadline = this.state.tempDate
-        //console.log(fixedDeadline)
         if (this.state.open){
-            //console.log("HERE" + this.props.task.deadline)
             return this.state.tempDate
             return this.props.task.deadline;
         }
         // MM/DD/YY
         const dueDate = fixedDeadline.split("/");
-        //const curDate = this.fixCurrentDate.split("/");
-        //console.log(dueDate[2])
-        //console.log(dueDate[1])
-        //console.log(dueDate[0])
         const year = dueDate[2];
         let month = dueDate[0];
         let day = dueDate[1]
@@ -993,13 +811,7 @@ class Task extends Component {
             }
         });
         
-        //console.log("DAyY: " + day)
-        // const banana = moment([dueDate[2], dueDate[1], dueDate[0]]).fromNow();
-        //console.log("Year: " + year)
-        //console.log("Month: " + month)
-        //console.log("Day: " + day)
         const banana = moment([year, month, day]).fromNow();
-        //console.log("THIS ONE: " +banana)
         return banana
     }
 
@@ -1217,18 +1029,15 @@ class Task extends Component {
                             <div>
                                 <p className="errorBox">{this.state.changeErrorMessage}</p>
                             </div>
-
                         </div>
                     </div>
                 </div>
             )
-
         }
     return (
             <div>{finalRender}</div>
 
         )
-
     }
 }
 

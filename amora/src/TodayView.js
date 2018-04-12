@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import rebase from "./rebase.js"
 
 const grid = 8;
@@ -11,7 +10,6 @@ const getItemStyle = (isDragging, draggableStyle, multiplier, color) => ({
     height: grid * multiplier * 3.75,
     margin: `0 0 ${15}px 0`,
     padding: '5px',
-
     // change background colour if dragging
     //background: isDragging ? 'lightgreen' : 'grey',
     background: color,

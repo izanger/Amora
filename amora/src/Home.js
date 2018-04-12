@@ -14,7 +14,6 @@ import MyDayTitleBar from "./MyDayComps/MyDayTitleBar.js"
 // import { doubleToIEEE754String } from '@firebase/database/dist/esm/src/core/util/util';
 import Notifications from "./Notifications.js"
 import TodayView from "./TodayView.js"
-import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import GroupChat from './ProjectDashboardComps/GroupChat.js';
 
@@ -23,11 +22,7 @@ class Home extends Component {
         super(props)
         this.state = {
             displayName: "",
-            varHours:"",
-            sumbitHours:"",
             taskHours:"",
-            totalHours:"",
-            addMoreHours:"",
             width: 0,
             height: 0,
             todayViewHours: 0,
@@ -44,8 +39,6 @@ class Home extends Component {
             rebase.fetch(`users/${id}/todayView/${taskID}`, {
                 context: this,
             }).then(data => {
-                this.state.addMoreHours = data.EstimatedTimeValue
-                //this.addHours()
                 let newState = { ...this.state}
                 newState.todayViewHours = newState.todayViewHours + data.EstimatedTimeValue
                 this.setState(newState)
@@ -356,7 +349,6 @@ class Home extends Component {
             rebase.fetch(`users/${id}/todayView/${taskID}`, {
                 context: this,
             }).then(data => {
-                this.state.addMoreHours = data.EstimatedTimeValue
                 let newState = { ...this.state}
                 newState.todayViewHours = newState.todayViewHours + data.EstimatedTimeValue
                 this.setState(newState)

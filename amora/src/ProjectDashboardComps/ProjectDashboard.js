@@ -6,8 +6,7 @@ import ProjectCollaboratorsBar from "./ProjectCollaboratorsBar.js"
 import "./ProjectDashboard.css"
 import NewProjectButton from "../ProjectSelectorComps/NewProjectButton.js"
 import TodayView from "../TodayView.js"
-import ReactDOM from 'react-dom';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 
 const grid = 80;
@@ -25,17 +24,6 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     width: isDragging ? '350px' : '100%',
      ...draggableStyle,
   });
-
-  const getListStyle = isDraggingOver => ({
-     //background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    // padding: grid,
-     //padding: 100,
-     //width: '100%',
-     //height: '515px',
-  });
-
-
-
 class ProjectDashboard extends Component {
 
     constructor(props) {
@@ -188,8 +176,7 @@ class ProjectDashboard extends Component {
                     <Droppable droppableId="TaskContainer">
 
                   {(provided, snapshot) => (
-                  <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-
+                  <div ref={provided.innerRef} >
 
                   {Object.keys(this.state.project.taskList).map((item, index) => (
                   <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
@@ -215,10 +202,7 @@ class ProjectDashboard extends Component {
               </div>
               )}
                    </Droppable>
-
-
               )
-
                  }
             } else {
                 if(this.state.project.archivedTaskList){
@@ -236,19 +220,13 @@ class ProjectDashboard extends Component {
                 }
             }
 
-
             finalRender = (
-
 
                 <div id="taskDashboard">
                     <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} project={this.state.project} projectColor={this.state.project.projectColor}
                         getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName}
                         projectDescription={this.state.project.projectDescription} getProjectDashboardState={this.getProjectDashboardState}
                         setProjectDashboardState={this.setProjectDashboardState} goToUrl={this.props.goToUrl}/>
-
-
-                    {/* <div id="taskDashContainer">
-                    </div> */}
                     <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor}
                     projectID={this.state.project.key} project={this.state.project} title={this.state.project.projectName} events={this.state.project.events}/>
                 
@@ -264,13 +242,10 @@ class ProjectDashboard extends Component {
             )
         } else {
             finalRender = (
-
-
                 <div></div>
             )
             taskRender = (
                 <div></div>
-
             )
         }
         return (
