@@ -174,6 +174,11 @@ class App extends Component {
     this.props.history.goBack()
   }
 
+  callUrl = (url) => {
+    this.goToUrl(url)
+
+  }
+
   render() {
     return (
       <DragDropContext>

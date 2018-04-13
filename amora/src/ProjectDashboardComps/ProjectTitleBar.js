@@ -10,7 +10,6 @@ import InviteList from "../InviteList.js"
 import { Route, Switch, Redirect } from "react-router-dom"
 import ProjectDashBoard from "./ProjectDashboard.js"
 import "./ProjectTitleBar.css"
-
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
@@ -562,14 +561,15 @@ class ProjectTitleBar extends Component {
             for (i; i < usersList.length;i++ ){
                 let uid = usersList[i];
                 rebase.remove(`users/${uid}/projects/${this.props.getProjectDashboardState().project.key}`)
+                //this.props.callUrl("/notifications")
             }
          }) 
-        
-       // this.props.goToUrl("dashboard")
 
-        rebase.remove(`projects/${this.props.getProjectDashboardState().project.key}`)
-        rebase.remove(`users/${this.props.getAppState().user.uid}/projects/${this.props.getProjectDashboardState().project.key}`)
         
+
+        rebase.remove(`users/${this.props.getAppState().user.uid}/projects/${this.props.getProjectDashboardState().project.key}`)
+        rebase.remove(`projects/${this.props.getProjectDashboardState().project.key}`)
+
     
     }
 

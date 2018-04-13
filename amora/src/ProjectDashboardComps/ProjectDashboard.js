@@ -40,6 +40,7 @@ class ProjectDashboard extends Component {
 
     constructor(props) {
         super(props)
+        
         this.state = {
             projectSynced: false,
             showArchive: false,
