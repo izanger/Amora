@@ -191,14 +191,24 @@ class ProjectDashboard extends Component {
                                 return this.renderTask(key, false)
                             })
                         )
-                    } else if(filter === "Due Date"){ //TODO: sort by due date
-                        console.log("Due Date")
-                        const taskKeys = Object.keys(this.state.project.taskList)
-                        tasks = (
-                            taskKeys.map((key) => {
-                                return this.renderTask(key, false)
-                            })
+                    } else if(filter === "Deadline"){
+                        console.log("Deadline")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.deadline === y.deadline){
+                                    return 0;
+                                } else if(x.deadline < y.deadline) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
+
+                            }
                         )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                        }
                     } else if (filter === "Priority") {
                         console.log("PRIORITY")
 
@@ -341,14 +351,23 @@ class ProjectDashboard extends Component {
                                 return this.renderTask(key, true)
                             })
                         )
-                    } else if(filter === "Due Date"){ //TODO: sort by due date
-                        console.log("Due Date")
-                        const taskKeys = Object.keys(this.state.project.archivedTaskList)
-                        taskRender = (
-                            taskKeys.map((key) => {
-                                return this.renderTask(key, true)
-                            })
+                    } else if(filter === "Deadline"){
+                        console.log("Deadline")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.deadline === y.deadline){
+                                    return 0;
+                                } else if(x.deadline < y.deadline) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
+                            }
                         )
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                        }
                     } else if (filter === "Priority") {
                         console.log("PRIORITY")
 
