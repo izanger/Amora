@@ -175,7 +175,8 @@ class ProjectDashboard extends Component {
                     let copyTasksArray = Object.keys(copyTasks).map(i => copyTasks[i])
 
                     let filter = this.props.getAppState().user.projects[this.state.project.key].filter
-                    if(filter === "Default"){
+                    if(filter === "Chronological"){
+                        console.log("DEFAULT")
                         const taskKeys = Object.keys(this.state.project.taskList)
                         tasks = (
                             taskKeys.map((key) => {
@@ -183,6 +184,8 @@ class ProjectDashboard extends Component {
                             })
                         )
                     } else if (filter === "Priority") {
+                        console.log("PRIORITY")
+
                         copyTasksArray.sort(
                             function(x, y){
                                 if(x.priorityLevel === y.priorityLevel){
@@ -206,7 +209,43 @@ class ProjectDashboard extends Component {
                         for(var i = 0; i < copyTasksArray.length; i++){
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
+                    } else if (filter === "Time to Complete (Ascending)"){
+                        console.log("TIME ASCENDING")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.EstimatedTimeValue === y.EstimatedTimeValue){
+                                    return 0
+                                } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                    return -1
+                                } else {
+                                    return 1
+                                }
+                            }
+                        )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                        }
+                    } else if (filter === "Time to Complete (Descending)"){
+                        console.log("TIME DESCENDING")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.EstimatedTimeValue === y.EstimatedTimeValue){
+                                    return 0
+                                } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                    return 1
+                                } else {
+                                    return -1
+                                }
+                            }
+                        )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                        }
                     } else {
+                        console.log("OTHER")
+
                         const taskKeys = Object.keys(this.state.project.taskList)
                         tasks = (
                             taskKeys.map((key) => {

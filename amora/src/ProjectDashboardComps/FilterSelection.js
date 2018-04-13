@@ -22,12 +22,13 @@ class FilterSelection extends Component {
     renderFilterOptions = () => {
         let filterOptions = []
         filterOptions.push(<option key={0} value={"Default"}>{"Default"}</option>)
-        filterOptions.push(<option key={1} value={"Priority"}>{"Priority"}</option>)
-        filterOptions.push(<option key={2} value={"Due Date"}>{"Due Date"}</option>)
-        filterOptions.push(<option key={3} value={"Time to Complete (Ascending)"}>{"Time to Complete (Ascending)"}</option>)
-        filterOptions.push(<option key={4} value={"Time to Complete (Descending)"}>{"Time to Complete (Descending)"}</option>)
+        filterOptions.push(<option key={1} value={"Chronological"}>{"Chronological"}</option>)
+        filterOptions.push(<option key={2} value={"Priority"}>{"Priority"}</option>)
+        filterOptions.push(<option key={3} value={"Due Date"}>{"Due Date"}</option>)
+        filterOptions.push(<option key={4} value={"Time to Complete (Ascending)"}>{"Time to Complete (Ascending)"}</option>)
+        filterOptions.push(<option key={5} value={"Time to Complete (Descending)"}>{"Time to Complete (Descending)"}</option>)
 
-        var i = 5;
+        var i = 6;
         for(var category in this.props.project.taskCategories){
             filterOptions.push(<option key={i} value={category}>{"Task Category: " + category}</option>)
             i++;
