@@ -263,9 +263,9 @@ class ProjectDashboard extends Component {
                         console.log("OTHER")
                         tasks = []
                         for(var i = 0; i < copyTasksArray.length; i++){
-                            // if(copyTasksArray[i].taskCategory === filter){
+                             if(copyTasksArray[i].taskCategory === filter){
                                 tasks.push(this.renderTask(copyTasksArray[i].key, false))
-                            // }
+                             }
                         }
                     }
 
@@ -276,9 +276,9 @@ class ProjectDashboard extends Component {
                   <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
 
 
-                  {Object.keys(this.state.project.taskList).map((item, index) => (
-                //  {tasks.map((item, index) => (
-                  <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
+                   {/* {Object.keys(this.state.project.taskList).map((item, index) => ( */}
+                    {Object.keys(tasks).map((item, index) => (
+                  <Draggable key={item} draggableId={tasks[index].key} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
                       {(provided, snapshot) => (
                       <div>
                       <div
@@ -291,6 +291,7 @@ class ProjectDashboard extends Component {
                           )}
                           >
                           {tasks[index]}
+                          {console.log(tasks[index])}
                           </div>
                           {provided.placeholder}
                       </div>
