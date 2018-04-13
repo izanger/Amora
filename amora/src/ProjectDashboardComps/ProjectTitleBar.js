@@ -558,18 +558,23 @@ class ProjectTitleBar extends Component {
         }).then(data => {
             usersList = Object.keys(data);
             var i = 0;
+            projectKey = this.props.getProjectDashboardState().project.key
             for (i; i < usersList.length;i++ ){
                 let uid = usersList[i];
-                console.log("uid: " + uid)
-                rebase.remove(`users/${uid}/projects/${this.props.getProjectDashboardState().project.key}`)
+                //console.log("uid: " + uid)
+                //rebase.remove(`users/${uid}/projects/${this.props.getProjectDashboardState().project.key}`)
+                rebase.remove(`users/${uid}/projects/${projectKey}`)
+
                 //this.props.callUrl("/notifications")
             }
+            rebase.remove(`projects/${projectKey}`)
+
          }) 
 
         
 
-        rebase.remove(`users/${this.props.getAppState().user.uid}/projects/${this.props.getProjectDashboardState().project.key}`)
-        rebase.remove(`projects/${this.props.getProjectDashboardState().project.key}`)
+        //rebase.remove(`users/${this.props.getAppState().user.uid}/projects/${this.props.getProjectDashboardState().project.key}`)
+        //rebase.remove(`projects/${this.props.getProjectDashboardState().project.key}`)
 
     
     }

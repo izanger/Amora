@@ -75,16 +75,27 @@ class ProjectDashboard extends Component {
 
                     //Check in case user was deleted from the project they are viewing
                     //If they were, route them back to the dashboard
+                    // rebase.listenTo(`users/${this.props.getAppState().user.uid}/projects/${this.props.match.params.id}`, {
+                    //     context: this,
+                    //     then(data){
+                    //         if(!data){
+                    //             this.props.goToUrl("/dashboard")
+                    //         }
+                    //         if(data.key !== this.props.match.params.id){
+                    //             this.props.goToUrl("/dashboard")
+                    //         }
+                    //     }
+                    // })
                     rebase.listenTo(`users/${this.props.getAppState().user.uid}/projects/${this.props.match.params.id}`, {
-                        context: this,
-                        then(data){
-                            if(!data){
-                                this.props.goToUrl("/dashboard")
+                            context: this,
+                            then(data){
+                                if(!data){
+                                    this.props.goToUrl("/dashboard")
+                                }
+                                if(data.key !== this.props.match.params.id){
+                                    this.props.goToUrl("/dashboard")
+                                }
                             }
-                            if(data.key !== this.props.match.params.id){
-                                this.props.goToUrl("/dashboard")
-                            }
-                        }
                     })
                 }
             })
