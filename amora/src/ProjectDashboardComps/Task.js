@@ -14,6 +14,7 @@ import Modal from 'react-responsive-modal/lib/css';
 import { validateDate } from "../apphelpers.js"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { App } from "../App.js"
+import lockIcon from "../images/Icons/Lock.svg"
 
 
 class Task extends Component {
@@ -902,7 +903,18 @@ class Task extends Component {
                     <div id="taskStats">
                         <div id="taskCheckAndTitle">
                             <svg height="40" width="40">
-
+                                <title>Lock</title>
+                                <desc>Created with Sketch.</desc>
+                                <defs></defs>
+                                <g id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="Desktop" transform="translate(0, 0)" stroke="#979797">
+                                        <g id="Lock" transform="translate(6, 13)">
+                                            <path d="M5.5,7.5 L5.5,9.5" id="Line-4" stroke-linecap="square"></path>
+                                            <rect id="Rectangle-12" x="0.5" y="4.5" width="10" height="8" rx="2"></rect>
+                                            <path d="M2,5 L2,3.5 L2,3.5 C2,1.56700338 3.56700338,3.55085719e-16 5.5,0 L5.5,0 L5.5,0 C7.43299662,-3.55085719e-16 9,1.56700338 9,3.5 L9,5" id="Path-2"></path>
+                                        </g>
+                                    </g>
+                                </g>
                                  <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
                                  <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                  <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
