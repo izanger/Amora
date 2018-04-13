@@ -168,11 +168,11 @@ class CreateTaskForm extends Component {
         let categoryOptions = this.getCategoryOptions();
         return (
             <div id="taskDashboard">
-                <div id="projectTitleContainer" style={{backgroundColor: this.props.getAppState().currentProject.projectColor}}>
-                    <img title="Go back" src={leftArrow} style={{height: '30px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
+                <div id="projectTitleContainer"  style={{backgroundColor: this.props.getAppState().currentProject.projectColor}}>
+                    <img title="Go back" src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
                         this.props.goToUrl("dashboard")
                     }} />
-                    <h1 style={{left: '35px'}} id="projectTitle">Create New Task</h1>
+                    <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Create New Task</h1>
 
                 </div>
 

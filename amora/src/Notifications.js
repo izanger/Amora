@@ -46,10 +46,10 @@ class Notifications extends Component {
 
             <div id="taskDashboard">
                 <div id="projectTitleContainer" style={{backgroundColor: color}}>
-                    <img src={leftArrow} style={{height: '30px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
+                    <img src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
                         this.props.goToUrl("dashboard")
                     }} />
-                    <h1 style={{left: '35px'}} id="projectTitle">Notifications</h1>
+                    <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Notifications</h1>
 
                 </div>
                 {finalRender}

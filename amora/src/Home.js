@@ -233,7 +233,7 @@ class Home extends Component {
                                         let newState = { ...this.state}
                                         newState.todayViewHours = newState.todayViewHours - data.EstimatedTimeValue
                                         this.setState(newState)
-                                        
+
 
                                         if (data.completed){
                                         completedStatus = data.completed
@@ -461,13 +461,13 @@ class Home extends Component {
                  for (var i = 0; i < taskArray.length;i++ ){
                      sum = sum + taskArray[i].EstimatedTimeValue;
                  }
-            
+
             if (Number.isInteger(sum)) {
                 console.log(8-sum)
                 newState.todayViewHours = (8-sum);
                 this.setState(newState);
             }
-            
+
           })
 
 
@@ -486,13 +486,13 @@ class Home extends Component {
             context: this,
         }).then(data => {
             let newState = { ...this.state}
-            
+
             if (Number.isInteger(data.length)) {
                 var split = data.split(" ")
                 newState.displayName = split[0]
                 this.setState(newState);
             }
-            
+
           })
     }
 
@@ -577,7 +577,7 @@ class Home extends Component {
 
                     </div>
 
-                    <div style={{width: '100%', height: '100%', backgroundColor: 'whitesmoke'}}>
+                    <div style={{width: '100%', height: '100%', backgroundColor: '#F8F8F8'}}>
                         <Switch>
                             <Route path="/dashboard" render={() => {
                                 return (

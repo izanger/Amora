@@ -35,7 +35,7 @@ class Task extends Component {
            commentsSynced: false,
            edited: "",
            taskComments: {
-            
+
            },
            isManager: false,
            tempTitle: "",
@@ -180,19 +180,19 @@ class Task extends Component {
                            const key = tasks.key
 
                            rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments/${key}`, function(err){
-               
+
                              });
 
                          }
                        }
-                    
+
                     )
                     //   )}
-                    }   
+                    }
                   })
 
                 //rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
-    
+
             }else {
                 //rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/${this.props.commentID}`)
                 rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/`, {
@@ -208,15 +208,15 @@ class Task extends Component {
                                 const key = tasks.key
 
                                 rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/taskComments/${key}`, function(err){
-                    
+
                                   });
 
                               }
                             }
-                    
+
                     )
                     //   )}
-                    }   
+                    }
                   })
         }
 
@@ -237,7 +237,7 @@ class Task extends Component {
                  marginBottom: '5px'
             })
         } else {
-            return ({height: '40px'})
+            return ({height: '40px', backgroundColor: '#F8F8F8'})
         }
     }
 
@@ -348,7 +348,7 @@ class Task extends Component {
                     })
                 }
             })
-            
+
             var now = new Date()
             var split = this.props.task.deadline.split("/")
             var onTime = false
@@ -374,7 +374,7 @@ class Task extends Component {
                     }
                 })
             }
-            
+
             rebase.fetch(`projects/${projID}/archivedTaskList/${taskID}`, {
                 context: this,
                 then(taskData){
@@ -544,7 +544,7 @@ class Task extends Component {
                     })
                 }
             })
-            
+
 
 
             //complete the task in the todayView component
@@ -594,7 +594,7 @@ class Task extends Component {
 
 
     changeTaskName = (event) => {
-        
+
             const myNewState = { ...this.state }
             let thing = event.target.value
             if (thing === "") {
@@ -646,7 +646,7 @@ class Task extends Component {
             myNewState.tempHours = thing
             this.setState(myNewState)
             hours = thing
-        
+
         }
         else {
             const myNewState = { ...this.state }
@@ -690,7 +690,7 @@ class Task extends Component {
                           });
                     }
                 })
-              }    
+              }
             }
           });
     }
@@ -810,7 +810,7 @@ class Task extends Component {
                 yy: "%d years"
             }
         });
-        
+
         const banana = moment([year, month, day]).fromNow();
         return banana
     }
@@ -910,7 +910,7 @@ class Task extends Component {
                             <h4 id="taskTitle"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.state.tempTitle}/></h4>
                         </div>
                         {/* @Zach pls halp */}
-                        <h5>{this.state.taskCategory}</h5> 
+                        <h5>{this.state.taskCategory}</h5>
                         <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b> | <ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.state.tempHours)}/> {" hrs"} | <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">

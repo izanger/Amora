@@ -1,14 +1,13 @@
 #ProjectCollaboratorsBarContainter {
     display: flex;
     flex-direction: row;
-    background-color: whitesmoke;
+    background-color: #F8F8F8;
     width: 100%;
 }
 
 #logIconContainer {
     width: 40px;
     height: 40px;
-    margin-left: 900px;
     margin-right: 14px;
     margin-top: 14px;
     overflow: hidden;
