@@ -553,12 +553,12 @@ class ProjectTitleBar extends Component {
 
         let projectUserList = [];
         let usersList = [];
+        let projectKey = this.props.getProjectDashboardState().project.key
         rebase.fetch(`projects/${this.props.getProjectDashboardState().project.key}/userList`, {
             context: this,
         }).then(data => {
             usersList = Object.keys(data);
             var i = 0;
-            projectKey = this.props.getProjectDashboardState().project.key
             for (i; i < usersList.length;i++ ){
                 let uid = usersList[i];
                 //console.log("uid: " + uid)
