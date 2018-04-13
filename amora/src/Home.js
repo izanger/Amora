@@ -40,7 +40,7 @@ class Home extends Component {
                 context: this,
             }).then(data => {
                 let newState = { ...this.state}
-                newState.todayViewHours = newState.todayViewHours + data.EstimatedTimeValue
+                //newState.todayViewHours = newState.todayViewHours + data.EstimatedTimeValue
                 this.setState(newState)
             })
 
