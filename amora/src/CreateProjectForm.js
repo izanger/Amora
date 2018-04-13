@@ -73,9 +73,13 @@ class CreateProjectForm extends Component {
     //Make sure they're not trying to add the same category twice
     validCategory = (category) => {
         if(this.state.categoryList[category] !== true){
-            return true;
+            if(category.indexOf('.') > -1 || category.indexOf('#') > -1 || category.indexOf('$') > -1 || category.indexOf('/') > -1 || category.indexOf('[') > -1 || category.indexOf(']') > -1){
+                return false
+            } else {
+                return true
+            }   
         } else {
-            return false;
+            return false
         }
     }
 
@@ -86,7 +90,7 @@ class CreateProjectForm extends Component {
 
         const newState = { ...this.state }
         if (!this.validCategory(this.state.categoryValue)){
-            newState.categoryErrorValue = "You already added that category"
+            newState.categoryErrorValue = "Invalid Category"
             this.setState(newState)
             return;
         }
