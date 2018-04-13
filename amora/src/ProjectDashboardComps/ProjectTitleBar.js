@@ -346,6 +346,23 @@ class ProjectTitleBar extends Component {
         })
     }
 
+    deleteProject = () => {
+
+        let projectUserList = [];
+        let usersList = [];
+        let projectKey = this.props.getProjectDashboardState().project.key
+        rebase.fetch(`projects/${this.props.getProjectDashboardState().project.key}/userList`, {
+            context: this,
+        }).then(data => {
+            usersList = Object.keys(data);
+            var i = 0;
+            for (i; i < usersList.length;i++ ){
+                let uid = usersList[i];
+                rebase.remove(`users/${uid}/projects/${projectKey}`)
+            }
+            rebase.remove(`projects/${projectKey}`)
+         }) 
+    }
     createVanillaProject = () => {
         if (this.state.newdescriptionValue === "" || this.state.newtitleValue === "") {
             return
@@ -721,7 +738,7 @@ class ProjectTitleBar extends Component {
                 </div>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
-
+                    <button type="button" onClick={this.deleteProject} >Delete Project</button>
                    <img alt={"Settings"} src={settingsIcon} title={"Settings"} onClick={this.onOpenModal} id="projectSettingsIcon"/>
                    <Modal open={open} onClose={this.onCloseModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
                          {settings}
