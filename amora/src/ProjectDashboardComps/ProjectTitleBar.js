@@ -42,7 +42,8 @@ class ProjectTitleBar extends Component {
             newdescriptionValue: "",
             isChangedTitle: false,
             isChangedDescription: false,
-            profileDesc: ""
+            profileDesc: "",
+            workingHoursValue: ""
         }
     }
 
@@ -70,6 +71,12 @@ class ProjectTitleBar extends Component {
     changeCategoryValue = (event) => {
         const newState = { ...this.state }
         newState.categoryValue = event.target.value;
+        this.setState(newState)
+    }
+
+    changeWorkingHoursValue = (event) => {
+        const newState = { ...this.state }
+        newState.workingHoursValue = event.target.value;
         this.setState(newState)
     }
 
@@ -144,6 +151,10 @@ class ProjectTitleBar extends Component {
         newState.categoryErrorValue = "";
         newState.categoryValue = "";
         this.setState(newState)
+    }
+
+    updateWorkingHours = () => {
+        //still need to do this
     }
 
     submitChanges = () => {
@@ -673,6 +684,11 @@ class ProjectTitleBar extends Component {
                     </div>
 
                     {userSettings}
+
+                    <div>
+                        <input type="text" placeholder="Update your working hours"
+                        value={this.state.workingHoursValue} onChange={this.changeWorkingHoursValue} style={{width: '35%'}}/>          
+                    </div>
 
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
                 </div>

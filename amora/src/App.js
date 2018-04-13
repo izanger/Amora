@@ -20,6 +20,7 @@ class App extends Component {
       taskCompleted: 0,
       allTimeHours: 0,
       onTimeTasks: 0,
+      workingHours: "",
     }
   }
 
@@ -131,6 +132,11 @@ class App extends Component {
       rebase.update(`users/${this.state.user.uid}`, {
         data: {
           onTimeTasks: this.state.onTimeTasks
+        }
+      })
+      rebase.update(`users/${this.state.user.uid}`, {
+        data: {
+          workingHours: this.state.workingHours
         }
       })
       var now = new Date()
