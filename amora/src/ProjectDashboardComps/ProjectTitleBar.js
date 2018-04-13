@@ -560,6 +560,7 @@ class ProjectTitleBar extends Component {
             var i = 0;
             for (i; i < usersList.length;i++ ){
                 let uid = usersList[i];
+                console.log("uid: " + uid)
                 rebase.remove(`users/${uid}/projects/${this.props.getProjectDashboardState().project.key}`)
                 //this.props.callUrl("/notifications")
             }

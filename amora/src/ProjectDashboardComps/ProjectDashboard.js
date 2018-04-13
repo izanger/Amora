@@ -78,6 +78,9 @@ class ProjectDashboard extends Component {
                     rebase.listenTo(`users/${this.props.getAppState().user.uid}/projects/${this.props.match.params.id}`, {
                         context: this,
                         then(data){
+                            if(!data){
+                                this.props.goToUrl("/dashboard")
+                            }
                             if(data.key !== this.props.match.params.id){
                                 this.props.goToUrl("/dashboard")
                             }
