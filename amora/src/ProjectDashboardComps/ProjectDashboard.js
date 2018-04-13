@@ -146,6 +146,48 @@ class ProjectDashboard extends Component {
             getAppStateFunc={this.props.getAppState} userID={this.props.getAppState().user.uid} />
     }
 
+    calculateScores = (tasks) => {
+        let today = new Date();
+        today.setHours(0,0,0,0)
+        today = today.getTime()
+        
+        for(var i = 0; i < tasks.length; i++){
+            let score = 1
+            var deadline = (new Date(tasks[i].deadline)).getTime()
+            var timeDiff = deadline - today
+            const ONE_DAY = 86400000 // 1 day in milliseconds
+
+            if(tasks[i].priorityLevel === "High"){
+                score *= 4
+            } else if(tasks[i].priorityLevel === "Medium") {
+                score *= 2
+            }
+
+            if(timeDiff < 0){
+                score *= 250
+            } else if(timeDiff === 0) {
+                score *= 50
+            } else if(timeDiff === ONE_DAY) {
+                score *= 15
+            } else if(timeDiff >= (ONE_DAY * 1) && timeDiff < (ONE_DAY * 5)) {
+                score *= 7
+            } else if(timeDiff >= (ONE_DAY * 5) && timeDiff < (ONE_DAY * 9)) {
+                score *= 3
+            } else if(timeDiff >= (ONE_DAY * 9) && timeDiff < (ONE_DAY * 16)) {
+                score *= 2
+            } else {
+                score *= 1
+            }
+            if(tasks[i].taskName === "high tomorrow"){
+                console.log("HT score: " + score)
+                console.log("HT diff: " + timeDiff)
+
+            }
+            tasks[i].score = score
+        }
+        return tasks;
+    }
+
     render = () => {
 
         let finalRender
@@ -171,14 +213,39 @@ class ProjectDashboard extends Component {
                                 return this.renderTask(key, false)
                             })
                         )
-                    } else if(filter === "Default"){ //TODO: smart sorting
-                        console.log("Default")
-                        const taskKeys = Object.keys(this.state.project.taskList)
-                        tasks = (
-                            taskKeys.map((key) => {
-                                return this.renderTask(key, false)
-                            })
+                    } else if(filter === "Suggested"){ //TODO: smart sorting
+                        // console.log("Default")
+                        // const taskKeys = Object.keys(this.state.project.taskList)
+                        // console.log("copytasks: " + copyTasks)
+                        // console.log("copyTasksArray: " + copyTasksArray)
+                        // tasks = (
+                        //     taskKeys.map((key) => {
+                        //         return this.renderTask(key, false)
+                        //     })
+                        // )
+                        copyTasksArray = this.calculateScores(copyTasksArray)
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.score === y.score){
+                                    if(x.EstimatedTimeValue > y.EstimatedTimeValue){
+                                        return -1
+                                    } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                        return 1
+                                    } else {
+                                        return 0
+                                    }
+                                } else if(x.score < y.score) {
+                                    return 1;
+                                } else {
+                                    return -1;
+                                }
+
+                            }
                         )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                        }
                     } else if(filter === "Deadline"){
                         console.log("Deadline")
                         copyTasksArray.sort(
@@ -327,14 +394,31 @@ class ProjectDashboard extends Component {
                                 return this.renderTask(key, true)
                             })
                         )
-                    } else if(filter === "Default"){ //TODO: smart sorting
-                        console.log("Default")
-                        const taskKeys = Object.keys(this.state.project.archivedTaskList)
-                        taskRender = (
-                            taskKeys.map((key) => {
-                                return this.renderTask(key, true)
-                            })
+                    } else if(filter === "Suggested"){ //TODO: smart sorting
+
+                        copyTasksArray = this.calculateScores(copyTasksArray)
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.score === y.score){
+                                    if(x.EstimatedTimeValue > y.EstimatedTimeValue){
+                                        return -1
+                                    } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                        return 1
+                                    } else {
+                                        return 0
+                                    }
+                                } else if(x.score < y.score) {
+                                    return 1;
+                                } else {
+                                    return -1;
+                                }
+
+                            }
                         )
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                        }
                     } else if(filter === "Deadline"){
                         console.log("Deadline")
                         copyTasksArray.sort(

@@ -5,9 +5,6 @@ class FilterSelection extends Component {
     constructor() {
         super()
         this.state = {
-            //filter: "Default",
-            //filtersSynced: false,
-
         }
     }
 
@@ -21,7 +18,7 @@ class FilterSelection extends Component {
 
     renderFilterOptions = () => {
         let filterOptions = []
-        filterOptions.push(<option key={0} value={"Default"}>{"Default"}</option>)
+        filterOptions.push(<option key={0} value={"Suggested"}>{"Suggested"}</option>)
         filterOptions.push(<option key={1} value={"Chronological"}>{"Chronological"}</option>)
         filterOptions.push(<option key={2} value={"Priority"}>{"Priority"}</option>)
         filterOptions.push(<option key={3} value={"Deadline"}>{"Deadline"}</option>)
