@@ -176,7 +176,23 @@ class ProjectDashboard extends Component {
 
                     let filter = this.props.getAppState().user.projects[this.state.project.key].filter
                     if(filter === "Chronological"){
-                        console.log("DEFAULT")
+                        console.log("Chronological")
+                        const taskKeys = Object.keys(this.state.project.taskList)
+                        tasks = (
+                            taskKeys.map((key) => {
+                                return this.renderTask(key, false)
+                            })
+                        )
+                    } else if(filter === "Default"){ //TODO: smart sorting
+                        console.log("Default")
+                        const taskKeys = Object.keys(this.state.project.taskList)
+                        tasks = (
+                            taskKeys.map((key) => {
+                                return this.renderTask(key, false)
+                            })
+                        )
+                    } else if(filter === "Due Date"){ //TODO: sort by due date
+                        console.log("Due Date")
                         const taskKeys = Object.keys(this.state.project.taskList)
                         tasks = (
                             taskKeys.map((key) => {
@@ -243,15 +259,14 @@ class ProjectDashboard extends Component {
                         for(var i = 0; i < copyTasksArray.length; i++){
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
-                    } else {
+                    } else { //Filter by a category
                         console.log("OTHER")
-
-                        const taskKeys = Object.keys(this.state.project.taskList)
-                        tasks = (
-                            taskKeys.map((key) => {
-                                return this.renderTask(key, false)
-                            })
-                        )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            // if(copyTasksArray[i].taskCategory === filter){
+                                tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                            // }
+                        }
                     }
 
                 taskRender = (
@@ -262,6 +277,7 @@ class ProjectDashboard extends Component {
 
 
                   {Object.keys(this.state.project.taskList).map((item, index) => (
+                //  {tasks.map((item, index) => (
                   <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
                       {(provided, snapshot) => (
                       <div>
@@ -292,17 +308,115 @@ class ProjectDashboard extends Component {
                  }
             } else {
                 if(this.state.project.archivedTaskList){
-                    const taskKeys = Object.keys(this.state.project.archivedTaskList)
+                    // const taskKeys = Object.keys(this.state.project.archivedTaskList)
 
-                    taskRender = (
-                        taskKeys.map((key) => {
-                            return this.renderTask(key, true)
-                        // return <Task archived={true} tasksCompleted={this.props.getAppState().user.uid.tasksCompleted} projectID = {this.props.getAppState().currentProject.key} displayName={this.props.getAppState().user.displayName} userID={this.props.getAppState().user.uid}
-                        // taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key}
-                        // task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                        // setProjectDashboardState={this.setProjectDashboardState}/>
-                        })
-                    )
+                    // taskRender = (
+                    //     taskKeys.map((key) => {
+                    //         return this.renderTask(key, true)
+                    //     // return <Task archived={true} tasksCompleted={this.props.getAppState().user.uid.tasksCompleted} projectID = {this.props.getAppState().currentProject.key} displayName={this.props.getAppState().user.displayName} userID={this.props.getAppState().user.uid}
+                    //     // taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key}
+                    //     // task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                    //     // setProjectDashboardState={this.setProjectDashboardState}/>
+                    //     })
+                    // )
+
+                    let copyTasks = this.state.project.archivedTaskList;
+                    let copyTasksArray = Object.keys(copyTasks).map(i => copyTasks[i])
+
+                    let filter = this.props.getAppState().user.projects[this.state.project.key].filter
+                    if(filter === "Chronological"){
+                        console.log("Chronological")
+                        const taskKeys = Object.keys(this.state.project.archivedTaskList)
+                        taskRender = (
+                            taskKeys.map((key) => {
+                                return this.renderTask(key, true)
+                            })
+                        )
+                    } else if(filter === "Default"){ //TODO: smart sorting
+                        console.log("Default")
+                        const taskKeys = Object.keys(this.state.project.archivedTaskList)
+                        taskRender = (
+                            taskKeys.map((key) => {
+                                return this.renderTask(key, true)
+                            })
+                        )
+                    } else if(filter === "Due Date"){ //TODO: sort by due date
+                        console.log("Due Date")
+                        const taskKeys = Object.keys(this.state.project.archivedTaskList)
+                        taskRender = (
+                            taskKeys.map((key) => {
+                                return this.renderTask(key, true)
+                            })
+                        )
+                    } else if (filter === "Priority") {
+                        console.log("PRIORITY")
+
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.priorityLevel === y.priorityLevel){
+                                    return 0;
+                                }
+                                switch (x.priorityLevel){
+                                    case "Low":
+                                        return 1
+                                    case "High":
+                                        return -1
+                                    case "Medium":
+                                        if(y.priorityLevel === "High"){
+                                            return 1
+                                        } else {
+                                            return -1
+                                        }
+                                }
+                            }
+                        )
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                        }
+                    } else if (filter === "Time to Complete (Ascending)"){
+                        console.log("TIME ASCENDING")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.EstimatedTimeValue === y.EstimatedTimeValue){
+                                    return 0
+                                } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                    return -1
+                                } else {
+                                    return 1
+                                }
+                            }
+                        )
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                        }
+                    } else if (filter === "Time to Complete (Descending)"){
+                        console.log("TIME DESCENDING")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.EstimatedTimeValue === y.EstimatedTimeValue){
+                                    return 0
+                                } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                    return 1
+                                } else {
+                                    return -1
+                                }
+                            }
+                        )
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                        }
+                    } else { //Filter by a category
+                        console.log("OTHER")
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            // if(copyTasksArray[i].taskCategory === filter){
+                                taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                            // }
+                        }
+                    }
                 }
             }
 
