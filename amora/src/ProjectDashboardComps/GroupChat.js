@@ -43,11 +43,13 @@ class GroupChat extends Component {
         return text;
       }
     createChat = () => {
+        const today = new Date()
         const message = {
             body: this.state.bodyValue,
-            time: "now",
+            time: today.getTime(),
             uid: this.props.getAppState().user.uid,
             url: this.props.getAppState().user.photoURL,
+            name: this.props.getAppState().user.displayName,
             key: 0
         }
         rebase.update(`projects/${this.props.match.params.id}/chat/${message.key}`, {
@@ -63,14 +65,17 @@ class GroupChat extends Component {
             this.createChat()
             return
         }
+        console.log(this.props.getAppState())
+        const today = new Date()
         const message = {
             body: this.state.bodyValue,
-            time: "now",
+            time: today.getTime(),
             uid: this.props.getAppState().user.uid,
             url: this.props.getAppState().user.photoURL,
+            name: this.props.getAppState().user.displayName,
             key: this.state.project.numMessages
         }
-
+    console.log(message)
         const newState = { ...this.state }
         newState.project.chat[message.key] = message
         newState.project.numMessages += 1
@@ -100,7 +105,10 @@ class GroupChat extends Component {
                 <input value={this.state.bodyValue} onChange={this.changeBody}></input>
                 <button onClick={this.postMessage}>Send</button>
                 {keys.map((key) => {
-                    return <ChatMessage body={this.state.project.chat[key].body}/>
+                    return <ChatMessage body={this.state.project.chat[key].body}
+                    getAppState={this.props.getAppState}
+                    url={this.state.project.chat[key].url} uid={this.state.project.chat[key].uid}
+                    time={this.state.project.chat[key].time} project={this.state.project} name={this.state.project.chat[key].name}/>
                 })}
             </div>
         )
