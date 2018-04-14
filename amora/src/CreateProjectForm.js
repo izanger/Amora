@@ -239,7 +239,7 @@ class CreateProjectForm extends Component {
                             projectDescription: dat.projectDescription,
                             isPersonalDashboardProject: "false",
                             taskAlertTime: selectedText,
-                            filter: "Default",
+                            filter: "Suggested",
                         }
                         rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
                             data: userProject
