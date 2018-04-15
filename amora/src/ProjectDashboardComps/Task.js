@@ -921,8 +921,7 @@ render = () => {
                                 </svg>
                                 <p id="taskTitle" className="text_task"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.state.tempTitle}/></p>
                             </div>
-                            {/* @Zach pls halp */}
-                            <h5>{this.state.taskCategory}</h5>
+
                             <div id="taskContentInfo" style={{right: '12px'}}>
                                 {/*<b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b>*/}
                                 {/*<ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.state.tempHours)}/> {" hrs"}*/}
@@ -965,6 +964,11 @@ render = () => {
                                     <p id="taskDescription" className="text_small_light"><ContentEditable disabled={this.props.task.descriptionLocked && !this.state.isManager} onChange={this.changeTaskDescription}
                                         html={this.state.tempDescription} /> </p>
 
+                                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                        <p className="text_small_light" id="taskInfoBubble" style={{backgroundColor: this.props.getProjectDashboardState().project.projectColor}}><ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue}  html={(this.state.tempHours)}/> {" hrs"}</p>
+                                        <p className="text_small_light" id="taskInfoBubble" style={{backgroundColor: this.props.getProjectDashboardState().project.projectColor}}>{this.state.taskCategory}</p>
+                                    </div>
+
 
 
                                     <div id="taskComments">
@@ -974,12 +978,22 @@ render = () => {
 
                                         <input type="text" name="Comment" id="CommentField" onChange={this.sendComment} value={this.state.commentValue} placeholder="Comment" className="commentInput" style={{width: '100%'}}/>
                                         <button className="addCommentButton" onClick={this.postComment}>Add Comment</button>
-                                        <button className="addCommentButton" onClick={this.switch} style={{marginLeft:'10px'}} >Close Task</button>
                                     </div>
                                     <div >
                                         <p className="errorBox">{this.state.changeErrorMessage}</p>
                                     </div>
-
+                                    <center>
+                                        <svg width="11px" height="6px" viewBox="0 0 11 6" onClick={this.switch}>
+                                            <title>Path 3</title>
+                                            <desc>Created with Sketch.</desc>
+                                            <defs></defs>
+                                            <g id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                                <g id="Desktop" transform="translate(-447.000000, -527.000000)" stroke="#979797">
+                                                    <polyline id="Path-3" points="447 532 452.54381 528 458 532"></polyline>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </center>
                                 </div>
                             </div>
 

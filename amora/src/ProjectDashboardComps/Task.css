@@ -142,3 +142,12 @@
     border-radius: 5px;
     border: 1px solid grey;
 }
+
+#taskInfoBubble {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 7px;
+    border-radius: 30px;
+    color: white;
+    font-weight: lighter;
+}
