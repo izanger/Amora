@@ -6,7 +6,7 @@
     justify-content: left;
     border-radius: 10px;
     text-align: left;
-    font-size: 11pt;
+    margin: 7px;
 }
 
 #task:hover {
@@ -61,14 +61,12 @@
 
 #taskTitle {
     padding-left: 0px;
-    margin-left: -10px;
-    font-size: 12pt;
+    margin-left: 0px;
+    margin-top: 7px;
 }
 
 #taskDescription {
-    font-size: 11pt;
-    /* margin-top: 35px; */
-    font-weight: lighter;
+    margin-top: 7px;
 }
 
 #taskContentInfo {
@@ -81,8 +79,8 @@
 #taskUsers {
     display: flex;
     flex-direction: row;
-    margin-left: -10px;
-    margin-top: -15px;
+    margin-left: -13px;
+    margin-top: -10px;
 }
 
 .closeTaskButton {
@@ -105,11 +103,13 @@
     margin-top: 10px;
     margin-left: 0px;
     height: 26px;
-    background-color: white;
+    background-color: #ECEEEF;
     border: 0px;
-    border: 1px solid grey;
+    border: 0px solid grey;
+    font-family: 'Roboto', sans-serif;
+    font-size: 10pt;
+    font-weight: lighter;
     border-radius: 6px;
-    font-size: 12pt;
     color: #4A4A4A;
     font-weight: lighter;
     text-indent: 5px;

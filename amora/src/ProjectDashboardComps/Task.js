@@ -902,7 +902,7 @@ class Task extends Component {
                 <div id="task" style={this.css()}>
                     <div id="taskStats">
                         <div id="taskCheckAndTitle">
-                            <svg height="40" width="40">
+                            <svg height="30" width="30">
                                 <title>Lock</title>
                                 <desc>Created with Sketch.</desc>
                                 <defs></defs>
@@ -919,15 +919,18 @@ class Task extends Component {
                                  <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                  <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                             </svg>
-                            <h4 id="taskTitle"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.state.tempTitle}/></h4>
+                            <p id="taskTitle" className="text_task"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.state.tempTitle}/></p>
                         </div>
                         {/* @Zach pls halp */}
                         <h5>{this.state.taskCategory}</h5>
-                        <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b> | <ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.state.tempHours)}/> {" hrs"} | <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
+                        <div id="taskContentInfo" style={{right: '12px'}}>
+                            {/*<b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b>*/}
+                            {/*<ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.state.tempHours)}/> {" hrs"}*/}
+                            <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} className="text_small_light" html={this.getDaysLeft()}/>
+                        </ div>
                     </div>
                     <div style={{visibility: this.state.visible}} id="taskInfo">
-                        <p id="taskDescription"><ContentEditable disabled={this.props.task.descriptionLocked && !this.state.isManager} onChange={this.changeTaskDescription}
-                        html={this.state.tempDescription} /> </p>
+
                             <div id="taskUsers">
                                 {assignedTo}
                                 {assignButton}
@@ -958,6 +961,11 @@ class Task extends Component {
 
                                 </div>
                             </div>
+
+                            <p id="taskDescription" className="text_small_light"><ContentEditable disabled={this.props.task.descriptionLocked && !this.state.isManager} onChange={this.changeTaskDescription}
+                            html={this.state.tempDescription} /> </p>
+
+
 
                             <div id="taskComments">
 

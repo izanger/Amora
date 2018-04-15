@@ -50,7 +50,7 @@ class TaskComment extends Component {
             }
             this.props.setProjectDashboardState(newState)
         }
-        
+
     }
 
     render = () => {
@@ -60,10 +60,7 @@ class TaskComment extends Component {
         // let color = "#3CB4CB";
         if(this.props.showDelete){
             return (
-                <div id="taskCommentContainer">
-                    <svg height="2px" width="101%" className="taskCommentDivider">
-                        <line x1="12" y1="0" x2="100%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
-                    </svg>
+                <div id="taskCommentContainer" style={{marginTop: '13px'}}>
                     <div id="taskCommentContents">
                         {/*Temporarily commented out. Uncomment when actual image of person is displayed
                         <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
@@ -79,9 +76,9 @@ class TaskComment extends Component {
                         key={this.props.userKey} user={this.props.project.userList[this.props.uid]} userID={this.props.userID} project={this.props.project} />
 
                         <div id="taskNameAndComment">
-                            <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
-                                <p id="taskCommentName">{this.props.username}</p>
-                                <p id="taskCommentText" style={{marginBottom: '0px'}}>{isEdited} {formattedDate}</p>
+                            <div style={{display: 'flex', 'flex-direction': 'row'}}>
+                                <p id="taskCommentName" className="text_description">{this.props.username}</p>
+                                <p id="taskCommentText" className="text_small_light" style={{marginBottom: '0px', marginLeft:'7px'}}>    {isEdited} {formattedDate}</p>
                             </div>
 
                             <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
@@ -96,9 +93,6 @@ class TaskComment extends Component {
         }else {
             return (
                 <div id="taskCommentContainer">
-                    <svg height="2px" width="100%" className="taskCommentDivider">
-                        <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
-                    </svg>
                     <div id="taskCommentContents">
                         {/*Temporarily commented out. Uncomment when actual image of person is displayed
                         <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
