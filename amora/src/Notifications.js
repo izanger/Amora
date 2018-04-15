@@ -28,7 +28,12 @@ class Notifications extends Component {
                     if (notifications[notificationKey].type === "invite") {
                         return <Invite key={notificationKey} notificationKey={notificationKey} notification={notifications[notificationKey]}
                         getAppState={this.props.getAppState} setAppState={this.setAppState} />
-                    } else {
+                    } 
+                    else if (notifications[notificationKey].type === "approval"){
+                        return <Approval key={notificationKey} notificationKey={notificationKey} notification={notifications[notificationKey]}
+                        getAppState={this.props.getAppState} setAppState={this.setAppState} />
+                    }
+                    else {
                         return <Notification key={notificationKey} notificationKey={notificationKey} notification={notifications[notificationKey]}
                         getAppState={this.props.getAppState} setAppState={this.setAppState} />
                     }

@@ -6,7 +6,6 @@ import leftArrow from "./images/Icons/LeftArrow.svg"
 import 'react-datepicker/dist/react-datepicker.css';
 import "./CreateTaskForm.css"
 
-
 class CreateTaskForm extends Component {
 
     // Default constructor instantiates state
@@ -155,6 +154,7 @@ class CreateTaskForm extends Component {
                 dateLocked: false,
                 priorityLocked: false,
                 hoursLocked: false,
+                locked: false,
             }
         }).then((data) => {
             this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)

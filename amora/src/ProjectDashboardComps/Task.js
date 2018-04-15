@@ -35,6 +35,7 @@ class Task extends Component {
            addedComment: false,
            commentsSynced: false,
            edited: "",
+           locked: false, 
            taskComments: {
 
            },
@@ -58,6 +59,21 @@ class Task extends Component {
         newState.tempDate = this.props.task.deadline
         newState.taskCategory = this.props.task.taskCategory
         let arch = this.props.archived
+        rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
+            context: this,
+            asArray: true,
+            then(data){
+              console.log(data);
+              if (data.locked){
+                  newState.locked = data.locked
+              }
+              else {
+                  newState.locked = false
+              }
+            }
+          });
+
+
         if(arch){
             rebase.fetch(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
                 context: this,
@@ -816,6 +832,84 @@ class Task extends Component {
         return banana
     }
 
+    askManagerForApproval = () => {
+
+        rebase.fetch(`projects/${this.props.projectID}/`, {
+            context: this,
+            asArray: true,
+            then(data){
+              console.log(data);
+              const notification = {
+                type: "approval",
+                projectName: data.projectName,
+                projectColor: data.projectColor,
+                projectPhotoURL: data.projectPhotoURL,
+                projectDescription: data.projectDescription,
+                key: this.props.projectID,
+                taskAlertTime: data.taskAlertTime,
+                taskID: this.props.taskKey
+            }
+
+            rebase.fetch(`projects/${this.props.projectID}/managerList`, {
+                context: this,
+                then(data){
+                  console.log(data);
+                    data.map((user) => {
+                        rebase.update(`users/${user.uid}/notifications/${this.props.projectID}`, {
+                            data: notification
+                        })
+                    })
+                }
+              });
+            }
+          });
+    }
+
+    unlockTask = () => {
+        this.setState({locked: false})
+                rebase.update(`projects/${projectID}/taskList/${tID}/`, {
+                    data: {
+                        locked: false
+                    }
+                });
+    }
+
+    lockTask = () => {
+        this.setState({locked: true})
+                rebase.update(`projects/${projectID}/taskList/${tID}/`, {
+                    data: {
+                        locked: true
+                    }
+                });
+    }
+
+
+    lockTaskIfManager = () => {
+        const projectID = this.props.projectID
+        const tID = this.props.taskKey
+
+        if (this.state.isManager){
+            //lock/unlock the task
+            if (this.state.locked){
+                this.unlockTask()
+            }
+            else {
+                this.lockTask()
+            }
+        }
+        else {
+            //check if it is locked already by a manager
+            if (this.state.locked){
+                //task is locked, so send a notification to a manager asking to approve it
+                this.askManagerForApproval()
+            }
+            else {
+                //task is not locked so proceed like usual
+                    this.toggleArchived()
+            }
+        }
+    }
+
     assignTask = (key) => {
         const dashboardState = { ...this.props.getProjectDashboardState() }
         if (key === null) {
@@ -915,7 +1009,7 @@ class Task extends Component {
                                         </g>
                                     </g>
                                 </g>
-                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
+                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.lockTaskIfManager()}/>
                                  <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                  <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                             </svg>

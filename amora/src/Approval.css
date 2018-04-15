@@ -1,0 +1,20 @@
+.inviteContainer {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    text-align: center;
+    margin-top: 24px;
+    padding: 4px;
+    border-bottom: solid 2px lightgray 
+}
+
+.inviteText {
+    font-size: 13pt;
+    font-weight: lighter;
+}
+
+.inviteButton {
+    margin: 4px;
+    border-radius: 4px;
+}
