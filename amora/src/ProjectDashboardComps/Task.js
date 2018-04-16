@@ -965,7 +965,10 @@ render = () => {
                                         html={this.state.tempDescription} /> </p>
 
                                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-                                        <p className="text_small_light" id="taskInfoBubble" style={{backgroundColor: this.props.getProjectDashboardState().project.projectColor}}><ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue}  html={(this.state.tempHours)}/> {" hrs"}</p>
+                                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: this.props.getProjectDashboardState().project.projectColor, height: '20px'}} id="taskInfoBubble">
+                                            <p className="text_small_light" style={{color: 'white'}}><ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue}  html={(this.state.tempHours)}/></p>
+                                            <p className="text_small_light" style={{marginLeft: '5px', color: 'white'}}>hrs</p>
+                                        </div>
                                         <p className="text_small_light" id="taskInfoBubble" style={{backgroundColor: this.props.getProjectDashboardState().project.projectColor}}>{this.state.taskCategory}</p>
                                     </div>
 
@@ -977,21 +980,30 @@ render = () => {
 
 
                                         <input type="text" name="Comment" id="CommentField" onChange={this.sendComment} value={this.state.commentValue} placeholder="Comment" className="commentInput" style={{width: '100%'}}/>
-                                        <button className="addCommentButton" onClick={this.postComment}>Add Comment</button>
+                                        <svg width="15px" height="18px" id="sendCommentArrow" onClick={this.postComment}>
+                                            <title>Combined Shape</title>
+                                            <desc>Created with Sketch.</desc>
+                                            <defs></defs>
+                                                <g id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <g id="Desktop" transform="translate(-772.000000, -493.000000)" fill="#B8B8B8">
+                                                        <path d="M783.7,509.5 L788.5,509.5 L779.5,494.5 L770.5,509.5 L775.3,509.5 L779.5,502.5 L783.7,509.5 Z" id="Combined-Shape" transform="translate(779.500000, 502.000000) rotate(90.000000) translate(-779.500000, -502.000000) "></path>
+                                                    </g>
+                                                </g>
+                                        </svg>
                                     </div>
                                     <div >
                                         <p className="errorBox">{this.state.changeErrorMessage}</p>
                                     </div>
                                     <center>
-                                        <svg width="11px" height="6px" viewBox="0 0 11 6" onClick={this.switch}>
+                                        <svg width="46px" height="10px" viewBox="0 0 11 6" onClick={this.switch} id="closeTaskArrow">
                                             <title>Path 3</title>
                                             <desc>Created with Sketch.</desc>
                                             <defs></defs>
-                                            <g id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-                                                <g id="Desktop" transform="translate(-447.000000, -527.000000)" stroke="#979797">
-                                                    <polyline id="Path-3" points="447 532 452.54381 528 458 532"></polyline>
+                                                <g id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                                    <g id="Desktop" transform="translate(-447.000000, -527.000000)" stroke="#979797">
+                                                        <polyline id="Path-3" points="447 536 458.591602 528 470 536"></polyline>
+                                                    </g>
                                                 </g>
-                                            </g>
                                         </svg>
                                     </center>
                                 </div>

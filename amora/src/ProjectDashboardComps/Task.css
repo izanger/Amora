@@ -100,6 +100,7 @@
 }
 .commentInput {
     margin: 15px;
+    margin-bottom: 0px;
     margin-top: 10px;
     margin-left: 0px;
     height: 26px;
@@ -150,4 +151,15 @@
     border-radius: 30px;
     color: white;
     font-weight: lighter;
+}
+
+#sendCommentArrow {
+    position: absolute;
+    margin-top: -22px;
+    right: 23px;
+    cursor: pointer;
+}
+
+#closeTaskArrow {
+    padding-top: -10px;
 }
