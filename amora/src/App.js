@@ -27,7 +27,7 @@ class App extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextState.user.notifications != null && nextState.user.notifications != undefined 
+    if (nextState.user.notifications != null && nextState.user.notifications != undefined
       && this.state.user.notifications != null && this.state.user.notifications != undefined) {
       if (Object.keys(nextState.user.notifications).length > 0) {
         this.notifyMe()
@@ -55,7 +55,7 @@ class App extends Component {
       this.setState({notified: true})
     }
   }
-  
+
   checkIfUserIsInDatabase(user) {
     // let inDataBase = false
     rebase.fetch(`users/${user.uid}`, {
@@ -76,7 +76,7 @@ class App extends Component {
     rebase.push("projects", {
       data: {
           projectName: "Personal Dashboard",
-          projectColor: "DeepSkyBlue",
+          projectColor: "#4BACE1",
           projectCreator: this.state.user.uid,
           projectPhotoURL: this.state.user.photoURL,
           isPersonalDashboardProject: true,
@@ -145,7 +145,7 @@ class App extends Component {
         }
       })
       var now = new Date()
-      rebase.post(`projects/${newLocation.key}/events/-L8mjk1OjJol4y34AIPh`, { 
+      rebase.post(`projects/${newLocation.key}/events/-L8mjk1OjJol4y34AIPh`, {
           data: {
             event: " created the project",
             timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear(),
@@ -196,7 +196,7 @@ class App extends Component {
 
             this.setState(newState)
           }
-          
+
         })
       } else {
         // User is not signed in
