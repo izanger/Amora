@@ -50,7 +50,7 @@ class TaskComment extends Component {
             }
             this.props.setProjectDashboardState(newState)
         }
-        
+
     }
 
     render = () => {
@@ -60,10 +60,7 @@ class TaskComment extends Component {
         // let color = "#3CB4CB";
         if(this.props.showDelete){
             return (
-                <div id="taskCommentContainer">
-                    <svg height="2px" width="101%" className="taskCommentDivider">
-                        <line x1="12" y1="0" x2="100%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
-                    </svg>
+                <div id="taskCommentContainer" style={{marginTop: '13px'}}>
                     <div id="taskCommentContents">
                         {/*Temporarily commented out. Uncomment when actual image of person is displayed
                         <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
@@ -79,14 +76,26 @@ class TaskComment extends Component {
                         key={this.props.userKey} user={this.props.project.userList[this.props.uid]} userID={this.props.userID} project={this.props.project} />
 
                         <div id="taskNameAndComment">
-                            <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
-                                <p id="taskCommentName">{this.props.username}</p>
-                                <p id="taskCommentText" style={{marginBottom: '0px'}}>{isEdited} {formattedDate}</p>
+                            <div style={{display: 'flex', 'flex-direction': 'row', 'justify-content': 'space-between'}}>
+                                <div style={{display: 'flex', 'flex-direction': 'row'}}>
+                                    <p id="taskCommentName" className="text_description">{this.props.username}</p>
+                                    <p id="taskCommentText" className="text_small_light" style={{marginBottom: '0px', marginLeft:'7px'}}>    {isEdited} {formattedDate}</p>
+                                </div>
+                                <svg width="6px" height="16px" style={{marginRight: '0px'}} onClick={this.deleteComment} title="Delete Comment">
+                                    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g id="Comment" transform="translate(-663.000000, -2.000000)" stroke-width="1" stroke="#979797">
+                                            <g id="Settings" transform="translate(666.000000, 10.000000) rotate(90.000000) translate(-666.000000, -10.000000) translate(659.500000, 8.500000)">
+                                                <circle id="Oval-5" cx="1.5" cy="1.5" r="1.5"></circle>
+                                                <circle id="Oval-5-Copy" cx="6.5" cy="1.5" r="1.5"></circle>
+                                                <path d="M11.5,3 C12.3284271,3 13,2.32842712 13,1.5 C13,0.671572875 12.3284271,0 11.5,0 C10.6715729,0 10,0.671572875 10,1.5 C10,2.32842712 10.6715729,3 11.5,3 Z" id="Oval-5-Copy-2"></path>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>
                             </div>
 
                             <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
                                     <p id="taskCommentText"><ContentEditable disabled={false} onChange={this.changeComment} html={this.props.commentValue}/></p>
-                                    <button className="addCommentButton" onClick={this.deleteComment}>Delete Comment</button>
                             </div>
                         </div>
                     </div>
@@ -96,9 +105,6 @@ class TaskComment extends Component {
         }else {
             return (
                 <div id="taskCommentContainer">
-                    <svg height="2px" width="100%" className="taskCommentDivider">
-                        <line x1="12" y1="0" x2="98.5%" y2="0" style={{stroke:'#C6C6C6',strokeWidth:'3'}} />
-                    </svg>
                     <div id="taskCommentContents">
                         {/*Temporarily commented out. Uncomment when actual image of person is displayed
                         <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
@@ -112,11 +118,23 @@ class TaskComment extends Component {
                         getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
                         key={this.props.userKey} user={this.props.project.userList[this.props.uid]} userID={this.props.userKey} project={this.props.project} />
 
+                        <svg width="4px" height="10px">
+                            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Comment" transform="translate(-664.000000, -3.000000)" stroke="#979797">
+                                    <g id="Settings" transform="translate(666.000000, 8.000000) rotate(90.000000) translate(-666.000000, -8.000000) translate(662.000000, 7.000000)">
+                                        <circle id="Oval-5" cx="1" cy="1" r="1"></circle>
+                                        <circle id="Oval-5-Copy" cx="4" cy="1" r="1"></circle>
+                                        <circle id="Oval-5-Copy-2" cx="7" cy="1" r="1"></circle>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
 
                         <div id="taskNameAndComment">
                             <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
                                 <p id="taskCommentName">{this.props.username}</p>
                                 <p id="taskCommentText" style={{marginBottom: '0px'}}>{isEdited} {formattedDate}</p>
+
                             </div>
 
                             <p id="taskCommentText"><ContentEditable disabled={false} onChange={this.changeComment} html={this.props.commentValue}/></p>

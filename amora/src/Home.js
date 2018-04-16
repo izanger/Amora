@@ -41,7 +41,7 @@ class Home extends Component {
                 context: this,
             }).then(data => {
                 let newState = { ...this.state}
-                newState.todayViewHours = newState.todayViewHours + data.EstimatedTimeValue
+                //newState.todayViewHours = newState.todayViewHours + data.EstimatedTimeValue
                 this.setState(newState)
             })
 
@@ -195,6 +195,7 @@ class Home extends Component {
             let completedStatus;
             //const taskColor;
             let count;
+            console.log(result)
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
             let todayCount = [];
@@ -222,10 +223,11 @@ class Home extends Component {
                             for (i; i < projectArray.length;i++ ){
                                 let pid = projectArray[i];
                                 const taskColor = projectColors[i].projectColor
-
+                                console.log(taskID)
                                 rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
                                     context: this,
                                 }).then(data => {
+                                    console.log(data)
                                     if (data.taskName){
                                         taskname = data.taskName
                                         estimatedTime = data.EstimatedTimeValue

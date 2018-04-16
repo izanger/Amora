@@ -13,7 +13,8 @@
 }
 
 #taskDashScrollableContent {
-    margin-top: 0px;
+    margin-top: 28px;
+    margin-left: 4px;
     overflow: scroll;
 }
 

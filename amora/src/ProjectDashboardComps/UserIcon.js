@@ -234,15 +234,6 @@ class UserIcon extends Component {
         }).then(data => {
             newState.profileDescription = data
             this.setState(newState);        
-          }).then(() => {
-            this.bindingref = rebase.syncState(`users/${id}/profileDescription`, {
-                context: this,
-                state: 'profileDescription',
-                then: () => {
-                  newState.viewSynced = true
-                  this.setState(newState)
-                }
-            })
         })
     }
 
@@ -295,8 +286,8 @@ class UserIcon extends Component {
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
                           <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
-                          Description: {this.state.profileDescription}<br/>
-                            Date Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
+                          Description: {this.props.getAppState().user.profileDescription}<br/>
+                            Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
                             All Time Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours Completed: {this.state.allTimeHours}<br/>
                             On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%<br/>
                             Working Hours: {this.state.startWorkingHours + " - " + this.state.endWorkingHours}</h2>
@@ -335,8 +326,8 @@ class UserIcon extends Component {
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
                           <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
-                          Description: {this.state.profileDescription}<br/>
-                            Date Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
+                          Description: {this.props.getAppState().user.profileDescription}<br/>
+                            Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
                             All Time Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours Completed: {this.state.allTimeHours}<br/>
                             On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%<br/>
                             Working Hours: {this.displayStart + " - " + this.displayEnd}</h2><br></br>

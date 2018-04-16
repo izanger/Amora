@@ -7,6 +7,7 @@ import UserIcon from "./UserIcon.js"
 import { checkIfManager, checkIfUserOnProject } from "../apphelpers.js"
 import { emailRegistered, validateEmail } from "../apphelpers.js"
 import InviteList from "../InviteList.js"
+import FilterSelection from './FilterSelection.js';
 // import ImageFileSelector from "react-image-select-component";
 
 import "./ProjectTitleBar.css"
@@ -23,6 +24,7 @@ class ProjectTitleBar extends Component {
 
         this.state = {
             open: false,
+            filterModalOpen: false,
             titleValue: "",
             projectDescription:"",
             taskAlertTime: "",
@@ -118,6 +120,14 @@ class ProjectTitleBar extends Component {
     onCloseModal = () => {
         this.setState({ open: false });
         this.setState({ colorValue: this.props.getProjectDashboardState().project.projectColor })
+    };
+
+    onOpenFiltersModal = () => {
+        this.setState({ filterModalOpen: true });
+      };
+
+    onCloseFiltersModal = () => {
+        this.setState({ filterModalOpen: false });
     };
 
     changeTitleValue = (event) => {
@@ -303,7 +313,6 @@ class ProjectTitleBar extends Component {
                 })
                 this.setState({isChangedDescription: false})
             }
-
         } else {
             newState.currentProject.taskAlertTime = taskAlertText
             this.props.setAppState(newState)
@@ -314,6 +323,7 @@ class ProjectTitleBar extends Component {
                 }
             })
         }
+        this.submitProfileChanges()
     }
 
     changeColorValue = (color) => {
@@ -416,6 +426,23 @@ class ProjectTitleBar extends Component {
         })
     }
 
+    deleteProject = () => {
+
+        let projectUserList = [];
+        let usersList = [];
+        let projectKey = this.props.getProjectDashboardState().project.key
+        rebase.fetch(`projects/${this.props.getProjectDashboardState().project.key}/userList`, {
+            context: this,
+        }).then(data => {
+            usersList = Object.keys(data);
+            var i = 0;
+            for (i; i < usersList.length;i++ ){
+                let uid = usersList[i];
+                rebase.remove(`users/${uid}/projects/${projectKey}`)
+            }
+            rebase.remove(`projects/${projectKey}`)
+         }) 
+    }
     createVanillaProject = () => {
         if (this.state.newdescriptionValue === "" || this.state.newtitleValue === "") {
             return
@@ -526,7 +553,16 @@ class ProjectTitleBar extends Component {
     }
 
     changeProfilePicture = (uri) => {
-        
+        const newState = { ...this.props.getAppState() }
+        newState.user.photoURL = uri
+        this.props.setAppState(newState)
+        const projectIds = Object.keys(this.props.getAppState().user.projects)
+        for (let i = 0; i < projectIds.length; i++) {
+            console.log(`projects/${projectIds[i]}/userList/${this.props.getAppState().user.uid}`)
+            rebase.post(`projects/${projectIds[i]}/userList/${this.props.getAppState().user.uid}`, {
+                data: uri
+            })
+        }
     }
 
     previewFile = () => {
@@ -555,16 +591,28 @@ class ProjectTitleBar extends Component {
     }
 
     renderUserSettings = () => {
+        const images = [
+            "https://www.healthypawspetinsurance.com/Images/V3/DogAndPuppyInsurance/Dog_CTA_Desktop_HeroImage.jpg",
+            "https://www.petmd.com/sites/default/files/petmd-cat-happy-10.jpg",
+            "https://abcbirds.org/wp-content/uploads/bfi_thumb/Action-Alert_homepage-thumbnal_MBTA_Scarlet-Tanager_Greg-Lavaty-342pigqom0tq9fn9anrnre.jpg"
+        ]
         return (
             <div>
                 <input type="text" placeholder="Profile description" 
                 onChange={this.changeProfileDesc} value={this.state.profileDesc}></input>
                 <input type="file" onChange={this.previewFile}></input>
-                <button onClick={this.submitProfileChanges}>Submit profile changes</button>
+                {images.map((imageUrl) => {
+                    return this.renderProfileImage(imageUrl)
+                })}
             </div>
         )
     }
 
+    renderProfileImage = (imageUrl) => {
+        return <img src={imageUrl} alt={"Animal"} className="profileImageSelect" onClick={() => {
+            this.changeProfilePicture(imageUrl)
+        }} />
+    }
 
     //Returns what should be rendered in the settings pane
     renderSettings = (color, colors) => {
@@ -796,6 +844,7 @@ class ProjectTitleBar extends Component {
         let color = this.props.projectColor;
         let colors = ['#E74C3C', '#E67E22', '#F1C40F', '#E91E63', '#9B59B6', '#3498DB', '#2ECB71', '#18AE90']
         const { open } = this.state;
+        const { filterModalOpen } = this.state;
 
         let settings = this.renderSettings(color, colors)
         return (
@@ -807,13 +856,16 @@ class ProjectTitleBar extends Component {
                 </div>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
-
+                    <button type="button" onClick={this.deleteProject} >Delete Project</button>
                    <img alt={"Settings"} src={settingsIcon} title={"Settings"} onClick={this.onOpenModal} id="projectSettingsIcon"/>
                    <Modal open={open} onClose={this.onCloseModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
                          {settings}
                    </Modal>
 
-                   <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} id="projectSettingsIcon"/>
+                   <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} onClick={this.onOpenFiltersModal} id="projectSettingsIcon"/>
+                   <Modal open={filterModalOpen} onClose={this.onCloseFiltersModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
+                        <FilterSelection project={this.props.project} getAppState={this.props.getAppState}/>
+                    </Modal>
                    <img alt={"Archive"} src={archiveIcon} title={this.props.getButtonText()} style={{right: '100px'}} onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
                    <p onClick={this.groupChat}>Group chat</p>
                </div>

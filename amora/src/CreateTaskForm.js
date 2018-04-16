@@ -156,7 +156,12 @@ class CreateTaskForm extends Component {
                 priorityLocked: false,
                 hoursLocked: false,
             }
-        }).then((data) => {
+        }).then((newData) => {
+            rebase.update(`projects/${this.props.getAppState().currentProject.key}/taskList/${newData.key}`, {
+                data: {
+                    key: newData.key
+                }
+            })
             this.props.goToUrl(`/projects/${this.props.getAppState().currentProject.key}`)
             })
     }

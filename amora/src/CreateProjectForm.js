@@ -21,7 +21,7 @@ class CreateProjectForm extends Component {
             inviteErrorValue: "",
             categoryErrorValue: "",
             colorValue: "#E74C3C",
-            categoryList: { 
+            categoryList: {
                 General: true,
             },
             userList: [ ],
@@ -69,13 +69,17 @@ class CreateProjectForm extends Component {
     //         this.inviteUser()
     //     }
     // }
- 
+
     //Make sure they're not trying to add the same category twice
     validCategory = (category) => {
         if(this.state.categoryList[category] !== true){
-            return true;
+            if(category.indexOf('.') > -1 || category.indexOf('#') > -1 || category.indexOf('$') > -1 || category.indexOf('/') > -1 || category.indexOf('[') > -1 || category.indexOf(']') > -1){
+                return false
+            } else {
+                return true
+            }   
         } else {
-            return false;
+            return false
         }
     }
 
@@ -86,7 +90,7 @@ class CreateProjectForm extends Component {
 
         const newState = { ...this.state }
         if (!this.validCategory(this.state.categoryValue)){
-            newState.categoryErrorValue = "You already added that category"
+            newState.categoryErrorValue = "Invalid Category"
             this.setState(newState)
             return;
         }
@@ -194,13 +198,13 @@ class CreateProjectForm extends Component {
                     [this.props.getAppState().user.uid]: this.props.getAppState().user.photoURL
                 }
             })
-            rebase.update(`projects/${newLocation.key}/whenJoined`, { 
+            rebase.update(`projects/${newLocation.key}/whenJoined`, {
                 data: {
                     [this.props.getAppState().user.uid]: today.getTime()
                 }
             })
             var now = new Date()
-            rebase.post(`projects/${newLocation.key}/events/-L8mjk1OjJol4y34AIPh`, { 
+            rebase.post(`projects/${newLocation.key}/events/-L8mjk1OjJol4y34AIPh`, {
                 data: {
                     event: " created the project",
                     timestamp: now.getMonth()+1 + "/" + now.getDate() + "/" + now.getFullYear(),
@@ -235,6 +239,7 @@ class CreateProjectForm extends Component {
                             projectDescription: dat.projectDescription,
                             isPersonalDashboardProject: "false",
                             taskAlertTime: selectedText,
+                            filter: "Suggested",
                         }
                         rebase.update(`users/${this.props.getAppState().user.uid}/projects/${key}`, {
                             data: userProject
@@ -279,7 +284,7 @@ class CreateProjectForm extends Component {
                     <img src={leftArrow} style={{height: '30px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
                         this.props.goToUrl("dashboard")
                     }} />
-                    <h1 style={{left: '35px'}} id="projectTitle">Create New Project</h1>
+                <p style={{left: '35px'}} id="projectTitle" class="text_header">Create New Project</p>
 
                 </div>
                 <input type="text" placeholder="Enter Project Name" className="createProjectInput" onChange={this.changeTitleValue}
@@ -324,7 +329,7 @@ class CreateProjectForm extends Component {
 
                     </div>
                     <input type="text" placeholder="Email of person you'd like to invite" className="createProjectInput"
-                    value={this.state.inviteValue} onChange={this.changeInviteValue} style={{width: '100%'}}/>   
+                    value={this.state.inviteValue} onChange={this.changeInviteValue} style={{width: '100%'}}/>
                 </div>
 
                 <div >
@@ -339,7 +344,7 @@ class CreateProjectForm extends Component {
                         </svg>
                     </div>
                     <input type="text" placeholder="Name of task category you'd like to add" className="createProjectInput"
-                    value={this.state.categoryValue} onChange={this.changeCategoryValue} style={{width: '100%'}}/>   
+                    value={this.state.categoryValue} onChange={this.changeCategoryValue} style={{width: '100%'}}/>
                 </div>
 
                 <div >

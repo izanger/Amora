@@ -81,6 +81,7 @@ class App extends Component {
           projectPhotoURL: this.state.user.photoURL,
           isPersonalDashboardProject: true,
           projectDescription: `${user.displayName}'s Personal Dashboard`,
+          filter: "Suggested",
           taskCategories: {
             General: true,
           },

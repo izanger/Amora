@@ -4,12 +4,12 @@
     margin: 15px;
     margin-top: 12px;
     margin-bottom: 0px;
-    border-radius: 30px;
     border-color: #C6C6C6;
-    border-style: solid;
-    border-width: 2px;
+    border-style: dashed;
+    border-width: 1px;
     stroke: #C6C6C6;
     stroke-width: 3px;
+    border-radius: 30px;
 }
 
 @keyframes newProjectAnimationDarken {
@@ -25,7 +25,6 @@
     border-color: grey;
     cursor: pointer;
     stroke: grey;
-    margin-top: 11px;
 }
 
 @keyframes projectIndicatorEnter {

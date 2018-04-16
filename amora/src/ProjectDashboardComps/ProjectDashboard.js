@@ -146,6 +146,48 @@ class ProjectDashboard extends Component {
             getAppStateFunc={this.props.getAppState} userID={this.props.getAppState().user.uid} />
     }
 
+    calculateScores = (tasks) => {
+        let today = new Date();
+        today.setHours(0,0,0,0)
+        today = today.getTime()
+        
+        for(var i = 0; i < tasks.length; i++){
+            let score = 1
+            var deadline = (new Date(tasks[i].deadline)).getTime()
+            var timeDiff = deadline - today
+            const ONE_DAY = 86400000 // 1 day in milliseconds
+
+            if(tasks[i].priorityLevel === "High"){
+                score *= 4
+            } else if(tasks[i].priorityLevel === "Medium") {
+                score *= 2
+            }
+
+            if(timeDiff < 0){
+                score *= 250
+            } else if(timeDiff === 0) {
+                score *= 50
+            } else if(timeDiff === ONE_DAY) {
+                score *= 15
+            } else if(timeDiff >= (ONE_DAY * 1) && timeDiff < (ONE_DAY * 5)) {
+                score *= 7
+            } else if(timeDiff >= (ONE_DAY * 5) && timeDiff < (ONE_DAY * 9)) {
+                score *= 3
+            } else if(timeDiff >= (ONE_DAY * 9) && timeDiff < (ONE_DAY * 16)) {
+                score *= 2
+            } else {
+                score *= 1
+            }
+            if(tasks[i].taskName === "high tomorrow"){
+                console.log("HT score: " + score)
+                console.log("HT diff: " + timeDiff)
+
+            }
+            tasks[i].score = score
+        }
+        return tasks;
+    }
+
     render = () => {
 
         let finalRender
@@ -158,19 +200,139 @@ class ProjectDashboard extends Component {
             if(!this.state.showArchive){
 
                 if(this.state.project.taskList){
-                    const taskKeys = Object.keys(this.state.project.taskList)
 
-                    tasks = (
-                        taskKeys.map((key) => {
-                            return this.renderTask(key, false)
+                    let copyTasks = this.state.project.taskList;
+                    let copyTasksArray = Object.keys(copyTasks).map(i => copyTasks[i])
 
-                            return <Task archived={false} tasksCompleted={this.props.getAppState().user.uid.tasksCompleted} projectID = {this.props.getAppState().currentProject.key} displayName={this.props.getAppState().user.displayName} userID={this.props.getAppState().user.uid}
-                            taskKey={key} deleteTaskMethod={this.setProjectDashboardState}
-                            key={key} task={this.state.project.taskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                            setProjectDashboardState={this.setProjectDashboardState} />
+                    let filter = this.props.getAppState().user.projects[this.state.project.key].filter
+                    if(filter === "Chronological"){
+                        console.log("Chronological")
+                        const taskKeys = Object.keys(this.state.project.taskList)
+                        tasks = (
+                            taskKeys.map((key) => {
+                                return this.renderTask(key, false)
+                            })
+                        )
+                    } else if(filter === "Suggested"){ //TODO: smart sorting
+                        // console.log("Default")
+                        // const taskKeys = Object.keys(this.state.project.taskList)
+                        // console.log("copytasks: " + copyTasks)
+                        // console.log("copyTasksArray: " + copyTasksArray)
+                        // tasks = (
+                        //     taskKeys.map((key) => {
+                        //         return this.renderTask(key, false)
+                        //     })
+                        // )
+                        copyTasksArray = this.calculateScores(copyTasksArray)
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.score === y.score){
+                                    if(x.EstimatedTimeValue > y.EstimatedTimeValue){
+                                        return -1
+                                    } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                        return 1
+                                    } else {
+                                        return 0
+                                    }
+                                } else if(x.score < y.score) {
+                                    return 1;
+                                } else {
+                                    return -1;
+                                }
 
-                        })
-                    )
+                            }
+                        )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                        }
+                    } else if(filter === "Deadline"){
+                        console.log("Deadline")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.deadline === y.deadline){
+                                    return 0;
+                                } else if(x.deadline < y.deadline) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
+
+                            }
+                        )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                        }
+                    } else if (filter === "Priority") {
+                        console.log("PRIORITY")
+
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.priorityLevel === y.priorityLevel){
+                                    return 0;
+                                }
+                                switch (x.priorityLevel){
+                                    case "Low":
+                                        return 1
+                                    case "High":
+                                        return -1
+                                    case "Medium":
+                                        if(y.priorityLevel === "High"){
+                                            return 1
+                                        } else {
+                                            return -1
+                                        }
+                                }
+                            }
+                        )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                        }
+                    } else if (filter === "Time to Complete (Ascending)"){
+                        console.log("TIME ASCENDING")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.EstimatedTimeValue === y.EstimatedTimeValue){
+                                    return 0
+                                } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                    return -1
+                                } else {
+                                    return 1
+                                }
+                            }
+                        )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                        }
+                    } else if (filter === "Time to Complete (Descending)"){
+                        console.log("TIME DESCENDING")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.EstimatedTimeValue === y.EstimatedTimeValue){
+                                    return 0
+                                } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                    return 1
+                                } else {
+                                    return -1
+                                }
+                            }
+                        )
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                        }
+                    } else { //Filter by a category
+                        console.log("OTHER")
+                        tasks = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                             if(copyTasksArray[i].taskCategory === filter){
+                                tasks.push(this.renderTask(copyTasksArray[i].key, false))
+                             }
+                        }
+                    }
 
                 taskRender = (
                     <Droppable droppableId="TaskContainer">
@@ -178,8 +340,9 @@ class ProjectDashboard extends Component {
                   {(provided, snapshot) => (
                   <div ref={provided.innerRef} >
 
-                  {Object.keys(this.state.project.taskList).map((item, index) => (
-                  <Draggable key={item} draggableId={item} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
+                   {/* {Object.keys(this.state.project.taskList).map((item, index) => ( */}
+                    {Object.keys(tasks).map((item, index) => (
+                  <Draggable key={item} draggableId={tasks[index].key} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
                       {(provided, snapshot) => (
                       <div>
                       <div
@@ -192,6 +355,7 @@ class ProjectDashboard extends Component {
                           )}
                           >
                           {tasks[index]}
+                          {console.log(tasks[index])}
                           </div>
                           {provided.placeholder}
                       </div>
@@ -206,17 +370,141 @@ class ProjectDashboard extends Component {
                  }
             } else {
                 if(this.state.project.archivedTaskList){
-                    const taskKeys = Object.keys(this.state.project.archivedTaskList)
+                    // const taskKeys = Object.keys(this.state.project.archivedTaskList)
 
-                    taskRender = (
-                        taskKeys.map((key) => {
-                            return this.renderTask(key, true)
-                        return <Task archived={true} tasksCompleted={this.props.getAppState().user.uid.tasksCompleted} projectID = {this.props.getAppState().currentProject.key} displayName={this.props.getAppState().user.displayName} userID={this.props.getAppState().user.uid}
-                        taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key}
-                        task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
-                        setProjectDashboardState={this.setProjectDashboardState}/>
-                        })
-                    )
+                    // taskRender = (
+                    //     taskKeys.map((key) => {
+                    //         return this.renderTask(key, true)
+                    //     // return <Task archived={true} tasksCompleted={this.props.getAppState().user.uid.tasksCompleted} projectID = {this.props.getAppState().currentProject.key} displayName={this.props.getAppState().user.displayName} userID={this.props.getAppState().user.uid}
+                    //     // taskKey={key} deleteTaskMethod={this.setProjectDashboardState} key={key}
+                    //     // task={this.state.project.archivedTaskList[key]} getProjectDashboardState={this.getProjectDashboardState}
+                    //     // setProjectDashboardState={this.setProjectDashboardState}/>
+                    //     })
+                    // )
+
+                    let copyTasks = this.state.project.archivedTaskList;
+                    let copyTasksArray = Object.keys(copyTasks).map(i => copyTasks[i])
+
+                    let filter = this.props.getAppState().user.projects[this.state.project.key].filter
+                    if(filter === "Chronological"){
+                        console.log("Chronological")
+                        const taskKeys = Object.keys(this.state.project.archivedTaskList)
+                        taskRender = (
+                            taskKeys.map((key) => {
+                                return this.renderTask(key, true)
+                            })
+                        )
+                    } else if(filter === "Suggested"){ //TODO: smart sorting
+
+                        copyTasksArray = this.calculateScores(copyTasksArray)
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.score === y.score){
+                                    if(x.EstimatedTimeValue > y.EstimatedTimeValue){
+                                        return -1
+                                    } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                        return 1
+                                    } else {
+                                        return 0
+                                    }
+                                } else if(x.score < y.score) {
+                                    return 1;
+                                } else {
+                                    return -1;
+                                }
+
+                            }
+                        )
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                        }
+                    } else if(filter === "Deadline"){
+                        console.log("Deadline")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.deadline === y.deadline){
+                                    return 0;
+                                } else if(x.deadline < y.deadline) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
+                            }
+                        )
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                        }
+                    } else if (filter === "Priority") {
+                        console.log("PRIORITY")
+
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.priorityLevel === y.priorityLevel){
+                                    return 0;
+                                }
+                                switch (x.priorityLevel){
+                                    case "Low":
+                                        return 1
+                                    case "High":
+                                        return -1
+                                    case "Medium":
+                                        if(y.priorityLevel === "High"){
+                                            return 1
+                                        } else {
+                                            return -1
+                                        }
+                                }
+                            }
+                        )
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                        }
+                    } else if (filter === "Time to Complete (Ascending)"){
+                        console.log("TIME ASCENDING")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.EstimatedTimeValue === y.EstimatedTimeValue){
+                                    return 0
+                                } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                    return -1
+                                } else {
+                                    return 1
+                                }
+                            }
+                        )
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                        }
+                    } else if (filter === "Time to Complete (Descending)"){
+                        console.log("TIME DESCENDING")
+                        copyTasksArray.sort(
+                            function(x, y){
+                                if(x.EstimatedTimeValue === y.EstimatedTimeValue){
+                                    return 0
+                                } else if(x.EstimatedTimeValue < y.EstimatedTimeValue){
+                                    return 1
+                                } else {
+                                    return -1
+                                }
+                            }
+                        )
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                        }
+                    } else { //Filter by a category
+                        console.log("OTHER")
+                        taskRender = []
+                        for(var i = 0; i < copyTasksArray.length; i++){
+                            // if(copyTasksArray[i].taskCategory === filter){
+                                taskRender.push(this.renderTask(copyTasksArray[i].key, true))
+                            // }
+                        }
+                    }
                 }
             }
 
