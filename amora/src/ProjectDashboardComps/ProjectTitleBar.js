@@ -46,7 +46,13 @@ class ProjectTitleBar extends Component {
             newdescriptionValue: "",
             isChangedTitle: false,
             isChangedDescription: false,
-            profileDesc: ""
+            profileDesc: "",
+            announcementValue: "",
+            addedAnnouncement: false,
+            announcementsSynced: false,
+            announcementState: {
+
+            },
         }
     }
 
@@ -82,6 +88,32 @@ class ProjectTitleBar extends Component {
         s.projectDescription = this.props.projectDescription
         s.titleValue = this.props.title
         this.setState(s)
+
+
+        const newState = { ...this.state }
+      
+        rebase.fetch(`projects/${this.props.projectID}/announcements`, {
+            context: this,
+            then: (data) => {
+                newState.announcementState = data
+            }
+        }).then(() => {
+            this.bindingref = rebase.syncState(`projects/${this.props.projectID}/announcements`, {
+                context: this,
+                state: 'announcementState',
+                then: () => {
+                    newState.commentsSynced = true
+                    this.setState(newState)
+                }
+            })
+        })
+
+        componentWillUnmount = () => {
+            this.setState({
+                announcementsSynced: false
+            })
+        }
+        
         // const promise = checkIfManager(this.props.getAppState().user.uid, this.props.getAppState().currentProject.key)
         // promise.then((data) => {
         //     if (data.val()) {
@@ -367,7 +399,7 @@ class ProjectTitleBar extends Component {
     }
 
     postAnnouncement = (text) => {
-        let projectID = this.props.projectID
+        let projectID = this.props.getProjectDashboardState().project.key
         let announcement = document.getElementById("AnnounceField").value
         var today = new Date();
         
