@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="35px" viewBox="0 0 35 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Filter</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Filter" fill="#FFFFFF">
+            <path d="M1.46031405,8.40326267 C0.5211053,7.66744776 0,6.85458857 0,6 C0,2.6862915 7.83501688,0 17.5,0 C27.1649831,0 35,2.6862915 35,6 C35,6.85458857 34.4788947,7.66744776 33.5396859,8.40326267 L17.5,27 L1.46031405,8.40326267 Z M17.5,9.20000005 C26.0604136,9.20000005 33,7.40913905 33,5.20000005 C33,2.99086105 26.0604136,1.20000005 17.5,1.20000005 C8.93958638,1.20000005 2,2.99086105 2,5.20000005 C2,7.40913905 8.93958638,9.20000005 17.5,9.20000005 Z" id="Combined-Shape"></path>
+            <polygon id="Rectangle-4" points="14 20 21 20 21 35 14 27.9462109"></polygon>
+        </g>
+    </g>
+</svg>

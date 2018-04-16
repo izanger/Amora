@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import rebase from "../rebase";
-import settingsIcon from "../images/Icons/Settings.svg"
-import searchIcon from "../images/Icons/Search.svg"
-import archiveIcon from "../images/Icons/Archive.svg"
 import UserIcon from "./UserIcon.js"
 import { checkIfManager, checkIfUserOnProject } from "../apphelpers.js"
 import { emailRegistered, validateEmail } from "../apphelpers.js"
 import InviteList from "../InviteList.js"
 import FilterSelection from './FilterSelection.js';
 // import ImageFileSelector from "react-image-select-component";
+import settingsIcon from "../images/Icons/Settings.svg"
+import archiveIcon from "../images/Icons/Archive.svg"
+import archiveCheck from "../images/Icons/ArchiveCheck.svg"
+import chatIcon from "../images/Icons/Chat.svg"
+import filterIcon from "../images/Icons/Filter.svg"
+import logIcon from "../images/Icons/Log.svg"
 
 import "./ProjectTitleBar.css"
 import "../textStyle.css"
@@ -229,7 +232,7 @@ class ProjectTitleBar extends Component {
             if (startpm != "" && endpm != "") {
                 rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours`, {
                 }).then(data => {
-                        rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, { 
+                        rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, {
                             data: {
                                 hours: endpm-startpm,
                                 end: endpm
@@ -238,14 +241,14 @@ class ProjectTitleBar extends Component {
                 })
                 rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours`, {
                 }).then(data => {
-                        rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, { 
+                        rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, {
                             data: {
                                 start: startpm
                             }
                         })
                 })
             }
-               
+
 
 
             rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project
@@ -441,7 +444,7 @@ class ProjectTitleBar extends Component {
                 rebase.remove(`users/${uid}/projects/${projectKey}`)
             }
             rebase.remove(`projects/${projectKey}`)
-         }) 
+         })
     }
     createVanillaProject = () => {
         if (this.state.newdescriptionValue === "" || this.state.newtitleValue === "") {
@@ -598,7 +601,7 @@ class ProjectTitleBar extends Component {
         ]
         return (
             <div>
-                <input type="text" placeholder="Profile description" 
+                <input type="text" placeholder="Profile description"
                 onChange={this.changeProfileDesc} value={this.state.profileDesc}></input>
                 <input type="file" onChange={this.previewFile}></input>
                 {images.map((imageUrl) => {
@@ -756,7 +759,7 @@ class ProjectTitleBar extends Component {
                             {/*This should only appear if it is selected as the project*/}
 
                         </div>
-                        
+
                         <Modal open={this.state.addManagerOpen} onClose={() => this.setState({addManagerOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'promoteUserToManagerModal'}}>
                             <div>
                                 {/* <h1 className="taskAssignment">Task assignment</h1>*/}
@@ -793,11 +796,11 @@ class ProjectTitleBar extends Component {
                                 </svg>
                             </div>
                             <input type="text" placeholder="Name of task category you'd like to add" className="createProjectInput"
-                                value={this.state.categoryValue} onChange={this.changeCategoryValue} style={{width: '100%'}}/>  
+                                value={this.state.categoryValue} onChange={this.changeCategoryValue} style={{width: '100%'}}/>
 
                         <div >
                             <p className="errorBox">{this.state.categoryErrorValue}</p>
-                        </div> 
+                        </div>
                     </div>
 
                     {userSettings}
@@ -805,18 +808,18 @@ class ProjectTitleBar extends Component {
                     <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
                     <h4 style={{marginRight: '5px'}}>Change Working Hours:</h4>
                         <input type="text" placeholder="start"
-                        value={this.state.startWorkingHoursValue} onChange={this.changeStartWorkingHoursValue} style={{width: '10%'}}/> 
+                        value={this.state.startWorkingHoursValue} onChange={this.changeStartWorkingHoursValue} style={{width: '10%'}}/>
                         <select name="updateStartHoursDropdown" id="updateStartHoursDropdown">
                             <option value="1">am</option>
                             <option value="2">pm</option>
-                        </select>    
+                        </select>
 
                         <input type="text" placeholder="end"
-                        value={this.state.endWorkingHoursValue} onChange={this.changeEndWorkingHoursValue} style={{width: '10%'}}/> 
+                        value={this.state.endWorkingHoursValue} onChange={this.changeEndWorkingHoursValue} style={{width: '10%'}}/>
                         <select name="updateEndHoursDropdown" id="updateEndHoursDropdown">
                             <option value="1">am</option>
                             <option value="2">pm</option>
-                        </select>      
+                        </select>
                     </div>
 
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
@@ -848,7 +851,7 @@ class ProjectTitleBar extends Component {
 
         let settings = this.renderSettings(color, colors)
         return (
-            <div id="projectTitleContainer" style={{backgroundColor: color}}>
+            <div id="projectTitleContainer" style={{backgroundColor: color, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                 <div style={{display: 'flex', 'flex-direction': 'row', marginLeft: '14px', marginTop: '6px', color: 'white'}}>
                     <p className="text_header">{this.props.title}</p>
                     <p style={{marginLeft: '10px', marginRight: '10px', marginTop: '-1px', fontSize: '15pt'}}>|</p>
@@ -856,18 +859,22 @@ class ProjectTitleBar extends Component {
                 </div>
                 <div id="projectTitleLeftContents">
                     {/*<button onClick={this.props.toggleShowArchive}>{this.props.getButtonText()}</button>*/}
-                    <button type="button" onClick={this.deleteProject} >Delete Project</button>
-                   <img alt={"Settings"} src={settingsIcon} title={"Settings"} onClick={this.onOpenModal} id="projectSettingsIcon"/>
-                   <Modal open={open} onClose={this.onCloseModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
-                         {settings}
-                   </Modal>
+                    {/*<button type="button" onClick={this.deleteProject} >Delete Project</button>*/}
+                    <img alt="Chat" src={chatIcon} title="Open Chat" onClick={this.groupChat} id="projectSettingsIcon"/>
 
-                   <img alt={"Search"} src={searchIcon} title={"Search"} style={{right: '55px'}} onClick={this.onOpenFiltersModal} id="projectSettingsIcon"/>
+
+
+                   <img alt={"Archive"} src={archiveCheck} title={this.props.getButtonText()}  onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
+
+                   <img alt={"Filter"} src={filterIcon} title={"Filter"}  onClick={this.onOpenFiltersModal} id="projectSettingsIcon"/>
                    <Modal open={filterModalOpen} onClose={this.onCloseFiltersModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
                         <FilterSelection project={this.props.project} getAppState={this.props.getAppState}/>
                     </Modal>
-                   <img alt={"Archive"} src={archiveIcon} title={this.props.getButtonText()} style={{right: '100px'}} onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
-                   <p onClick={this.groupChat}>Group chat</p>
+                    <img alt={"Log"} src={logIcon} title={"Open Project Log"} id="projectSettingsIcon"/>
+                    <img alt={"Settings"} src={settingsIcon} title={"Settings"} onClick={this.onOpenModal} id="projectSettingsIcon"/>
+                    <Modal open={open} onClose={this.onCloseModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
+                          {settings}
+                    </Modal>
                </div>
             </div>
         )

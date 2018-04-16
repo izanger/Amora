@@ -32,10 +32,9 @@
 }
 
 #projectSettingsIcon {
-     right: 10px;
-     top: 13px;
-     position:absolute;
-     height: 20px;
+     height: 27px;
+     margin-top: 7px;
+     margin-right: 7px;
 }
 
  #projectSettingsIcon:hover {
