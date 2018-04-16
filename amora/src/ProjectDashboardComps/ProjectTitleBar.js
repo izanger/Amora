@@ -16,6 +16,8 @@ import "../textStyle.css"
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
+import Announcements from "./Announcements.js"
+import "./Announcements.css"
 
 class ProjectTitleBar extends Component {
 
@@ -363,6 +365,36 @@ class ProjectTitleBar extends Component {
             rebase.remove(`projects/${projectKey}`)
          }) 
     }
+
+    postAnnouncement = (text) => {
+        let projectID = this.props.projectID
+        let announcement = document.getElementById("AnnounceField").value
+        var today = new Date();
+        
+            rebase.push(`projects/${projectID}/announcements`, {
+                data: {
+                    text: announcement,
+                    timestamp: today.getTime()
+                }
+            });
+        
+    
+        this.setState({addedAnnouncement: true})
+        this.clearAnnouncement()
+    }
+    
+       sendAnnouncement = (event) => {
+        const newState = { ...this.state }
+        newState.announcementValue = event.target.value
+        this.setState(newState)
+    }
+    
+        clearAnnouncement = () => {
+        const newState = { ...this.state }
+        newState.announcementValue = ''
+        this.setState(newState)
+    }
+
     createVanillaProject = () => {
         if (this.state.newdescriptionValue === "" || this.state.newtitleValue === "") {
             return
