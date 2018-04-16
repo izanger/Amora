@@ -224,7 +224,7 @@ class CommentUserIcon extends Component {
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
                         <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
-                            Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
+                            Date Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
                             All Time Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours Completed: {this.state.allTimeHours}<br/>
                             On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%</h2>
                           <button onClick={this.removeUser}>Remove User from Project</button><br></br>
@@ -246,7 +246,7 @@ class CommentUserIcon extends Component {
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
                         <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
-                            Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
+                            Date Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
                             All Time Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours Completed: {this.state.allTimeHours}<br/>
                             On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%</h2><br></br>
                           <TodayViewUser uid={this.props.userID} getAppState={this.props.getAppState}/>
