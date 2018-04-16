@@ -233,6 +233,7 @@ class ProjectTitleBar extends Component {
                 })
                 this.setState({isChangedDescription: false})
             }
+
         } else {
             newState.currentProject.taskAlertTime = taskAlertText
             this.props.setAppState(newState)
@@ -243,7 +244,6 @@ class ProjectTitleBar extends Component {
                 }
             })
         }
-        this.submitProfileChanges()
     }
 
     changeColorValue = (color) => {
@@ -473,16 +473,7 @@ class ProjectTitleBar extends Component {
     }
 
     changeProfilePicture = (uri) => {
-        const newState = { ...this.props.getAppState() }
-        newState.user.photoURL = uri
-        this.props.setAppState(newState)
-        const projectIds = Object.keys(this.props.getAppState().user.projects)
-        for (let i = 0; i < projectIds.length; i++) {
-            console.log(`projects/${projectIds[i]}/userList/${this.props.getAppState().user.uid}`)
-            rebase.post(`projects/${projectIds[i]}/userList/${this.props.getAppState().user.uid}`, {
-                data: uri
-            })
-        }
+        
     }
 
     previewFile = () => {
@@ -511,28 +502,16 @@ class ProjectTitleBar extends Component {
     }
 
     renderUserSettings = () => {
-        const images = [
-            "https://www.healthypawspetinsurance.com/Images/V3/DogAndPuppyInsurance/Dog_CTA_Desktop_HeroImage.jpg",
-            "https://www.petmd.com/sites/default/files/petmd-cat-happy-10.jpg",
-            "https://abcbirds.org/wp-content/uploads/bfi_thumb/Action-Alert_homepage-thumbnal_MBTA_Scarlet-Tanager_Greg-Lavaty-342pigqom0tq9fn9anrnre.jpg"
-        ]
         return (
             <div>
                 <input type="text" placeholder="Profile description" 
                 onChange={this.changeProfileDesc} value={this.state.profileDesc}></input>
                 <input type="file" onChange={this.previewFile}></input>
-                {images.map((imageUrl) => {
-                    return this.renderProfileImage(imageUrl)
-                })}
+                <button onClick={this.submitProfileChanges}>Submit profile changes</button>
             </div>
         )
     }
 
-    renderProfileImage = (imageUrl) => {
-        return <img src={imageUrl} alt={"Animal"} className="profileImageSelect" onClick={() => {
-            this.changeProfilePicture(imageUrl)
-        }} />
-    }
 
     //Returns what should be rendered in the settings pane
     renderSettings = (color, colors) => {
@@ -723,6 +702,11 @@ class ProjectTitleBar extends Component {
                     {userSettings}
 
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
+                    <p>Announcements</p>
+                    <input type="text" name="Announce" id="AnnounceField" onChange={this.sendAnnouncement} value={this.state.announcementValue} placeholder="Announce" className="commentInput" style={{width: '100%'}}/>
+                    <button className="addCommentButton" onClick={this.postAnnouncement}>Add Announcement</button>
+
+              
                 </div>
             )
         }
@@ -773,7 +757,9 @@ class ProjectTitleBar extends Component {
                    <p onClick={this.groupChat}>Group chat</p>
                </div>
             </div>
+            
         )
+        
     }
 
 }
