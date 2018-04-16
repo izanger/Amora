@@ -44,7 +44,10 @@ class ProjectTitleBar extends Component {
             newdescriptionValue: "",
             isChangedTitle: false,
             isChangedDescription: false,
-            profileDesc: ""
+            profileDesc: "",
+            //startWorkingHoursValue: "",
+            //endWorkingHoursValue: "",
+            //hours: "",
         }
     }
 
@@ -72,6 +75,18 @@ class ProjectTitleBar extends Component {
     changeCategoryValue = (event) => {
         const newState = { ...this.state }
         newState.categoryValue = event.target.value;
+        this.setState(newState)
+    }
+
+    changeStartWorkingHoursValue = (event) => {
+        const newState = { ...this.state }
+        newState.startWorkingHoursValue = event.target.value;
+        this.setState(newState)
+    }
+
+    changeEndWorkingHoursValue = (event) => {
+        const newState = { ...this.state }
+        newState.endWorkingHoursValue = event.target.value;
         this.setState(newState)
     }
 
@@ -156,9 +171,30 @@ class ProjectTitleBar extends Component {
         this.setState(newState)
     }
 
+    // updateWorkingHours = () => {
+    //     //still need to do this
+    //     if (this.state.hours == 0){
+    //         return;
+    //     }
+    //     const newDashBoardState = this.props.getProjectDashboardState();
+    //     const newState = { ...this.state }
+    //     //newDashBoardState.project.taskCategories[this.state.workingHoursValue] = true;
+    //     this.props.setProjectDashboardState(newDashBoardState)
+    //     newState.workingHoursValue = "";
+    //     this.setState(newState)
+    // }
+
+
     submitChanges = () => {
         var dropSelect = document.getElementById("taskAlertDropdown");
         var taskAlertText = dropSelect.options[dropSelect.selectedIndex].text;
+
+        var dropSelectStartTime = document.getElementById("updateStartHoursDropdown");
+        var startAMPMText = dropSelectStartTime.options[dropSelectStartTime.selectedIndex].text;
+
+        var dropSelectEndTime = document.getElementById("updateEndHoursDropdown");
+        var endAMPMText = dropSelectEndTime.options[dropSelectEndTime.selectedIndex].text;
+
         const newState = this.props.getAppState();
 
         if(this.props.getProjectDashboardState().project.managerList[this.props.getAppState().user.uid]){
@@ -167,6 +203,50 @@ class ProjectTitleBar extends Component {
             newState.currentProject.projectDescription = this.state.projectDescription
             newState.currentProject.taskAlertTime = taskAlertText
             this.props.setAppState(newState)
+
+            let startpm = this.state.startWorkingHoursValue
+            let endpm = this.state.endWorkingHoursValue
+            if (startAMPMText == "pm") {
+                startpm = +this.state.startWorkingHoursValue+12
+            }
+            else {
+                startpm = +this.state.startWorkingHoursValue+0
+            }
+            if (endAMPMText == "pm") {
+                endpm = +this.state.endWorkingHoursValue+12
+            }
+            else {
+                endpm = +this.state.endWorkingHoursValue+0
+            }
+
+
+            // newState.hours = endpm-startpm
+            // this.setState({hours: endpm-startpm})
+            // this.props.setAppState(newState)
+
+
+
+            if (startpm != "" && endpm != "") {
+                rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours`, {
+                }).then(data => {
+                        rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, { 
+                            data: {
+                                hours: endpm-startpm,
+                                end: endpm
+                            }
+                        })
+                })
+                rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours`, {
+                }).then(data => {
+                        rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, { 
+                            data: {
+                                start: startpm
+                            }
+                        })
+                })
+            }
+               
+
 
             rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project
                 data: {
@@ -721,6 +801,23 @@ class ProjectTitleBar extends Component {
                     </div>
 
                     {userSettings}
+
+                    <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
+                    <h4 style={{marginRight: '5px'}}>Change Working Hours:</h4>
+                        <input type="text" placeholder="start"
+                        value={this.state.startWorkingHoursValue} onChange={this.changeStartWorkingHoursValue} style={{width: '10%'}}/> 
+                        <select name="updateStartHoursDropdown" id="updateStartHoursDropdown">
+                            <option value="1">am</option>
+                            <option value="2">pm</option>
+                        </select>    
+
+                        <input type="text" placeholder="end"
+                        value={this.state.endWorkingHoursValue} onChange={this.changeEndWorkingHoursValue} style={{width: '10%'}}/> 
+                        <select name="updateEndHoursDropdown" id="updateEndHoursDropdown">
+                            <option value="1">am</option>
+                            <option value="2">pm</option>
+                        </select>      
+                    </div>
 
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
                 </div>
