@@ -236,7 +236,8 @@ class ProjectTitleBar extends Component {
                 hrs = endpm-startpm
             }
 
-            if (startpm != "" && endpm != "") {
+            console.log(startpm)
+            if (!isNaN(startpm) && !isNaN(endpm)) {
                 rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours`, {
                 }).then(data => {
                         rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, {
