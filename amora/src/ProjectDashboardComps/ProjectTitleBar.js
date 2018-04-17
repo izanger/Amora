@@ -201,63 +201,55 @@ class ProjectTitleBar extends Component {
 
         const newState = this.props.getAppState();
 
+        let startpm = this.state.startWorkingHoursValue
+        let endpm = this.state.endWorkingHoursValue
+        if (startAMPMText == "pm") {
+            startpm = +this.state.startWorkingHoursValue+12
+        }
+        else {
+            startpm = +this.state.startWorkingHoursValue+0
+        }
+        if (endAMPMText == "pm") {
+            endpm = +this.state.endWorkingHoursValue+12
+        }
+        else {
+            endpm = +this.state.endWorkingHoursValue+0
+        }
+
+        let hrs = 0
+        if ((endpm-startpm) < 0) {
+            hrs = Math.abs(Math.abs(endpm-startpm)-24)
+        }
+        else {
+            hrs = endpm-startpm
+        }
+
+        if (!isNaN(startpm) && !isNaN(endpm)) {
+            rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours`, {
+            }).then(data => {
+                    rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, {
+                        data: {
+                            hours: hrs,
+                            end: endpm
+                        }
+                    })
+            })
+            rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours`, {
+            }).then(data => {
+                    rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, {
+                        data: {
+                            start: startpm
+                        }
+                    })
+            })
+        }
+
         if(this.props.getProjectDashboardState().project.managerList[this.props.getAppState().user.uid]){
             newState.currentProject.projectName = this.state.titleValue
             newState.currentProject.projectColor = this.state.colorValue
             newState.currentProject.projectDescription = this.state.projectDescription
             newState.currentProject.taskAlertTime = taskAlertText
             this.props.setAppState(newState)
-
-            let startpm = this.state.startWorkingHoursValue
-            let endpm = this.state.endWorkingHoursValue
-            if (startAMPMText == "pm") {
-                startpm = +this.state.startWorkingHoursValue+12
-            }
-            else {
-                startpm = +this.state.startWorkingHoursValue+0
-            }
-            if (endAMPMText == "pm") {
-                endpm = +this.state.endWorkingHoursValue+12
-            }
-            else {
-                endpm = +this.state.endWorkingHoursValue+0
-            }
-
-
-            // newState.hours = endpm-startpm
-            // this.setState({hours: endpm-startpm})
-            // this.props.setAppState(newState)
-
-            let hrs = 0
-            if ((endpm-startpm) < 0) {
-                hrs = Math.abs(Math.abs(endpm-startpm)-24)
-            }
-            else {
-                hrs = endpm-startpm
-            }
-
-            console.log(startpm)
-            if (!isNaN(startpm) && !isNaN(endpm)) {
-                rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours`, {
-                }).then(data => {
-                        rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, {
-                            data: {
-                                hours: hrs,
-                                end: endpm
-                            }
-                        })
-                })
-                rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours`, {
-                }).then(data => {
-                        rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, {
-                            data: {
-                                start: startpm
-                            }
-                        })
-                })
-            }
-
-
 
             rebase.update(`projects/${this.props.getAppState().currentProject.key}`, { //Update project
                 data: {
@@ -659,8 +651,24 @@ class ProjectTitleBar extends Component {
                         <option value="6">30 minutes</option>
                         <option value="7">60 minutes</option>
                     </select>
-                    <button className="submitFinalButton" onClick={this.submitChanges}>Submit</button>
                     {userSettings}
+                    <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
+                        <h4 style={{marginRight: '5px'}}>Change Working Hours:</h4>
+                        <input type="text" placeholder="start"
+                        value={this.state.startWorkingHoursValue} onChange={this.changeStartWorkingHoursValue} style={{width: '10%'}}/>
+                        <select name="updateStartHoursDropdown" id="updateStartHoursDropdown">
+                            <option value="1">am</option>
+                            <option value="2">pm</option>
+                        </select>
+
+                        <input type="text" placeholder="end"
+                        value={this.state.endWorkingHoursValue} onChange={this.changeEndWorkingHoursValue} style={{width: '10%'}}/>
+                        <select name="updateEndHoursDropdown" id="updateEndHoursDropdown">
+                            <option value="1">am</option>
+                            <option value="2">pm</option>
+                        </select>
+                    </div>
+                    <button className="submitFinalButton" onClick={this.submitChanges}>Submit</button>
                 </div>
             )
         } else { //user is a manager
@@ -814,7 +822,7 @@ class ProjectTitleBar extends Component {
                     {userSettings}
 
                     <div style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
-                    <h4 style={{marginRight: '5px'}}>Change Working Hours:</h4>
+                        <h4 style={{marginRight: '5px'}}>Change Working Hours:</h4>
                         <input type="text" placeholder="start"
                         value={this.state.startWorkingHoursValue} onChange={this.changeStartWorkingHoursValue} style={{width: '10%'}}/>
                         <select name="updateStartHoursDropdown" id="updateStartHoursDropdown">
