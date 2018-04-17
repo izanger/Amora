@@ -50,9 +50,7 @@ class Announcements extends Component {
 
             <div id="taskNameAndComment">
                     <div style={{'flex-direction': 'column'}}>
-                            <p id="taskCommentName" className="text_description">{this.props.data.text}</p>
-                            <p id="taskCommentName" className="text_description">{this.props.data.timestamp}</p>
-
+                            <p id="taskCommentName" className="text_description">{this.props.data.text} {this.props.data.timestamp}</p>
                         </div>
                              </div>
                             

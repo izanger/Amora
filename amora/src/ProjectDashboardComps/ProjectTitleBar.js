@@ -405,7 +405,6 @@ class ProjectTitleBar extends Component {
         var unformattedTime = today.getTime()
         var date = new Date(unformattedTime)
         let formattedDate =  date.toLocaleTimeString() + " on " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
-        
 
             rebase.push(`projects/${projectID}/announcements`, {
                 data: {
@@ -785,13 +784,12 @@ class ProjectTitleBar extends Component {
                     </div>
 
                     {userSettings}
-
-                    <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
-                    <p>Announcements</p>
                     <input type="text" name="Announce" id="AnnounceField" onChange={this.sendAnnouncement} value={this.state.announcementValue} placeholder="Announce" className="commentInput" style={{width: '100%'}}/>
                     <button className="addCommentButton" onClick={this.postAnnouncement}>Add Announcement</button>
                     <button className="addCommentButton" onClick={this.clearAnnouncements}>Clear Announcements</button>
-
+                   <div>
+                    <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
+                    </div>
               
                 </div>
             )
