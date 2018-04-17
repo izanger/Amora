@@ -858,6 +858,7 @@ class ProjectTitleBar extends Component {
         this.props.goToUrl(`/chats/${this.props.getProjectDashboardState().project.key}`)
     }
 
+
     style = () => {
 
         if (this.state.iconIsManager) {
@@ -884,6 +885,19 @@ class ProjectTitleBar extends Component {
         this.setState({ openLog: false });
     };
 
+    archiveImage = () => {
+        if (!this.props.showArchive){
+            return (
+                <img alt={"Archive"} src={archiveCheck} title={this.props.getButtonText()}  onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
+            )
+        } else {
+            return (
+                <img alt={"Archive"} src={archiveIcon} title={this.props.getButtonText()}  onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
+            )
+        }
+    }
+
+
     render = () => {
         //let color = "#3CB4CB";
         let color = this.props.projectColor;
@@ -893,12 +907,16 @@ class ProjectTitleBar extends Component {
 
         let settings = this.renderSettings(color, colors)
 
+
         let eventKeys
         if (this.props.events) {
             eventKeys = Object.keys(this.props.events)
         }
         const hasOnClick = this.props.onClick
         const { openLog } = this.state;
+
+
+        let archiveImage = this.archiveImage()
 
         return (
             <div id="projectTitleContainer" style={{backgroundColor: color, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -913,13 +931,14 @@ class ProjectTitleBar extends Component {
                     <img alt="Chat" src={chatIcon} title="Open Chat" onClick={this.groupChat} id="projectSettingsIcon"/>
 
 
+                    {archiveImage}
 
-                   <img alt={"Archive"} src={archiveCheck} title={this.props.getButtonText()}  onClick={this.props.toggleShowArchive} id="projectSettingsIcon" />
 
                    <img alt={"Filter"} src={filterIcon} title={"Filter"}  onClick={this.onOpenFiltersModal} id="projectSettingsIcon"/>
                    <Modal open={filterModalOpen} onClose={this.onCloseFiltersModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
                         <FilterSelection project={this.props.project} getAppState={this.props.getAppState}/>
                     </Modal>
+
 
                     <img alt={"Log"} src={logIcon} title={"Open Project Log"} onClick={this.onOpenLogModal} id="projectSettingsIcon"/>
                             <Modal open={openLog} onClose={this.onCloseLogModal} little>
@@ -928,6 +947,7 @@ class ProjectTitleBar extends Component {
                                     return (<p>{this.props.events[key].useid + this.props.events[key].event + " on " + this.props.events[key].timestamp}</p>)
                                 })}
                             </Modal>
+
 
                     <img alt={"Settings"} src={settingsIcon} title={"Settings"} onClick={this.onOpenModal} id="projectSettingsIcon"/>
                     <Modal open={open} onClose={this.onCloseModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
