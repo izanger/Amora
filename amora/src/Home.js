@@ -585,7 +585,7 @@ class Home extends Component {
                     <div style={{"position":"fixed", "top": "4px", "right": "15px"}}>
                         <h4 id="remainingHours">Remaining Hours: </h4>
                         {/* <h4 id="remainingHours1"><b>{this.state.todayViewHours}</b></h4> */}
-                        {todayViewHoursHTML}
+                        {todayViewHoursHTML || 0}
                     </div>
                     <div style={{"position":"fixed", "bottom": "0px", "right": "0px", "display":"flex", "flex-direction": "row"}}>
                         {/* <input id="myText" style={{marginTop: '5px', backgroundColor: 'white', width: '60px'}} placeholder="0" className="createProjectInput"></input> */}

@@ -228,14 +228,20 @@ class ProjectTitleBar extends Component {
             // this.setState({hours: endpm-startpm})
             // this.props.setAppState(newState)
 
-
+            let hrs = 0
+            if ((endpm-startpm) < 0) {
+                hrs = Math.abs(Math.abs(endpm-startpm)-24)
+            }
+            else {
+                hrs = endpm-startpm
+            }
 
             if (startpm != "" && endpm != "") {
                 rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours`, {
                 }).then(data => {
                         rebase.update(`users/${this.props.getAppState().user.uid}/workingHours`, {
                             data: {
-                                hours: endpm-startpm,
+                                hours: hrs,
                                 end: endpm
                             }
                         })
