@@ -546,3 +546,13 @@ class ProjectDashboard extends Component {
 }
 
 export default ProjectDashboard;
+
+
+// let renderAnnouncements = []
+// let announcements = this.state.project.announcements
+// for(var i = 0; i < announcements.length; i++){
+//     renderAnnouncements.push(<Announcement data={announcements[i]}>)
+// }
+
+
+// {renderAnnouncements}

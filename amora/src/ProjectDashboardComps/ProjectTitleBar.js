@@ -107,13 +107,13 @@ class ProjectTitleBar extends Component {
                 }
             })
         })
-
+    }
         componentWillUnmount = () => {
             this.setState({
                 announcementsSynced: false
             })
         }
-        
+
         // const promise = checkIfManager(this.props.getAppState().user.uid, this.props.getAppState().currentProject.key)
         // promise.then((data) => {
         //     if (data.val()) {
@@ -124,7 +124,7 @@ class ProjectTitleBar extends Component {
         //     }
         // })
 
-    }
+    
 
     componentDidMount = () => {
         const newState = this.state

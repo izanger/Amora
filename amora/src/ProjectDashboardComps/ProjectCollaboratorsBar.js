@@ -5,7 +5,8 @@ import "./ProjectCollaboratorsBar.css"
 import Modal from 'react-responsive-modal/lib/css';
 import logIcon from "../images/Icons/log.png"
 import rebase from "../rebase.js"
-
+import Announcements from "./Announcements.js"
+import "./Announcements.css"
 
 
 
@@ -68,9 +69,19 @@ class ProjectCollaboratorsBar extends Component {
         const { open } = this.state;
         const hasOnClick = this.props.onClick
 
+        // let renderAnnouncements = []
+        // let announcements = this.state.announcements
+        // for(var i = 0; i < announcements.length; i++){
+        // renderAnnouncements.push(<Announcements data={announcements[i]}/>)
+        // }
+
+
+
+
         return (
             <div>
                 <div id="ProjectCollaboratorsBarContainter">
+                {/* {renderAnnouncements} */}
                     {userKeys && userKeys.map((key) => {
                         return (<UserIcon hasBorder={true} color={this.props.color} getAppState={this.props.getAppState}
                         key={key} user={this.props.users[key]} userID={key} projectID={this.props.projectID} project={this.props.project}/>)
