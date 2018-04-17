@@ -36,10 +36,10 @@ class GroupChat extends Component {
     makeid = () => {
         let text = "";
         const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      
+
         for (let i = 0; i < 10; i++)
           text += possible.charAt(Math.floor(Math.random() * possible.length));
-      
+
         return text;
       }
     createChat = () => {
@@ -102,14 +102,36 @@ class GroupChat extends Component {
         }
         return (
             <div>
-                <input value={this.state.bodyValue} onChange={this.changeBody}></input>
-                <button onClick={this.postMessage}>Send</button>
-                {keys.map((key) => {
-                    return <ChatMessage body={this.state.project.chat[key].body}
-                    getAppState={this.props.getAppState}
-                    url={this.state.project.chat[key].url} uid={this.state.project.chat[key].uid}
-                    time={this.state.project.chat[key].time} project={this.state.project} name={this.state.project.chat[key].name}/>
-                })}
+                {/*BEEEEEENNNNNNNNN probably put the project title bar here so that it can take up the full space and such.
+                    If you're feeling fiesty, maybe add the project collaborators bar too? that way it'd only switch out the tasks
+                    for the chats when you click on it, and you could then still navigate to the other portions of the project
+                    Sincerely,
+
+                    Zach*/}
+                <div style={{marginRight: '14px', marginLeft: '14px'}}>
+
+                    <input type="text" name="Comment" id="CommentField chatMessageField"  onChange={this.changeBody} value={this.state.bodyValue} placeholder="New Chat" className="commentInput" style={{width: '100%'}}/>
+                    <svg width="15px" height="18px" style={{position: 'absolute', marginTop: '-22px', right: '371px', cursor: 'pointer'}} onClick={this.postMessage}>
+                        <title>Combined Shape</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs></defs>
+                            <g id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Desktop" transform="translate(-772.000000, -493.000000)" fill="#B8B8B8">
+                                    <path d="M783.7,509.5 L788.5,509.5 L779.5,494.5 L770.5,509.5 L775.3,509.5 L779.5,502.5 L783.7,509.5 Z" id="Combined-Shape" transform="translate(779.500000, 502.000000) rotate(90.000000) translate(-779.500000, -502.000000) "></path>
+                                </g>
+                            </g>
+                    </svg>
+                    <div style={{overflowY: 'scroll'}}>
+                        {keys.map((key) => {
+                            return <ChatMessage body={this.state.project.chat[key].body}
+                            getAppState={this.props.getAppState}
+                            url={this.state.project.chat[key].url} uid={this.state.project.chat[key].uid}
+                            time={this.state.project.chat[key].time} project={this.state.project} name={this.state.project.chat[key].name}/>
+                        })}
+                    </div>
+
+
+                </div>
             </div>
         )
     }
