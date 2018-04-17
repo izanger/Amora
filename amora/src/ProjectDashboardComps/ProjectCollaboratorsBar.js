@@ -69,19 +69,15 @@ class ProjectCollaboratorsBar extends Component {
         const { open } = this.state;
         const hasOnClick = this.props.onClick
 
-        // let renderAnnouncements = []
-        // let announcements = this.state.announcements
-        // for(var i = 0; i < announcements.length; i++){
-        // renderAnnouncements.push(<Announcements data={announcements[i]}/>)
-        // }
-
-
-
+        let annKeys
+        if (this.props.project.announcements){
+            annKeys = Object.keys(this.props.project.announcements)
+        }
+   
 
         return (
             <div>
                 <div id="ProjectCollaboratorsBarContainter">
-                {/* {renderAnnouncements} */}
                     {userKeys && userKeys.map((key) => {
                         return (<UserIcon hasBorder={true} color={this.props.color} getAppState={this.props.getAppState}
                         key={key} user={this.props.users[key]} userID={key} projectID={this.props.projectID} project={this.props.project}/>)
@@ -103,6 +99,9 @@ class ProjectCollaboratorsBar extends Component {
                                 })}
                             </Modal>
                     </div>
+                    {annKeys && annKeys.map((key) => {
+                        return (<Announcements key={key} data={this.props.project.announcements[key]}/>)
+                    })}
                 </div>
                 
             </div>
