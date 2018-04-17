@@ -420,7 +420,19 @@ class ProjectTitleBar extends Component {
     }
 
     clearAnnouncements = () =>{
-
+        let projectUserList = [];
+        let annList = [];
+        let projectKey = this.props.getProjectDashboardState().project.key
+        rebase.fetch(`projects/${this.props.getProjectDashboardState().project.key}/announcements`, {
+            context: this,
+        }).then(data => {
+            annList = Object.keys(data);
+            var i = 0;
+            for (i; i < annList.length;i++ ){
+                let annID = annList[i];
+                rebase.remove(`projects/${projectKey}/announcements/${annID}`)
+            }
+         }) 
 
     }
     
