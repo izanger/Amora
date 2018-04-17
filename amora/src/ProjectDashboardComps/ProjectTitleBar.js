@@ -51,6 +51,7 @@ class ProjectTitleBar extends Component {
             //startWorkingHoursValue: "",
             //endWorkingHoursValue: "",
             //hours: "",
+            openLog: false,
         }
     }
 
@@ -842,6 +843,32 @@ class ProjectTitleBar extends Component {
         this.props.goToUrl(`/chats/${this.props.getProjectDashboardState().project.key}`)
     }
 
+    style = () => {
+
+        if (this.state.iconIsManager) {
+            return ({
+                backgroundColor: this.color,
+                borderColor: this.props.color,
+                borderWidth: '2px',
+                borderStyle: 'solid'
+            })
+        } else {
+            return ({
+                backgroundColor: this.color,
+                borderColor: this.props.color,
+            })
+
+        }
+   }
+
+    onOpenLogModal = () => {
+        this.setState({ openLog: true });
+    };
+
+    onCloseLogModal = () => {
+        this.setState({ openLog: false });
+    };
+
     render = () => {
         //let color = "#3CB4CB";
         let color = this.props.projectColor;
@@ -850,6 +877,14 @@ class ProjectTitleBar extends Component {
         const { filterModalOpen } = this.state;
 
         let settings = this.renderSettings(color, colors)
+
+        let eventKeys
+        if (this.props.events) {
+            eventKeys = Object.keys(this.props.events)
+        }
+        const hasOnClick = this.props.onClick
+        const { openLog } = this.state;
+
         return (
             <div id="projectTitleContainer" style={{backgroundColor: color, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                 <div style={{display: 'flex', 'flex-direction': 'row', marginLeft: '14px', marginTop: '6px', color: 'white'}}>
@@ -870,7 +905,15 @@ class ProjectTitleBar extends Component {
                    <Modal open={filterModalOpen} onClose={this.onCloseFiltersModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
                         <FilterSelection project={this.props.project} getAppState={this.props.getAppState}/>
                     </Modal>
-                    <img alt={"Log"} src={logIcon} title={"Open Project Log"} id="projectSettingsIcon"/>
+
+                    <img alt={"Log"} src={logIcon} title={"Open Project Log"} onClick={this.onOpenLogModal} id="projectSettingsIcon"/>
+                            <Modal open={openLog} onClose={this.onCloseLogModal} little>
+                                <h2>System log for {this.props.title}</h2>
+                                {eventKeys && eventKeys.map((key) => {
+                                    return (<p>{this.props.events[key].useid + this.props.events[key].event + " on " + this.props.events[key].timestamp}</p>)
+                                })}
+                            </Modal>
+
                     <img alt={"Settings"} src={settingsIcon} title={"Settings"} onClick={this.onOpenModal} id="projectSettingsIcon"/>
                     <Modal open={open} onClose={this.onCloseModal} little classNames={{overlay: 'settingsPopupOverlay', modal: 'settingsPopupModal'}}>
                           {settings}
