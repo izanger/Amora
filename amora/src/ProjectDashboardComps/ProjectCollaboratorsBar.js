@@ -78,6 +78,7 @@ class ProjectCollaboratorsBar extends Component {
         return (
             <div>
                 <div id="ProjectCollaboratorsBarContainter">
+               
                     {userKeys && userKeys.map((key) => {
                         return (<UserIcon hasBorder={true} color={this.props.color} getAppState={this.props.getAppState}
                         key={key} user={this.props.users[key]} userID={key} projectID={this.props.projectID} project={this.props.project}/>)
@@ -91,6 +92,7 @@ class ProjectCollaboratorsBar extends Component {
                     }} id="logIconContainer" style={this.style()}>
                         <img alt={"Project"} src={logIcon} className="projectPicture"/>
                         {/*This should only appear if it is selected as the project*/}
+                       
                         <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                             <Modal open={open} onClose={this.onCloseModal} little>
                                 <h2>System log for {this.props.title}</h2>
@@ -99,11 +101,11 @@ class ProjectCollaboratorsBar extends Component {
                                 })}
                             </Modal>
                     </div>
-                    {annKeys && annKeys.map((key) => {
+                   
+                </div>
+                {annKeys && annKeys.map((key) => {
                         return (<Announcements key={key} data={this.props.project.announcements[key]}/>)
                     })}
-                </div>
-                
             </div>
         )
     }
