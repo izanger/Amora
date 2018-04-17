@@ -19,6 +19,8 @@ import "../textStyle.css"
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
+import Announcements from "./Announcements.js"
+import "./Announcements.css"
 
 class ProjectTitleBar extends Component {
 
@@ -52,6 +54,11 @@ class ProjectTitleBar extends Component {
             //endWorkingHoursValue: "",
             //hours: "",
             openLog: false,
+            addedAnnouncement: false,
+            announcementsSynced: false,
+            announcementState: {
+
+            },
         }
     }
 
@@ -446,6 +453,56 @@ class ProjectTitleBar extends Component {
             rebase.remove(`projects/${projectKey}`)
          })
     }
+    postAnnouncement = (text) => {
+        let projectID = this.props.getProjectDashboardState().project.key
+        let announcement = document.getElementById("AnnounceField").value
+        var today = new Date();
+        var unformattedTime = today.getTime()
+        var date = new Date(unformattedTime)
+        let formattedDate =  date.toLocaleTimeString() + " on " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
+
+            rebase.push(`projects/${projectID}/announcements`, {
+                data: {
+                    text: announcement,
+                    timestamp: formattedDate
+                }
+            });
+        
+    
+        this.setState({addedAnnouncement: true})
+        this.clearAnnouncement()
+    }
+
+    clearAnnouncements = () =>{
+        let projectUserList = [];
+        let annList = [];
+        let projectKey = this.props.getProjectDashboardState().project.key
+        rebase.fetch(`projects/${this.props.getProjectDashboardState().project.key}/announcements`, {
+            context: this,
+        }).then(data => {
+            annList = Object.keys(data);
+            var i = 0;
+            for (i; i < annList.length;i++ ){
+                let annID = annList[i];
+                rebase.remove(`projects/${projectKey}/announcements/${annID}`)
+            }
+         }) 
+
+    }
+    
+       sendAnnouncement = (event) => {
+        const newState = { ...this.state }
+        newState.announcementValue = event.target.value
+        this.setState(newState)
+    }
+    
+        clearAnnouncement = () => {
+        const newState = { ...this.state }
+        newState.announcementValue = ''
+        this.setState(newState)
+    }
+
+
     createVanillaProject = () => {
         if (this.state.newdescriptionValue === "" || this.state.newtitleValue === "") {
             return
@@ -668,7 +725,13 @@ class ProjectTitleBar extends Component {
                             <option value="2">pm</option>
                         </select>
                     </div>
+                    <input type="text" name="Announce" id="AnnounceField" onChange={this.sendAnnouncement} value={this.state.announcementValue} placeholder="Announce" className="commentInput" style={{width: '100%'}}/>
+                    <button className="addCommentButton" onClick={this.postAnnouncement}>Add Announcement</button>
+                    <button className="addCommentButton" onClick={this.clearAnnouncements}>Clear Announcements</button>
+                  
+                    
                     <button className="submitFinalButton" onClick={this.submitChanges}>Submit</button>
+                    
                 </div>
             )
         } else { //user is a manager
@@ -837,8 +900,12 @@ class ProjectTitleBar extends Component {
                             <option value="2">pm</option>
                         </select>
                     </div>
-
+                    <input type="text" name="Announce" id="AnnounceField" onChange={this.sendAnnouncement} value={this.state.announcementValue} placeholder="Announce" className="commentInput" style={{width: '100%'}}/>
+                    <button className="addCommentButton" onClick={this.postAnnouncement}>Add Announcement</button>
+                    <button className="addCommentButton" onClick={this.clearAnnouncements}>Clear Announcements</button>
+                  <div>
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
+                </div>
                 </div>
             )
         }

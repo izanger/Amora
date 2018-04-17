@@ -5,7 +5,8 @@ import "./ProjectCollaboratorsBar.css"
 import Modal from 'react-responsive-modal/lib/css';
 import logIcon from "../images/Icons/log.png"
 import rebase from "../rebase.js"
-
+import Announcements from "./Announcements.js"
+import "./Announcements.css"
 
 
 
@@ -33,6 +34,11 @@ class ProjectCollaboratorsBar extends Component {
             userKeys = Object.keys(this.props.users)
         }
 
+        let annKeys
+        if (this.props.project.announcements){
+            annKeys = Object.keys(this.props.project.announcements)
+        }
+
         return (
             <div>
                 <div id="ProjectCollaboratorsBarContainter">
@@ -41,7 +47,9 @@ class ProjectCollaboratorsBar extends Component {
                         key={key} user={this.props.users[key]} userID={key} projectID={this.props.projectID} project={this.props.project}/>)
                     })}
                 </div>
-                
+                {annKeys && annKeys.map((key) => {
+                        return (<Announcements key={key} data={this.props.project.announcements[key]}/>)
+                    })}
             </div>
         )
     }

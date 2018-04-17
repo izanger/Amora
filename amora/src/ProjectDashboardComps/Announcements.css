@@ -1,0 +1,48 @@
+A.taskCommentDivider {
+
+    padding: 0px;
+    margin: 0px;
+    margin-left: -10px;
+    margin-top: -80px;
+}
+
+#taskCommentContents {
+
+    display: flex;
+    flex-direction: row;
+    margin-left: -10px;
+}
+
+#taskCommentName {
+
+    font-weight: bold;
+    margin-bottom: 0px;
+    font-size: 11pt;
+}
+
+#taskCommentText {
+
+    margin-top: 0px;
+    font-weight: lighter;
+}
+
+#taskUserIcon {
+    min-width: 30px;
+    max-width: 30px;
+    height: 30px;
+    margin-top: -9px;
+}
+
+#taskNameAndComment {
+    padding-left: 10px;
+    width: 50%;
+}
+
+#commentUserIconContainer {
+    width: 40px;
+    height: 40px;
+    margin-left: 12px;
+    margin-top: 2px;
+    border-radius: 30px;
+    overflow: hidden;
+}
