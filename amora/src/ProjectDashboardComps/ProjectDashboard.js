@@ -514,7 +514,7 @@ class ProjectDashboard extends Component {
                     <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} project={this.state.project} projectColor={this.state.project.projectColor}
                         getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName}
                         projectDescription={this.state.project.projectDescription} getProjectDashboardState={this.getProjectDashboardState}
-                        setProjectDashboardState={this.setProjectDashboardState} goToUrl={this.props.goToUrl}/>
+                        setProjectDashboardState={this.setProjectDashboardState} goToUrl={this.props.goToUrl} showArchive={this.state.showArchive}/>
                     <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor}
                     projectID={this.state.project.key} project={this.state.project} title={this.state.project.projectName} events={this.state.project.events}/>
 
