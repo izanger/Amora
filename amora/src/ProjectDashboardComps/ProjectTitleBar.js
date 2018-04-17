@@ -402,17 +402,26 @@ class ProjectTitleBar extends Component {
         let projectID = this.props.getProjectDashboardState().project.key
         let announcement = document.getElementById("AnnounceField").value
         var today = new Date();
+        var unformattedTime = today.getTime()
+        var date = new Date(unformattedTime)
+        let formattedDate =  date.toLocaleTimeString() + " on " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
         
+
             rebase.push(`projects/${projectID}/announcements`, {
                 data: {
                     text: announcement,
-                    timestamp: today.getTime()
+                    timestamp: formattedDate
                 }
             });
         
     
         this.setState({addedAnnouncement: true})
         this.clearAnnouncement()
+    }
+
+    clearAnnouncements = () =>{
+
+
     }
     
        sendAnnouncement = (event) => {
@@ -769,6 +778,7 @@ class ProjectTitleBar extends Component {
                     <p>Announcements</p>
                     <input type="text" name="Announce" id="AnnounceField" onChange={this.sendAnnouncement} value={this.state.announcementValue} placeholder="Announce" className="commentInput" style={{width: '100%'}}/>
                     <button className="addCommentButton" onClick={this.postAnnouncement}>Add Announcement</button>
+                    <button className="addCommentButton" onClick={this.clearAnnouncements}>Clear Announcements</button>
 
               
                 </div>
