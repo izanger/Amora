@@ -45,12 +45,21 @@ class ProjectDashboard extends Component {
     4) If it's selected, have the box show on the side
     */
 
-    componentDidMount = () => {
+    componentWillMount = () => {
         const newState = { ...this.state }
         rebase.fetch(`projects/${this.props.match.params.id}`, {
             context: this,
             then: (data) => {
                 newState.project = data
+                const userKeys = Object.keys(data.userList)
+                console.log(userKeys)
+                for (let i = 0; i < userKeys.length; i++) {
+                    if (userKeys[i] !== this.props.getAppState().user.uid) {
+                        const newAppState = { ...this.props.getAppState() }
+                        newAppState.user.contacts[userKeys[i]] = data.userList[userKeys[i]]
+                        this.props.setAppState(newAppState)
+                    }
+                }
             }
         }).then(() => {
             this.bindingref = rebase.syncState(`projects/${this.props.match.params.id}`, {
@@ -88,6 +97,15 @@ class ProjectDashboard extends Component {
                 context: this,
                 then: (data) => {
                     newState.project = data
+                    const userKeys = Object.keys(data.userList)
+                    console.log(userKeys)
+                    for (let i = 0; i < userKeys.length; i++) {
+                        if (userKeys[i] !== this.props.getAppState().user.uid) {
+                            const newAppState = { ...this.props.getAppState() }
+                            newAppState.user.contacts[userKeys[i]] = data.userList[userKeys[i]]
+                            this.props.setAppState(newAppState)
+                        }
+                    }
                 }
             }).then(() => {
                 this.bindingref = rebase.syncState(`projects/${nextId}`, {

@@ -11,6 +11,7 @@ import ProjectDashboard from "./ProjectDashboardComps/ProjectDashboard.js"
 import NewProjectButton from "./ProjectSelectorComps/NewProjectButton.js"
 import CreateTaskForm from './CreateTaskForm.js';
 import MyDayTitleBar from "./MyDayComps/MyDayTitleBar.js"
+import Messaging from "./ProjectDashboardComps/Messaging"
 // import { doubleToIEEE754String } from '@firebase/database/dist/esm/src/core/util/util';
 import Notifications from "./Notifications.js"
 import TodayView from "./TodayView.js"
@@ -622,13 +623,13 @@ class Home extends Component {
                                 return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState}/>
                             }} />
                             <Route path="/createtask" render={() => {
-                                return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                                return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} />
                             }} />
-                            <Route exact path="/messaging" render={() => {
-                                return <div>Hello!</div>
+                            <Route exact path="/messaging" render={(props) => {
+                                return <Messaging {...props} goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState} />
                             }} />
-                            <Route path="/messaging/:id" render={() => {
-                                return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                            <Route path="/messaging/:id" render={(props) => {
+                                return <Messaging {...props} goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState} />
                             }} />
                             {/* <Route path="/deletetask" render={() => {
                                 return <DeleteTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>

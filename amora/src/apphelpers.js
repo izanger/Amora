@@ -12,7 +12,10 @@ export function buildUserFromGoogle(user) {
         displayName: user.displayName,
         photoURL: user.photoURL,
         email: user.email,
-        uid: user.uid
+        uid: user.uid,
+        contacts: {
+            [user.uid]: true
+        }
     }
     return newUser
 }

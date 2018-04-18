@@ -8,14 +8,20 @@ class Messaging extends Component {
     constructor() {
         super()
         this.state = {
-            project: { },
-            projectSynced: false,
-            bodyValue: ""
+            myChat: { },
+            theirChat: { },
+            myChatSynced: false,
+            theirChatSynced: false,
+            bodyValue: "",
+            chatOpen: false
         }
     }
 
     componentDidMount = () => {
         const newState = { ...this.state }
+        if (this.props.match !== undefined) {
+            this.setState({chatOpen: true})
+        }
         rebase.fetch(`projects/${this.props.match.params.id}`, {
             context: this,
             then: (data) => {
@@ -71,31 +77,16 @@ class Messaging extends Component {
         this.setState(newState)
     }
 
-
     changeBody = (event) => {
         this.setState({bodyValue: event.target.value})
     }
 
     render = () => {
         let keys = []
-        if (this.state.project.chat) {
-            keys = Object.keys(this.state.project.chat)
-        }
-        return (
-            <div id="taskDashboard">
-                {/*BEEEEEENNNNNNNNN probably put the project title bar here so that it can take up the full space and such.
-                    If you're feeling fiesty, maybe add the project collaborators bar too? that way it'd only switch out the tasks
-                    for the chats when you click on it, and you could then still navigate to the other portions of the project
-                    Sincerely,
 
-                    Zach*/}
-                <div id="projectTitleContainer"  style={{backgroundColor: this.props.getAppState().currentProject.projectColor}}>
-                    <img title="Go back" src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
-                        this.props.goToUrl("dashboard")
-                    }} />
-                    <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Messaging</h1>
-
-                </div>
+        let chat
+        if (this.state.chatOpen) {
+            chat = (
                 <div style={{marginRight: '14px', marginLeft: '14px'}}>
 
                     <input type="text" name="Comment" id="CommentField chatMessageField"  onChange={this.changeBody} value={this.state.bodyValue} placeholder="New Chat" className="commentInput" style={{width: '100%'}}/>
@@ -117,9 +108,27 @@ class Messaging extends Component {
                             time={this.state.project.chat[key].time} project={this.state.project} name={this.state.project.chat[key].name}/>
                         })}
                     </div>
+                </div>
+            )
+        }
 
+        const contactKeys = Object.keys(this.props.getAppState().user.contacts)
+
+        return (
+            <div id="taskDashboard">
+                <div id="projectTitleContainer"  style={{backgroundColor: "#E74C3C"}}>
+                    <img title="Go back" src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
+                        this.props.goToUrl("/dashboard")
+                    }} />
+                    <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Messaging</h1>
+                    {contactKeys.map((userId) => {
+                        return <p onClick={() => {
+                            console.log("Goto message")
+                        }}>{userId}</p>
+                    })}
 
                 </div>
+                {chat}
             </div>
         )
     }

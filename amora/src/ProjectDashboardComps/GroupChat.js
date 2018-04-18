@@ -32,7 +32,7 @@ class GroupChat extends Component {
             })
         })
     }
-    
+
     createChat = () => {
         const today = new Date()
         const message = {
@@ -91,7 +91,7 @@ class GroupChat extends Component {
                     Zach*/}
                 <div id="projectTitleContainer"  style={{backgroundColor: this.props.getAppState().currentProject.projectColor}}>
                     <img title="Go back" src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
-                        this.props.goToUrl("dashboard")
+                        this.props.goToUrl("/dashboard")
                     }} />
                     <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Group chat</h1>
 
