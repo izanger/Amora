@@ -3,7 +3,7 @@ import rebase from "../rebase.js"
 import ChatMessage from './ChatMessage.js';
 import leftArrow from "../images/Icons/LeftArrow.svg"
 
-class GroupChat extends Component {
+class Messaging extends Component {
 
     constructor() {
         super()
@@ -32,7 +32,7 @@ class GroupChat extends Component {
             })
         })
     }
-    
+
     createChat = () => {
         const today = new Date()
         const message = {
@@ -93,7 +93,7 @@ class GroupChat extends Component {
                     <img title="Go back" src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
                         this.props.goToUrl("dashboard")
                     }} />
-                    <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Group chat</h1>
+                    <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Messaging</h1>
 
                 </div>
                 <div style={{marginRight: '14px', marginLeft: '14px'}}>
@@ -126,4 +126,4 @@ class GroupChat extends Component {
 
 }
 
-export default GroupChat
+export default Messaging

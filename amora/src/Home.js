@@ -579,6 +579,9 @@ class Home extends Component {
                         }}/>
                         <i onClick={this.signOut} style={{position: 'fixed', bottom: '0'}} className="material-icons">&#xE31B;</i>
                         <i className="material-icons notificationButton" onClick={() => {
+                            this.props.goToUrl("/messaging");
+                        }}>chat</i>
+                        <i className="material-icons notificationButton" onClick={() => {
                             this.props.goToUrl("/notifications");
                         }}>{notificationText}</i>
 
@@ -619,6 +622,12 @@ class Home extends Component {
                                 return <Notifications goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState}/>
                             }} />
                             <Route path="/createtask" render={() => {
+                                return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
+                            }} />
+                            <Route exact path="/messaging" render={() => {
+                                return <div>Hello!</div>
+                            }} />
+                            <Route path="/messaging/:id" render={() => {
                                 return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>
                             }} />
                             {/* <Route path="/deletetask" render={() => {
