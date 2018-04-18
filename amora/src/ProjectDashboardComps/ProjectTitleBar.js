@@ -694,9 +694,11 @@ class ProjectTitleBar extends Component {
         let colorsArray = ['#E74C3C', '#E67E22', '#F1C40F', '#E91E63', '#9B59B6', '#3498DB', '#2ECB71', '#18AE90']
         let userSettings = this.renderUserSettings()
 
-        console.log(this.props.getProjectDashboardState())
-
-        if(!this.props.getProjectDashboardState().project.managerList[this.props.getAppState().user.uid]){ //user is not a manager
+        if(!this.props.getProjectDashboardState().projectSynced){
+            return (<div>
+                <p></p>
+            </div>)
+        } else if(!this.props.getProjectDashboardState().project.managerList[this.props.getAppState().user.uid]){ //user is not a manager
             return (
                 <div>
                     <h3>User Settings</h3>

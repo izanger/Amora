@@ -118,7 +118,7 @@ class ProjectDashboard extends Component {
                 })
             })
         }
-        this.setState({projectSynced: true})
+        //this.setState({projectSynced: true})
     }
 
     componentWillUnmount = () => {
