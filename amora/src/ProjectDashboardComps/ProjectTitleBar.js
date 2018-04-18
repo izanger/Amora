@@ -437,7 +437,8 @@ class ProjectTitleBar extends Component {
     }
 
     deleteProject = () => {
-
+        var response = window.confirm("Are you sure you want to delete this project?")
+        if ( response==true ){
         let projectUserList = [];
         let usersList = [];
         let projectKey = this.props.getProjectDashboardState().project.key
@@ -453,6 +454,7 @@ class ProjectTitleBar extends Component {
             rebase.remove(`projects/${projectKey}`)
          })
     }
+}
     postAnnouncement = (text) => {
         let projectID = this.props.getProjectDashboardState().project.key
         let announcement = document.getElementById("AnnounceField").value
@@ -903,6 +905,10 @@ class ProjectTitleBar extends Component {
                     <input type="text" name="Announce" id="AnnounceField" onChange={this.sendAnnouncement} value={this.state.announcementValue} placeholder="Announce" className="commentInput" style={{width: '100%'}}/>
                     <button className="addCommentButton" onClick={this.postAnnouncement}>Add Announcement</button>
                     <button className="addCommentButton" onClick={this.clearAnnouncements}>Clear Announcements</button>
+                 <div>
+                 <button className="addCommentButton" onClick={this.deleteProject}>Delete Project</button>
+                     </div>
+
                   <div>
                     <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
                 </div>
