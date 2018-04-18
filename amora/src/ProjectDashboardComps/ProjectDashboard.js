@@ -196,11 +196,6 @@ class ProjectDashboard extends Component {
             } else {
                 score *= 1
             }
-            if(tasks[i].taskName === "high tomorrow"){
-                console.log("HT score: " + score)
-                console.log("HT diff: " + timeDiff)
-
-            }
             tasks[i].score = score
         }
         return tasks;
@@ -228,6 +223,9 @@ class ProjectDashboard extends Component {
                         const taskKeys = Object.keys(this.state.project.taskList)
                         tasks = (
                             taskKeys.map((key) => {
+                                if(!key){
+                                    return (<div></div>)
+                                }
                                 return this.renderTask(key, false)
                             })
                         )
@@ -262,6 +260,9 @@ class ProjectDashboard extends Component {
                         )
                         tasks = []
                         for(var i = 0; i < copyTasksArray.length; i++){
+                            if(!copyTasksArray[i].key){
+                                return (<div></div>)
+                            }
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
                     } else if(filter === "Deadline"){
@@ -280,6 +281,9 @@ class ProjectDashboard extends Component {
                         )
                         tasks = []
                         for(var i = 0; i < copyTasksArray.length; i++){
+                            if(!copyTasksArray[i].key){
+                                return (<div></div>)
+                            }
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
                     } else if (filter === "Priority") {
@@ -306,6 +310,9 @@ class ProjectDashboard extends Component {
                         )
                         tasks = []
                         for(var i = 0; i < copyTasksArray.length; i++){
+                            if(!copyTasksArray[i].key){
+                                return (<div></div>)
+                            }
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
                     } else if (filter === "Time to Complete (Ascending)"){
@@ -323,6 +330,9 @@ class ProjectDashboard extends Component {
                         )
                         tasks = []
                         for(var i = 0; i < copyTasksArray.length; i++){
+                            if(!copyTasksArray[i].key){
+                                return (<div></div>)
+                            }
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
                     } else if (filter === "Time to Complete (Descending)"){
@@ -340,6 +350,9 @@ class ProjectDashboard extends Component {
                         )
                         tasks = []
                         for(var i = 0; i < copyTasksArray.length; i++){
+                            if(!copyTasksArray[i].key){
+                                return (<div></div>)
+                            }
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
                     } else { //Filter by a category
@@ -347,6 +360,9 @@ class ProjectDashboard extends Component {
                         tasks = []
                         for(var i = 0; i < copyTasksArray.length; i++){
                              if(copyTasksArray[i].taskCategory === filter){
+                                if(!copyTasksArray[i].key){
+                                    return (<div></div>)
+                                }
                                 tasks.push(this.renderTask(copyTasksArray[i].key, false))
                              }
                         }
@@ -360,7 +376,7 @@ class ProjectDashboard extends Component {
 
                    {/* {Object.keys(this.state.project.taskList).map((item, index) => ( */}
                     {Object.keys(tasks).map((item, index) => (
-                  <Draggable key={item} draggableId={tasks[index].key} index={index} name={tasks[index].props.task.taskName} description={tasks[index].props.task.taskDescription }>
+                  <Draggable key={item} draggableId={tasks[index].key} index={index} name={tasks[index].taskName} description={tasks[index].taskDescription }>
                       {(provided, snapshot) => (
                       <div>
                       <div
@@ -385,7 +401,7 @@ class ProjectDashboard extends Component {
               )}
                    </Droppable>
               )
-                 }
+                }
             } else {
                 if(this.state.project.archivedTaskList){
                     // const taskKeys = Object.keys(this.state.project.archivedTaskList)
@@ -409,6 +425,9 @@ class ProjectDashboard extends Component {
                         const taskKeys = Object.keys(this.state.project.archivedTaskList)
                         taskRender = (
                             taskKeys.map((key) => {
+                                if(!key){
+                                    return (<div></div>)
+                                }
                                 return this.renderTask(key, true)
                             })
                         )
@@ -435,6 +454,9 @@ class ProjectDashboard extends Component {
                         )
                         taskRender = []
                         for(var i = 0; i < copyTasksArray.length; i++){
+                            if(!copyTasksArray[i].key){
+                                return (<div></div>)
+                            }
                             taskRender.push(this.renderTask(copyTasksArray[i].key, true))
                         }
                     } else if(filter === "Deadline"){
@@ -452,6 +474,9 @@ class ProjectDashboard extends Component {
                         )
                         taskRender = []
                         for(var i = 0; i < copyTasksArray.length; i++){
+                            if(!copyTasksArray[i].key){
+                                return (<div></div>)
+                            }
                             taskRender.push(this.renderTask(copyTasksArray[i].key, true))
                         }
                     } else if (filter === "Priority") {
@@ -478,6 +503,9 @@ class ProjectDashboard extends Component {
                         )
                         taskRender = []
                         for(var i = 0; i < copyTasksArray.length; i++){
+                            if(!copyTasksArray[i].key){
+                                return (<div></div>)
+                            }
                             taskRender.push(this.renderTask(copyTasksArray[i].key, true))
                         }
                     } else if (filter === "Time to Complete (Ascending)"){
@@ -495,6 +523,9 @@ class ProjectDashboard extends Component {
                         )
                         taskRender = []
                         for(var i = 0; i < copyTasksArray.length; i++){
+                            if(!copyTasksArray[i].key){
+                                return (<div></div>)
+                            }
                             taskRender.push(this.renderTask(copyTasksArray[i].key, true))
                         }
                     } else if (filter === "Time to Complete (Descending)"){
@@ -512,15 +543,21 @@ class ProjectDashboard extends Component {
                         )
                         taskRender = []
                         for(var i = 0; i < copyTasksArray.length; i++){
+                            if(!copyTasksArray[i].key){
+                                return (<div></div>)
+                            }
                             taskRender.push(this.renderTask(copyTasksArray[i].key, true))
                         }
                     } else { //Filter by a category
                         console.log("OTHER")
                         taskRender = []
                         for(var i = 0; i < copyTasksArray.length; i++){
-                            // if(copyTasksArray[i].taskCategory === filter){
+                             if(copyTasksArray[i].taskCategory === filter){
+                                if(!copyTasksArray[i].key){
+                                    return (<div></div>)
+                                }
                                 taskRender.push(this.renderTask(copyTasksArray[i].key, true))
-                            // }
+                             }
                         }
                     }
                 }
