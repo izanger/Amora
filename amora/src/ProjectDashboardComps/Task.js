@@ -46,6 +46,34 @@ class Task extends Component {
             tempHours: "",
             changeErrorMessage: ""
         }
+      super();
+
+      this.state = {
+           open: false,
+           visible: 'hidden',
+           description: 'I am a very descriptive description!',
+           taskID: "",
+           archived: false,
+           color: '#3CB4CB',
+           editedDate: false,
+           addUserOpen: false,
+           commentValue: "",
+           addedComment: false,
+           commentsSynced: false,
+           edited: "",
+           locked: "", 
+           taskComments: {
+
+           },
+           isManager: false,
+           tempTitle: "",
+           tempDescription: "",
+           tempPriority: "",
+           tempDate: "",
+           tempHours: "",
+           changeErrorMessage: ""
+       }
+       console.log(this.state.locked)
     }
 
     componentWillMount = () => {
@@ -58,6 +86,21 @@ class Task extends Component {
         newState.tempDate = this.props.task.deadline
         newState.taskCategory = this.props.task.taskCategory
         let arch = this.props.archived
+        rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
+            context: this,
+            asArray: true,
+            then(data){
+              console.log(data);
+              if (data.locked){
+                  newState.locked = data.locked
+              }
+              else {
+                  newState.locked = false
+              }
+            }
+          });
+
+
         if(arch){
             rebase.fetch(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}/taskComments`, {
                 context: this,
@@ -809,6 +852,136 @@ getDaysLeft = () => {
             MM: "%d months",
             y:  "a year",
             yy: "%d years"
+
+    askManagerForApproval = () => {
+
+        rebase.fetch(`projects/${this.props.projectID}/`, {
+            context: this,
+            
+            then(data){
+              console.log(data);
+              const notification = {
+                type: "approval",
+                projectName: data.projectName,
+                projectColor: data.projectColor,
+                projectPhotoURL: data.projectPhotoURL,
+                projectDescription: data.projectDescription,
+                key: this.props.projectID,
+                taskAlertTime: 0,
+                taskID: this.props.taskKey,
+                taskName: this.state.tempTitle,
+                taskDescription: this.state.tempDescription
+            }
+
+            rebase.fetch(`projects/${this.props.projectID}/managerList`, {
+                context: this,
+                //asArray: true,
+                then(data){
+                  console.log(data);
+                  let arr = Object.keys(data)
+                  console.log(arr)
+                  console.log(this.props.projectID)
+                    arr.map((user) => {
+                        console.log(user)
+                        console.log(notification)
+                        rebase.update(`users/${user}/notifications/${this.props.projectID}`, {
+                            data: notification
+                        })
+                    })
+                }
+              });
+            }
+          });
+    }
+
+    unlockTask = () => {
+        //this.setState({locked: false})
+                rebase.update(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
+                    data: {
+                        locked: false
+                    }
+                });
+    }
+
+    lockTask = () => {
+        // const newState = { ...this.state }
+        // newState.locked = true;
+        // this.setState(newState)
+        //this.setState({locked: true})
+                rebase.update(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
+                    data: {
+                        locked: true
+                    }
+                });
+    }
+
+    
+
+
+    lockTaskIfManager = () => {
+        const projectID = this.props.projectID
+        const tID = this.props.taskKey
+
+        if (this.state.isManager){
+            //lock/unlock the task
+            var response = window.confirm("Select Ok to Complete task, Cancel to lock it")
+            if (response){
+                this.toggleArchived()
+            } else {
+
+                if (this.state.locked){
+                    console.log("unlocking")
+                    this.unlockTask()
+                    this.toggleArchived()
+                }
+                else {
+                    console.log("locking")
+                    this.lockTask()
+                    console.log(this.state.locked)
+                }
+            }
+        }
+        else {
+
+            rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
+                context: this,
+                then(data){
+                  console.log(data);
+                  if (data.locked){
+                    //task is locked, so send a notification to a manager asking to approve it
+                    console.log("asking")
+                    this.askManagerForApproval()
+                }
+                else {
+                    //task is not locked so proceed like usual
+                    console.log("usual")
+                        this.toggleArchived()
+                }
+
+                }
+              });
+            //check if it is locked already by a manager
+            console.log(this.state.locked)
+            // if (this.state.locked){
+            //     //task is locked, so send a notification to a manager asking to approve it
+            //     console.log("asking")
+            //     this.askManagerForApproval()
+            // }
+            // else {
+            //     //task is not locked so proceed like usual
+            //     console.log("usual")
+            //         this.toggleArchived()
+            // }
+        }
+    }
+
+    assignTask = (key) => {
+        const dashboardState = { ...this.props.getProjectDashboardState() }
+        if (key === null) {
+            dashboardState.project.taskList[this.props.taskKey].assignedTo = undefined
+        } else {
+            dashboardState.project.taskList[this.props.taskKey].assignedTo = key
+            this.props.setProjectDashboardState(dashboardState)
         }
     });
 
@@ -921,6 +1094,47 @@ render = () => {
                                 </svg>
                                 <p id="taskTitle" className="text_task"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.state.tempTitle}/></p>
                             </div>
+                                </g>
+                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.lockTaskIfManager}/>
+                                 <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
+                                 <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
+                            </svg>
+                            <h4 id="taskTitle"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.state.tempTitle}/></h4>
+                        </div>
+                        {/* @Zach pls halp */}
+                        <h5>{this.state.taskCategory}</h5>
+                        <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b> | <ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.state.tempHours)}/> {" hrs"} | <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
+                    </div>
+                    <div style={{visibility: this.state.visible}} id="taskInfo">
+                        <p id="taskDescription"><ContentEditable disabled={this.props.task.descriptionLocked && !this.state.isManager} onChange={this.changeTaskDescription}
+                        html={this.state.tempDescription} /> </p>
+                            <div id="taskUsers">
+                                {assignedTo}
+                                {assignButton}
+                                <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
+                                    <div>
+                                        {/* <h1 className="taskAssignment">Task assignment</h1>*/}
+                                        <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select users to assign to this task</h4>
+                                        <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
+                                            {userKeys && userKeys.map((key) => {
+                                                return (
+                                                    <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
+                                                    getAppState={this.props.getAppStateFunc} projectID={this.props.getProjectDashboardState().project.key}
+                                                    onClick={() => {
+                                                        this.assignTask(key)
+                                                    }} key={key} user={this.props.users[key]} userID={key} project={this.props.getProjectDashboardState().project}
+                                                    />
+                                                )
+                                            })}
+                                        </div>
+                                        <button className="addCommentButton" style={{width: '200px'}} onClick={() => {
+                                            this.assignTask(null)
+                                        }}>Clear All Assigned Users</button>
+                                    </div>
+                                </Modal>
+
+                                <div id="Task">
+                                <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
 
                             <div id="taskContentInfo" style={{right: '12px'}}>
                                 {/*<b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b>*/}
