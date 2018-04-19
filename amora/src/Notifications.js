@@ -3,6 +3,7 @@ import Notification from "./Notification.js"
 import Invite from "./Invite.js"
 import NoNotifications from "./NoNotifications.js"
 import leftArrow from "./images/Icons/LeftArrow.svg"
+import Approval from "./Approval.js"
 
 import "./Notifications.css"
 
@@ -25,13 +26,15 @@ class Notifications extends Component {
         if (notifications) {
             finalRender = (
                 notificationKeys.map((notificationKey) => {
+                    console.log(notifications)
                     if (notifications[notificationKey].type === "invite") {
                         return <Invite key={notificationKey} notificationKey={notificationKey} notification={notifications[notificationKey]}
                         getAppState={this.props.getAppState} setAppState={this.setAppState} />
                     } 
+
                     else if (notifications[notificationKey].type === "approval"){
                         return <Approval key={notificationKey} notificationKey={notificationKey} notification={notifications[notificationKey]}
-                        getAppState={this.props.getAppState} setAppState={this.setAppState} />
+                        getAppState={this.props.getAppState} setAppState={this.setAppState} taskID = {notifications[notificationKey].taskID} taskName={notifications[notificationKey].taskName} taskDescription={notifications[notificationKey].taskDescription} />
                     }
                     else {
                         return <Notification key={notificationKey} notificationKey={notificationKey} notification={notifications[notificationKey]}

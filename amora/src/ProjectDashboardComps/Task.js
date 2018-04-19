@@ -35,7 +35,7 @@ class Task extends Component {
            addedComment: false,
            commentsSynced: false,
            edited: "",
-           locked: false, 
+           locked: "", 
            taskComments: {
 
            },
@@ -47,6 +47,7 @@ class Task extends Component {
            tempHours: "",
            changeErrorMessage: ""
        }
+       console.log(this.state.locked)
     }
 
     componentWillMount = () => {
@@ -836,7 +837,7 @@ class Task extends Component {
 
         rebase.fetch(`projects/${this.props.projectID}/`, {
             context: this,
-            asArray: true,
+            
             then(data){
               console.log(data);
               const notification = {
@@ -846,16 +847,24 @@ class Task extends Component {
                 projectPhotoURL: data.projectPhotoURL,
                 projectDescription: data.projectDescription,
                 key: this.props.projectID,
-                taskAlertTime: data.taskAlertTime,
-                taskID: this.props.taskKey
+                taskAlertTime: 0,
+                taskID: this.props.taskKey,
+                taskName: this.state.tempTitle,
+                taskDescription: this.state.tempDescription
             }
 
             rebase.fetch(`projects/${this.props.projectID}/managerList`, {
                 context: this,
+                //asArray: true,
                 then(data){
                   console.log(data);
-                    data.map((user) => {
-                        rebase.update(`users/${user.uid}/notifications/${this.props.projectID}`, {
+                  let arr = Object.keys(data)
+                  console.log(arr)
+                  console.log(this.props.projectID)
+                    arr.map((user) => {
+                        console.log(user)
+                        console.log(notification)
+                        rebase.update(`users/${user}/notifications/${this.props.projectID}`, {
                             data: notification
                         })
                     })
@@ -866,8 +875,8 @@ class Task extends Component {
     }
 
     unlockTask = () => {
-        this.setState({locked: false})
-                rebase.update(`projects/${projectID}/taskList/${tID}/`, {
+        //this.setState({locked: false})
+                rebase.update(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
                     data: {
                         locked: false
                     }
@@ -875,13 +884,18 @@ class Task extends Component {
     }
 
     lockTask = () => {
-        this.setState({locked: true})
-                rebase.update(`projects/${projectID}/taskList/${tID}/`, {
+        // const newState = { ...this.state }
+        // newState.locked = true;
+        // this.setState(newState)
+        //this.setState({locked: true})
+                rebase.update(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
                     data: {
                         locked: true
                     }
                 });
     }
+
+    
 
 
     lockTaskIfManager = () => {
@@ -890,23 +904,54 @@ class Task extends Component {
 
         if (this.state.isManager){
             //lock/unlock the task
-            if (this.state.locked){
-                this.unlockTask()
-            }
-            else {
-                this.lockTask()
+            var response = window.confirm("Select Ok to Complete task, Cancel to lock it")
+            if (response){
+                this.toggleArchived()
+            } else {
+
+                if (this.state.locked){
+                    console.log("unlocking")
+                    this.unlockTask()
+                    this.toggleArchived()
+                }
+                else {
+                    console.log("locking")
+                    this.lockTask()
+                    console.log(this.state.locked)
+                }
             }
         }
         else {
+
+            rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
+                context: this,
+                then(data){
+                  console.log(data);
+                  if (data.locked){
+                    //task is locked, so send a notification to a manager asking to approve it
+                    console.log("asking")
+                    this.askManagerForApproval()
+                }
+                else {
+                    //task is not locked so proceed like usual
+                    console.log("usual")
+                        this.toggleArchived()
+                }
+
+                }
+              });
             //check if it is locked already by a manager
-            if (this.state.locked){
-                //task is locked, so send a notification to a manager asking to approve it
-                this.askManagerForApproval()
-            }
-            else {
-                //task is not locked so proceed like usual
-                    this.toggleArchived()
-            }
+            console.log(this.state.locked)
+            // if (this.state.locked){
+            //     //task is locked, so send a notification to a manager asking to approve it
+            //     console.log("asking")
+            //     this.askManagerForApproval()
+            // }
+            // else {
+            //     //task is not locked so proceed like usual
+            //     console.log("usual")
+            //         this.toggleArchived()
+            // }
         }
     }
 
@@ -1009,7 +1054,7 @@ class Task extends Component {
                                         </g>
                                     </g>
                                 </g>
-                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.lockTaskIfManager()}/>
+                                 <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.lockTaskIfManager}/>
                                  <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                  <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                             </svg>
