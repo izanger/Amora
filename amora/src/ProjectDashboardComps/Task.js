@@ -927,6 +927,7 @@ lockTask = () => {
 lockTaskIfManager = () => {
     const projectID = this.props.projectID
     const tID = this.props.taskKey
+    console.log("HAHAHAHAA")
 
     if (this.state.isManager){
         //lock/unlock the task
@@ -1082,47 +1083,12 @@ render = () => {
                                             </g>
                                         </g>
                                     </g>
-                                    <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
+                                    <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.lockTaskIfManager}/>
                                     <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                     <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                                 </svg>
                                 <p id="taskTitle" className="text_task"><ContentEditable disabled={this.props.task.titleLocked && !this.state.isManager} onChange={this.changeTaskName} html={this.state.tempTitle}/></p>
                             </div>
-                        </div>
-                        {/* @Zach pls halp */}
-                        <h5>{this.state.taskCategory}</h5>
-                        <div id="taskContentInfo" style={{right: '12px'}}><b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b> | <ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.state.tempHours)}/> {" hrs"} | <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} html={this.getDaysLeft()}/> </ div>
-                    </div>
-                    <div style={{visibility: this.state.visible}} id="taskInfo">
-                        <p id="taskDescription"><ContentEditable disabled={this.props.task.descriptionLocked && !this.state.isManager} onChange={this.changeTaskDescription}
-                        html={this.state.tempDescription} /> </p>
-                            <div id="taskUsers">
-                                {assignedTo}
-                                {assignButton}
-                                <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
-                                    <div>
-                                        {/* <h1 className="taskAssignment">Task assignment</h1>*/}
-                                        <h4 className="taskAssignmentInstructions" style={{"text-align": "left", "margin-top": "5px"}}>Select users to assign to this task</h4>
-                                        <div id="ProjectCollaboratorsBarContainter" style={{"background-color": "white", "margin-bottom": "15px", "margin-left": "-7px", width: '350px', "overflow": "scrollable"}}>
-                                            {userKeys && userKeys.map((key) => {
-                                                return (
-                                                    <UserIcon color={this.props.getProjectDashboardState().project.projectColor}
-                                                    getAppState={this.props.getAppStateFunc} projectID={this.props.getProjectDashboardState().project.key}
-                                                    onClick={() => {
-                                                        this.assignTask(key)
-                                                    }} key={key} user={this.props.users[key]} userID={key} project={this.props.getProjectDashboardState().project}
-                                                    />
-                                                )
-                                            })}
-                                        </div>
-                                        <button className="addCommentButton" style={{width: '200px'}} onClick={() => {
-                                            this.assignTask(null)
-                                        }}>Clear All Assigned Users</button>
-                                    </div>
-                                </Modal>
-
-                                <div id="Task">
-                                <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
 
                             <div id="taskContentInfo" style={{right: '12px'}}>
                                 {/*<b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b>*/}
@@ -1208,9 +1174,9 @@ render = () => {
                                                 </g>
                                         </svg>
                                     </center>
-                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     )
 
@@ -1226,7 +1192,7 @@ render = () => {
                                     <div id="taskCheckAndTitle">
                                         <svg height="40" width="40">
 
-                                            <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.toggleArchived}/>
+                                            <rect x="1" y="9" rx="5" ry="5" width="20" height="20" className="checkBox" style={this.checkRectIsArchived()} onClick={this.lockTaskIfManager}/>
                                             <line x1="5" x2="10" y1="19" y2="25" style={this.checkIsVisible()} className="checkBox" />
                                             <line x1="10" x2="17" y1="25" y2="13" style={this.checkIsVisible()} className="checkBox" />
                                         </svg>
@@ -1280,7 +1246,6 @@ render = () => {
                                         </div>
                                     </div>
                                 </div>
-                                
                             )
                         }
                         return (
