@@ -85,9 +85,12 @@ class ProjectDashboard extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
+        console.log(nextProps)
         const nextId = nextProps.match.params.id
-        this.setState({projectSynced: false})
+        console.log("to false")
+        //this.setState({projectSynced: false})
         if (nextId !== this.props.match.params.id) {
+            console.log("to false2")
             this.setState({projectSynced: false})
             if (this.bindingref) {
                 rebase.removeBinding(this.bindingref)
@@ -122,6 +125,7 @@ class ProjectDashboard extends Component {
     }
 
     componentWillUnmount = () => {
+        console.log("to false3")
         this.setState({
             projectSynced: false
         })
@@ -207,7 +211,7 @@ class ProjectDashboard extends Component {
         let taskRender
         let tasks
         let count = 0
-
+console.log(this.state.projectSynced)
         if (this.state.projectSynced) {
 
             if(!this.state.showArchive){
@@ -586,6 +590,24 @@ class ProjectDashboard extends Component {
             )
         } else {
             finalRender = (
+                // <div id="taskDashboard">
+                //     <ProjectTitleBar setAppState={this.props.setAppState} getAppState={this.props.getAppState} project={this.state.project} projectColor={this.state.project.projectColor}
+                //         getButtonText={this.getButtonText} toggleShowArchive={this.toggleShowArchive} title={this.state.project.projectName}
+                //         projectDescription={this.state.project.projectDescription} getProjectDashboardState={this.getProjectDashboardState}
+                //         setProjectDashboardState={this.setProjectDashboardState} goToUrl={this.props.goToUrl} showArchive={this.state.showArchive}
+                //         events={this.state.project.events}/>
+                //     <ProjectCollaboratorsBar getAppState={this.props.getAppState} users={this.state.project.userList} color={this.state.project.projectColor}
+                //     projectID={this.state.project.key} project={this.state.project} title={this.state.project.projectName} />
+
+                //     <div id="taskDashScrollableContent">
+
+                //         {taskRender}
+
+                //         <div id="addTaskButton" style={{'position': 'fixed', bottom: '0px', width: '100%', paddingBottom: '15px'}}><NewProjectButton onClick={() => {
+                //             this.props.goToUrl("/createtask");
+                //         }} /></div>
+                //     </div>
+                // </div>
                 <div></div>
             )
             taskRender = (

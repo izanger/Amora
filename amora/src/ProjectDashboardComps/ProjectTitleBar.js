@@ -249,8 +249,8 @@ class ProjectTitleBar extends Component {
 
 
     submitChanges = () => {
-        var dropSelect = document.getElementById("taskAlertDropdown");
-        var taskAlertText = dropSelect.options[dropSelect.selectedIndex].text;
+         var dropSelect = document.getElementById("taskAlertDropdown");
+         var taskAlertText = dropSelect.options[dropSelect.selectedIndex].text;
 
         var dropSelectStartTime = document.getElementById("updateStartHoursDropdown");
         var startAMPMText = dropSelectStartTime.options[dropSelectStartTime.selectedIndex].text;
@@ -258,7 +258,7 @@ class ProjectTitleBar extends Component {
         var dropSelectEndTime = document.getElementById("updateEndHoursDropdown");
         var endAMPMText = dropSelectEndTime.options[dropSelectEndTime.selectedIndex].text;
 
-        const newState = this.props.getAppState();
+         const newState = this.props.getAppState();
 
         let startpm = this.state.startWorkingHoursValue
         let endpm = this.state.endWorkingHoursValue
@@ -385,7 +385,42 @@ class ProjectTitleBar extends Component {
                 }
             })
         }
+       
         this.submitProfileChanges()
+        // this.sleep(500).then(() => {
+        //     this.finish()
+        //     this.sleep(5000).then(() => {
+        //         this.props.goToUrl("/projects/-LATpytm2IFRsTsOiV5T")
+        //         console.log("tried")
+        //         this.sleep(500).then(() => {
+        //             this.props.goToUrl("/projects/-LATpytm2IFRsTsOiV5T")
+        //             console.log("tried")
+        //             this.sleep(500).then(() => {
+        //                 this.props.goToUrl("/projects/-LATpytm2IFRsTsOiV5T")
+        //                 console.log("tried")
+        //                 this.sleep(500).then(() => {
+        //                     this.props.goToUrl("/projects/-LATpytm2IFRsTsOiV5T")
+        //                     console.log("tried")
+        //                 })
+        //             })
+        //         })
+        //     })
+        // })
+        // const dashboardState = { ...this.props.getProjectDashboardState() }
+        // dashboardState.project.projectSynced = true
+        // this.props.setProjectDashboardState(dashboardState)
+        
+        
+        
+        
+    }
+
+     sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+      }
+
+    finish = () => {
+        window.location.reload();
     }
 
     changeColorValue = (color) => {
