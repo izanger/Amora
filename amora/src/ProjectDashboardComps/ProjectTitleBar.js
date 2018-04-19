@@ -923,6 +923,7 @@ class ProjectTitleBar extends Component {
 
     renderProjectSettings = (color, colors) => {
         let colorsArray = ['#E74C3C', '#E67E22', '#F1C40F', '#E91E63', '#9B59B6', '#3498DB', '#2ECB71', '#18AE90']
+       if(this.props.getProjectDashboardState().project.isPersonalDashboardProject == false){
         return (
             <div>
 
@@ -965,7 +966,54 @@ class ProjectTitleBar extends Component {
                         </g>
                 </svg>
             </div>
-        )
+        )}
+        else{
+            return (
+                <div>
+    
+                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                        <p className="text_header">Project Settings</p>
+                        {/* <p className="text_description" id="clearAnnouncementsText" onClick={this.deleteProject} style={{marginLeft: '7px'}}>| <i>Delete Project</i></p> */}
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'row', 'justify-content': 'space-between', width: '100%', marginTop: '0px'}}>
+                        <p className="text_description">Update Name:</p>
+                        <input type="text" placeholder="Enter Project Name" style={{marginLeft:'15px', width:'65%', marginTop: '-2px'}} className="commentInput" onChange={this.changeTitleValue} value={this.state.titleValue} />
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'row', 'justify-content': 'space-between', width: '100%', marginTop: '0px'}}>
+                        <p className="text_description">Update Description:</p>
+                        <input type="text" className="commentInput" style={{marginLeft:'0px', width:'65%', marginTop: '-2px'}} onChange={this.changeDescriptionValue} value={this.state.projectDescription}/>
+                    </div>
+    
+                    <div id="colorPicker" style={{marginLeft:'0px', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <p className="text_description">Update Color:</p>
+                        <div style={{display: 'flex', flexDirection: 'row', marginTop: '-10px'}}>
+                            {colorsArray.map((color) => {
+                                return this.renderSwatch(color)
+                            })}
+                        </div>
+                    </div>
+    
+                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <p className="text_header">Add Announcement</p>
+                        <p className="text_description" id="clearAnnouncementsText" onClick={this.clearAnnouncements}><i>Clear Announcements</i></p>
+                    </div>
+    
+                    <input type="text" name="Announce" id="AnnounceField" onChange={this.sendAnnouncement} value={this.state.announcementValue} placeholder="Enter Announcement" className="commentInput" style={{width: '100%', marginTop: '0px'}}/>
+                    <svg width="15px" height="18px" id="sendCommentArrow" onClick={this.postAnnouncement}>
+                        <title>Combined Shape</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs></defs>
+                            <g id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Desktop" transform="translate(-772.000000, -493.000000)" fill="#B8B8B8">
+                                    <path d="M783.7,509.5 L788.5,509.5 L779.5,494.5 L770.5,509.5 L775.3,509.5 L779.5,502.5 L783.7,509.5 Z" id="Combined-Shape" transform="translate(779.500000, 502.000000) rotate(90.000000) translate(-779.500000, -502.000000) "></path>
+                                </g>
+                            </g>
+                    </svg>
+                </div>
+            )
+
+
+        }
 
     }
 
