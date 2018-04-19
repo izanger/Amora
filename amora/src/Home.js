@@ -626,10 +626,10 @@ class Home extends Component {
                                 return <CreateTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} />
                             }} />
                             <Route exact path="/messaging" render={(props) => {
-                                return <Messaging {...props} goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState} />
+                                return <Messaging {...props} goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.props.setAppState} />
                             }} />
                             <Route path="/messaging/:id" render={(props) => {
-                                return <Messaging {...props} goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.setAppState} />
+                                return <Messaging {...props} goToUrl={this.props.goToUrl} getAppState={this.props.getAppState} setAppState={this.props.setAppState} />
                             }} />
                             {/* <Route path="/deletetask" render={() => {
                                 return <DeleteTaskForm goToUrl={this.props.goToUrl} getAppState={this.props.getAppState}/>

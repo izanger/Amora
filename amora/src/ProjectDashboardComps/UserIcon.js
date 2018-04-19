@@ -321,7 +321,7 @@ class UserIcon extends Component {
                         this.displayEnd = this.state.end + "am"
                     }
                 }} id="userIconContainer" style={this.style()}>
-                    <img alt={"Project"} src={this.props.user} className="projectPicture"/>
+                    <img alt={"Project"} src={this.props.user} className="projectPicture" />
                     {/*This should only appear if it is selected as the project*/}
 
 

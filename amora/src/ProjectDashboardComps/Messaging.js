@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import rebase from "../rebase.js"
 import ChatMessage from './ChatMessage.js';
+import MessagingMessage from "./MessagingMessage"
 import leftArrow from "../images/Icons/LeftArrow.svg"
 
 class Messaging extends Component {
@@ -9,9 +10,8 @@ class Messaging extends Component {
         super()
         this.state = {
             myChat: { },
-            theirChat: { },
+            project: { },
             myChatSynced: false,
-            theirChatSynced: false,
             bodyValue: "",
             chatOpen: false
         }
@@ -39,6 +39,45 @@ class Messaging extends Component {
         })
     }
 
+    componentWillReceiveProps = (nextProps) => {
+        console.log(nextProps)
+        const nextId = nextProps.match.params.id
+        if (nextId !== undefined) {
+            this.setState({chatOpen: true})
+        } else {
+            this.setState({chatOpen: false})
+        }
+        // this.setState({myChatSynced: false})
+        // if (this.chatbindingref) {
+        //     rebase.removeBinding(this.chatbindingref)
+        // }
+        // const newState = { ...this.state }
+        // rebase.fetch(`users/${nextId}`, {
+        //     context: this,
+        //     then: (data) => {
+        //         newState.project = data
+        //         const userKeys = Object.keys(data.userList)
+        //         console.log(userKeys)
+        //         for (let i = 0; i < userKeys.length; i++) {
+        //             if (userKeys[i] !== this.props.getAppState().user.uid) {
+        //                 const newAppState = { ...this.props.getAppState() }
+        //                 newAppState.user.contacts[userKeys[i]] = data.userList[userKeys[i]]
+        //                 this.props.setAppState(newAppState)
+        //             }
+        //         }
+        //     }
+        // }).then(() => {
+        //     this.bindingref = rebase.syncState(`projects/${nextId}`, {
+        //         context: this,
+        //         state: 'myChat',
+        //         then: () => {
+        //             newState.myChatSynced = true
+        //             this.setState(newState)
+        //         }
+        //     })
+        // })
+    }
+
     createChat = () => {
         const today = new Date()
         const message = {
@@ -49,16 +88,23 @@ class Messaging extends Component {
             name: this.props.getAppState().user.displayName,
             key: 0
         }
-        rebase.update(`projects/${this.props.match.params.id}/chat/${message.key}`, {
-            data: message
+        const overall = {
+            numMessages: 1,
+            userKey: this.props.match.params.id,
+            messages: {
+                [message.key]: message
+            }
+        }
+        rebase.update(`users/${this.props.getAppState().user.uid}/messages/${this.props.match.params.id}`, {
+            data: overall
         })
-        rebase.post(`projects/${this.props.match.params.id}/numMessages`, {
-            data: 1
+        rebase.update(`users/${this.props.match.params.id}/messages/${this.props.getAppState().user.uid}`, {
+            data: overall
         })
     }
 
     postMessage = () => {
-        if (!this.state.project.chat) {
+        if (this.props.getAppState().user.messages[this.props.match.params.id] === undefined) {
             this.createChat()
             return
         }
@@ -69,12 +115,18 @@ class Messaging extends Component {
             uid: this.props.getAppState().user.uid,
             url: this.props.getAppState().user.photoURL,
             name: this.props.getAppState().user.displayName,
-            key: this.state.project.numMessages
+            key: this.props.getAppState().user.messages[this.props.match.params.id].numMessages
         }
-        const newState = { ...this.state }
-        newState.project.chat[message.key] = message
-        newState.project.numMessages += 1
-        this.setState(newState)
+        const newState = { ...this.props.getAppState() }
+        newState.user.messages[this.props.match.params.id].messages[newState.user.messages[this.props.match.params.id].numMessages] = message
+        newState.user.messages[this.props.match.params.id].numMessages += 1
+        this.props.setAppState(newState)
+        rebase.post(`users/${this.props.match.params.id}/messages/${this.props.getAppState().user.uid}/numMessages`, {
+            data: newState.user.messages[this.props.match.params.id].numMessages
+        })
+        rebase.post(`users/${this.props.match.params.id}/messages/${this.props.getAppState().user.uid}/messages/${message.key}`, {
+            data: message
+        })
     }
 
     changeBody = (event) => {
@@ -82,10 +134,11 @@ class Messaging extends Component {
     }
 
     render = () => {
-        let keys = []
 
         let chat
-        if (this.state.chatOpen) {
+        if (this.state.chatOpen && this.props.match.params.id !== undefined) {
+            const newState = { ...this.props.getAppState() }
+            let keys = Object.keys(newState.user.messages[this.props.match.params.id].messages)
             chat = (
                 <div style={{marginRight: '14px', marginLeft: '14px'}}>
 
@@ -102,10 +155,10 @@ class Messaging extends Component {
                     </svg>
                     <div style={{overflowY: 'scroll'}}>
                         {keys.map((key) => {
-                            return <ChatMessage body={this.state.project.chat[key].body}
+                            return <MessagingMessage body={newState.user.messages[this.props.match.params.id].messages[key].body}
                             getAppState={this.props.getAppState}
-                            url={this.state.project.chat[key].url} uid={this.state.project.chat[key].uid}
-                            time={this.state.project.chat[key].time} project={this.state.project} name={this.state.project.chat[key].name}/>
+                            url={newState.user.messages[this.props.match.params.id].messages[key].url} uid={newState.user.messages[this.props.match.params.id].messages[key].uid}
+                            time={newState.user.messages[this.props.match.params.id].messages[key].time} project={this.state.project} name={newState.user.messages[this.props.match.params.id].messages[key].name}/>
                         })}
                     </div>
                 </div>
@@ -122,9 +175,11 @@ class Messaging extends Component {
                     }} />
                     <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Messaging</h1>
                     {contactKeys.map((userId) => {
-                        return <p onClick={() => {
-                            console.log("Goto message")
-                        }}>{userId}</p>
+                        if (userId !== this.props.getAppState().user.uid) {
+                            return <div onClick={() => {
+                                this.props.goToUrl(`messaging/${userId}`)
+                            }} id="userIconContainer" style={{}}><img alt={"User"} src={this.props.getAppState().user.contacts[userId]} className="projectPicture" /></div>
+                        }
                     })}
 
                 </div>

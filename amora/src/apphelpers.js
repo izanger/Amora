@@ -15,6 +15,9 @@ export function buildUserFromGoogle(user) {
         uid: user.uid,
         contacts: {
             [user.uid]: true
+        },
+        messages: {
+            [user.uid]: true
         }
     }
     return newUser
