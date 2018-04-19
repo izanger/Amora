@@ -34,6 +34,8 @@ class UserIcon extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        //console.log(Object.keys(this.props.project.managerList))
+        //console.log((this.props.project.managerList).includes(this.props.userID))
         if (Object.keys(this.props.project.managerList).includes(this.props.userID)) {
             const newState = this.state
             newState.iconIsManager = true
@@ -247,8 +249,8 @@ class UserIcon extends Component {
     }
 
     style = () => {
-
-         if (this.state.iconIsManager) {
+        //console.log(this.state.iconIsManager)
+         if (Object.keys(this.props.project.managerList).includes(this.props.userID)) {
              return ({
                  backgroundColor: this.color,
                  borderColor: this.props.color,
@@ -322,6 +324,7 @@ class UserIcon extends Component {
                     }
                 }} id="userIconContainer" style={this.style()}>
                     <img alt={"Project"} src={this.props.user} className="projectPicture" />
+                    
                     {/*This should only appear if it is selected as the project*/}
 
 
