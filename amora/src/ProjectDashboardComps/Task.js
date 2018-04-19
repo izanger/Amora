@@ -15,38 +15,13 @@ import { validateDate } from "../apphelpers.js"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { App } from "../App.js"
 import lockIcon from "../images/Icons/Lock.svg"
+import Flag from "../images/Icons/Priority Flag.svg"
 
 
 class Task extends Component {
 
     constructor() {
         super();
-
-        this.state = {
-            open: false,
-            visible: 'hidden',
-            description: 'I am a very descriptive description!',
-            taskID: "",
-            archived: false,
-            color: '#3CB4CB',
-            editedDate: false,
-            addUserOpen: false,
-            commentValue: "",
-            addedComment: false,
-            commentsSynced: false,
-            edited: "",
-            taskComments: {
-
-            },
-            isManager: false,
-            tempTitle: "",
-            tempDescription: "",
-            tempPriority: "",
-            tempDate: "",
-            tempHours: "",
-            changeErrorMessage: ""
-        }
-      super();
 
       this.state = {
            open: false,
@@ -355,6 +330,25 @@ checkIsVisible = () => {
         })
     }
 }
+
+checkPriorityFlags1 = () => {
+    console.log("SAHDASHDAHSDHASDHA")
+    console.log(this.state.tempPriority)
+    if (this.state.tempPriority === "High"){
+        return "inline-block"
+    } else {
+        return "none"
+    }
+}
+checkPriorityFlags2 = () => {
+    if (this.state.tempPriority === "High" || this.state.tempPriority === "Medium"){
+        return "inline-block"
+    } else {
+        return "none"
+    }
+
+}
+
 
 checkRectIsArchived = () => {
     if (this.props.archived){
@@ -983,6 +977,24 @@ lockTaskIfManager = () => {
 }
 
 
+returnFlag = () => {
+    return (
+        <svg width="8px" height="12px" viewBox="0 0 8 12" version="1.1">
+    <title>Priority Flag</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <g id="Tasks/Normal-Priority" transform="translate(-620.000000, -3.000000)" stroke="#979797">
+            <g id="Priority-Flag" transform="translate(620.000000, 4.000000)">
+                <path d="M0.5,0.0769230769 L0.5,9.92307692" id="Line-4"></path>
+                <path d="M2,1 L2,5 L7.94471972,5 L6.41375415,3.79405297 L6.41375415,3.79405297 C5.97990212,3.45230618 5.90523607,2.82355912 6.24698285,2.38970709 C6.29796201,2.32498838 6.35674352,2.26681752 6.42199105,2.21651697 L8,1 L2,1 Z" id="Path-2" fill="#979797" stroke-linejoin="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>
+    )
+}
+
 
 assignTask = (key) => {
     const dashboardState = { ...this.props.getProjectDashboardState() }
@@ -1091,8 +1103,13 @@ render = () => {
                             </div>
 
                             <div id="taskContentInfo" style={{right: '12px'}}>
-                                {/*<b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b>*/}
+                                <b><img style={{display: this.checkPriorityFlags1()}} src={Flag}/></b>
+                                <b><img style={{display: this.checkPriorityFlags2()}} src={Flag}/></b>
+
+                                <ContentEditable disabled={true} html={"   "}></ContentEditable>
+                                <b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b>
                                 {/*<ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.state.tempHours)}/> {" hrs"}*/}
+                                
                                 <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} className="text_small_light" html={this.getDaysLeft()}/>
                                 </ div>
                             </div>
