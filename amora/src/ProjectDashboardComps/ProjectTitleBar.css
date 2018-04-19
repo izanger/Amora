@@ -60,11 +60,11 @@
 }
 
 .settingsPopupModal {
-     position: absolute !important;
-    top: 60px !important;
+    position: absolute !important;
+    top: 41px !important;
     right: 350px !important;
     border-radius: 5px;
-    border: 1px solid grey;
+    border: 0px solid grey;
 }
 
 .assignUserOverlay {
@@ -76,4 +76,25 @@
     width: 500px;
     border-radius: 5px;
     border: 1px solid grey;
+}
+
+.secSettingsPopupOverlay {
+    background-color: transparent !important;
+    /* background: rgba(186, 191, 190, 0.6) !important; */
+}
+
+.secSettingsPopupModal {
+    position: absolute !important;
+    top: 41px !important;
+    right: 575px !important;
+    border-radius: 5px;
+    border: 0px solid grey;
+}
+
+#clearAnnouncementsText {
+    margin-top: 5px;
+}
+
+#clearAnnouncementsText:hover {
+    cursor: pointer;
 }

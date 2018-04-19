@@ -22,3 +22,20 @@
     color: #979797;
     font-weight: lighter;
 }
+
+#profileStat {
+    margin-top: -10px;
+}
+
+.settingsCategory {
+    margin-top: 0px;
+    width: 100%;
+    border-radius: 5px;
+    height: 30px;
+    padding: 5px;
+}
+
+.settingsCategory:hover {
+    background-color: whitesmoke;
+    cursor: pointer;
+}

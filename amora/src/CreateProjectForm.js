@@ -77,7 +77,7 @@ class CreateProjectForm extends Component {
                 return false
             } else {
                 return true
-            }   
+            }
         } else {
             return false
         }
@@ -281,7 +281,7 @@ class CreateProjectForm extends Component {
         return (
             <div id="taskDashboard">
                 <div id="projectTitleContainer" style={{backgroundColor: color}}>
-                    <img src={leftArrow} style={{height: '30px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
+                    <img src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
                         this.props.goToUrl("dashboard")
                     }} />
                 <p style={{left: '35px'}} id="projectTitle" class="text_header">Create New Project</p>

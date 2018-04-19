@@ -18,7 +18,7 @@ class UserIcon extends Component {
     constructor() {
       super();
 
-      
+
       this.state = {
            open: false,
            iconIsManager: false, //Check apphelpers.js for some functions for checking if a user is a manager - might be helpful here.
@@ -26,7 +26,7 @@ class UserIcon extends Component {
            viewSynced: false,
            projects: [],
            profileDescription: "",
-           
+
         };
        this.color = "#3498DB";
        this.displayStart = 0;
@@ -36,12 +36,12 @@ class UserIcon extends Component {
     componentWillReceiveProps(nextProps) {
         if (Object.keys(this.props.project.managerList).includes(this.props.userID)) {
             const newState = this.state
-            newState.iconIsManager = true 
+            newState.iconIsManager = true
             this.setState(newState)
         }
         if (Object.keys(this.props.project.managerList).includes(this.props.getAppState().user.uid)) {
             const newState = this.state
-            newState.viewingAsManager = true 
+            newState.viewingAsManager = true
             this.setState(newState)
         }
     }
@@ -61,7 +61,7 @@ class UserIcon extends Component {
         // promise.then((data) => {
         //     if (data.val()) {
         //         const newState = this.state
-        //         newState.iconIsManager = true 
+        //         newState.iconIsManager = true
         //         this.setState(newState)
         //     }
         // })
@@ -69,18 +69,18 @@ class UserIcon extends Component {
         // promise2ElectricBoogaloo.then((data) => {
         //     if (data.val()) {
         //         const newState = this.state
-        //         newState.viewingAsManager = true 
+        //         newState.viewingAsManager = true
         //         this.setState(newState)
         //     }
         // })
         if (Object.keys(this.props.project.managerList).includes(this.props.userID)) {
             const newState = this.state
-            newState.iconIsManager = true 
+            newState.iconIsManager = true
             this.setState(newState)
         }
         if (Object.keys(this.props.project.managerList).includes(this.props.getAppState().user.uid)) {
             const newState = this.state
-            newState.viewingAsManager = true 
+            newState.viewingAsManager = true
             this.setState(newState)
         }
      }
@@ -94,46 +94,46 @@ class UserIcon extends Component {
     };
 
     getInfo() {
-        const id = this.props.userID  
+        const id = this.props.userID
         rebase.fetch(`users/${id}/displayName`, {
             context: this,
         }).then(data => {
             let newState = { ...this.state}
             newState.displayName = data
-            this.setState(newState);        
+            this.setState(newState);
         })
 
     }
     getEmail() {
-        const id = this.props.userID  
+        const id = this.props.userID
         rebase.fetch(`users/${id}/email`, {
             context: this,
         }).then(data => {
             let newState = { ...this.state}
             newState.email = data
-            this.setState(newState);        
+            this.setState(newState);
           })
     }
 
     getDateJoinedAmora() {
-        const id = this.props.userID  
+        const id = this.props.userID
         rebase.fetch(`users/${id}/dateJoined`, {
             context: this,
         }).then(data => {
             let newState = { ...this.state}
             newState.dateJoined = data
-            this.setState(newState);        
+            this.setState(newState);
           })
     }
 
     getTasksCompleted() {
-        const id = this.props.userID  
+        const id = this.props.userID
         let newState = { ...this.state}
         rebase.fetch(`users/${id}/taskCompleted`, {
             context: this,
         }).then(data => {
             newState.taskCompleted = data
-            this.setState(newState);        
+            this.setState(newState);
           }).then(() => {
             this.bindingref = rebase.syncState(`users/${id}/taskCompleted`, {
                 context: this,
@@ -147,13 +147,13 @@ class UserIcon extends Component {
     }
 
     getAllTimeHours() {
-        const id = this.props.userID  
+        const id = this.props.userID
         let newState = { ...this.state}
         rebase.fetch(`users/${id}/allTimeHours`, {
             context: this,
         }).then(data => {
             newState.allTimeHours = data
-            this.setState(newState);        
+            this.setState(newState);
           }).then(() => {
             this.bindingref = rebase.syncState(`users/${id}/allTimeHours`, {
                 context: this,
@@ -164,16 +164,16 @@ class UserIcon extends Component {
                 }
             })
         })
-    }  
-    
+    }
+
     getOnTimeTasks() {
-        const id = this.props.userID  
+        const id = this.props.userID
         let newState = { ...this.state}
         rebase.fetch(`users/${id}/onTimeTasks`, {
             context: this,
         }).then(data => {
             newState.onTimeTasks = data
-            this.setState(newState);        
+            this.setState(newState);
           }).then(() => {
             this.bindingref = rebase.syncState(`users/${id}/onTimeTasks`, {
                 context: this,
@@ -187,13 +187,13 @@ class UserIcon extends Component {
     }
 
     getStartWorkingHours() {
-        const id = this.props.userID  
+        const id = this.props.userID
         let newState = { ...this.state}
         rebase.fetch(`users/${id}/workingHours/start`, {
             context: this,
         }).then(data => {
             newState.start = data;
-            this.setState(newState);        
+            this.setState(newState);
           }).then(() => {
             this.bindingref = rebase.syncState(`users/${id}/workingHours/start`, {
                 context: this,
@@ -207,13 +207,13 @@ class UserIcon extends Component {
     }
 
     getEndWorkingHours() {
-        const id = this.props.userID  
+        const id = this.props.userID
         let newState = { ...this.state}
         rebase.fetch(`users/${id}/workingHours/end`, {
             context: this,
         }).then(data => {
             newState.end = data;
-            this.setState(newState);        
+            this.setState(newState);
           }).then(() => {
             this.bindingref = rebase.syncState(`users/${id}/workingHours/end`, {
                 context: this,
@@ -227,13 +227,13 @@ class UserIcon extends Component {
     }
 
     getProfileDesc = () => {
-        const id = this.props.userID  
+        const id = this.props.userID
         let newState = { ...this.state }
         rebase.fetch(`users/${id}/profileDescription`, {
             context: this,
         }).then(data => {
             newState.profileDescription = data
-            this.setState(newState);        
+            this.setState(newState);
         })
     }
 
@@ -272,7 +272,7 @@ class UserIcon extends Component {
         //console.log(this.props)
 
         //Render "remove" button if the user is a manager and isn't viewing themselves
-        if(this.state.viewingAsManager && (this.props.userID !== this.props.getAppState().user.uid)){ 
+        if(this.state.viewingAsManager && (this.props.userID !== this.props.getAppState().user.uid)){
             return (
                 <div onClick={() => {
                     if (!hasOnClick) {
@@ -292,7 +292,9 @@ class UserIcon extends Component {
                             On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%<br/>
                             Working Hours: {this.state.startWorkingHours + " - " + this.state.endWorkingHours}</h2>
                           <button onClick={this.removeUser}>Remove User from Project</button><br></br>
+                          <p className="text_header">{this.state.displayName}</p>
                           <TodayViewUser uid={this.props.userID} getAppState={this.props.getAppState}/>
+
                         </Modal>
                 </div>
             )
@@ -322,21 +324,24 @@ class UserIcon extends Component {
                     <img alt={"Project"} src={this.props.user} className="projectPicture"/>
                     {/*This should only appear if it is selected as the project*/}
 
-                    
+
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
-                          <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
-                          Description: {this.props.getAppState().user.profileDescription}<br/>
-                            Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
-                            All Time Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours Completed: {this.state.allTimeHours}<br/>
-                            On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%<br/>
-                            Working Hours: {this.displayStart + " - " + this.displayEnd}</h2><br></br>
+
+                            <p className="text_header">{this.state.displayName}</p>
+                            <p className="text_description" id="profileStat">Description: {this.props.getAppState().user.profileDescription}</p>
+
+                            <p className="text_description" id="profileStat">Member Since: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}</p>
+                            <p className="text_description" id="profileStat">Total Tasks Completed: {this.state.taskCompleted}</p>
+                            <p className="text_description" id="profileStat">Total Hours Completed: {this.state.allTimeHours}</p>
+                            <p className="text_description" id="profileStat">On-Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%</p>
+                            <p className="text_description" id="profileStat">Working Hours: {this.displayStart + " - " + this.displayEnd}</p>
                           <TodayViewUser uid={this.props.userID} getAppState={this.props.getAppState}/>
                         </Modal>
                 </div>
             )
         }
-        
+
     }
 
 }
