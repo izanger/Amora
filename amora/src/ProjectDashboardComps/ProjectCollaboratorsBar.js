@@ -16,7 +16,7 @@ class ProjectCollaboratorsBar extends Component {
         super()
         this.state = {
 
-        }       
+        }
     }
 
 
@@ -47,9 +47,11 @@ class ProjectCollaboratorsBar extends Component {
                         key={key} user={this.props.users[key]} userID={key} projectID={this.props.projectID} project={this.props.project}/>)
                     })}
                 </div>
-                {annKeys && annKeys.map((key) => {
-                        return (<Announcements key={key} data={this.props.project.announcements[key]}/>)
-                    })}
+                <div id="announcementContainter">
+                    {annKeys && annKeys.map((key) => {
+                            return (<Announcements key={key} data={this.props.project.announcements[key]}/>)
+                        })}
+                </div>
             </div>
         )
     }
