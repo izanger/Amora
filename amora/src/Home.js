@@ -466,13 +466,13 @@ class Home extends Component {
                      sum = sum + taskArray[i].EstimatedTimeValue;
                  }
 
-            rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours/hours`, { 
+            rebase.fetch(`users/${this.props.getAppState().user.uid}/workingHours/hours`, {
                 context: this,
             }).then(data => {
                 if (Number.isInteger(sum)) {
                     newState.todayViewHours = data-sum;
                     this.setState(newState);
-                }  
+                }
             }).then(() => {
                 this.bindingref = rebase.syncState(`users/${this.props.getAppState().user.uid}/workingHours/hours`, {
                     context: this,
@@ -542,19 +542,25 @@ class Home extends Component {
             notificationText = "notifications_none"
         }
 
+        let todayViewHoursHTML = <h4 id="remainingHours1"><b>{0}</b></h4>
+        if (this.props.getAppState().user.workingHours !== undefined) {
+            todayViewHoursHTML = <h4 id="remainingHours1"><b>{this.props.getAppState().user.workingHours.hours}</b></h4>
+        }
         if (this.state.width < 500){
             return (
                 <DragDropContext onDragEnd={this.onDragEnd}>
                     <div id="myDay">
+                        <div style={{"position":"fixed", "top": "4px", "right": "15px"}}>
+                            <h4 id="remainingHours">Remaining Hours: </h4>
+                            {/* <h4 id="remainingHours1"><b>{this.state.todayViewHours}</b></h4> */}
+                            {todayViewHoursHTML || 0}
+                        </div>
                         <TodayView getAppState={this.props.getAppState}/>
                     </div>
                 </DragDropContext>
             )
         } else {
-            let todayViewHoursHTML = <h4 id="remainingHours1"><b>{0}</b></h4>
-            if (this.props.getAppState().user.workingHours !== undefined) {
-                todayViewHoursHTML = <h4 id="remainingHours1"><b>{this.props.getAppState().user.workingHours.hours}</b></h4>
-            }
+
 
             return (
                 <DragDropContext onDragEnd={this.onDragEnd}>

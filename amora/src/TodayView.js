@@ -105,7 +105,7 @@ class TodayView extends Component {
                 finalRender = (
                     <div>
                         <div id="myDayTitleContainer">
-                            <h1>My Day</h1>
+                            <p className="text_header" style={{marginTop: '14px'}}>My Day</p>
                         </div>
                         <div style={{'overflow-y': 'scroll', height: '100%'}}>
 
