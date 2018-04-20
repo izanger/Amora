@@ -583,7 +583,10 @@ console.log(this.state.projectSynced)
                         {taskRender}
 
                         <div id="addTaskButton" style={{'position': 'fixed', bottom: '0px', width: '100%', paddingBottom: '15px'}}><NewProjectButton onClick={() => {
-                            this.props.goToUrl("/createtask");
+                            let newState = { ...this.props.getAppState }
+                            newState.latestColor = this.state.project.projectColor;
+                            this.props.setAppState(newState)
+                            this.props.goToUrl("/createtask")
                         }} /></div>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ class App extends Component {
       user: { },
       userSynced: false,
       currentProject: { },
+      latestColor: "",
       notified: false,
       taskCompleted: 0,
       allTimeHours: 0,
