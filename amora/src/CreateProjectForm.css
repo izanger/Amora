@@ -2,11 +2,11 @@
     margin: 15px;
     margin-top: 5px;
     height: 30px;
-    background-color: whitesmoke;
+    background-color: #F8F8F8;
     border: 0px;
     border-bottom: 2px solid grey;
     font-size: 14pt;
-    color: #F8F8F8;
+    color: #4A4A4A;
 }
 
 .createProjectButton {
