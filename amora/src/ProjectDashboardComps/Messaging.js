@@ -178,7 +178,7 @@ class Messaging extends Component {
                         if (userId !== this.props.getAppState().user.uid) {
                             return <div onClick={() => {
                                 this.props.goToUrl(`messaging/${userId}`)
-                            }} id="userIconContainer" style={{}}><img alt={"User"} src={this.props.getAppState().user.contacts[userId]} className="projectPicture" /></div>
+                            }} id="userIconContainer" style={{marginTop: '50px'}}><img alt={"User"} src={this.props.getAppState().user.contacts[userId]} className="projectPicture" /></div>
                         }
                     })}
 

@@ -385,7 +385,7 @@ class ProjectTitleBar extends Component {
                 }
             })
         }
-       
+
         this.submitProfileChanges()
         // this.sleep(500).then(() => {
         //     this.finish()
@@ -409,10 +409,10 @@ class ProjectTitleBar extends Component {
         // const dashboardState = { ...this.props.getProjectDashboardState() }
         // dashboardState.project.projectSynced = true
         // this.props.setProjectDashboardState(dashboardState)
-        
-        
-        
-        
+
+
+
+
     }
 
      sleep (time) {
@@ -1005,7 +1005,7 @@ class ProjectTitleBar extends Component {
         else{
             return (
                 <div>
-    
+
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         <p className="text_header">Project Settings</p>
                         {/* <p className="text_description" id="clearAnnouncementsText" onClick={this.deleteProject} style={{marginLeft: '7px'}}>| <i>Delete Project</i></p> */}
@@ -1018,7 +1018,7 @@ class ProjectTitleBar extends Component {
                         <p className="text_description">Update Description:</p>
                         <input type="text" className="commentInput" style={{marginLeft:'0px', width:'65%', marginTop: '-2px'}} onChange={this.changeDescriptionValue} value={this.state.projectDescription}/>
                     </div>
-    
+
                     <div id="colorPicker" style={{marginLeft:'0px', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                         <p className="text_description">Update Color:</p>
                         <div style={{display: 'flex', flexDirection: 'row', marginTop: '-10px'}}>
@@ -1027,12 +1027,12 @@ class ProjectTitleBar extends Component {
                             })}
                         </div>
                     </div>
-    
+
                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                         <p className="text_header">Add Announcement</p>
                         <p className="text_description" id="clearAnnouncementsText" onClick={this.clearAnnouncements}><i>Clear Announcements</i></p>
                     </div>
-    
+
                     <input type="text" name="Announce" id="AnnounceField" onChange={this.sendAnnouncement} value={this.state.announcementValue} placeholder="Enter Announcement" className="commentInput" style={{width: '100%', marginTop: '0px'}}/>
                     <svg width="15px" height="18px" id="sendCommentArrow" onClick={this.postAnnouncement}>
                         <title>Combined Shape</title>
@@ -1200,7 +1200,7 @@ class ProjectTitleBar extends Component {
 
                     <img alt={"Log"} src={logIcon} title={"Open Project Log"} onClick={this.onOpenLogModal} id="projectSettingsIcon"/>
                             <Modal open={openLog} onClose={this.onCloseLogModal} little>
-                                <h2>System log for {this.props.title}</h2>
+                                <p className="text_header" style={{marginRight: '30px'}}>System log for {this.props.title}</p>
                                 {eventKeys && eventKeys.map((key) => {
                                     return (<p>{this.props.events[key].useid + this.props.events[key].event + " on " + this.props.events[key].timestamp}</p>)
                                 })}

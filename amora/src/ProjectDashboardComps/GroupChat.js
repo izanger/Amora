@@ -99,7 +99,7 @@ class GroupChat extends Component {
                 <div style={{marginRight: '14px', marginLeft: '14px'}}>
 
                     <input type="text" name="Comment" id="CommentField chatMessageField"  onChange={this.changeBody} value={this.state.bodyValue} placeholder="New Chat" className="commentInput" style={{width: '100%'}}/>
-                    <svg width="15px" height="18px" style={{position: 'absolute', marginTop: '-22px', right: '371px', cursor: 'pointer'}} onClick={this.postMessage}>
+                    <svg width="15px" height="18px" style={{position: 'absolute', marginTop: '-22px', right: '20px', cursor: 'pointer'}} onClick={this.postMessage}>
                         <title>Combined Shape</title>
                         <desc>Created with Sketch.</desc>
                         <defs></defs>

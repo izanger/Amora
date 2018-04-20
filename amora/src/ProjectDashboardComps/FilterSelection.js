@@ -42,7 +42,7 @@ class FilterSelection extends Component {
                     <p style={{marginLeft: '10px', marginRight: '10px', marginTop: '-1px', fontSize: '15pt'}}>|</p>
                 </div>
 
-                <h2>Filter Tasks By:</h2>
+                <p className="text_header">Filter Tasks By:</p>
 
                 <div>
                     <select value={this.props.getAppState().user.projects[this.props.project.key].filter} onChange={this.handleSelect} name="dropdown" id="categoryDropdown">
