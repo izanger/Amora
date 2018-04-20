@@ -38,11 +38,12 @@ class Home extends Component {
         if (!result.destination) {
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
+            console.log("dsfdsfsd")
             rebase.fetch(`users/${id}/todayView/${taskID}`, {
                 context: this,
             }).then(data => {
                 let newState = { ...this.state}
-                //newState.todayViewHours = newState.todayViewHours + data.EstimatedTimeValue
+                newState.todayViewHours = newState.todayViewHours + data.EstimatedTimeValue
                 this.setState(newState)
             })
 
@@ -218,6 +219,7 @@ class Home extends Component {
                         rebase.fetch(`users/${id}/projects`, {
                             context: this,
                         }).then(data => {
+                            console.log(data)
                             projectArray = Object.keys(data);
                             projectColors = Object.values(data);
                             var i = 0;
@@ -594,8 +596,8 @@ class Home extends Component {
 
                     <div style={{"position":"fixed", "top": "10px", "right": "15px", display: 'flex', flexDirection: 'row'}}>
                         <p className="text_description">Remaining Hours: </p>
-                        {/* <h4 id="remainingHours1"><b>{this.state.todayViewHours}</b></h4> */}
-                        {todayViewHoursHTML || 0}
+                         <h4 id="remainingHours1"><b>{this.state.todayViewHours}</b></h4>
+                        {/* {todayViewHoursHTML || 0} */}
                     </div>
                     <div style={{"position":"fixed", "bottom": "0px", "right": "0px", "display":"flex", "flex-direction": "row"}}>
                         {/* <input id="myText" style={{marginTop: '5px', backgroundColor: 'white', width: '60px'}} placeholder="0" className="createProjectInput"></input> */}
