@@ -36,7 +36,7 @@ class Task extends Component {
            addedComment: false,
            commentsSynced: false,
            edited: "",
-           locked: "", 
+           locked: "",
            taskComments: {
 
            },
@@ -857,7 +857,7 @@ askManagerForApproval = () => {
 
     rebase.fetch(`projects/${this.props.projectID}/`, {
         context: this,
-        
+
         then(data){
           console.log(data);
           const notification = {
@@ -1107,17 +1107,16 @@ render = () => {
                                 <b><img style={{display: this.checkPriorityFlags2()}} src={Flag}/></b>
 
                                 <ContentEditable disabled={true} html={"   "}></ContentEditable>
-                                <b><ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/></b>
+                                <ContentEditable disabled = {this.props.task.priorityLocked && !this.state.isManager} onChange = {this.changePriorityLevel} html={this.state.tempPriority}/>
                                 {/*<ContentEditable disabled = {this.props.task.hoursLocked && !this.state.isManager} onChange={this.changeEstimatedTimeValue} html={(this.state.tempHours)}/> {" hrs"}*/}
-                                
-                                <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} className="text_small_light" html={this.getDaysLeft()}/>
+
+                                <ContentEditable disabled={this.props.task.dateLocked && !this.state.isManager} onChange={this.changeDeadline} className="text_small_light" style={{marginLeft: '7px'}} html={this.getDaysLeft()}/>
                                 </ div>
                             </div>
                             <div style={{visibility: this.state.visible}} id="taskInfo">
 
-                                <div id="taskUsers">
-                                    {assignedTo}
-                                    {assignButton}
+                                <div id="taskUsers" style={{display: 'flex', 'flex-direction': 'row', justifyContent: 'space-between'}}>
+
                                     <Modal open={this.state.addUserOpen} onClose={() => this.setState({addUserOpen: false})} little classNames={{overlay: 'assignUserOverlay', modal: 'assignUserModal'}}>
                                         <div>
                                             {/* <h1 className="taskAssignment">Task assignment</h1>*/}
@@ -1140,10 +1139,21 @@ render = () => {
                                             </div>
                                         </Modal>
 
-                                        <div id="Task">
-                                            <i className="material-icons createProjectButton" onClick={this.testFunction}>backspace</i>
-
-                                        </div>
+                                            <div style={{display: 'flex', 'flex-direction': 'row'}}>
+                                                {assignedTo}
+                                                {assignButton}
+                                            </div>
+                                            <svg width="6px" height="16px" style={{marginRight: '0px', marginTop: '14px'}} onClick={this.testFunction} title="Delete Comment">
+                                                <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <g id="Comment" transform="translate(-663.000000, -2.000000)" stroke-width="1" stroke="#979797">
+                                                        <g id="Settings" transform="translate(666.000000, 10.000000) rotate(90.000000) translate(-666.000000, -10.000000) translate(659.500000, 8.500000)">
+                                                            <circle id="Oval-5" cx="1.5" cy="1.5" r="1.5"></circle>
+                                                            <circle id="Oval-5-Copy" cx="6.5" cy="1.5" r="1.5"></circle>
+                                                            <path d="M11.5,3 C12.3284271,3 13,2.32842712 13,1.5 C13,0.671572875 12.3284271,0 11.5,0 C10.6715729,0 10,0.671572875 10,1.5 C10,2.32842712 10.6715729,3 11.5,3 Z" id="Oval-5-Copy-2"></path>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </svg>
                                     </div>
 
                                     <p id="taskDescription" className="text_small_light"><ContentEditable disabled={this.props.task.descriptionLocked && !this.state.isManager} onChange={this.changeTaskDescription}

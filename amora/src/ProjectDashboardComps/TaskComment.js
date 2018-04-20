@@ -104,7 +104,7 @@ class TaskComment extends Component {
             )
         }else {
             return (
-                <div id="taskCommentContainer">
+                <div id="taskCommentContainer" style={{marginTop: '13px'}}>
                     <div id="taskCommentContents">
                         {/*Temporarily commented out. Uncomment when actual image of person is displayed
                         <div id="taskUserIcon" > src={funnytemp} <UserIcon getAppState={this.props.getAppState} /></div>*/}
@@ -113,33 +113,25 @@ class TaskComment extends Component {
                         {/* <div id="userIconContainer" >
                             <img src={this.props.image} className="projectPicture"/>
                             <div id="projectIndicator" ></div>
-                        </div>     */}
+                        </div>           */}
+                        {/* {console.log(this.props)} */}
                         <CommentUserIcon color={this.props.getProjectDashboardState().project.projectColor}
                         getAppState={this.props.getAppState} projectID={this.props.getProjectDashboardState().project.key}
-                        key={this.props.userKey} user={this.props.project.userList[this.props.uid]} userID={this.props.userKey} project={this.props.project} />
-
-                        <svg width="4px" height="10px">
-                            <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g id="Comment" transform="translate(-664.000000, -3.000000)" stroke="#979797">
-                                    <g id="Settings" transform="translate(666.000000, 8.000000) rotate(90.000000) translate(-666.000000, -8.000000) translate(662.000000, 7.000000)">
-                                        <circle id="Oval-5" cx="1" cy="1" r="1"></circle>
-                                        <circle id="Oval-5-Copy" cx="4" cy="1" r="1"></circle>
-                                        <circle id="Oval-5-Copy-2" cx="7" cy="1" r="1"></circle>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
+                        key={this.props.userKey} user={this.props.project.userList[this.props.uid]} userID={this.props.userID} project={this.props.project} />
 
                         <div id="taskNameAndComment">
-                            <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
-                                <p id="taskCommentName">{this.props.username}</p>
-                                <p id="taskCommentText" style={{marginBottom: '0px'}}>{isEdited} {formattedDate}</p>
-
+                            <div style={{display: 'flex', 'flex-direction': 'row', 'justify-content': 'space-between'}}>
+                                <div style={{display: 'flex', 'flex-direction': 'row'}}>
+                                    <p id="taskCommentName" className="text_description">{this.props.username}</p>
+                                    <p id="taskCommentText" className="text_small_light" style={{marginBottom: '0px', marginLeft:'7px'}}>    {isEdited} {formattedDate}</p>
+                                </div>
+                                
                             </div>
 
-                            <p id="taskCommentText"><ContentEditable disabled={false} onChange={this.changeComment} html={this.props.commentValue}/></p>
+                            <div style={{display: 'flex', 'justify-content': 'space-between', 'flex-direction': 'row'}}>
+                                    <p id="taskCommentText"><ContentEditable disabled={false} onChange={this.changeComment} html={this.props.commentValue}/></p>
+                            </div>
                         </div>
-
                     </div>
 
                 </div>
