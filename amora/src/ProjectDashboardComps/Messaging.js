@@ -138,7 +138,10 @@ class Messaging extends Component {
         let chat
         if (this.state.chatOpen && this.props.match.params.id !== undefined) {
             const newState = { ...this.props.getAppState() }
-            let keys = Object.keys(newState.user.messages[this.props.match.params.id].messages)
+            let keys = []
+            if (newState.user.messages[this.props.match.params.id] !== undefined) {
+                keys = Object.keys(newState.user.messages[this.props.match.params.id].messages)
+            }
             chat = (
                 <div style={{marginRight: '14px', marginLeft: '14px'}}>
 
