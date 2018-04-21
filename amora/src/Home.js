@@ -319,13 +319,13 @@ class Home extends Component {
                                         newState.todayViewHours = newState.todayViewHours - data.EstimatedTimeValue
                                         this.setState(newState)
                                         if (data.completed){
-                                        completedStatus = data.completed
+                                            completedStatus = data.completed
                                         }
                                         else {
                                             completedStatus = false;
                                         }
                                         //taskName and time are set, so we can push it to the todayView
-
+                                        console.log(dropitHere)
                                         rebase.push(`users/${this.props.getAppState().user.uid}/todayView`, {
                                             data: {
                                                 taskIDNumber: taskID,

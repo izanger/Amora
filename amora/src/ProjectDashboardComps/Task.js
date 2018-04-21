@@ -52,6 +52,8 @@ class Task extends Component {
     }
 
     componentWillMount = () => {
+
+    
         const newState = { ...this.state }
         newState.isManager = !(this.props.getProjectDashboardState().project.managerList[this.props.getAppStateFunc().user.uid] == undefined)
         newState.tempTitle = this.props.task.taskName
@@ -1021,6 +1023,31 @@ sendAssignmentNotification = (id) => {
     })
 }
 
+lockVisible = () => {
+
+    rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
+        context: this,
+        then(data){
+          console.log(data);
+          console.log(data.locked)
+        
+            if (data.locked){
+                return 
+                    'hidden'
+                
+            } else {
+                return 
+                    'hidden'
+                
+            }
+        
+
+        }
+      });
+      return "none"
+
+}
+
 render = () => {
 
     let userKeys
@@ -1086,7 +1113,7 @@ render = () => {
                                     <title>Lock</title>
                                     <desc>Created with Sketch.</desc>
                                     <defs></defs>
-                                    <g id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g style={{visibility: this.lockVisible()}} id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                         <g id="Desktop" transform="translate(0, 0)" stroke="#979797">
                                             <g id="Lock" transform="translate(6, 13)">
                                                 <path d="M5.5,7.5 L5.5,9.5" id="Line-4" stroke-linecap="square"></path>
