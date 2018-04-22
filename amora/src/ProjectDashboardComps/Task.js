@@ -36,7 +36,6 @@ class Task extends Component {
            addedComment: false,
            commentsSynced: false,
            edited: "",
-           locked: "",
            taskComments: {
 
            },
@@ -46,10 +45,11 @@ class Task extends Component {
            tempPriority: "",
            tempDate: "",
            tempHours: "",
-           changeErrorMessage: ""
+           changeErrorMessage: "",
        }
-       console.log(this.state.locked)
+       //console.log(this.state.locked)
     }
+    locked = ""
 
     componentWillMount = () => {
 
@@ -65,17 +65,18 @@ class Task extends Component {
         let arch = this.props.archived
         rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
             context: this,
-            asArray: true,
             then(data){
               console.log(data);
               if (data.locked){
-                  newState.locked = data.locked
+                  this.locked = data.locked
               }
               else {
-                  newState.locked = false
+                  this.locked = false
               }
             }
-          });
+          }).then(() => {
+
+        //   })
 
 
         if(arch){
@@ -111,6 +112,9 @@ class Task extends Component {
                 })
             })
         }
+    })
+
+
     }
 
     componentWillUnmount = () => {
@@ -903,6 +907,7 @@ unlockTask = () => {
                     locked: false
                 }
             });
+            this.locked = false
 }
 
 lockTask = () => {
@@ -915,6 +920,8 @@ lockTask = () => {
                     locked: true
                 }
             });
+
+            this.locked = true
 }
 
 
@@ -929,18 +936,20 @@ lockTaskIfManager = () => {
         //lock/unlock the task
         var response = window.confirm("Select Ok to Complete task, Cancel to lock it")
         if (response){
+            console.log(response)
             this.toggleArchived()
-        } else {
+        } 
+        else {
 
-            if (this.state.locked){
+            if (this.locked){
                 console.log("unlocking")
                 this.unlockTask()
-                this.toggleArchived()
+                //this.toggleArchived()
             }
             else {
                 console.log("locking")
                 this.lockTask()
-                console.log(this.state.locked)
+                console.log(this.locked)
             }
         }
     }
@@ -1025,26 +1034,33 @@ sendAssignmentNotification = (id) => {
 
 lockVisible = () => {
 
-    rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
-        context: this,
-        then(data){
-          console.log(data);
-          console.log(data.locked)
+    // rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
+    //     context: this,
+    //     then(data){
+    //       console.log(data);
+    //       console.log(data.locked)
         
-            if (data.locked){
-                return 
-                    'hidden'
+    //         if (data.locked){
+    //             return 
+    //                 'hidden'
                 
-            } else {
-                return 
-                    'hidden'
+    //         } else {
+    //             return 
+    //                 'hidden'
                 
-            }
+    //         }
         
 
-        }
-      });
-      return "none"
+    //     }
+    //   });
+    //   return "none"
+
+    if (this.locked){
+        return 'visible'
+    }
+    else {
+        return 'hidden'
+    }
 
 }
 
