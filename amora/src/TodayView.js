@@ -68,9 +68,9 @@ class TodayView extends Component {
 
     testfunction = (completed, name) => {
         if (completed){
-            return '<strike>'+ name +'</strike>'
+            return "line-through"
         }else {
-            return name
+            return "none"
         }
 
     }
@@ -127,7 +127,10 @@ class TodayView extends Component {
                                                                 provided.draggableProps.style, tasks[index].EstimatedTimeValue, tasks[index].color
                                                             )}
                                                             >
-                                                            {this.testfunction(tasks[index].completed, tasks[index].taskName)}
+                                                            <text style={{"textDecorationLine": this.testfunction(tasks[index].completed)}}>
+                                                                {tasks[index].taskName}
+                                                                {/* {this.testfunction(tasks[index].completed, tasks[index].taskName)} */}
+                                                            </text>
                                                         </div>
                                                         {provided.placeholder}
                                                     </div>

@@ -595,8 +595,8 @@ class Home extends Component {
                         }}>{notificationText}</i>
 
                     <div style={{"position":"fixed", "top": "10px", "right": "15px", display: 'flex', flexDirection: 'row'}}>
-                        <p className="text_description">Remaining Hours: </p>
-                         <h4 id="remainingHours1"><b>{this.state.todayViewHours}</b></h4>
+                        {/* <p className="text_description">Remaining Hours: </p>
+                         <h4 id="remainingHours1"><b>{this.state.todayViewHours}</b></h4> */}
                         {/* {todayViewHoursHTML || 0} */}
                     </div>
                     <div style={{"position":"fixed", "bottom": "0px", "right": "0px", "display":"flex", "flex-direction": "row"}}>
