@@ -646,6 +646,43 @@ changeTaskName = (event) => {
     }
     myNewState.tempTitle = thing
     this.setState(myNewState)
+
+
+    //update today view names
+    const ID = this.props.getAppState.user.uid
+    rebase.fetch(`users/${ID}/todayView/`, {
+        context: this,
+        asArray: true,
+        then(data){
+            console.log(data);
+            var tasks = (Object.values(data))
+            var taskArray = (Object.keys(data))
+            console.log(tasks)
+            for (var i = 0; i < tasks.length;i++ ){
+                let tid = tasks[i].key;
+                console.log(tasks)
+                console.log(tid)
+
+                rebase.fetch(`users/${ID}/todayView/${tid}`, {
+                    context: this,
+                }).then(data1 => {
+                    console.log(data1)
+                    console.log(this.props.taskKey)
+                    console.log(data1.taskIDNumber)
+                    if (data1.taskIDNumber === this.props.taskKey){
+                        console.log(tid)
+                        //update the estimated time field
+                        //console.log(hours)
+                        rebase.update(`users/${ID}/todayView/${tid}/`, {
+                            data: {taskName: thing}
+                        });
+                    }
+                })
+            }
+        }
+    });
+
+
 }
 
 changeDeadline = (event) => {
