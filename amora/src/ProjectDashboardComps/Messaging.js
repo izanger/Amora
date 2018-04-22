@@ -145,18 +145,21 @@ class Messaging extends Component {
             chat = (
                 <div style={{marginRight: '14px', marginLeft: '14px'}}>
 
-                    <input type="text" name="Comment" id="CommentField chatMessageField"  onChange={this.changeBody} value={this.state.bodyValue} placeholder="New Chat" className="commentInput" style={{width: '100%'}}/>
-                    <svg width="15px" height="18px" style={{position: 'absolute', marginTop: '-22px', right: '371px', cursor: 'pointer'}} onClick={this.postMessage}>
-                        <title>Combined Shape</title>
-                        <desc>Created with Sketch.</desc>
-                        <defs></defs>
-                            <g id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g id="Desktop" transform="translate(-772.000000, -493.000000)" fill="#B8B8B8">
-                                    <path d="M783.7,509.5 L788.5,509.5 L779.5,494.5 L770.5,509.5 L775.3,509.5 L779.5,502.5 L783.7,509.5 Z" id="Combined-Shape" transform="translate(779.500000, 502.000000) rotate(90.000000) translate(-779.500000, -502.000000) "></path>
+                    <div style={{position: 'absolute', bottom: '14px', width: '97%'}}>
+                        <input type="text" name="Comment" id="CommentField chatMessageField"  onChange={this.changeBody} value={this.state.bodyValue} placeholder="New Chat" className="commentInput" style={{width: '100%'}}/>
+                        <svg width="15px" height="18px" style={{position: 'absolute', marginTop: '-22px', right: '14px', cursor: 'pointer'}} onClick={this.postMessage}>
+                            <title>Combined Shape</title>
+                            <desc>Created with Sketch.</desc>
+                            <defs></defs>
+                                <g id="Reiterate-on-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="Desktop" transform="translate(-772.000000, -493.000000)" fill="#B8B8B8">
+                                        <path d="M783.7,509.5 L788.5,509.5 L779.5,494.5 L770.5,509.5 L775.3,509.5 L779.5,502.5 L783.7,509.5 Z" id="Combined-Shape" transform="translate(779.500000, 502.000000) rotate(90.000000) translate(-779.500000, -502.000000) "></path>
+                                    </g>
                                 </g>
-                            </g>
-                    </svg>
-                    <div style={{overflowY: 'scroll'}}>
+                        </svg>
+                    </div>
+
+                    <div style={{overflowY: 'scroll', marginTop: '7px'}}>
                         {keys.map((key) => {
                             return <MessagingMessage body={newState.user.messages[this.props.match.params.id].messages[key].body}
                             getAppState={this.props.getAppState}
@@ -177,15 +180,19 @@ class Messaging extends Component {
                         this.props.goToUrl("/dashboard")
                     }} />
                     <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Messaging</h1>
+
+
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', marginTop: '-35px'}}>
                     {contactKeys.map((userId) => {
                         if (userId !== this.props.getAppState().user.uid) {
                             return <div onClick={() => {
-                                this.props.goToUrl(`messaging/${userId}`)
+                                this.props.goToUrl(`/messaging/${userId}`)
                             }} id="userIconContainer" style={{marginTop: '50px'}}><img alt={"User"} src={this.props.getAppState().user.contacts[userId]} className="projectPicture" /></div>
                         }
                     })}
-
                 </div>
+
                 {chat}
             </div>
         )
