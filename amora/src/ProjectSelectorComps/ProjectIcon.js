@@ -20,7 +20,8 @@ class ProjectIcon extends Component {
     4) If it's selected, have the box show on the side
     */
     render = () => {
-        let color = "#3CB4CB";
+        let color = this.props.projectColor;
+        console.log(this.props)
         if(this.props.projectID === this.props.personalProjectID){
             if (this.props.personalIcon == true){
                 return (
@@ -37,7 +38,8 @@ class ProjectIcon extends Component {
         } else {
             return (
                 <div id="iconContainer" style={{backgroundColor: color}}>
-                    <img alt={"Project"} src={this.props.projectPhotoURL} className="projectPicture"/>
+                    {/* <img alt={"Project"} style={{'background-color': '#f1f1f1'}} src={this.props.projectPhotoURL} className="projectPicture"/> */}
+                    <div class="foo" style={{backgroundColor: color}}></div>
                     {/*This should only appear if it is selected as the project*/}
                     <div id="projectIndicator" style={{backgroundColor: color}}></div>
                 </div>

@@ -532,7 +532,7 @@ class Home extends Component {
                             this.props.setAppState(newState)
                             this.props.goToUrl(`/projects/${projectKey}`)
                         //}
-                    }}><ProjectIcon projectID={projectsList[projectKey].key} personalProjectID={this.props.getAppState().user.personalProjectID} projectPhotoURL={projectsList[projectKey].projectPhotoURL}/></div>
+                    }}><ProjectIcon projectColor={projectsList[projectKey].projectColor} projectID={projectsList[projectKey].key} personalProjectID={this.props.getAppState().user.personalProjectID} projectPhotoURL={projectsList[projectKey].projectPhotoURL}/></div>
                 })
             )
         }

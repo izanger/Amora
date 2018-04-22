@@ -29,7 +29,7 @@
     cursor: pointer;
 }
 
-@@keyframes projectIndicatorEnter {
+@keyframes projectIndicatorEnter {
     from    {height: 0px}
     to      {height: 50px}
 }
@@ -50,3 +50,9 @@
     margin-right: 15px;
     height: auto;
 }
+
+.foo {
+    float: left;
+    margin: 5px;
+  }
+  
