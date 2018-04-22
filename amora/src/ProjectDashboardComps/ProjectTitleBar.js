@@ -731,6 +731,102 @@ class ProjectTitleBar extends Component {
                 profileDescription: this.state.profileDesc
             }
         })
+
+        //update the color of each project
+        console.log(this.props.getAppState().user.uid)
+        console.log(this.props.project.key)
+    const ID = this.props.getAppState().user.uid
+    rebase.fetch(`users/${ID}/todayView/`, {
+        context: this,
+        asArray: true,
+        then(data){
+            console.log(data);
+            var tasks = (Object.values(data))
+            var taskArray = (Object.keys(data))
+            console.log(taskArray)
+            for (var i = 0; i < tasks.length;i++ ){
+                let tid = tasks[i].taskIDNumber;
+                let remember = tasks[i].key
+                //console.log(tasks)
+                //console.log(tid)
+                //console.log(this.props.project.key)
+                rebase.fetch(`projects/${this.props.project.key}/taskList`, {
+                    context: this,
+                    asArray: true,
+                }).then(data1 => {
+                    console.log(data1)
+                    //console.log(tid)
+                    for (var i = 0; i < data1.length; i++){
+                        console.log(data1[i])
+                        console.log(data1[i].key)
+                        console.log(tid)
+                        if (data1[i].key === tid){
+                            
+                            rebase.update(`users/${ID}/todayView/${remember}/`, {
+                                data: {color: this.props.projectColor}
+                            });
+                        }
+                    }
+                    // if (data1.taskIDNumber === this.props.taskKey){
+                    //     console.log(tid)
+                    //     //update the estimated time field
+                    
+                    //     rebase.update(`users/${ID}/todayView/${tid}/`, {
+                    //         data: {color: this.props.projectColor}
+                    //     });
+                    // }
+                })
+            }
+        }
+    });
+
+
+
+    rebase.fetch(`users/${ID}/todayView/`, {
+        context: this,
+        asArray: true,
+        then(data){
+            console.log(data);
+            var tasks = (Object.values(data))
+            var taskArray = (Object.keys(data))
+            console.log(taskArray)
+            for (var i = 0; i < tasks.length;i++ ){
+                let tid = tasks[i].taskIDNumber;
+                let remember = tasks[i].key
+                //console.log(tasks)
+                //console.log(tid)
+                //console.log(this.props.project.key)
+                rebase.fetch(`projects/${this.props.project.key}/archivedTaskList`, {
+                    context: this,
+                    asArray: true,
+                }).then(data1 => {
+                    console.log(data1)
+                    //console.log(tid)
+                    for (var i = 0; i < data1.length; i++){
+                        console.log(data1[i])
+                        console.log(data1[i].key)
+                        console.log(tid)
+                        if (data1[i].key === tid){
+                            
+                            rebase.update(`users/${ID}/todayView/${remember}/`, {
+                                data: {color: this.props.projectColor}
+                            });
+                        }
+                    }
+                    // if (data1.taskIDNumber === this.props.taskKey){
+                    //     console.log(tid)
+                    //     //update the estimated time field
+                    
+                    //     rebase.update(`users/${ID}/todayView/${tid}/`, {
+                    //         data: {color: this.props.projectColor}
+                    //     });
+                    // }
+                })
+            }
+        }
+    });
+
+
     }
 
     changeProfileDesc = (event) => {
