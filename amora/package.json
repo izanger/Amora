@@ -4,7 +4,6 @@
   "private": true,
   "homepage": "https://izanger.github.io/CS307-Project/",
   "dependencies": {
-    "gh-pages": "^1.1.0",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
     "re-base": "^3.2.2",
@@ -32,6 +31,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "gh-pages": "^1.1.0",
     "rebase": "^0.3.0"
   }
 }
