@@ -19,7 +19,8 @@ class Notification extends Component {
             key: key,
             isPersonalDashboardProject: "false",
             taskAlertTime: this.props.notification.taskAlertTime,
-            filter: "Suggested"
+            filter: "Suggested",
+            projectColor: this.props.notification.projectColor
         }
         rebase.post(`users/${this.props.getAppState().user.uid}/projects/${this.props.notificationKey}`, {
             data: userProject
