@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="35px" viewBox="0 0 35 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Archive</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Archive">
+            <path d="M2,35 L33,35 L33,35 C34.1045695,35 35,34.1045695 35,33 L35,20 L25.0813469,20 L25.0813469,20 C23.9767774,20 23.0813469,20.8954305 23.0813469,22 L23.0813469,24.0843319 L23.0813469,24.0843319 C23.0813469,25.1889014 22.1859164,26.0843319 21.0813469,26.0843319 L12.039103,26.0843319 L12.039103,26.0843319 C10.9345335,26.0843319 10.039103,25.1889014 10.039103,24.0843319 L10.039103,22 L10.039103,22 C10.039103,20.8954305 9.14367248,20 8.03910298,20 L0,20 L0,33 L0,33 C1.3527075e-16,34.1045695 0.8954305,35 2,35 Z" id="Path-6" fill="#FFFFFF"></path>
+            <rect id="Rectangle-5-Copy" stroke="#FFFFFF" x="3.5" y="0.5" width="28" height="28" rx="3"></rect>
+        </g>
+    </g>
+</svg>
