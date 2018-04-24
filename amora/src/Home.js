@@ -552,11 +552,7 @@ class Home extends Component {
             return (
                 <DragDropContext onDragEnd={this.onDragEnd}>
                     <div id="myDay">
-                        <div style={{"position":"fixed", "top": "10px", "right": "15px", display: 'flex', flexDirection: 'row'}}>
-                            <p className="text_description">Remaining Hours: </p>
-                            {/* <h4 id="remainingHours1"><b>{this.state.todayViewHours}</b></h4> */}
-                            {todayViewHoursHTML || 0}
-                        </div>
+                        
                         <TodayView getAppState={this.props.getAppState}/>
                     </div>
                 </DragDropContext>
