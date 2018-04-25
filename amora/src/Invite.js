@@ -38,11 +38,13 @@ class Notification extends Component {
     render = () => {
         return (
             <div className="inviteContainer">
-                <p className="inviteText">This one is an invite</p>
-                <p className="inviteText">You've been invited to join: {this.props.notification.projectName}</p>
+                <p className="text_header">You've been invited to join: {this.props.notification.projectName}</p>
                 <p>Description: {this.props.notification.projectDescription}</p>
-                <button className="inviteButton" onClick={this.acceptInvite}>Accept</button>
-                <button className="inviteButton" onClick={this.declineInvite}>Decline</button>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                    <button className="addCommentButton" style={{width: '100px', marginRight: '7px'}} onClick={this.acceptInvite}>Accept</button>
+                    <button className="addCommentButton" style={{width: '100px'}} onClick={this.declineInvite}>Decline</button>
+                </div>
+
             </div>
         )
     }

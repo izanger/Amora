@@ -761,7 +761,7 @@ class ProjectTitleBar extends Component {
                         console.log(data1[i].key)
                         console.log(tid)
                         if (data1[i].key === tid){
-                            
+
                             rebase.update(`users/${ID}/todayView/${remember}/`, {
                                 data: {color: this.props.projectColor}
                             });
@@ -770,7 +770,7 @@ class ProjectTitleBar extends Component {
                     // if (data1.taskIDNumber === this.props.taskKey){
                     //     console.log(tid)
                     //     //update the estimated time field
-                    
+
                     //     rebase.update(`users/${ID}/todayView/${tid}/`, {
                     //         data: {color: this.props.projectColor}
                     //     });
@@ -807,7 +807,7 @@ class ProjectTitleBar extends Component {
                         console.log(data1[i].key)
                         console.log(tid)
                         if (data1[i].key === tid){
-                            
+
                             rebase.update(`users/${ID}/todayView/${remember}/`, {
                                 data: {color: this.props.projectColor}
                             });
@@ -816,7 +816,7 @@ class ProjectTitleBar extends Component {
                     // if (data1.taskIDNumber === this.props.taskKey){
                     //     console.log(tid)
                     //     //update the estimated time field
-                    
+
                     //     rebase.update(`users/${ID}/todayView/${tid}/`, {
                     //         data: {color: this.props.projectColor}
                     //     });
@@ -1046,7 +1046,7 @@ class ProjectTitleBar extends Component {
                 </div>
 
                 <div>
-                    <button className="submitFinalButton" style={{marginLeft:'0px'}} onClick={this.submitChanges}>Submit</button>
+                    <button className="addCommentButton" style={{marginLeft:'0px', marginBottom: '0px', width: '100px'}} onClick={this.submitChanges}>Submit</button>
                 </div>
             </div>
         )

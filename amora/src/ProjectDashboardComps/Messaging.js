@@ -147,7 +147,7 @@ class Messaging extends Component {
 
                     <div style={{position: 'absolute', bottom: '14px', width: '97%'}}>
                         <input type="text" name="Comment" id="CommentField chatMessageField"  onChange={this.changeBody} value={this.state.bodyValue} placeholder="New Chat" className="commentInput" style={{width: '100%'}}/>
-                        <svg width="15px" height="18px" style={{position: 'absolute', marginTop: '-22px', right: '14px', cursor: 'pointer'}} onClick={this.postMessage}>
+                        <svg width="15px" height="18px" style={{position: 'absolute', marginTop: '-22px', right: '7px', cursor: 'pointer'}} onClick={this.postMessage}>
                             <title>Combined Shape</title>
                             <desc>Created with Sketch.</desc>
                             <defs></defs>

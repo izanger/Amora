@@ -287,14 +287,14 @@ class UserIcon extends Component {
                     {/*This should only appear if it is selected as the project*/}
                     <div id="projectIndicator" style={{backgroundColor: this.color}}></div>
                         <Modal open={open} onClose={this.onCloseModal} little>
-                          <h2>Name: {this.state.displayName}<br/>Email: {this.state.email}<br/>
-                          Description: {this.props.getAppState().user.profileDescription}<br/>
-                            Data Joined Amora: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}<br/>
-                            All Time Tasks Completed: {this.state.taskCompleted}<br/> All Time Hours Completed: {this.state.allTimeHours}<br/>
-                            On Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%<br/>
-                            Working Hours: {this.state.startWorkingHours + " - " + this.state.endWorkingHours}</h2>
-                          <button onClick={this.removeUser}>Remove User from Project</button><br></br>
-                          <p className="text_header">{this.state.displayName}</p>
+                            <p className="text_header">{this.state.displayName}</p>
+                            <p className="text_description" id="profileStat">Description: {this.props.getAppState().user.profileDescription}</p>
+
+                            <p className="text_description" id="profileStat">Member Since: {(new Date(this.state.dateJoined).getMonth() + 1) + "/" + new Date(this.state.dateJoined).getDate() + "/" + new Date(this.state.dateJoined).getFullYear()}</p>
+                            <p className="text_description" id="profileStat">Total Tasks Completed: {this.state.taskCompleted}</p>
+                            <p className="text_description" id="profileStat">Total Hours Completed: {this.state.allTimeHours}</p>
+                            <p className="text_description" id="profileStat">On-Time Percentage: {(Math.round(this.state.onTimeTasks / this.state.taskCompleted * 100)) || 0}%</p>
+                            <p className="text_description" id="profileStat">Working Hours: {this.displayStart + " - " + this.displayEnd}</p>
                           <TodayViewUser uid={this.props.userID} getAppState={this.props.getAppState}/>
 
                         </Modal>
@@ -324,7 +324,7 @@ class UserIcon extends Component {
                     }
                 }} id="userIconContainer" style={this.style()}>
                     <img alt={"Project"} src={this.props.user} className="projectPicture" />
-                    
+
                     {/*This should only appear if it is selected as the project*/}
 
 

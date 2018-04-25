@@ -197,9 +197,9 @@ class TodayViewUser extends Component {
 
           finalRender = (
               <div>
-              <div id="myDayTitleContainer">
-                  <h1>My Day</h1>
-              </div>
+                  <div id="myDayTitleContainer">
+                      <p className="text_header" style={{marginTop: '14px'}}>My Day</p>
+                  </div>
               <div style={{'overflow-y': 'scroll', height: '100%'}}>
         <Droppable droppableId="TodayView">
 
