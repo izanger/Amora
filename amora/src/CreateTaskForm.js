@@ -40,7 +40,7 @@ class CreateTaskForm extends Component {
                 const newState = { ...this.state }
                 newState.categories = Object.keys(data)
                 this.setState(newState)
-                console.log(newState)
+                //console.log(newState)
             }
         })
     }
@@ -61,7 +61,7 @@ class CreateTaskForm extends Component {
     }
 
     handleChange(date) {
-        console.log(date)
+        //console.log(date)
         this.setState({
           deadline: date
         });

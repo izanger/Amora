@@ -65,7 +65,7 @@ class TodayViewUser extends Component {
     componentDidMount = () => {
       const newState = { ...this.state }
       let userID = this.props.uid
-      console.log("HERE: " + userID)
+      //.log("HERE: " + userID)
       rebase.fetch(`users/${userID}/todayView`, {
           context: this,
           then: (data) => {
@@ -122,8 +122,8 @@ class TodayViewUser extends Component {
       if (!result.destination) {
         return;
       }
-      console.log(result);
-      console.log("hello")
+     // console.log(result);
+      //console.log("hello")
 
 
       // if (source.droppableId === destination.droppableId) {
@@ -183,11 +183,11 @@ class TodayViewUser extends Component {
     render = () => {
       let finalRender
       let taskArr = []
-      console.log("Checkpoint1")
+     // console.log("Checkpoint1")
       if (this.state.viewSynced){
-        console.log("Checkpoint2")
-        console.log(this.state.tasks.length)
-        console.log(this.state.tasks)
+      //  console.log("Checkpoint2")
+       // console.log(this.state.tasks.length)
+       // console.log(this.state.tasks)
         if (this.state.tasks){
 
           // for (var task in this.state.tasks){
@@ -221,7 +221,7 @@ class TodayViewUser extends Component {
                           >
                           {/* console.log("hi") */}
                           {/* put tasks here */}
-                          { console.log(tasks[index].estimatedTimeValue) }
+                         
                           {/* {tasks} */}
                           {this.testfunction(tasks[index].completed, tasks[index].taskName)}
 

@@ -66,7 +66,7 @@ class Task extends Component {
         rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
             context: this,
             then(data){
-              console.log(data);
+             // console.log(data);
               if (data.locked){
                   this.locked = data.locked
               }
@@ -126,7 +126,7 @@ class Task extends Component {
     switch = () => {
         if (this.state.open){
             // Do stuff with values
-            console.log(this.state)
+           // console.log(this.state)
             const titleValid = this.state.tempTitle !== " "
             const descValid = this.state.tempDate !== " "
             const priorValid = this.state.tempPriority === "High" || this.state.tempPriority === "Medium" || this.state.tempPriority === "Low"
@@ -196,9 +196,9 @@ class Task extends Component {
                     context: this,
                     asArray: true,
                     then(data){
-                        console.log(data);
+                       // console.log(data);
                         data.map((tasks,i) => {
-                            console.log(tasks)
+                          //  console.log(tasks)
                             if (tasks.text.length <= 1){
                                 //     console.log(tasks)
                                 //remove comment
@@ -224,9 +224,9 @@ class Task extends Component {
                 context: this,
                 asArray: true,
                 then(data){
-                    console.log(data);
+                  //  console.log(data);
                     data.map((tasks,i) => {
-                        console.log(tasks)
+                     //   console.log(tasks)
                         if (tasks.text.length <= 1){
                             //     console.log(tasks)
                             //remove comment
@@ -270,34 +270,34 @@ testFunction = () => {
     var response = window.confirm("Are you sure you want to delete this task?")
     if (response == true){
         if (!this.props.archived){
-            console.log(this.props)
+           // console.log(this.props)
 
             rebase.fetch(`users/${this.props.userID}/todayView`, {
                 context: this,
             }).then(data => {
-                console.log(data)
+              //  console.log(data)
                 let taskArray = Object.keys(data);
-                console.log(taskArray)
+               // console.log(taskArray)
                 for (var i = 0; i < taskArray.length;i++ ){
                     let tid = taskArray[i];
 
                     rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
                         context: this,
                     }).then(data => {
-                        console.log(data)
-                        console.log(this.props.taskKey)
+                     //   console.log(data)
+                     //   console.log(this.props.taskKey)
                         if (data.taskIDNumber === this.props.taskKey){
-                            console.log(taskArray[i])
+                        //    console.log(taskArray[i])
                             rebase.remove(`users/${this.props.userID}/todayView/${tid}`, function(err){
                                 if(!err){
-                                    console.log("fiddlesticks")
+                                  //  console.log("fiddlesticks")
                                 }
                             });
                         }
 
                         rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
                             if(!err){
-                                console.log("fiddlesticks")
+                               // console.log("fiddlesticks")
 
                             }
                         });
@@ -307,7 +307,7 @@ testFunction = () => {
 
             rebase.remove(`projects/${this.props.projectID}/taskList/${this.props.taskKey}`, function(err){
                 if(!err){
-                    console.log("fiddlesticks")
+                   // console.log("fiddlesticks")
 
                 }
             });
@@ -316,7 +316,7 @@ testFunction = () => {
         } else {
             rebase.remove(`projects/${this.props.projectID}/archivedTaskList/${this.props.taskKey}`, function(err){
                 if(err){
-                    console.log("fiddlesticks")
+                    //console.log("fiddlesticks")
                 }
             });
         }
@@ -338,8 +338,8 @@ checkIsVisible = () => {
 }
 
 checkPriorityFlags1 = () => {
-    console.log("SAHDASHDAHSDHASDHA")
-    console.log(this.state.tempPriority)
+   // console.log("SAHDASHDAHSDHASDHA")
+   // console.log(this.state.tempPriority)
     if (this.state.tempPriority === "High"){
         return "inline-block"
     } else {
@@ -429,7 +429,7 @@ toggleArchived = () => {
                         //Thanks Alex
                         rebase.remove(`projects/${projID}/archivedTaskList/${taskID}`, function(err){
                             if(err){
-                                console.log("fickstiddles")
+                               // console.log("fickstiddles")
                             }
                         });
 
@@ -443,9 +443,9 @@ toggleArchived = () => {
         rebase.fetch(`users/${this.props.userID}/todayView`, {
             context: this,
         }).then(data => {
-            console.log(data)
+           // console.log(data)
             let taskArray = Object.keys(data);
-            console.log(taskArray)
+           // console.log(taskArray)
             for (var i = 0; i < taskArray.length;i++ ){
                 let tid = taskArray[i];
 
@@ -453,17 +453,17 @@ toggleArchived = () => {
                 rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
                     context: this,
                 }).then(data => {
-                    console.log(data)
-                    console.log(this.props.taskKey)
+                  //  console.log(data)
+                   // console.log(this.props.taskKey)
                     if (data.taskIDNumber === taskID){
-                        console.log(taskArray[i])
-                        console.log(taskID)
+                      //  console.log(taskArray[i])
+                      //  console.log(taskID)
 
                         rebase.update(`users/${this.props.userID}/todayView/${tid}`, {
                             data: {completed: true},
                             then(err){
                                 if(!err){
-                                    console.log("Oh No 23436")
+                                   // console.log("Oh No 23436")
                                 }
                             }
                         });
@@ -476,9 +476,9 @@ toggleArchived = () => {
         rebase.fetch(`users/${this.props.userID}/todayView`, {
             context: this,
         }).then(data => {
-            console.log(data)
+           // console.log(data)
             let taskArray = Object.keys(data);
-            console.log(taskArray)
+           // console.log(taskArray)
             for (var i = 0; i < taskArray.length;i++ ){
                 let tid = taskArray[i];
 
@@ -486,17 +486,17 @@ toggleArchived = () => {
                 rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
                     context: this,
                 }).then(data => {
-                    console.log(data)
-                    console.log(this.props.taskKey)
+                   // console.log(data)
+                   // console.log(this.props.taskKey)
                     if (data.taskIDNumber === taskID){
-                        console.log(taskArray[i])
-                        console.log(taskID)
+                      //  console.log(taskArray[i])
+                       // console.log(taskID)
 
                         rebase.update(`users/${this.props.userID}/todayView/${tid}`, {
                             data: {completed: false},
                             then(err){
                                 if(!err){
-                                    console.log("Oh No 23436")
+                                  //  console.log("Oh No 23436")
                                 }
                             }
                         });
@@ -509,7 +509,7 @@ toggleArchived = () => {
         const projID = this.props.projectID;
         const taskID = this.props.taskKey;
         var totalHours = this.props.getProjectDashboardState().project.taskList[taskID].EstimatedTimeValue
-        console.log(taskID);
+       // console.log(taskID);
         rebase.fetch(`users/${this.props.userID}`, {
             then: (data) => {
                 rebase.update(`users/${this.props.userID}`, {
@@ -567,7 +567,7 @@ toggleArchived = () => {
                         //Thanks Alex
                         rebase.remove(`projects/${projID}/taskList/${taskID}`, function(err){
                             if(err){
-                                console.log("stickfiddles")
+                                //console.log("stickfiddles")
                             }
                         });
                     }
@@ -595,9 +595,9 @@ toggleArchived = () => {
         rebase.fetch(`users/${this.props.userID}/todayView`, {
             context: this,
         }).then(data => {
-            console.log(data)
+            //console.log(data)
             let taskArray = Object.keys(data);
-            console.log(taskArray)
+            //console.log(taskArray)
             for (var i = 0; i < taskArray.length;i++ ){
                 let tid = taskArray[i];
 
@@ -605,17 +605,17 @@ toggleArchived = () => {
                 rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
                     context: this,
                 }).then(data => {
-                    console.log(data)
-                    console.log(this.props.taskKey)
+                   // console.log(data)
+                   // console.log(this.props.taskKey)
                     if (data.taskIDNumber === taskID){
-                        console.log(taskArray[i])
-                        console.log(taskID)
+                      //  console.log(taskArray[i])
+                      //  console.log(taskID)
 
                         rebase.update(`users/${this.props.userID}/todayView/${tid}`, {
                             data: {completed: true},
                             then(err){
                                 if(!err){
-                                    console.log("Oh No 23436")
+                                   // console.log("Oh No 23436")
                                 }
                             }
                         });
@@ -654,23 +654,23 @@ changeTaskName = (event) => {
         context: this,
         asArray: true,
         then(data){
-            console.log(data);
+            //console.log(data);
             var tasks = (Object.values(data))
             var taskArray = (Object.keys(data))
-            console.log(tasks)
+            //console.log(tasks)
             for (var i = 0; i < tasks.length;i++ ){
                 let tid = tasks[i].key;
-                console.log(tasks)
-                console.log(tid)
+                //console.log(tasks)
+                //console.log(tid)
 
                 rebase.fetch(`users/${ID}/todayView/${tid}`, {
                     context: this,
                 }).then(data1 => {
-                    console.log(data1)
-                    console.log(this.props.taskKey)
-                    console.log(data1.taskIDNumber)
+                    //console.log(data1)
+                    //console.log(this.props.taskKey)
+                    //console.log(data1.taskIDNumber)
                     if (data1.taskIDNumber === this.props.taskKey){
-                        console.log(tid)
+                        //console.log(tid)
                         //update the estimated time field
                         //console.log(hours)
                         rebase.update(`users/${ID}/todayView/${tid}/`, {
@@ -740,32 +740,32 @@ changeEstimatedTimeValue = (event) => {
         hours = thing
     }
 
-    console.log(this.props.taskKey)
+   // console.log(this.props.taskKey)
     //check everything in the todayView to see if sizes are correct still
     const ID = this.props.getAppState.user.uid
     rebase.fetch(`users/${ID}/todayView/`, {
         context: this,
         asArray: true,
         then(data){
-            console.log(data);
+           // console.log(data);
             var tasks = (Object.values(data))
             var taskArray = (Object.keys(data))
-            console.log(tasks)
+           // console.log(tasks)
             for (var i = 0; i < tasks.length;i++ ){
                 let tid = tasks[i].key;
-                console.log(tasks)
-                console.log(tid)
+               // console.log(tasks)
+               // console.log(tid)
 
                 rebase.fetch(`users/${ID}/todayView/${tid}`, {
                     context: this,
                 }).then(data1 => {
-                    console.log(data1)
-                    console.log(this.props.taskKey)
-                    console.log(data1.taskIDNumber)
+                   // console.log(data1)
+                   // console.log(this.props.taskKey)
+                   // console.log(data1.taskIDNumber)
                     if (data1.taskIDNumber === this.props.taskKey){
-                        console.log(tid)
+                       // console.log(tid)
                         //update the estimated time field
-                        console.log(hours)
+                       // console.log(hours)
                         rebase.update(`users/${ID}/todayView/${tid}/`, {
                             data: {EstimatedTimeValue: hours}
                         });
@@ -902,7 +902,7 @@ askManagerForApproval = () => {
         context: this,
 
         then(data){
-          console.log(data);
+         // console.log(data);
           const notification = {
             type: "approval",
             projectName: data.projectName,
@@ -920,13 +920,13 @@ askManagerForApproval = () => {
             context: this,
             //asArray: true,
             then(data){
-              console.log(data);
+             // console.log(data);
               let arr = Object.keys(data)
-              console.log(arr)
-              console.log(this.props.projectID)
+              //console.log(arr)
+              //console.log(this.props.projectID)
                 arr.map((user) => {
-                    console.log(user)
-                    console.log(notification)
+                   // console.log(user)
+                   // console.log(notification)
                     rebase.update(`users/${user}/notifications/${this.props.projectID}`, {
                         data: notification
                     })
@@ -967,26 +967,26 @@ lockTask = () => {
 lockTaskIfManager = () => {
     const projectID = this.props.projectID
     const tID = this.props.taskKey
-    console.log("HAHAHAHAA")
+   // console.log("HAHAHAHAA")
 
     if (this.state.isManager){
         //lock/unlock the task
         var response = window.confirm("Select Ok to Complete task, Cancel to lock it")
         if (response){
-            console.log(response)
+           // console.log(response)
             this.toggleArchived()
         } 
         else {
 
             if (this.locked){
-                console.log("unlocking")
+               // console.log("unlocking")
                 this.unlockTask()
                 //this.toggleArchived()
             }
             else {
-                console.log("locking")
+               // console.log("locking")
                 this.lockTask()
-                console.log(this.locked)
+               // console.log(this.locked)
             }
         }
     }
@@ -995,22 +995,22 @@ lockTaskIfManager = () => {
         rebase.fetch(`projects/${this.props.projectID}/taskList/${this.props.taskKey}/`, {
             context: this,
             then(data){
-              console.log(data);
+             // console.log(data);
               if (data.locked){
                 //task is locked, so send a notification to a manager asking to approve it
-                console.log("asking")
+               // console.log("asking")
                 this.askManagerForApproval()
             }
             else {
                 //task is not locked so proceed like usual
-                console.log("usual")
+                //console.log("usual")
                     this.toggleArchived()
             }
 
             }
           });
         //check if it is locked already by a manager
-        console.log(this.state.locked)
+       // console.log(this.state.locked)
         // if (this.state.locked){
         //     //task is locked, so send a notification to a manager asking to approve it
         //     console.log("asking")
@@ -1113,7 +1113,7 @@ render = () => {
 
     let assignedTo
     if (this.props.task.assignedTo) {
-        console.log(this.props.task.assignedTo)
+       // console.log(this.props.task.assignedTo)
         assignedTo = (
             <UserIcon color={this.props.getProjectDashboardState().project.projectColor} getAppState={this.props.getAppStateFunc}
                 user={this.props.users[this.props.task.assignedTo]} userID={this.props.task.assignedTo}

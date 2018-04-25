@@ -52,7 +52,7 @@ class ProjectDashboard extends Component {
             then: (data) => {
                 newState.project = data
                 const userKeys = Object.keys(data.userList)
-                console.log(userKeys)
+                //console.log(userKeys)
                 for (let i = 0; i < userKeys.length; i++) {
                     if (userKeys[i] !== this.props.getAppState().user.uid) {
                         const newAppState = { ...this.props.getAppState() }
@@ -85,12 +85,12 @@ class ProjectDashboard extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        console.log(nextProps)
+        //console.log(nextProps)
         const nextId = nextProps.match.params.id
-        console.log("to false")
+        //console.log("to false")
         //this.setState({projectSynced: false})
         if (nextId !== this.props.match.params.id) {
-            console.log("to false2")
+            //console.log("to false2")
             this.setState({projectSynced: false})
             if (this.bindingref) {
                 rebase.removeBinding(this.bindingref)
@@ -101,7 +101,7 @@ class ProjectDashboard extends Component {
                 then: (data) => {
                     newState.project = data
                     const userKeys = Object.keys(data.userList)
-                    console.log(userKeys)
+                    //console.log(userKeys)
                     for (let i = 0; i < userKeys.length; i++) {
                         if (userKeys[i] !== this.props.getAppState().user.uid) {
                             const newAppState = { ...this.props.getAppState() }
@@ -125,7 +125,7 @@ class ProjectDashboard extends Component {
     }
 
     componentWillUnmount = () => {
-        console.log("to false3")
+        //console.log("to false3")
         this.setState({
             projectSynced: false
         })
@@ -211,7 +211,7 @@ class ProjectDashboard extends Component {
         let taskRender
         let tasks
         let count = 0
-console.log(this.state.projectSynced)
+//console.log(this.state.projectSynced)
         if (this.state.projectSynced) {
 
             if(!this.state.showArchive){
@@ -223,7 +223,7 @@ console.log(this.state.projectSynced)
 
                     let filter = this.props.getAppState().user.projects[this.state.project.key].filter
                     if(filter === "Chronological"){
-                        console.log("Chronological")
+                        //console.log("Chronological")
                         const taskKeys = Object.keys(this.state.project.taskList)
                         tasks = (
                             taskKeys.map((key) => {
@@ -270,7 +270,7 @@ console.log(this.state.projectSynced)
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
                     } else if(filter === "Deadline"){
-                        console.log("Deadline")
+                        //console.log("Deadline")
                         copyTasksArray.sort(
                             function(x, y){
                                 if(x.deadline === y.deadline){
@@ -291,7 +291,7 @@ console.log(this.state.projectSynced)
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
                     } else if (filter === "Priority") {
-                        console.log("PRIORITY")
+                        //console.log("PRIORITY")
 
                         copyTasksArray.sort(
                             function(x, y){
@@ -320,7 +320,7 @@ console.log(this.state.projectSynced)
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
                     } else if (filter === "Time to Complete (Ascending)"){
-                        console.log("TIME ASCENDING")
+                        //console.log("TIME ASCENDING")
                         copyTasksArray.sort(
                             function(x, y){
                                 if(x.EstimatedTimeValue === y.EstimatedTimeValue){
@@ -340,7 +340,7 @@ console.log(this.state.projectSynced)
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
                     } else if (filter === "Time to Complete (Descending)"){
-                        console.log("TIME DESCENDING")
+                        //console.log("TIME DESCENDING")
                         copyTasksArray.sort(
                             function(x, y){
                                 if(x.EstimatedTimeValue === y.EstimatedTimeValue){
@@ -360,7 +360,7 @@ console.log(this.state.projectSynced)
                             tasks.push(this.renderTask(copyTasksArray[i].key, false))
                         }
                     } else { //Filter by a category
-                        console.log("OTHER")
+                        //console.log("OTHER")
                         tasks = []
                         for(var i = 0; i < copyTasksArray.length; i++){
                              if(copyTasksArray[i].taskCategory === filter){
@@ -393,7 +393,7 @@ console.log(this.state.projectSynced)
                           )}
                           >
                           {tasks[index]}
-                          {console.log(tasks[index])}
+                          
                           </div>
                           {provided.placeholder}
                       </div>
@@ -425,7 +425,7 @@ console.log(this.state.projectSynced)
 
                     let filter = this.props.getAppState().user.projects[this.state.project.key].filter
                     if(filter === "Chronological"){
-                        console.log("Chronological")
+                        //console.log("Chronological")
                         const taskKeys = Object.keys(this.state.project.archivedTaskList)
                         taskRender = (
                             taskKeys.map((key) => {
@@ -464,7 +464,7 @@ console.log(this.state.projectSynced)
                             taskRender.push(this.renderTask(copyTasksArray[i].key, true))
                         }
                     } else if(filter === "Deadline"){
-                        console.log("Deadline")
+                        //console.log("Deadline")
                         copyTasksArray.sort(
                             function(x, y){
                                 if(x.deadline === y.deadline){
@@ -484,7 +484,7 @@ console.log(this.state.projectSynced)
                             taskRender.push(this.renderTask(copyTasksArray[i].key, true))
                         }
                     } else if (filter === "Priority") {
-                        console.log("PRIORITY")
+                        //console.log("PRIORITY")
 
                         copyTasksArray.sort(
                             function(x, y){
@@ -513,7 +513,7 @@ console.log(this.state.projectSynced)
                             taskRender.push(this.renderTask(copyTasksArray[i].key, true))
                         }
                     } else if (filter === "Time to Complete (Ascending)"){
-                        console.log("TIME ASCENDING")
+                        //console.log("TIME ASCENDING")
                         copyTasksArray.sort(
                             function(x, y){
                                 if(x.EstimatedTimeValue === y.EstimatedTimeValue){
@@ -533,7 +533,7 @@ console.log(this.state.projectSynced)
                             taskRender.push(this.renderTask(copyTasksArray[i].key, true))
                         }
                     } else if (filter === "Time to Complete (Descending)"){
-                        console.log("TIME DESCENDING")
+                        //console.log("TIME DESCENDING")
                         copyTasksArray.sort(
                             function(x, y){
                                 if(x.EstimatedTimeValue === y.EstimatedTimeValue){
@@ -553,7 +553,7 @@ console.log(this.state.projectSynced)
                             taskRender.push(this.renderTask(copyTasksArray[i].key, true))
                         }
                     } else { //Filter by a category
-                        console.log("OTHER")
+                        //console.log("OTHER")
                         taskRender = []
                         for(var i = 0; i < copyTasksArray.length; i++){
                              if(copyTasksArray[i].taskCategory === filter){

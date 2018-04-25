@@ -26,7 +26,7 @@ class Notifications extends Component {
         if (notifications) {
             finalRender = (
                 notificationKeys.map((notificationKey) => {
-                    console.log(notifications)
+                    //console.log(notifications)
                     if (notifications[notificationKey].type === "invite") {
                         return <Invite key={notificationKey} notificationKey={notificationKey} notification={notifications[notificationKey]}
                         getAppState={this.props.getAppState} setAppState={this.setAppState} />

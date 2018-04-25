@@ -17,9 +17,9 @@ class Notification extends Component {
             context: this,
             //asArray: true,
             then(data){
-              console.log(data);
+             // console.log(data);
               let arr = Object.keys(data)
-              console.log(arr)
+              //console.log(arr)
               //console.log(this.props.projectID)
                 arr.map((user) => {
                     //console.log(user)
@@ -78,8 +78,8 @@ class Notification extends Component {
         // Archive
         const projID = this.props.notification.key;
         const taskID = this.props.notification.taskID;
-        console.log(projID)
-        console.log(taskID)
+       // console.log(projID)
+       // console.log(taskID)
 
         rebase.fetch(`projects/${projID}/taskList/${taskID}`, {
             context: this,
@@ -91,7 +91,7 @@ class Notification extends Component {
                         //Thanks Alex
                         rebase.remove(`projects/${projID}/taskList/${taskID}`, function(err){
                             if(err){
-                                console.log("stickfiddles")
+                               // console.log("stickfiddles")
                             }
                         });
                     }
@@ -103,9 +103,9 @@ class Notification extends Component {
         rebase.fetch(`users/${this.props.userID}/todayView`, {
             context: this,
         }).then(data => {
-            console.log(data)
+           // console.log(data)
             let taskArray = Object.keys(data);
-              console.log(taskArray)
+            //  console.log(taskArray)
             for (var i = 0; i < taskArray.length;i++ ){
                 let tid = taskArray[i];
 
@@ -113,17 +113,17 @@ class Notification extends Component {
                 rebase.fetch(`users/${this.props.userID}/todayView/${tid}`, {
                     context: this,
                 }).then(data => {
-                    console.log(data)
-                    console.log(this.props.taskKey)
+                   // console.log(data)
+                   // console.log(this.props.taskKey)
                     if (data.taskIDNumber === taskID){
-                        console.log(taskArray[i])
-                        console.log(taskID)
+                      //  console.log(taskArray[i])
+                      //  console.log(taskID)
 
                         rebase.update(`users/${this.props.userID}/todayView/${tid}`, {
                             data: {completed: true},
                             then(err){
                               if(!err){
-                                console.log("Oh No 23436")
+                                //console.log("Oh No 23436")
                               }
                             }
                           });

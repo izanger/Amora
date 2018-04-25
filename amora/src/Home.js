@@ -38,7 +38,7 @@ class Home extends Component {
         if (!result.destination) {
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
-            console.log("dsfdsfsd")
+           // console.log("dsfdsfsd")
             rebase.fetch(`users/${id}/todayView/${taskID}`, {
                 context: this,
             }).then(data => {
@@ -61,7 +61,7 @@ class Home extends Component {
                   }).then(data => {
                     todayCount = Object.values(data);
                     if (!Number.isInteger(data)){
-                        console.log("contact Alex. This should never happen")
+                        //console.log("contact Alex. This should never happen")
                     }
                     else {
                         //count is defined, so use it
@@ -132,7 +132,7 @@ class Home extends Component {
 
                 todayCount = Object.values(data);
                 if (!Number.isInteger(data)){
-                    console.log("contact Alex. This should never happen")
+                    //console.log("contact Alex. This should never happen")
                 }
                 else {
                     //count is defined, so use it
@@ -197,11 +197,11 @@ class Home extends Component {
             let completedStatus;
             //const taskColor;
             let count;
-            console.log(result)
+            //console.log(result)
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
             let todayCount = [];
-            console.log("ererer")
+            //console.log("ererer")
 
             rebase.fetch(`users/${id}/count`, {
                 context: this,
@@ -219,22 +219,22 @@ class Home extends Component {
                         rebase.fetch(`users/${id}/projects`, {
                             context: this,
                         }).then(data => {
-                            console.log(data)
+                           // console.log(data)
                             projectArray = Object.keys(data);
                             projectColors = Object.values(data);
                             var i = 0;
                             for (i; i < projectArray.length;i++ ){
                                 let pid = projectArray[i];
                                 const taskColor = projectColors[i].projectColor
-                                console.log(taskID)
+                               // console.log(taskID)
                                 rebase.fetch(`projects/${pid}/taskList/${taskID}`, {
                                     context: this,
                                 }).then(data => {
-                                    console.log(data)
+                                  //  console.log(data)
                                     if (data.taskName){
                                         taskname = data.taskName
                                         estimatedTime = data.EstimatedTimeValue
-                                        console.log("hit")
+                                       // console.log("hit")
                                         //this.subtractHours()
                                         let newState = { ...this.state}
                                         newState.todayViewHours = newState.todayViewHours - data.EstimatedTimeValue
@@ -313,7 +313,7 @@ class Home extends Component {
                                         taskname = data.taskName
                                         this.state.taskHours = data.EstimatedTimeValue
                                         estimatedTime = data.EstimatedTimeValue
-                                        console.log("hit")
+                                      //  console.log("hit")
                                         //this.subtractHours()
                                         let newState = { ...this.state}
                                         newState.todayViewHours = newState.todayViewHours - data.EstimatedTimeValue
@@ -325,7 +325,7 @@ class Home extends Component {
                                             completedStatus = false;
                                         }
                                         //taskName and time are set, so we can push it to the todayView
-                                        console.log(dropitHere)
+                                      //  console.log(dropitHere)
                                         rebase.push(`users/${this.props.getAppState().user.uid}/todayView`, {
                                             data: {
                                                 taskIDNumber: taskID,
@@ -350,7 +350,7 @@ class Home extends Component {
             const id = this.props.getAppState().user.uid
             const taskID = result.draggableId;
 
-            console.log("hey")
+           // console.log("hey")
            // rebase.fetch()
             rebase.fetch(`users/${id}/todayView/${taskID}`, {
                 context: this,
@@ -376,7 +376,7 @@ class Home extends Component {
                   }).then(data => {
                     todayCount = Object.values(data);
                     if (!Number.isInteger(data)){
-                        console.log("contact Alex. This should never happen")
+                      //  console.log("contact Alex. This should never happen")
                     }
                     else {
                         //count is defined, so use it
@@ -463,7 +463,7 @@ class Home extends Component {
             let sum = 0;
 
             let taskArray = Object.values(data);
-                   console.log(taskArray)
+                  // console.log(taskArray)
                  for (var i = 0; i < taskArray.length;i++ ){
                      sum = sum + taskArray[i].EstimatedTimeValue;
                  }
@@ -480,7 +480,7 @@ class Home extends Component {
                     context: this,
                     state: 'workingHours',
                     then: () => {
-                        console.log("HELLO")
+                        //console.log("HELLO")
                         newState.viewSynced = true
                         this.setState(newState)
                     }

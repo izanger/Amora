@@ -21,7 +21,7 @@ class ProjectIcon extends Component {
     */
     render = () => {
         let color = this.props.projectColor;
-        console.log(this.props)
+       // console.log(this.props)
         if(this.props.projectID === this.props.personalProjectID){
             if (this.props.personalIcon == true){
                 return (

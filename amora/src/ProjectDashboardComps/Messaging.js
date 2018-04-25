@@ -40,7 +40,7 @@ class Messaging extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        console.log(nextProps)
+        //console.log(nextProps)
         const nextId = nextProps.match.params.id
         if (nextId !== undefined) {
             this.setState({chatOpen: true})

@@ -99,7 +99,7 @@ class CreateProjectForm extends Component {
         newState.categoryErrorValue = "";
         newState.categoryValue = "";
         this.setState(newState)
-        console.log(newState);
+        //console.log(newState);
         return;
     }
 

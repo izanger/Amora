@@ -707,7 +707,7 @@ class ProjectTitleBar extends Component {
         this.props.setAppState(newState)
         const projectIds = Object.keys(this.props.getAppState().user.projects)
         for (let i = 0; i < projectIds.length; i++) {
-            console.log(`projects/${projectIds[i]}/userList/${this.props.getAppState().user.uid}`)
+            //console.log(`projects/${projectIds[i]}/userList/${this.props.getAppState().user.uid}`)
             rebase.post(`projects/${projectIds[i]}/userList/${this.props.getAppState().user.uid}`, {
                 data: uri
             })
@@ -717,7 +717,7 @@ class ProjectTitleBar extends Component {
     previewFile = () => {
         const reader  = new FileReader()
         const file = document.querySelector('input[type=file]').files[0]
-        console.log(file)
+        //console.log(file)
         reader.onloadend = () => {
            this.changeProfilePicture(reader.result)
         }
@@ -725,7 +725,7 @@ class ProjectTitleBar extends Component {
     }
 
     submitProfileChanges = () => {
-        console.log(this.state.profileDesc)
+        //console.log(this.state.profileDesc)
         rebase.update(`users/${this.props.getAppState().user.uid}`, {
             data: {
                 profileDescription: this.state.profileDesc
@@ -733,17 +733,17 @@ class ProjectTitleBar extends Component {
         })
 
         //update the color of each project
-        console.log(this.props.getAppState().user.uid)
-        console.log(this.props.project.key)
+        //console.log(this.props.getAppState().user.uid)
+        //console.log(this.props.project.key)
     const ID = this.props.getAppState().user.uid
     rebase.fetch(`users/${ID}/todayView/`, {
         context: this,
         asArray: true,
         then(data){
-            console.log(data);
+            //console.log(data);
             var tasks = (Object.values(data))
             var taskArray = (Object.keys(data))
-            console.log(taskArray)
+            //console.log(taskArray)
             for (var i = 0; i < tasks.length;i++ ){
                 let tid = tasks[i].taskIDNumber;
                 let remember = tasks[i].key
@@ -754,12 +754,12 @@ class ProjectTitleBar extends Component {
                     context: this,
                     asArray: true,
                 }).then(data1 => {
-                    console.log(data1)
+                    //console.log(data1)
                     //console.log(tid)
                     for (var i = 0; i < data1.length; i++){
-                        console.log(data1[i])
-                        console.log(data1[i].key)
-                        console.log(tid)
+                        //console.log(data1[i])
+                        //console.log(data1[i].key)
+                        //console.log(tid)
                         if (data1[i].key === tid){
 
                             rebase.update(`users/${ID}/todayView/${remember}/`, {
@@ -786,10 +786,10 @@ class ProjectTitleBar extends Component {
         context: this,
         asArray: true,
         then(data){
-            console.log(data);
+            //console.log(data);
             var tasks = (Object.values(data))
             var taskArray = (Object.keys(data))
-            console.log(taskArray)
+            //console.log(taskArray)
             for (var i = 0; i < tasks.length;i++ ){
                 let tid = tasks[i].taskIDNumber;
                 let remember = tasks[i].key
@@ -800,12 +800,12 @@ class ProjectTitleBar extends Component {
                     context: this,
                     asArray: true,
                 }).then(data1 => {
-                    console.log(data1)
+                    //console.log(data1)
                     //console.log(tid)
                     for (var i = 0; i < data1.length; i++){
-                        console.log(data1[i])
-                        console.log(data1[i].key)
-                        console.log(tid)
+                        //console.log(data1[i])
+                        //console.log(data1[i].key)
+                        //console.log(tid)
                         if (data1[i].key === tid){
 
                             rebase.update(`users/${ID}/todayView/${remember}/`, {
@@ -1208,7 +1208,7 @@ class ProjectTitleBar extends Component {
     */
 
     groupChat = () => {
-        console.log(this.props)
+        //console.log(this.props)
         this.props.goToUrl(`/chats/${this.props.getProjectDashboardState().project.key}`)
     }
 
