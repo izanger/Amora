@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import rebase, { auth } from "./rebase.js"
 import { Route, Switch, Redirect } from "react-router-dom"
-
 import line from "./images/Line/Line.png"
 import "./Home.css"
-
 import ProjectIcon from "./ProjectSelectorComps/ProjectIcon.js"
 import CreateProjectForm from './CreateProjectForm.js';
 import ProjectDashboard from "./ProjectDashboardComps/ProjectDashboard.js"
