@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import rebase from "../rebase.js"
-import ChatMessage from './ChatMessage.js';
 import MessagingMessage from "./MessagingMessage"
 import leftArrow from "../images/Icons/LeftArrow.svg"
 
@@ -176,7 +175,7 @@ class Messaging extends Component {
         return (
             <div id="taskDashboard">
                 <div id="projectTitleContainer"  style={{backgroundColor: "#E74C3C"}}>
-                    <img title="Go back" src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
+                    <img alt="Go Back" title="Go back" src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
                         this.props.goToUrl("/dashboard")
                     }} />
                     <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Messaging</h1>

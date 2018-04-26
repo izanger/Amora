@@ -23,7 +23,7 @@ class ProjectIcon extends Component {
         let color = this.props.projectColor;
        // console.log(this.props)
         if(this.props.projectID === this.props.personalProjectID){
-            if (this.props.personalIcon == true){
+            if (this.props.personalIcon === true){
                 return (
                     <div id="iconContainer" style={{backgroundColor: color}}>
                         <img alt={"Project"} src={this.props.projectPhotoURL} className="projectPicture"/>

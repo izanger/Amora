@@ -263,7 +263,7 @@ class CreateProjectForm extends Component {
     }
 
     renderSwatch = (color) => {
-        if (color == this.state.colorValue) {
+        if (color === this.state.colorValue) {
             return <div onClick={() => {
                 this.changeColorValue(color)
             }} className="colorSwatchSelector" key={color} style={{backgroundColor: color, borderWidth: '2px', borderStyle: 'solid'}}></div>
@@ -281,7 +281,7 @@ class CreateProjectForm extends Component {
         return (
             <div id="taskDashboard">
                 <div id="projectTitleContainer" style={{backgroundColor: color}}>
-                    <img src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
+                    <img alt="Left Arrow" src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
                         this.props.goToUrl("dashboard")
                     }} />
                 <p style={{left: '35px'}} id="projectTitle" class="text_header">Create New Project</p>

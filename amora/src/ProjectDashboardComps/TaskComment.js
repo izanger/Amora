@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import rebase from "../rebase.js"
-import UserIcon from "./UserIcon.js"
 import CommentUserIcon from "./CommentUserIcon.js"
 import "./TaskComment.css"
-import funnytemp from "../images/temp.jpg"
 import ContentEditable from 'react-contenteditable'
 
 

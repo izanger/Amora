@@ -169,12 +169,12 @@ class CreateTaskForm extends Component {
 
     // Mandatory render method
     render = () => {
-        let color = "#3498DB";
+        //let color = "#3498DB";
         let categoryOptions = this.getCategoryOptions();
         return (
             <div id="taskDashboard">
                 <div id="projectTitleContainer"  style={{backgroundColor: this.props.getAppState().latestColor}}>
-                    <img title="Go back" src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
+                    <img alt="Go Back" title="Go back" src={leftArrow} style={{height: '15px', left: '12px', top:'14px', position:'absolute'}} onClick={() => {
                         this.props.goToUrl("dashboard")
                     }} />
                     <h1 style={{left: '35px'}} id="projectTitle" className="text_header">Create New Task</h1>

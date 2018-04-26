@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
-import rebase, { auth, google} from "../rebase.js"
-import { Route, Switch, Redirect } from "react-router-dom";
-import { Row, Grid, Col } from 'react-bootstrap'
-import { checkIfManager } from "../apphelpers.js"
+import rebase from "../rebase.js"
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
-
-import { App } from "../App.js"
 import TodayViewUser from '../TodayViewUser.js';
 
 
@@ -179,7 +174,7 @@ class CommentUserIcon extends Component {
 
     removeUser = () => {
         var response = window.confirm("Are you sure you want to remove this user?")
-        if (response == true){
+        if (response === true){
             rebase.remove(`users/${this.props.userID}/projects/${this.props.projectID}`)
             rebase.remove(`projects/${this.props.projectID}/userList/${this.props.userID}`)
             rebase.remove(`projects/${this.props.projectID}/managerList/${this.props.userID}`)

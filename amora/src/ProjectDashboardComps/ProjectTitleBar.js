@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import rebase from "../rebase";
 import UserIcon from "./UserIcon.js"
-import { checkIfManager, checkIfUserOnProject } from "../apphelpers.js"
 import { emailRegistered, validateEmail } from "../apphelpers.js"
 import InviteList from "../InviteList.js"
 import FilterSelection from './FilterSelection.js';
@@ -19,7 +18,6 @@ import "../textStyle.css"
 import "./UserIcon.css"
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Modal from 'react-responsive-modal/lib/css';
-import Announcements from "./Announcements.js"
 import "./Announcements.css"
 
 class ProjectTitleBar extends Component {
@@ -262,13 +260,13 @@ class ProjectTitleBar extends Component {
 
         let startpm = this.state.startWorkingHoursValue
         let endpm = this.state.endWorkingHoursValue
-        if (startAMPMText == "pm") {
+        if (startAMPMText === "pm") {
             startpm = +this.state.startWorkingHoursValue+12
         }
         else {
             startpm = +this.state.startWorkingHoursValue+0
         }
-        if (endAMPMText == "pm") {
+        if (endAMPMText === "pm") {
             endpm = +this.state.endWorkingHoursValue+12
         }
         else {

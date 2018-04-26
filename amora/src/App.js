@@ -28,8 +28,8 @@ class App extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextState.user.notifications != null && nextState.user.notifications != undefined
-      && this.state.user.notifications != null && this.state.user.notifications != undefined) {
+    if (nextState.user.notifications !== null && nextState.user.notifications !== undefined
+      && this.state.user.notifications !== null && this.state.user.notifications !== undefined) {
       if (Object.keys(nextState.user.notifications).length > 0) {
         this.notifyMe()
       }
@@ -44,12 +44,12 @@ class App extends Component {
     if (!this.state.notified) {
       if (Notification.permission === "granted") {
         // If it's okay let's create a notification
-        var notification = new Notification("You have notifications!");
+        //var notification = new Notification("You have notifications!");
       } else if (Notification.permission !== 'denied') {
         Notification.requestPermission(function (permission) {
           // If the user accepts, let's create a notification
           if (permission === "granted") {
-            var notification = new Notification("You have notifications!");
+            //var notification = new Notification("You have notifications!");
           }
         });
       }

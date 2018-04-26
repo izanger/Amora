@@ -1,8 +1,4 @@
 import React, { Component } from 'react'
-import rebase from "../rebase.js"
-import UserIcon from './UserIcon.js';
-import CommentUserIcon from "./CommentUserIcon.js"
-import { format } from 'path';
 
 class ChatMessage extends Component {
 

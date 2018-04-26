@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
 import rebase from "../rebase.js"
-import UserIcon from "./UserIcon.js"
-import CommentUserIcon from "./CommentUserIcon.js"
 import "./Announcements.css"
-import funnytemp from "../images/temp.jpg"
-import ContentEditable from 'react-contenteditable'
 
 
 class Announcements extends Component {
@@ -34,8 +30,8 @@ class Announcements extends Component {
 
             //var date = new Date(this.props.timestamp)
             //let formattedDate =  date.toLocaleTimeString() + " on " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
-            var today = new Date();
-            let e = "Edited at";
+            // var today = new Date();
+            // let e = "Edited at";
 
 
 

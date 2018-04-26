@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import rebase from "./rebase";
 
 import "./Invite.css"
 
